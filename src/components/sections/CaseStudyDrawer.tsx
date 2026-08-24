@@ -58,17 +58,17 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
         >
           {/* Header Bar */}
           <div className="sticky top-0 z-20 bg-canvas/95 backdrop-blur-md border-b border-border-hairline p-4 sm:p-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Badge variant="active">{project.badge}</Badge>
-              <Badge variant="outline">{project.categoryLabel}</Badge>
+            <div className="flex items-center gap-2.5">
+              <Badge variant="active" size="sm">{project.badge}</Badge>
+              <Badge variant="outline" size="sm">{project.categoryLabel}</Badge>
               <span className="font-mono text-xs text-fg-subtle truncate max-w-[180px] sm:max-w-none">
-                [ DESIGN STUDY // {project.slug} ]
+                Design Study / {project.slug}
               </span>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 border border-border-hairline bg-canvas-surface text-fg-muted hover:text-fg hover:border-fg transition-colors"
+              className="p-2 border border-border-hairline bg-canvas-surface text-fg-muted hover:text-fg hover:border-fg transition-colors cursor-pointer"
               aria-label="Close case study drawer"
             >
               <X size={18} />
@@ -79,13 +79,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
           <div className="p-6 sm:p-8 lg:p-10 space-y-12 flex-1">
             {/* Title Block */}
             <div>
-              <span className="font-mono text-xs text-fg-subtle uppercase tracking-wider block mb-2">
+              <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider block mb-2">
                 {project.clientType}
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-fg tracking-tight leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-fg tracking-tight leading-tight font-sans">
                 {project.title}
               </h2>
-              <p className="mt-3 text-lg text-fg-muted leading-relaxed">
+              <p className="mt-3 text-lg text-fg-muted leading-relaxed font-sans">
                 {project.tagline}
               </p>
             </div>
@@ -94,10 +94,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             <div className="border border-border-hairline bg-canvas-subtle p-4 sm:p-6 space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-border-hairline">
                 <div>
-                  <span className="font-mono text-xs text-fg uppercase tracking-wider block">
+                  <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block">
                     Responsive Viewport Simulator
                   </span>
-                  <span className="font-mono text-[11px] text-fg-faint">
+                  <span className="font-sans text-xs text-fg-muted">
                     Toggle to preview responsive typography and layout behavior
                   </span>
                 </div>
@@ -106,7 +106,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <div className="flex items-center border border-border-hairline bg-canvas-surface p-0.5">
                   <button
                     onClick={() => setViewportMode('desktop')}
-                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
                       viewportMode === 'desktop'
                         ? 'bg-fg text-canvas font-semibold'
                         : 'text-fg-muted hover:text-fg'
@@ -116,7 +116,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   </button>
                   <button
                     onClick={() => setViewportMode('mobile')}
-                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
                       viewportMode === 'mobile'
                         ? 'bg-fg text-canvas font-semibold'
                         : 'text-fg-muted hover:text-fg'
@@ -146,7 +146,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
                         </div>
-                        <span className="truncate">concept-preview.{project.slug}.demo</span>
+                        <span className="truncate">{project.slug}.demo</span>
                         <span>100%</span>
                       </div>
 
@@ -154,12 +154,12 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       <div className="p-6 space-y-6">
                         {/* Nav Bar */}
                         <div className="flex items-center justify-between border-b border-border-hairline pb-3">
-                          <span className="font-mono text-xs font-bold text-fg">
+                          <span className="font-sans text-xs font-bold text-fg">
                             {project.title.split(' ')[0]}
                           </span>
                           <div className="flex gap-4">
                             {project.desktopPreview.navLinks.map((link) => (
-                              <span key={link} className="font-mono text-[10px] text-fg-muted">
+                              <span key={link} className="font-sans text-[10px] text-fg-muted font-medium">
                                 {link}
                               </span>
                             ))}
@@ -168,25 +168,25 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
 
                         {/* Hero */}
                         <div>
-                          <span className="font-mono text-[9px] text-fg-faint uppercase tracking-wider block mb-1">
-                            [ VIEWPORT ARCHITECTURE ]
+                          <span className="font-sans text-[9px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
+                            Viewport Preview
                           </span>
-                          <h4 className="text-xl font-bold text-fg leading-tight">
+                          <h4 className="text-xl font-bold text-fg leading-tight font-sans">
                             {project.desktopPreview.heroHeadline}
                           </h4>
-                          <p className="mt-2 text-xs text-fg-muted leading-relaxed max-w-lg">
+                          <p className="mt-2 text-xs text-fg-muted leading-relaxed max-w-lg font-sans">
                             {project.desktopPreview.heroSub}
                           </p>
                         </div>
 
-                        {/* Scope Specs Matrix (Legitimate Architectural Information) */}
+                        {/* Scope Specs Matrix */}
                         <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border-hairline">
                           {project.desktopPreview.scopeSpecs.map((s) => (
                             <div key={s.label} className="bg-canvas-surface p-2 border border-border-hairline">
                               <span className="font-mono text-[9px] text-fg-faint block uppercase">
                                 {s.label}
                               </span>
-                              <span className="font-mono text-xs font-bold text-fg truncate">
+                              <span className="font-sans text-xs font-semibold text-fg truncate">
                                 {s.value}
                               </span>
                             </div>
@@ -198,12 +198,12 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                           {project.desktopPreview.sections.map((sec) => (
                             <div key={sec.title} className="bg-canvas-subtle p-3 border border-border-hairline">
                               <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
-                                [{sec.tag}]
+                                {sec.tag}
                               </span>
-                              <h5 className="text-[11px] font-bold text-fg mb-1">
+                              <h5 className="text-[11px] font-bold text-fg mb-1 font-sans">
                                 {sec.title}
                               </h5>
-                              <p className="text-[9px] text-fg-muted leading-snug">
+                              <p className="text-[9px] text-fg-muted leading-snug font-sans">
                                 {sec.desc}
                               </p>
                             </div>
@@ -221,7 +221,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       className="w-[280px] bg-canvas border-2 border-border-hover shadow-2xl rounded-2xl overflow-hidden relative"
                     >
                       {/* Mobile Top Bar */}
-                      <div className="bg-canvas-subtle px-3 py-2 flex items-center justify-between border-b border-border-hairline text-[10px] font-mono text-fg-faint">
+                      <div className="bg-canvas-subtle px-3 py-2 flex items-center justify-between border-b border-border-hairline text-[10px] font-sans font-medium text-fg-faint">
                         <span>9:41</span>
                         <div className="w-12 h-2.5 bg-neutral-800 rounded-full" />
                         <span>5G 100%</span>
@@ -230,17 +230,17 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       {/* Mobile Content */}
                       <div className="p-4 space-y-4 text-left">
                         <div className="flex items-center justify-between border-b border-border-hairline pb-2">
-                          <span className="font-mono text-xs font-bold text-fg">
+                          <span className="font-sans text-xs font-bold text-fg">
                             {project.title.split(' ')[0]}
                           </span>
-                          <span className="font-mono text-[9px] text-fg-faint">[MENU]</span>
+                          <span className="font-sans text-[9px] text-fg-faint font-semibold uppercase">Menu</span>
                         </div>
 
                         <div>
-                          <h4 className="text-sm font-bold text-fg leading-tight">
+                          <h4 className="text-sm font-bold text-fg leading-tight font-sans">
                             {project.mobilePreview.headline}
                           </h4>
-                          <p className="mt-1 text-[11px] text-fg-muted leading-snug">
+                          <p className="mt-1 text-[11px] text-fg-muted leading-snug font-sans">
                             {project.mobilePreview.highlight}
                           </p>
                         </div>
@@ -248,13 +248,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                         <div className="space-y-2">
                           {project.mobilePreview.sections.map((sec) => (
                             <div key={sec.title} className="p-2 bg-canvas-surface border border-border-hairline flex items-center justify-between">
-                              <span className="text-[11px] text-fg font-medium">{sec.title}</span>
-                              <span className="font-mono text-[8px] text-fg-faint">[{sec.tag}]</span>
+                              <span className="text-[11px] text-fg font-medium font-sans">{sec.title}</span>
+                              <span className="font-mono text-[8px] text-fg-faint">{sec.tag}</span>
                             </div>
                           ))}
                         </div>
 
-                        <button className="w-full bg-fg text-canvas font-mono text-[10px] uppercase font-bold py-2 shadow">
+                        <button className="w-full bg-fg text-canvas font-sans text-[11px] uppercase font-bold py-2 shadow cursor-pointer">
                           {project.mobilePreview.ctaText}
                         </button>
                       </div>
@@ -269,11 +269,11 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               <div className="border border-border-hairline bg-canvas-subtle p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <Compass size={18} className="text-fg-muted" />
-                  <h3 className="font-mono text-xs text-fg uppercase tracking-wider">
-                    [ 01 // DESIGN CHALLENGE ]
+                  <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+                    01 / Design Challenge
                   </h3>
                 </div>
-                <p className="text-sm text-fg-muted leading-relaxed">
+                <p className="text-sm text-fg-muted leading-relaxed font-sans">
                   {project.challenge}
                 </p>
               </div>
@@ -281,11 +281,11 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               <div className="border border-border-hairline bg-canvas-subtle p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <Layers size={18} className="text-fg-muted" />
-                  <h3 className="font-mono text-xs text-fg uppercase tracking-wider">
-                    [ 02 // UX & LAYOUT STRATEGY ]
+                  <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+                    02 / UX & Layout Strategy
                   </h3>
                 </div>
-                <p className="text-sm text-fg-muted leading-relaxed">
+                <p className="text-sm text-fg-muted leading-relaxed font-sans">
                   {project.strategy}
                 </p>
               </div>
@@ -295,8 +295,8 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Cpu size={18} className="text-fg-muted" />
-                <h3 className="font-mono text-xs text-fg uppercase tracking-wider">
-                  [ 03 // ARCHITECTURAL FEATURES ]
+                <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+                  03 / Key Features
                 </h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -308,11 +308,11 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircle2 size={14} className="text-fg" />
-                        <h4 className="font-bold text-sm text-fg">
+                        <h4 className="font-bold text-sm text-fg font-sans">
                           {feat.title}
                         </h4>
                       </div>
-                      <p className="text-xs text-fg-muted leading-relaxed">
+                      <p className="text-xs text-fg-muted leading-relaxed font-sans">
                         {feat.description}
                       </p>
                     </div>
@@ -324,10 +324,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             {/* Tech Stack & Deliverables */}
             <div className="border-t border-border-hairline pt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-3">
+                <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3">
                   Deliverable Scope
                 </span>
-                <ul className="space-y-1.5 font-mono text-xs text-fg-muted">
+                <ul className="space-y-1.5 font-sans text-xs text-fg-muted">
                   {project.deliverables.map((d) => (
                     <li key={d} className="flex items-center gap-2">
                       <span className="text-fg-faint">→</span>
@@ -338,7 +338,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               </div>
 
               <div>
-                <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-3">
+                <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3">
                   Technical Architecture
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -357,13 +357,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             {/* Direct Project Inquiry CTA */}
             <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div>
-                <span className="font-mono text-xs text-fg-subtle uppercase tracking-wider block mb-1">
-                  [ SIMILAR PROJECT BRIEF ]
+                <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider block mb-1">
+                  Start a Similar Project
                 </span>
-                <h4 className="text-lg font-bold text-fg">
+                <h4 className="text-lg font-bold text-fg font-sans">
                   Interested in a similar website for your business?
                 </h4>
-                <p className="text-xs sm:text-sm text-fg-muted mt-1">
+                <p className="text-xs sm:text-sm text-fg-muted mt-1 font-sans">
                   Start a direct project conversation and we’ll prepare a tailored roadmap for your requirements.
                 </p>
               </div>

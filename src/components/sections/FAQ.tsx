@@ -36,7 +36,7 @@ export const FAQ: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`font-mono text-xs uppercase px-3 py-1.5 border transition-all duration-200 cursor-pointer ${
+                className={`font-sans text-xs font-medium px-3.5 py-1.5 border transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-fg text-canvas border-fg font-semibold'
                     : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg'
@@ -60,10 +60,10 @@ export const FAQ: React.FC = () => {
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-start gap-4">
-                    <span className="font-mono text-xs text-fg-faint mt-1">
-                      [{faq.category.substring(0, 3).toUpperCase()}]
+                    <span className="font-mono text-xs text-fg-faint mt-1 shrink-0">
+                      {faq.category}
                     </span>
-                    <h3 className="text-base sm:text-lg font-bold text-fg group-hover:text-neutral-300 transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-fg group-hover:text-neutral-300 transition-colors font-sans">
                       {faq.question}
                     </h3>
                   </div>
@@ -82,7 +82,7 @@ export const FAQ: React.FC = () => {
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-4 pl-12 pr-6 text-sm sm:text-base text-fg-muted leading-relaxed">
+                      <div className="mt-4 pl-12 pr-6 text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
                         <p>{faq.answer}</p>
                       </div>
                     </motion.div>
@@ -97,13 +97,13 @@ export const FAQ: React.FC = () => {
         <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex items-center justify-between max-w-4xl">
           <div className="flex items-center gap-3">
             <HelpCircle size={20} className="text-fg-muted" />
-            <span className="font-mono text-xs text-fg-muted">
+            <span className="font-sans text-xs text-fg-muted font-medium">
               Have a specific question not addressed above?
             </span>
           </div>
           <a
             href="mailto:hello@wibsity.com"
-            className="font-mono text-xs text-fg underline underline-offset-4 hover:text-neutral-300 transition-colors"
+            className="font-sans text-xs font-semibold text-fg underline underline-offset-4 hover:text-neutral-300 transition-colors"
           >
             Direct Inquiry →
           </a>

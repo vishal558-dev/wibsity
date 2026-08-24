@@ -117,15 +117,15 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
           {/* Header Bar */}
           <div className="flex items-center justify-between pb-6 mb-6 border-b border-border-hairline">
             <div className="flex items-center gap-2">
-              <Badge variant="outline">[ 00 // INTAKE ]</Badge>
-              <span className="font-mono text-xs text-fg-muted">
-                PROJECT CONVERSATION
+              <Badge variant="outline" size="sm">00 / INTAKE</Badge>
+              <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
+                Project Conversation
               </span>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 border border-border-hairline bg-canvas-surface text-fg-muted hover:text-fg hover:border-fg transition-colors"
+              className="p-2 border border-border-hairline bg-canvas-surface text-fg-muted hover:text-fg hover:border-fg transition-colors cursor-pointer"
               aria-label="Close modal"
             >
               <X size={18} />
@@ -135,21 +135,21 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
           {!isSubmitted ? (
             <div>
               <div className="mb-8">
-                <h3 id="modal-title" className="text-2xl sm:text-3xl font-bold text-fg tracking-tight">
+                <h3 id="modal-title" className="text-2xl sm:text-3xl font-bold text-fg tracking-tight font-sans">
                   Start your project brief.
                 </h3>
-                <p className="mt-2 text-sm text-fg-muted leading-relaxed">
+                <p className="mt-2 text-sm text-fg-muted leading-relaxed font-sans">
                   Tell us about your company and project requirements. We review every submission directly and respond within 24 hours with an actionable roadmap.
                 </p>
 
                 {formData.projectReference && (
-                  <div className="mt-4 p-3 bg-canvas-surface border border-border-hairline flex items-center justify-between">
-                    <span className="font-mono text-xs text-fg-muted">
+                  <div className="mt-4 p-3 bg-canvas-surface border border-border-hairline flex items-center justify-between font-sans">
+                    <span className="text-xs text-fg-muted">
                       Attached Reference: <strong className="text-fg">{formData.projectReference}</strong>
                     </span>
                     <button
                       onClick={() => setFormData({ ...formData, projectReference: '' })}
-                      className="text-xs font-mono text-fg-faint hover:text-fg underline"
+                      className="text-xs text-fg-faint hover:text-fg underline cursor-pointer"
                     >
                       Remove
                     </button>
@@ -158,16 +158,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               </div>
 
               {error && (
-                <div className="mb-6 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs font-mono flex items-center gap-2">
+                <div className="mb-6 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs font-sans flex items-center gap-2">
                   <AlertCircle size={16} />
                   <span>{error}</span>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 font-sans">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
                       Your Name <span className="text-neutral-500">*</span>
                     </label>
                     <input
@@ -181,7 +181,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
                       Work Email <span className="text-neutral-500">*</span>
                     </label>
                     <input
@@ -196,7 +196,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
                     Company / Practice / Brand Name
                   </label>
                   <input
@@ -210,7 +210,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Service Selection */}
                 <div>
-                  <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
                     Primary Service Focus
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -219,7 +219,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                         type="button"
                         key={svc}
                         onClick={() => setFormData({ ...formData, serviceInterest: svc })}
-                        className={`text-left p-2.5 border text-xs font-mono transition-colors ${
+                        className={`text-left p-3 border text-xs font-medium transition-colors cursor-pointer ${
                           formData.serviceInterest === svc
                             ? 'bg-fg text-canvas border-fg font-semibold'
                             : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg'
@@ -233,7 +233,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Timeline Selection */}
                 <div>
-                  <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
                     Target Launch Window
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -242,7 +242,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                         type="button"
                         key={time}
                         onClick={() => setFormData({ ...formData, timeline: time })}
-                        className={`text-center p-2 border text-xs font-mono transition-colors ${
+                        className={`text-center p-2.5 border text-xs font-medium transition-colors cursor-pointer ${
                           formData.timeline === time
                             ? 'bg-fg text-canvas border-fg font-semibold'
                             : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg'
@@ -256,8 +256,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Project Brief */}
                 <div>
-                  <label className="block font-mono text-xs text-fg uppercase tracking-wider mb-2">
-                    Project Brief & Objectives <span className="text-neutral-500">*</span>
+                  <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
+                    Project Brief & Goals <span className="text-neutral-500">*</span>
                   </label>
                   <textarea
                     rows={4}
@@ -271,8 +271,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Submit Action */}
                 <div className="pt-4 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="font-mono text-[11px] text-fg-faint">
-                    Direct founder review. Sub-24h turnaround.
+                  <span className="text-xs text-fg-faint font-sans">
+                    Direct founder review. 24-hour response.
                   </span>
                   <Button
                     variant="primary"
@@ -289,7 +289,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="py-12 text-center space-y-6"
+              className="py-12 text-center space-y-6 font-sans"
             >
               <div className="inline-flex p-4 border border-border-hairline bg-canvas-surface text-fg mb-2">
                 <CheckCircle2 size={36} />
@@ -298,7 +298,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 Project Brief Received.
               </h3>
               <p className="text-sm sm:text-base text-fg-muted max-w-md mx-auto leading-relaxed">
-                Thank you, <strong>{formData.name}</strong>. We have logged your submission for <strong>{formData.businessName || 'your project'}</strong>. Our team will review your brief and follow up at <strong>{formData.email}</strong> within 24 business hours.
+                Thank you, <strong>{formData.name}</strong>. We have received your submission for <strong>{formData.businessName || 'your project'}</strong>. Our team will review your brief and follow up at <strong>{formData.email}</strong> within 24 business hours.
               </p>
 
               <div className="pt-6 border-t border-border-hairline flex justify-center">

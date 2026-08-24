@@ -28,24 +28,24 @@ export const Process: React.FC = () => {
               <div>
                 {/* Step Top */}
                 <div className="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
-                  <Badge variant="outline">{step.code}</Badge>
+                  <Badge variant="outline" size="sm">Step {step.step}</Badge>
                   <span className="font-mono text-xs text-fg-faint">{step.duration}</span>
                 </div>
 
-                <h3 className="text-lg font-bold text-fg tracking-tight mb-3">
+                <h3 className="text-lg font-bold text-fg tracking-tight mb-3 font-sans">
                   {step.name}
                 </h3>
-                <p className="text-xs text-fg-muted leading-relaxed mb-6">
+                <p className="text-xs text-fg-muted leading-relaxed mb-6 font-sans">
                   {step.description}
                 </p>
 
                 {/* Deliverables */}
                 <div className="space-y-1.5 pt-4 border-t border-border-hairline/60">
-                  <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block mb-2">
+                  <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-2">
                     Milestone Output
                   </span>
                   {step.deliverables.map((item) => (
-                    <div key={item} className="flex items-center gap-1.5 text-[11px] font-mono text-fg-subtle">
+                    <div key={item} className="flex items-center gap-1.5 text-xs text-fg-subtle font-sans">
                       <span className="text-fg-faint">→</span>
                       <span>{item}</span>
                     </div>
@@ -54,7 +54,7 @@ export const Process: React.FC = () => {
               </div>
 
               <div className="mt-8 pt-4 border-t border-border-hairline/40 font-mono text-[10px] text-fg-faint">
-                [ STEP {step.step} OF 04 ]
+                {step.step} of 04
               </div>
             </motion.div>
           ))}

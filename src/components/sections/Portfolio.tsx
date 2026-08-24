@@ -31,7 +31,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <SectionHeading
             index="02"
-            tag="STUDIO CONCEPTS & CASE STUDIES"
+            tag="STUDIO CONCEPTS & WORKS"
             title="Design concepts and web architectures."
             description="Explore our interactive studio concepts demonstrating layouts, responsive typography, and navigation UX across different business models. Click any project to open the interactive desktop and mobile preview."
             className="mb-0"
@@ -43,7 +43,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`font-mono text-xs uppercase px-3 py-1.5 border transition-all duration-200 cursor-pointer ${
+                className={`font-sans text-xs font-medium px-3.5 py-1.5 border transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat.id
                     ? 'bg-fg text-canvas border-fg font-semibold'
                     : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg hover:border-border-hover'
@@ -84,7 +84,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                       <div className="w-2.5 h-2.5 rounded-full bg-neutral-700" />
                     </div>
                     <div className="font-mono text-[10px] text-fg-faint truncate max-w-[200px]">
-                      concept // {project.slug}.demo
+                      {project.slug}.demo
                     </div>
                     <div className="flex items-center gap-2 text-fg-faint">
                       <Monitor size={12} />
@@ -95,22 +95,22 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                   {/* Simulated Desktop Preview Viewport */}
                   <div className="bg-canvas border border-border-hairline p-5 rounded-sm relative shadow-inner">
                     <div className="flex items-center justify-between mb-3 border-b border-border-hairline pb-2">
-                      <span className="font-mono text-xs font-bold text-fg tracking-tight">
+                      <span className="font-sans text-xs font-bold text-fg tracking-tight">
                         {project.title.split(' ')[0]}
                       </span>
                       <div className="flex gap-2">
                         {project.desktopPreview.navLinks.slice(0, 3).map((link) => (
-                          <span key={link} className="font-mono text-[9px] text-fg-faint hidden sm:inline">
+                          <span key={link} className="font-sans text-[10px] text-fg-faint hidden sm:inline font-medium">
                             {link}
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    <h4 className="text-sm sm:text-base font-bold text-fg line-clamp-1 mb-1">
+                    <h4 className="text-sm sm:text-base font-bold text-fg line-clamp-1 mb-1 font-sans">
                       {project.desktopPreview.heroHeadline}
                     </h4>
-                    <p className="text-xs text-fg-muted line-clamp-2 mb-4">
+                    <p className="text-xs text-fg-muted line-clamp-2 mb-4 font-sans">
                       {project.desktopPreview.heroSub}
                     </p>
 
@@ -121,7 +121,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                           <div className="font-mono text-[9px] text-fg-faint uppercase truncate">
                             {spec.label}
                           </div>
-                          <div className="font-mono text-xs font-bold text-fg truncate">
+                          <div className="font-sans text-xs font-semibold text-fg truncate">
                             {spec.value}
                           </div>
                         </div>
@@ -131,7 +131,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
 
                   {/* Hover Overlay Hint */}
                   <div className="absolute inset-0 bg-canvas/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                    <span className="bg-fg text-canvas font-mono text-xs uppercase px-4 py-2 font-semibold shadow-lg flex items-center gap-1.5">
+                    <span className="bg-fg text-canvas font-sans text-xs px-4 py-2 font-semibold shadow-lg flex items-center gap-1.5">
                       Open Responsive Preview & Details <ArrowUpRight size={14} />
                     </span>
                   </div>
@@ -142,22 +142,22 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <div className="flex items-center gap-2">
-                        <Badge variant="active">
+                        <Badge variant="active" size="sm">
                           {project.badge}
                         </Badge>
-                        <Badge variant="outline">
+                        <Badge variant="outline" size="sm">
                           {project.categoryLabel}
                         </Badge>
                       </div>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight mb-2">
+                    <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight mb-1.5 font-sans">
                       {project.title}
                     </h3>
-                    <p className="text-xs font-mono text-fg-subtle uppercase tracking-wider mb-4">
+                    <p className="text-xs font-sans font-medium text-fg-subtle mb-3">
                       {project.clientType}
                     </p>
-                    <p className="text-sm text-fg-muted leading-relaxed mb-6">
+                    <p className="text-sm text-fg-muted leading-relaxed mb-6 font-sans">
                       {project.summary}
                     </p>
 
@@ -177,9 +177,9 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                   {/* Trigger Button */}
                   <button
                     onClick={() => onSelectProject(project)}
-                    className="w-full flex items-center justify-between pt-4 border-t border-border-hairline text-xs font-mono uppercase tracking-wider text-fg hover:text-neutral-300 group/btn transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between pt-4 border-t border-border-hairline text-xs font-sans font-semibold uppercase tracking-wider text-fg hover:text-neutral-300 group/btn transition-colors cursor-pointer"
                   >
-                    <span>[ EXPLORE CONCEPT & RESPONSIVE VIEWS ]</span>
+                    <span>Explore Case Study & Views</span>
                     <ArrowUpRight size={16} className="transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                   </button>
                 </div>

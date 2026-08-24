@@ -104,22 +104,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="max-w-4xl">
-          {/* System Index Pill */}
+          {/* Studio Category Tag */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2 mb-6"
+            className="flex items-center gap-2.5 mb-6"
           >
             <Badge variant="outline">
-              [ 00 // STUDIO INTRODUCTION ]
+              00 / STUDIO INTRODUCTION
             </Badge>
-            <span className="font-mono text-xs text-fg-subtle">
-              WEB DESIGN & DEVELOPMENT
+            <span className="font-sans text-xs font-medium text-fg-subtle">
+              WEB DESIGN & ENGINEERING
             </span>
           </motion.div>
 
-          {/* Main Statement */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,7 +175,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
             {valuePoints.map((point) => (
               <div key={point} className="flex items-start gap-2.5">
                 <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
-                <span className="text-xs font-mono text-fg-muted leading-tight">
+                <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
                   {point}
                 </span>
               </div>

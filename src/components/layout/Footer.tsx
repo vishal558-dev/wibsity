@@ -14,13 +14,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
       {/* Upper CTA Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
         <div className="border border-border-hairline bg-canvas-subtle p-8 sm:p-12 lg:p-16 relative">
-          <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-fg-faint uppercase tracking-widest hidden sm:block">
-            [ DIRECT INTAKE ]
+          <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-fg-faint uppercase tracking-wider hidden sm:block">
+            DIRECT INTAKE
           </div>
 
           <div className="max-w-3xl">
             <span className="font-mono text-xs text-fg-muted uppercase tracking-wider block mb-3">
-              [ 00 // PROJECT INQUIRY ]
+              00 / PROJECT INQUIRY
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
               Ready to build a website that sets your business apart?
@@ -51,43 +51,48 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
         {/* Directory Links */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border-hairline">
           <div>
-            <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-4">
+            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Navigation
             </span>
-            <ul className="space-y-2.5 font-mono text-xs text-fg-muted">
+            <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>
-                <a href="#work" className="hover:text-fg transition-colors">
-                  [01] Concept Works
+                <a href="#work" className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">01</span>
+                  <span>Concept Works</span>
                 </a>
               </li>
               <li>
-                <a href="#services" className="hover:text-fg transition-colors">
-                  [02] Services & Capabilities
+                <a href="#services" className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">02</span>
+                  <span>Services & Capabilities</span>
                 </a>
               </li>
               <li>
-                <a href="#principles" className="hover:text-fg transition-colors">
-                  [03] Studio Principles
+                <a href="#principles" className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">03</span>
+                  <span>Studio Principles</span>
                 </a>
               </li>
               <li>
-                <a href="#process" className="hover:text-fg transition-colors">
-                  [04] 4-Step Process
+                <a href="#process" className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">04</span>
+                  <span>4-Step Process</span>
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-fg transition-colors">
-                  [05] Business FAQ
+                <a href="#faq" className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">05</span>
+                  <span>Business FAQ</span>
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-4">
+            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Capabilities
             </span>
-            <ul className="space-y-2.5 font-mono text-xs text-fg-muted">
+            <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>Business Websites</li>
               <li>Landing Pages</li>
               <li>Website Redesigns</li>
@@ -96,24 +101,24 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
           </div>
 
           <div>
-            <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-4">
+            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Availability
             </span>
-            <div className="space-y-2 font-mono text-xs text-fg-muted">
-              <p className="flex items-center gap-2">
+            <div className="space-y-2 font-sans text-xs text-fg-muted">
+              <p className="flex items-center gap-2 font-medium text-fg">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span>Accepting Projects</span>
               </p>
               <p className="text-fg-faint">Direct Founder Collaboration</p>
-              <p className="text-fg-faint">Standard Turnaround: 2–5 Weeks</p>
+              <p className="text-fg-faint">Turnaround: 2–5 Weeks</p>
             </div>
           </div>
 
           <div>
-            <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-4">
+            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Direct Contact
             </span>
-            <p className="font-mono text-xs text-fg-muted leading-relaxed mb-3">
+            <p className="font-sans text-xs text-fg-muted leading-relaxed mb-3">
               Direct inquiries and project briefs welcome.
             </p>
             <a
@@ -138,7 +143,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
 
       {/* Typographic Wordmark at bottom */}
       <div className="w-full select-none pointer-events-none overflow-hidden flex justify-center py-4 opacity-[0.06] border-t border-border-hairline">
-        <span className="font-mono font-black text-[18vw] leading-none tracking-tighter text-fg uppercase">
+        <span className="font-sans font-black text-[18vw] leading-none tracking-tighter text-fg uppercase">
           wibsity
         </span>
       </div>

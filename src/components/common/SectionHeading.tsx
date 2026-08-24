@@ -39,7 +39,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         className="flex items-center gap-2 mb-4"
       >
         <Badge variant="outline">
-          {index} // {tag}
+          {index} / {tag}
         </Badge>
       </motion.div>
 

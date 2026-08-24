@@ -55,8 +55,8 @@ export const Principles: React.FC = () => {
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">
-                    <span className="font-mono text-xs text-fg-faint group-hover:text-fg-muted transition-colors">
-                      [{p.index}]
+                    <span className="font-mono text-xs font-semibold text-fg-faint group-hover:text-fg-muted transition-colors">
+                      {p.index}
                     </span>
                     <Icon size={20} className="text-fg-muted group-hover:text-fg transition-colors" />
                   </div>
@@ -69,7 +69,7 @@ export const Principles: React.FC = () => {
                 </div>
 
                 <div className="mt-8 pt-4 border-t border-border-hairline/50 font-mono text-[10px] text-fg-faint uppercase tracking-wider">
-                  [ CORE PRINCIPLE ]
+                  Core Principle
                 </div>
               </motion.div>
             );

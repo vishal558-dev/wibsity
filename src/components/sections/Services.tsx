@@ -44,9 +44,9 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                   {/* Card Header */}
                   <div className="flex items-center justify-between pb-6 mb-6 border-b border-border-hairline">
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">{service.index}</Badge>
-                      <span className="font-mono text-xs text-fg-subtle">
-                        // CAPABILITY
+                      <Badge variant="outline" size="sm">{service.index}</Badge>
+                      <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider">
+                        Capability
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -58,33 +58,33 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                   </div>
 
                   {/* Title & Tagline */}
-                  <h3 className="text-2xl font-bold text-fg tracking-tight mb-2">
+                  <h3 className="text-2xl font-bold text-fg tracking-tight mb-2 font-sans">
                     {service.title}
                   </h3>
-                  <p className="text-sm font-medium text-fg-muted mb-4">
+                  <p className="text-sm font-medium text-fg-muted mb-4 font-sans">
                     {service.tagline}
                   </p>
-                  <p className="text-sm text-fg-subtle leading-relaxed mb-6">
+                  <p className="text-sm text-fg-subtle leading-relaxed mb-6 font-sans">
                     {service.description}
                   </p>
 
                   {/* Who this is for */}
-                  <div className="mb-6 p-3.5 bg-canvas-surface border border-border-hairline">
-                    <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block mb-1">
+                  <div className="mb-6 p-4 bg-canvas-surface border border-border-hairline">
+                    <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
                       Who This Is For
                     </span>
-                    <p className="text-xs text-fg-muted leading-relaxed">
+                    <p className="text-xs text-fg-muted leading-relaxed font-sans">
                       {service.forWhom}
                     </p>
                   </div>
 
                   {/* Deliverables List */}
                   <div className="space-y-2 mb-8">
-                    <span className="font-mono text-[11px] text-fg-muted uppercase tracking-wider block mb-2">
+                    <span className="font-sans text-[11px] font-semibold text-fg-muted uppercase tracking-wider block mb-2">
                       Key Deliverables
                     </span>
                     {service.deliverables.map((item) => (
-                      <div key={item} className="flex items-start gap-2 text-xs text-fg-muted">
+                      <div key={item} className="flex items-start gap-2 text-xs text-fg-muted font-sans">
                         <Check size={14} className="text-fg shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </div>
@@ -95,7 +95,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                 {/* Footer Action */}
                 <div className="pt-6 border-t border-border-hairline flex items-center justify-between">
                   <span className="font-mono text-xs text-fg-faint">
-                    TURNAROUND: {service.turnaround}
+                    Turnaround: {service.turnaround}
                   </span>
                   <Button
                     variant="outline"

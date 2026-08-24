@@ -43,10 +43,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
             className="flex items-center gap-3 group focus:outline-none"
             aria-label="wibsity home"
           >
-            <span className="font-mono text-xl sm:text-2xl font-extrabold tracking-tightest text-fg group-hover:text-neutral-300 transition-colors">
+            <span className="font-sans text-xl sm:text-2xl font-extrabold tracking-tightest text-fg group-hover:text-neutral-300 transition-colors">
               wibsity
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 border border-border-hairline bg-canvas-surface text-[10px] font-mono uppercase tracking-widest text-fg-muted">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 border border-border-hairline bg-canvas-surface text-[10px] font-mono uppercase tracking-wider text-fg-muted">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Accepting Projects
             </span>
@@ -58,10 +58,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs font-mono tracking-wider text-fg-muted hover:text-fg transition-colors flex items-center gap-1.5 py-1"
+                className="text-xs font-sans font-medium tracking-wide text-fg-muted hover:text-fg transition-colors flex items-center gap-1.5 py-1"
               >
-                <span className="text-fg-faint text-[10px]">[{link.index}]</span>
-                {link.label}
+                <span className="font-mono text-fg-faint text-[10px]">{link.index}</span>
+                <span>{link.label}</span>
               </a>
             ))}
           </nav>
@@ -115,10 +115,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2 border-b border-border-hairline text-sm font-mono text-fg-muted hover:text-fg"
+                  className="flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans text-fg-muted hover:text-fg"
                 >
                   <span>{link.label}</span>
-                  <span className="text-xs text-fg-faint">[{link.index}]</span>
+                  <span className="font-mono text-xs text-fg-faint">{link.index}</span>
                 </a>
               ))}
               <div className="pt-3">
