@@ -15,7 +15,7 @@ export const servicesData: Service[] = [
       'Technical SEO Structure & Semantic Metadata',
       'Contact & Intake Lead Routing Integration',
     ],
-    turnaround: '3 – 5 Weeks',
+    scopeType: 'Standard & Multi-Page Scope',
     iconName: 'Layout',
   },
   {
@@ -32,7 +32,7 @@ export const servicesData: Service[] = [
       'Direct CRM / Form Webhook Integrations',
       'A/B Testing Structure Readiness',
     ],
-    turnaround: '1 – 2 Weeks',
+    scopeType: 'Focused Single-Page Scope',
     iconName: 'Layers',
   },
   {
@@ -49,7 +49,7 @@ export const servicesData: Service[] = [
       'Zero-Loss URL Structure & SEO Migration',
       'Streamlined Navigation & Content Refactoring',
     ],
-    turnaround: '2 – 4 Weeks',
+    scopeType: 'Full Modernization Scope',
     iconName: 'RefreshCw',
   },
   {
@@ -66,7 +66,7 @@ export const servicesData: Service[] = [
       'Third-Party API & Webhook Data Pipelines',
       'Secure Client Intake & Document Upload Flows',
     ],
-    turnaround: 'Custom Timeline',
+    scopeType: 'Tailored Interactive Scope',
     iconName: 'Sliders',
   },
 ];

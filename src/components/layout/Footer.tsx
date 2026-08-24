@@ -102,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
 
           <div>
             <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
-              Availability
+              Availability & Timeline
             </span>
             <div className="space-y-2 font-sans text-xs text-fg-muted">
               <p className="flex items-center gap-2 font-medium text-fg">
@@ -110,7 +110,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
                 <span>Accepting Projects</span>
               </p>
               <p className="text-fg-faint">Direct Founder Collaboration</p>
-              <p className="text-fg-faint">Turnaround: 2–5 Weeks</p>
+              <p className="text-fg-muted leading-relaxed">
+                Typical turnaround: 5–7 days for standard website projects.
+              </p>
+              <p className="text-[11px] text-fg-faint leading-snug">
+                Timelines vary by scope and are confirmed before kickoff.
+              </p>
             </div>
           </div>
 

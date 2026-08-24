@@ -11,8 +11,8 @@ export const Process: React.FC = () => {
         <SectionHeading
           index="04"
           tag="HOW WE WORK"
-          title="A clear, collaborative 4-step process from kickoff to launch."
-          description="We keep communication direct and transparent with structured milestones, visual design reviews, and predictable turnaround."
+          title="A clear, collaborative 4-step workflow from kickoff to launch."
+          description="We keep communication direct and transparent with structured milestones, visual design reviews, and predictable momentum."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-hairline border border-border-hairline">
@@ -29,7 +29,7 @@ export const Process: React.FC = () => {
                 {/* Step Top */}
                 <div className="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
                   <Badge variant="outline" size="sm">Step {step.step}</Badge>
-                  <span className="font-mono text-xs text-fg-faint">{step.duration}</span>
+                  <span className="font-sans text-xs font-semibold text-fg-subtle">{step.focus}</span>
                 </div>
 
                 <h3 className="text-lg font-bold text-fg tracking-tight mb-3 font-sans">

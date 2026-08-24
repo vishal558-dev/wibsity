@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
 import { Badge } from '../common/Badge';
 import { servicesData } from '../../data/services';
-import { Layout, Layers, RefreshCw, Sliders, ArrowUpRight, Check } from 'lucide-react';
+import { Layout, Layers, RefreshCw, Sliders, ArrowUpRight, Check, Clock } from 'lucide-react';
 import { Button } from '../common/Button';
 
 interface ServicesProps {
@@ -50,8 +50,8 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs text-fg-faint">
-                        {service.turnaround}
+                      <span className="font-sans text-xs text-fg-faint font-medium">
+                        {service.scopeType}
                       </span>
                       <Icon size={20} className="text-fg-muted group-hover:text-fg transition-colors" />
                     </div>
@@ -94,8 +94,8 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
 
                 {/* Footer Action */}
                 <div className="pt-6 border-t border-border-hairline flex items-center justify-between">
-                  <span className="font-mono text-xs text-fg-faint">
-                    Turnaround: {service.turnaround}
+                  <span className="font-sans text-xs text-fg-faint">
+                    {service.scopeType}
                   </span>
                   <Button
                     variant="outline"
@@ -109,6 +109,30 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
               </motion.div>
             );
           })}
+        </div>
+
+        {/* Turnaround Supporting Note & Qualification Box */}
+        <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <Clock size={20} className="text-fg-muted shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-sans text-sm font-semibold text-fg">
+                Typical turnaround: 5–7 days for standard website projects.
+              </p>
+              <p className="font-sans text-xs text-fg-muted leading-relaxed">
+                Timelines vary depending on project scope, complexity, and client feedback turnaround. The specific timeline is always confirmed and agreed upon before the project begins.
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => onOpenInquiry()}
+            icon={<ArrowUpRight size={14} />}
+            className="shrink-0"
+          >
+            Start a Conversation
+          </Button>
         </div>
       </div>
     </section>

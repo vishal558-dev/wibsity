@@ -23,7 +23,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     businessName: '',
     serviceInterest: initialService || 'Business Website',
     projectReference: projectReference || '',
-    timeline: '3 – 5 Weeks',
+    timeline: 'Standard (5–7 Days)',
     brief: '',
   });
 
@@ -75,7 +75,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       businessName: '',
       serviceInterest: 'Business Website',
       projectReference: '',
-      timeline: '3 – 5 Weeks',
+      timeline: 'Standard (5–7 Days)',
       brief: '',
     });
     onClose();
@@ -88,7 +88,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     'Custom Web Experience / Portal',
   ];
 
-  const timelineList = ['Urgent (< 2 Weeks)', 'Standard (3 – 5 Weeks)', 'Flexible (Next Quarter)'];
+  const timelineList = ['Standard (5–7 Days)', 'Priority Timeline', 'Flexible Timeline'];
 
   return (
     <AnimatePresence>
@@ -233,9 +233,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Timeline Selection */}
                 <div>
-                  <label className="block text-xs font-medium text-fg uppercase tracking-wider mb-2">
-                    Target Launch Window
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-medium text-fg uppercase tracking-wider">
+                      Target Launch Window
+                    </label>
+                    <span className="text-[11px] text-fg-faint">
+                      Typical: 5–7 days for standard projects
+                    </span>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {timelineList.map((time) => (
                       <button

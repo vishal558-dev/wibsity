@@ -55,7 +55,7 @@ export interface Service {
   description: string;
   forWhom: string;
   deliverables: string[];
-  turnaround: string;
+  scopeType: string;
   iconName: 'Layout' | 'Layers' | 'RefreshCw' | 'Sliders';
 }
 
@@ -63,7 +63,7 @@ export interface ProcessStep {
   step: string;
   code: string;
   name: string;
-  duration: string;
+  focus: string;
   description: string;
   deliverables: string[];
 }

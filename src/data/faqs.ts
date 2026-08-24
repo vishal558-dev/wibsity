@@ -5,13 +5,13 @@ export const faqsData: FAQItem[] = [
     id: 'faq-1',
     category: 'Engagement',
     question: 'How do you price projects and what is the typical engagement structure?',
-    answer: 'We provide clear, fixed-scope proposals with no hidden fees or unexpected billable hours. Pricing depends on your specific requirements—such as page volume, custom functionality (e.g. booking, calculators), and timeline urgency. After our initial discovery conversation, you receive a detailed proposal outlining the exact scope, timeline, and investment.',
+    answer: 'We provide clear, fixed-scope proposals with no hidden fees or unexpected billable hours. Pricing depends on your specific requirements—such as page volume, custom functionality (e.g. booking, calculators), and design complexity. After our initial discovery conversation, you receive a detailed proposal outlining the exact scope, timeline, and investment.',
   },
   {
     id: 'faq-2',
     category: 'Process',
-    question: 'How long does it typically take from kickoff to launch?',
-    answer: 'A focused landing page typically takes 1 to 2 weeks. Comprehensive multi-page business websites generally launch within 3 to 5 weeks. More complex custom web applications or multi-location systems depend on scope. We provide a milestone schedule before kickoff and maintain weekly check-ins throughout.',
+    question: 'What is the typical turnaround timeline for a project?',
+    answer: 'Typical turnaround: 5–7 days for standard website projects. Timelines can vary depending on project scope, complexity, custom features, and the speed of client feedback. The specific timeline is always confirmed and agreed upon before the project begins.',
   },
   {
     id: 'faq-3',
