@@ -23,9 +23,9 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           index="03"
-          tag="SERVICES & CORE CAPABILITIES"
-          title="Focused digital offerings engineered for clarity and performance."
-          description="We do not offer bloated retainers or endless buzzword packages. We deliver four core web solutions tailored to modern commercial needs."
+          tag="SERVICES & CAPABILITIES"
+          title="Focused web services built for real business needs."
+          description="We design and build clean, high-performing websites. No bloated packages or unnecessary complexity—just four core solutions tailored to your goals."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -71,7 +71,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                   {/* Who this is for */}
                   <div className="mb-6 p-3.5 bg-canvas-surface border border-border-hairline">
                     <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block mb-1">
-                      Target Fit
+                      Who This Is For
                     </span>
                     <p className="text-xs text-fg-muted leading-relaxed">
                       {service.forWhom}

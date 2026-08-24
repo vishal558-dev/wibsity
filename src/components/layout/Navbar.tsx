@@ -48,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
             </span>
             <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 border border-border-hairline bg-canvas-surface text-[10px] font-mono uppercase tracking-widest text-fg-muted">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Available Q1/Q2
+              Accepting Projects
             </span>
           </a>
 

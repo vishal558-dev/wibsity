@@ -5,7 +5,7 @@ export interface ProjectFeature {
   description: string;
 }
 
-export interface PreviewStat {
+export interface ScopeSpec {
   label: string;
   value: string;
 }
@@ -20,10 +20,10 @@ export interface Project {
   id: string;
   slug: string;
   title: string;
+  badge: string; // e.g. "Studio Concept"
   clientType: string;
   category: ProjectCategory;
   categoryLabel: string;
-  year: string;
   tagline: string;
   summary: string;
   challenge: string;
@@ -36,7 +36,7 @@ export interface Project {
     heroSub: string;
     navLinks: string[];
     accentColor: string;
-    stats: PreviewStat[];
+    scopeSpecs: ScopeSpec[];
     sections: PreviewSection[];
   };
   mobilePreview: {

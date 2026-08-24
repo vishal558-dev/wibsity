@@ -10,9 +10,9 @@ export const Process: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           index="04"
-          tag="DELIVERY METHODOLOGY"
-          title="A transparent 4-step process from discovery to launch."
-          description="We eliminate ambiguity through structured milestones, regular design check-ins, and direct founder collaboration."
+          tag="HOW WE WORK"
+          title="A clear, collaborative 4-step process from kickoff to launch."
+          description="We keep communication direct and transparent with structured milestones, visual design reviews, and predictable turnaround."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-hairline border border-border-hairline">

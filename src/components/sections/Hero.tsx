@@ -30,9 +30,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
 
   const valuePoints = [
     'Direct Founder Collaboration',
-    'Mobile-First & Sub-Second Speed',
-    '100% Client Source Code Ownership',
-    'Transparent Fixed-Scope Proposals',
+    'Mobile-First & Instant Speed',
+    '100% Client Code Ownership',
+    'Clear Fixed-Scope Proposals',
   ];
 
   return (
@@ -112,10 +112,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
             className="flex items-center gap-2 mb-6"
           >
             <Badge variant="outline">
-              [ 00 // STUDIO DISPATCH ]
+              [ 00 // STUDIO INTRODUCTION ]
             </Badge>
             <span className="font-mono text-xs text-fg-subtle">
-              WEB DESIGN & DIGITAL ENGINEERING
+              WEB DESIGN & DEVELOPMENT
             </span>
           </motion.div>
 
@@ -126,7 +126,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tightest text-fg leading-[1.06]"
           >
-            Digital design and engineering for businesses that refuse to look ordinary.
+            We design and build websites that help your business stand out and win clients.
           </motion.h1>
 
           {/* Subtitle */}
@@ -136,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 sm:mt-8 text-lg sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
           >
-            We design and build clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands. No bloated agency retainers, no templates—just sharp digital craft built to perform.
+            High-quality, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
           </motion.p>
 
           {/* Action CTAs */}
@@ -161,7 +161,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
               href="#work"
               icon={<ArrowDown size={16} />}
             >
-              Explore Selected Works
+              Explore Concept Works
             </Button>
           </motion.div>
 

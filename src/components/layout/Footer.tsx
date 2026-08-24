@@ -15,18 +15,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
         <div className="border border-border-hairline bg-canvas-subtle p-8 sm:p-12 lg:p-16 relative">
           <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-fg-faint uppercase tracking-widest hidden sm:block">
-            [ INTAKE_DISCOVERY ]
+            [ DIRECT INTAKE ]
           </div>
 
           <div className="max-w-3xl">
             <span className="font-mono text-xs text-fg-muted uppercase tracking-wider block mb-3">
-              [ 00 // PROJECT CONVERSATION ]
+              [ 00 // PROJECT INQUIRY ]
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
-              Ready to elevate your digital presence?
+              Ready to build a website that sets your business apart?
             </h2>
             <p className="mt-4 text-base sm:text-lg text-fg-muted leading-relaxed">
-              We collaborate with businesses, founders, and modern brands who value design precision and measurable performance. Let’s discuss your project requirements.
+              We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Reach out to discuss your project requirements.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -57,7 +57,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
             <ul className="space-y-2.5 font-mono text-xs text-fg-muted">
               <li>
                 <a href="#work" className="hover:text-fg transition-colors">
-                  [01] Selected Works
+                  [01] Concept Works
                 </a>
               </li>
               <li>
@@ -102,19 +102,19 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
             <div className="space-y-2 font-mono text-xs text-fg-muted">
               <p className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span>Accepting Q1/Q2 Projects</span>
+                <span>Accepting Projects</span>
               </p>
               <p className="text-fg-faint">Direct Founder Collaboration</p>
-              <p className="text-fg-faint">Standard Turnaround: 2–5 Wks</p>
+              <p className="text-fg-faint">Standard Turnaround: 2–5 Weeks</p>
             </div>
           </div>
 
           <div>
             <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-4">
-              Inquiries
+              Direct Contact
             </span>
             <p className="font-mono text-xs text-fg-muted leading-relaxed mb-3">
-              Direct inquiries and RFP briefs welcome.
+              Direct inquiries and project briefs welcome.
             </p>
             <a
               href="mailto:hello@wibsity.com"
@@ -128,16 +128,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
         {/* Legal and System Notice */}
         <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-fg-faint">
           <div>
-            © {currentYear} wibsity studio. All rights reserved.
+            © {currentYear} wibsity. All rights reserved.
           </div>
           <div className="flex items-center gap-6">
-            <span>DESIGN & WEB ENGINEERING</span>
-            <span>MONOCHROME SYSTEM V2.4</span>
+            <span>WEB DESIGN & ENGINEERING STUDIO</span>
           </div>
         </div>
       </div>
 
-      {/* Massive Typographic Wordmark at bottom */}
+      {/* Typographic Wordmark at bottom */}
       <div className="w-full select-none pointer-events-none overflow-hidden flex justify-center py-4 opacity-[0.06] border-t border-border-hairline">
         <span className="font-mono font-black text-[18vw] leading-none tracking-tighter text-fg uppercase">
           wibsity

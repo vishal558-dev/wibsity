@@ -14,11 +14,11 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('all');
 
   const categories: { id: ProjectCategory; label: string }[] = [
-    { id: 'all', label: 'All Works' },
-    { id: 'flagship', label: 'Digital Flagships' },
-    { id: 'practice', label: 'Practice Portals' },
-    { id: 'brand', label: 'Brand Experiences' },
-    { id: 'commerce', label: 'Commerce' },
+    { id: 'all', label: 'All Concepts' },
+    { id: 'flagship', label: 'Flagship Concepts' },
+    { id: 'practice', label: 'Practice Concepts' },
+    { id: 'brand', label: 'Brand Concepts' },
+    { id: 'commerce', label: 'Commerce Concepts' },
   ];
 
   const filteredProjects = selectedCategory === 'all'
@@ -31,9 +31,9 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <SectionHeading
             index="02"
-            tag="SELECTED WORKS & CASE STUDIES"
-            title="Demonstrated craft across commercial sectors."
-            description="Explore our interactive concept case studies and realized design architectures. Click any project for an interactive desktop/mobile preview and UX breakdown."
+            tag="STUDIO CONCEPTS & CASE STUDIES"
+            title="Design concepts and web architectures."
+            description="Explore our interactive studio concepts demonstrating layouts, responsive typography, and navigation UX across different business models. Click any project to open the interactive desktop and mobile preview."
             className="mb-0"
           />
 
@@ -84,7 +84,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                       <div className="w-2.5 h-2.5 rounded-full bg-neutral-700" />
                     </div>
                     <div className="font-mono text-[10px] text-fg-faint truncate max-w-[200px]">
-                      preview // {project.slug}.wibsity
+                      concept // {project.slug}.demo
                     </div>
                     <div className="flex items-center gap-2 text-fg-faint">
                       <Monitor size={12} />
@@ -114,15 +114,15 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                       {project.desktopPreview.heroSub}
                     </p>
 
-                    {/* Stats pills in preview */}
+                    {/* Scope Specs pills in preview (Honest architectural details) */}
                     <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border-hairline/60">
-                      {project.desktopPreview.stats.map((stat) => (
-                        <div key={stat.label} className="bg-canvas-surface p-1.5 border border-border-hairline">
+                      {project.desktopPreview.scopeSpecs.map((spec) => (
+                        <div key={spec.label} className="bg-canvas-surface p-1.5 border border-border-hairline">
                           <div className="font-mono text-[9px] text-fg-faint uppercase truncate">
-                            {stat.label}
+                            {spec.label}
                           </div>
-                          <div className="font-mono text-xs font-bold text-fg">
-                            {stat.value}
+                          <div className="font-mono text-xs font-bold text-fg truncate">
+                            {spec.value}
                           </div>
                         </div>
                       ))}
@@ -132,7 +132,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                   {/* Hover Overlay Hint */}
                   <div className="absolute inset-0 bg-canvas/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                     <span className="bg-fg text-canvas font-mono text-xs uppercase px-4 py-2 font-semibold shadow-lg flex items-center gap-1.5">
-                      Inspect Case Study & Responsive Previews <ArrowUpRight size={14} />
+                      Open Responsive Preview & Details <ArrowUpRight size={14} />
                     </span>
                   </div>
                 </div>
@@ -141,12 +141,14 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                 <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <Badge variant="outline">
-                        {project.categoryLabel}
-                      </Badge>
-                      <span className="font-mono text-xs text-fg-faint">
-                        {project.year}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="active">
+                          {project.badge}
+                        </Badge>
+                        <Badge variant="outline">
+                          {project.categoryLabel}
+                        </Badge>
+                      </div>
                     </div>
 
                     <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight mb-2">
@@ -159,7 +161,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                       {project.summary}
                     </p>
 
-                    {/* Deliverable Tags */}
+                    {/* Deliverable Scope Tags */}
                     <div className="flex flex-wrap gap-1.5 mb-6">
                       {project.deliverables.slice(0, 3).map((d) => (
                         <span
@@ -177,7 +179,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                     onClick={() => onSelectProject(project)}
                     className="w-full flex items-center justify-between pt-4 border-t border-border-hairline text-xs font-mono uppercase tracking-wider text-fg hover:text-neutral-300 group/btn transition-colors cursor-pointer"
                   >
-                    <span>[ EXPLORE CASE STUDY & PREVIEWS ]</span>
+                    <span>[ EXPLORE CONCEPT & RESPONSIVE VIEWS ]</span>
                     <ArrowUpRight size={16} className="transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                   </button>
                 </div>

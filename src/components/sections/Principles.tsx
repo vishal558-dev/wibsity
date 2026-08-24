@@ -9,25 +9,25 @@ export const Principles: React.FC = () => {
       index: '01',
       icon: Eye,
       title: 'First Impressions Command Trust',
-      desc: 'Prospective clients evaluate your business caliber within milliseconds. We craft clean, authoritative layouts that immediately convey professionalism and eliminate friction.',
+      desc: 'When potential clients land on your website, they make an instant judgment about your business. Clean typography, generous spacing, and modern design immediately signal competence and high standards.',
     },
     {
       index: '02',
       icon: Zap,
-      title: 'Engineered for Sub-Second Speed',
-      desc: 'Over 60% of modern visitors browse on mobile devices. Our codebases are lightweight and optimized for instant loading, keeping bounce rates low and engagement high.',
+      title: 'Speed & Mobile Performance',
+      desc: 'The majority of your visitors will browse on mobile devices. Our code is lightweight and optimized for instant loading, so potential customers never bounce due to sluggish performance.',
     },
     {
       index: '03',
       icon: Target,
-      title: 'Deliberate Conversion Pathways',
-      desc: 'Great design is not just aesthetic—it is functional. Every page is structured with clear visual hierarchy, leading visitors naturally toward consultation or inquiry triggers.',
+      title: 'Clarity & Conversion',
+      desc: 'Great web design makes it effortless for visitors to understand what you do and take action—whether booking a consultation, requesting a quote, or getting in touch directly.',
     },
     {
       index: '04',
       icon: ShieldCheck,
-      title: 'Complete Client Autonomy',
-      desc: 'You maintain 100% ownership of your source code, domain, and deployment assets. No hidden agency lock-in, no hostage fees, and no proprietary platforms.',
+      title: '100% Client Ownership',
+      desc: 'You own all source code, design files, and domain assets completely. No proprietary website builder lock-in, no hostage fees, and no monthly platform dependencies.',
     },
   ];
 
@@ -37,8 +37,8 @@ export const Principles: React.FC = () => {
         <SectionHeading
           index="01"
           tag="STUDIO PRINCIPLES"
-          title="Why quality design is a business imperative."
-          description="In an era where every company is discovered online, your website is your most critical commercial asset. We focus on fundamentals that deliver real results."
+          title="Practical business fundamentals, not design fluff."
+          description="In an era where every company is discovered online, your website is your most critical commercial asset. We focus on principles that actually help your business grow."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-hairline border border-border-hairline">
@@ -69,7 +69,7 @@ export const Principles: React.FC = () => {
                 </div>
 
                 <div className="mt-8 pt-4 border-t border-border-hairline/50 font-mono text-[10px] text-fg-faint uppercase tracking-wider">
-                  STANDARD // 2025
+                  [ CORE PRINCIPLE ]
                 </div>
               </motion.div>
             );

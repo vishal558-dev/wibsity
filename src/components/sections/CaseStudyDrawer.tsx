@@ -59,9 +59,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
           {/* Header Bar */}
           <div className="sticky top-0 z-20 bg-canvas/95 backdrop-blur-md border-b border-border-hairline p-4 sm:p-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
+              <Badge variant="active">{project.badge}</Badge>
               <Badge variant="outline">{project.categoryLabel}</Badge>
-              <span className="font-mono text-xs text-fg-subtle truncate max-w-[200px] sm:max-w-none">
-                [ CASE STUDY // {project.slug} ]
+              <span className="font-mono text-xs text-fg-subtle truncate max-w-[180px] sm:max-w-none">
+                [ DESIGN STUDY // {project.slug} ]
               </span>
             </div>
 
@@ -79,7 +80,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             {/* Title Block */}
             <div>
               <span className="font-mono text-xs text-fg-subtle uppercase tracking-wider block mb-2">
-                {project.clientType} ({project.year})
+                {project.clientType}
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-fg tracking-tight leading-tight">
                 {project.title}
@@ -94,10 +95,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-border-hairline">
                 <div>
                   <span className="font-mono text-xs text-fg uppercase tracking-wider block">
-                    Interactive Viewport Simulator
+                    Responsive Viewport Simulator
                   </span>
                   <span className="font-mono text-[11px] text-fg-faint">
-                    Toggle to preview responsive architecture & layout behavior
+                    Toggle to preview responsive typography and layout behavior
                   </span>
                 </div>
 
@@ -145,7 +146,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
                         </div>
-                        <span className="truncate">https://preview.{project.slug}.com</span>
+                        <span className="truncate">concept-preview.{project.slug}.demo</span>
                         <span>100%</span>
                       </div>
 
@@ -168,7 +169,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                         {/* Hero */}
                         <div>
                           <span className="font-mono text-[9px] text-fg-faint uppercase tracking-wider block mb-1">
-                            [ PRIMARY VIEWPORT ]
+                            [ VIEWPORT ARCHITECTURE ]
                           </span>
                           <h4 className="text-xl font-bold text-fg leading-tight">
                             {project.desktopPreview.heroHeadline}
@@ -178,14 +179,14 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                           </p>
                         </div>
 
-                        {/* Stats Matrix */}
+                        {/* Scope Specs Matrix (Legitimate Architectural Information) */}
                         <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border-hairline">
-                          {project.desktopPreview.stats.map((s) => (
+                          {project.desktopPreview.scopeSpecs.map((s) => (
                             <div key={s.label} className="bg-canvas-surface p-2 border border-border-hairline">
                               <span className="font-mono text-[9px] text-fg-faint block uppercase">
                                 {s.label}
                               </span>
-                              <span className="font-mono text-sm font-bold text-fg">
+                              <span className="font-mono text-xs font-bold text-fg truncate">
                                 {s.value}
                               </span>
                             </div>
@@ -269,7 +270,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <div className="flex items-center gap-2 mb-3">
                   <Compass size={18} className="text-fg-muted" />
                   <h3 className="font-mono text-xs text-fg uppercase tracking-wider">
-                    [ 01 // THE CHALLENGE ]
+                    [ 01 // DESIGN CHALLENGE ]
                   </h3>
                 </div>
                 <p className="text-sm text-fg-muted leading-relaxed">
@@ -281,7 +282,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <div className="flex items-center gap-2 mb-3">
                   <Layers size={18} className="text-fg-muted" />
                   <h3 className="font-mono text-xs text-fg uppercase tracking-wider">
-                    [ 02 // DESIGN & UX STRATEGY ]
+                    [ 02 // UX & LAYOUT STRATEGY ]
                   </h3>
                 </div>
                 <p className="text-sm text-fg-muted leading-relaxed">
@@ -324,7 +325,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             <div className="border-t border-border-hairline pt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <span className="font-mono text-xs text-fg uppercase tracking-wider block mb-3">
-                  Scope & Deliverables
+                  Deliverable Scope
                 </span>
                 <ul className="space-y-1.5 font-mono text-xs text-fg-muted">
                   {project.deliverables.map((d) => (
@@ -360,10 +361,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   [ SIMILAR PROJECT BRIEF ]
                 </span>
                 <h4 className="text-lg font-bold text-fg">
-                  Interested in a similar web architecture?
+                  Interested in a similar website for your business?
                 </h4>
                 <p className="text-xs sm:text-sm text-fg-muted mt-1">
-                  Start a direct project conversation and we’ll prepare a scoped blueprint for your business.
+                  Start a direct project conversation and we’ll prepare a tailored roadmap for your requirements.
                 </p>
               </div>
 
