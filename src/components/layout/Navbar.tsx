@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Phone, MessageSquare } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
+import { CONTACT_INFO } from '../../data/contact';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,7 +25,7 @@ export const Navbar: React.FC = () => {
     { label: 'FAQ', href: '#faq', index: '05' },
   ];
 
-  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <header
@@ -83,7 +85,7 @@ export const Navbar: React.FC = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              icon={<MessageSquare size={13} />}
+              icon={<WhatsAppIcon size={13} />}
               className="text-xs"
             >
               WhatsApp
@@ -99,10 +101,10 @@ export const Navbar: React.FC = () => {
               className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="WhatsApp wibsity"
             >
-              <MessageSquare size={16} />
+              <WhatsAppIcon size={16} />
             </a>
             <a
-              href="tel:+918448948791"
+              href={CONTACT_INFO.phoneHref}
               className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="Call wibsity"
             >
@@ -151,14 +153,14 @@ export const Navbar: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full justify-center"
-                  icon={<MessageSquare size={16} />}
+                  icon={<WhatsAppIcon size={16} />}
                 >
                   Chat on WhatsApp
                 </Button>
                 <Button
                   variant="outline"
                   size="md"
-                  href="tel:+918448948791"
+                  href={CONTACT_INFO.phoneHref}
                   className="w-full justify-center text-xs"
                   icon={<Phone size={15} />}
                 >

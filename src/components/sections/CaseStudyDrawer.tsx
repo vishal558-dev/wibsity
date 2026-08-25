@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Monitor, Smartphone, CheckCircle2, Layers, Cpu, Compass, Phone, MessageSquare } from 'lucide-react';
+import { X, Monitor, Smartphone, CheckCircle2, Layers, Cpu, Compass, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import type { Project } from '../../types';
 import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
+import { CONTACT_INFO } from '../../data/contact';
 
 interface CaseStudyDrawerProps {
   project: Project | null;
@@ -33,9 +35,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
 
   if (!project) return null;
 
-  const projectWhatsappUrl = `https://wa.me/918448948791?text=${encodeURIComponent(
-    `Hi wibsity, I'd like to discuss a project similar to ${project.title}.`
-  )}`;
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <AnimatePresence>
@@ -374,7 +374,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <Button
                   variant="outline"
                   size="md"
-                  href="tel:+918448948791"
+                  href={CONTACT_INFO.phoneHref}
                   icon={<Phone size={15} />}
                   className="text-xs"
                 >
@@ -384,10 +384,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <Button
                   variant="primary"
                   size="md"
-                  href={projectWhatsappUrl}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  icon={<MessageSquare size={16} />}
+                  icon={<WhatsAppIcon size={16} />}
                 >
                   Discuss on WhatsApp
                 </Button>

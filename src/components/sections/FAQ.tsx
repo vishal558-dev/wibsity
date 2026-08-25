@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
 import { faqsData } from '../../data/faqs';
-import { Plus, Minus, HelpCircle, Phone, MessageSquare } from 'lucide-react';
+import { Plus, Minus, HelpCircle, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
+import { CONTACT_INFO } from '../../data/contact';
 
 export const FAQ: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(faqsData[0].id);
@@ -18,7 +20,7 @@ export const FAQ: React.FC = () => {
     setActiveId(activeId === id ? null : id);
   };
 
-  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I%20have%20a%20question%20about%20your%20services.";
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <section id="faq" className="py-24 border-b border-border-hairline bg-canvas relative">
@@ -110,11 +112,11 @@ export const FAQ: React.FC = () => {
               rel="noopener noreferrer"
               className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
             >
-              <MessageSquare size={13} /> WhatsApp
+              <WhatsAppIcon size={13} /> WhatsApp
             </a>
             <span className="text-border-hover">|</span>
             <a
-              href="tel:+918448948791"
+              href={CONTACT_INFO.phoneHref}
               className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
             >
               <Phone size={13} /> Call Us

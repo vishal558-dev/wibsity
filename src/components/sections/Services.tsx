@@ -3,8 +3,10 @@ import { motion } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
 import { Badge } from '../common/Badge';
 import { servicesData } from '../../data/services';
-import { Layout, Layers, RefreshCw, Sliders, Check, Clock, Phone, MessageSquare } from 'lucide-react';
+import { Layout, Layers, RefreshCw, Sliders, Check, Clock, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
+import { CONTACT_INFO } from '../../data/contact';
 
 export const Services: React.FC = () => {
   const iconMap = {
@@ -14,7 +16,7 @@ export const Services: React.FC = () => {
     Sliders: Sliders,
   };
 
-  const baseWhatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <section id="services" className="py-24 border-b border-border-hairline bg-canvas relative">
@@ -29,9 +31,6 @@ export const Services: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {servicesData.map((service, idx) => {
             const Icon = iconMap[service.iconName];
-            const serviceWhatsappUrl = `https://wa.me/918448948791?text=${encodeURIComponent(
-              `Hi wibsity, I'd like to discuss a project for ${service.title}.`
-            )}`;
 
             return (
               <motion.div
@@ -102,10 +101,10 @@ export const Services: React.FC = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    href={serviceWhatsappUrl}
+                    href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    icon={<MessageSquare size={14} />}
+                    icon={<WhatsAppIcon size={14} />}
                   >
                     Discuss on WhatsApp
                   </Button>
@@ -133,7 +132,7 @@ export const Services: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              href="tel:+918448948791"
+              href={CONTACT_INFO.phoneHref}
               icon={<Phone size={14} />}
               className="text-xs"
             >
@@ -142,10 +141,10 @@ export const Services: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              href={baseWhatsappUrl}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              icon={<MessageSquare size={14} />}
+              icon={<WhatsAppIcon size={14} />}
             >
               WhatsApp Us
             </Button>

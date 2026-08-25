@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { animate, stagger } from 'animejs';
-import { ArrowDown, CheckCircle2, Phone, MessageSquare } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { CONTACT_INFO } from '../../data/contact';
 
 export const Hero: React.FC = () => {
   const svgLinesRef = useRef<SVGSVGElement | null>(null);
@@ -31,7 +33,7 @@ export const Hero: React.FC = () => {
     'Clear Fixed-Scope Proposals',
   ];
 
-  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-20 overflow-hidden border-b border-border-hairline bg-canvas">
@@ -150,7 +152,7 @@ export const Hero: React.FC = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              icon={<MessageSquare size={18} />}
+              icon={<WhatsAppIcon size={18} />}
             >
               Chat on WhatsApp
             </Button>
@@ -158,7 +160,7 @@ export const Hero: React.FC = () => {
             <Button
               variant="outline"
               size="lg"
-              href="tel:+918448948791"
+              href={CONTACT_INFO.phoneHref}
               icon={<Phone size={16} />}
               className="text-sm"
             >

@@ -1,10 +1,12 @@
 import React from 'react';
-import { Phone, MessageSquare, Mail } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
+import { CONTACT_INFO } from '../../data/contact';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
+  const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
   return (
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
@@ -33,24 +35,24 @@ export const Footer: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                icon={<MessageSquare size={18} />}
+                icon={<WhatsAppIcon size={18} />}
               >
                 Chat on WhatsApp
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                href="tel:+918448948791"
+                href={CONTACT_INFO.phoneHref}
                 icon={<Phone size={16} />}
                 className="text-sm"
               >
                 Call Us
               </Button>
               <a
-                href="mailto:wibsityofficial@gmail.com"
+                href={CONTACT_INFO.emailHref}
                 className="font-mono text-xs text-fg-muted hover:text-fg underline underline-offset-4 tracking-wider transition-colors px-2 py-3 flex items-center gap-1.5"
               >
-                <Mail size={14} /> wibsityofficial@gmail.com
+                <Mail size={14} /> {CONTACT_INFO.email}
               </a>
             </div>
           </div>
@@ -147,7 +149,7 @@ export const Footer: React.FC = () => {
             </span>
             <div className="space-y-2.5 font-sans text-xs text-fg-muted">
               <a
-                href="tel:+918448948791"
+                href={CONTACT_INFO.phoneHref}
                 className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
               >
                 <Phone size={13} className="text-fg-muted" />
@@ -159,15 +161,15 @@ export const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
               >
-                <MessageSquare size={13} className="text-fg-muted" />
+                <WhatsAppIcon size={13} className="text-fg-muted" />
                 <span>Chat on WhatsApp</span>
               </a>
               <a
-                href="mailto:wibsityofficial@gmail.com"
+                href={CONTACT_INFO.emailHref}
                 className="flex items-center gap-2 text-fg-muted hover:text-fg transition-colors font-mono"
               >
                 <Mail size={13} className="text-fg-faint" />
-                <span>wibsityofficial@gmail.com</span>
+                <span>{CONTACT_INFO.email}</span>
               </a>
             </div>
           </div>
