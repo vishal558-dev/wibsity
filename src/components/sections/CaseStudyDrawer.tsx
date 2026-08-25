@@ -376,9 +376,9 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   size="md"
                   href="tel:+918448948791"
                   icon={<Phone size={15} />}
-                  className="font-mono text-xs"
+                  className="text-xs"
                 >
-                  Call: +91 8448948791
+                  Call Us
                 </Button>
 
                 <Button
@@ -389,7 +389,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   rel="noopener noreferrer"
                   icon={<MessageSquare size={16} />}
                 >
-                  WhatsApp: +91 8448948791
+                  Discuss on WhatsApp
                 </Button>
               </div>
             </div>

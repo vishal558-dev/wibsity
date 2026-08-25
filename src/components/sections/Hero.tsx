@@ -137,7 +137,7 @@ export const Hero: React.FC = () => {
             High-quality, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
           </motion.p>
 
-          {/* Action CTAs: Direct WhatsApp, Call, and Explore */}
+          {/* Action CTAs: Clean WhatsApp, Call, and Explore */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,7 +152,7 @@ export const Hero: React.FC = () => {
               rel="noopener noreferrer"
               icon={<MessageSquare size={18} />}
             >
-              WhatsApp: +91 8448948791
+              Chat on WhatsApp
             </Button>
 
             <Button
@@ -160,9 +160,9 @@ export const Hero: React.FC = () => {
               size="lg"
               href="tel:+918448948791"
               icon={<Phone size={16} />}
-              className="font-mono text-sm"
+              className="text-sm"
             >
-              Call: +91 8448948791
+              Call Us
             </Button>
 
             <Button

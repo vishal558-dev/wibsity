@@ -64,16 +64,16 @@ export const Navbar: React.FC = () => {
             ))}
           </nav>
 
-          {/* Actions: Call & WhatsApp */}
+          {/* Actions: Clean Call & WhatsApp Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
             <Button
               variant="outline"
               size="sm"
               href="tel:+918448948791"
               icon={<Phone size={13} />}
-              className="font-mono text-xs"
+              className="text-xs"
             >
-              Call: +91 8448948791
+              Call Us
             </Button>
             <Button
               variant="primary"
@@ -82,13 +82,13 @@ export const Navbar: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               icon={<MessageSquare size={13} />}
-              className="font-sans text-xs"
+              className="text-xs"
             >
               WhatsApp
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle & Direct Call */}
+          {/* Mobile Quick Action Icons */}
           <div className="flex sm:hidden items-center gap-2">
             <a
               href={whatsappUrl}
@@ -140,7 +140,7 @@ export const Navbar: React.FC = () => {
                 </a>
               ))}
               
-              {/* Direct Call & WhatsApp in Mobile Drawer */}
+              {/* Clean Call & WhatsApp Buttons in Mobile Drawer */}
               <div className="pt-3 space-y-2">
                 <Button
                   variant="primary"
@@ -151,16 +151,16 @@ export const Navbar: React.FC = () => {
                   className="w-full justify-center"
                   icon={<MessageSquare size={16} />}
                 >
-                  WhatsApp: +91 8448948791
+                  Chat on WhatsApp
                 </Button>
                 <Button
                   variant="outline"
                   size="md"
                   href="tel:+918448948791"
-                  className="w-full justify-center font-mono text-xs"
+                  className="w-full justify-center text-xs"
                   icon={<Phone size={15} />}
                 >
-                  Call: +91 8448948791
+                  Call Us
                 </Button>
               </div>
             </nav>

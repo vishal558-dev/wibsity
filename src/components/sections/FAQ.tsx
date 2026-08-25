@@ -115,9 +115,9 @@ export const FAQ: React.FC = () => {
             <span className="text-border-hover">|</span>
             <a
               href="tel:+918448948791"
-              className="font-semibold font-mono text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
+              className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
             >
-              <Phone size={13} /> +91 8448948791
+              <Phone size={13} /> Call Us
             </a>
           </div>
         </div>

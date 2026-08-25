@@ -35,16 +35,16 @@ export const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 icon={<MessageSquare size={18} />}
               >
-                WhatsApp: +91 8448948791
+                Chat on WhatsApp
               </Button>
               <Button
                 variant="outline"
                 size="lg"
                 href="tel:+918448948791"
                 icon={<Phone size={16} />}
-                className="font-mono text-sm"
+                className="text-sm"
               >
-                Call: +91 8448948791
+                Call Us
               </Button>
               <a
                 href="mailto:hello@wibsity.com"
@@ -134,19 +134,19 @@ export const Footer: React.FC = () => {
             <div className="space-y-2.5 font-sans text-xs text-fg-muted">
               <a
                 href="tel:+918448948791"
-                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors font-mono"
+                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
               >
                 <Phone size={13} className="text-fg-muted" />
-                <span>+91 8448948791</span>
+                <span>Call Us</span>
               </a>
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors font-sans"
+                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
               >
                 <MessageSquare size={13} className="text-fg-muted" />
-                <span>WhatsApp: +91 8448948791</span>
+                <span>Chat on WhatsApp</span>
               </a>
               <a
                 href="mailto:hello@wibsity.com"
