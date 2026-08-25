@@ -47,10 +47,10 @@ export const Footer: React.FC = () => {
                 Call Us
               </Button>
               <a
-                href="mailto:hello@wibsity.com"
+                href="mailto:wibsityofficial@gmail.com"
                 className="font-mono text-xs text-fg-muted hover:text-fg underline underline-offset-4 tracking-wider transition-colors px-2 py-3 flex items-center gap-1.5"
               >
-                <Mail size={14} /> hello@wibsity.com
+                <Mail size={14} /> wibsityofficial@gmail.com
               </a>
             </div>
           </div>
@@ -149,11 +149,11 @@ export const Footer: React.FC = () => {
                 <span>Chat on WhatsApp</span>
               </a>
               <a
-                href="mailto:hello@wibsity.com"
+                href="mailto:wibsityofficial@gmail.com"
                 className="flex items-center gap-2 text-fg-muted hover:text-fg transition-colors font-mono"
               >
                 <Mail size={13} className="text-fg-faint" />
-                <span>hello@wibsity.com</span>
+                <span>wibsityofficial@gmail.com</span>
               </a>
             </div>
           </div>
