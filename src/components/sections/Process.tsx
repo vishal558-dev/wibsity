@@ -22,7 +22,7 @@ export const Process: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-canvas p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
+              className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
             >
               <div>
                 {/* Step Top */}
@@ -46,8 +46,8 @@ export const Process: React.FC = () => {
                     Milestone Output
                   </span>
                   {step.deliverables.map((item) => (
-                    <div key={item} className="flex items-center gap-1.5 text-xs text-fg-subtle font-sans">
-                      <span className="text-fg-faint">→</span>
+                    <div key={item} className="flex items-start gap-1.5 text-xs text-fg-subtle font-sans">
+                      <span className="text-fg-faint font-mono mt-0.5">→</span>
                       <span>{item}</span>
                     </div>
                   ))}

@@ -94,7 +94,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             </div>
 
             {/* Interactive Viewport Switcher & Live Preview */}
-            <div className="border border-border-hairline bg-canvas-subtle p-4 sm:p-6 space-y-4">
+            <div className="border border-border-hairline bg-canvas-subtle p-3 sm:p-6 space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-border-hairline">
                 <div>
                   <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block">
@@ -106,10 +106,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 </div>
 
                 {/* Viewport Toggles */}
-                <div className="flex items-center border border-border-hairline bg-canvas-surface p-0.5">
+                <div className="flex items-center border border-border-hairline bg-canvas-surface p-0.5 w-full sm:w-auto">
                   <button
                     onClick={() => setViewportMode('desktop')}
-                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
+                    className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
                       viewportMode === 'desktop'
                         ? 'bg-fg text-canvas font-semibold'
                         : 'text-fg-muted hover:text-fg'
@@ -119,7 +119,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   </button>
                   <button
                     onClick={() => setViewportMode('mobile')}
-                    className={`flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
+                    className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1 text-xs font-sans font-medium transition-colors cursor-pointer ${
                       viewportMode === 'mobile'
                         ? 'bg-fg text-canvas font-semibold'
                         : 'text-fg-muted hover:text-fg'
@@ -131,7 +131,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               </div>
 
               {/* Viewport Display Box */}
-              <div className="min-h-[380px] flex items-center justify-center bg-canvas-surface/50 border border-border-hairline p-4 overflow-hidden">
+              <div className="min-h-[360px] sm:min-h-[380px] flex items-center justify-center bg-canvas-surface/50 border border-border-hairline p-2 sm:p-4 overflow-hidden">
                 <AnimatePresence mode="wait">
                   {viewportMode === 'desktop' ? (
                     <motion.div
@@ -143,7 +143,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       className="w-full max-w-2xl bg-canvas border border-border-hairline shadow-2xl overflow-hidden rounded-sm"
                     >
                       {/* Browser Chrome */}
-                      <div className="bg-canvas-subtle border-b border-border-hairline px-4 py-2 flex items-center justify-between text-[11px] font-mono text-fg-faint">
+                      <div className="bg-canvas-subtle border-b border-border-hairline px-3 sm:px-4 py-2 flex items-center justify-between text-[11px] font-mono text-fg-faint">
                         <div className="flex items-center gap-1.5">
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
                           <span className="w-2 h-2 rounded-full bg-neutral-600" />
@@ -154,13 +154,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       </div>
 
                       {/* Desktop Preview Content */}
-                      <div className="p-6 space-y-6">
+                      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                         {/* Nav Bar */}
-                        <div className="flex items-center justify-between border-b border-border-hairline pb-3">
+                        <div className="flex items-center justify-between border-b border-border-hairline pb-2 sm:pb-3">
                           <span className="font-sans text-xs font-bold text-fg">
                             {project.title.split(' ')[0]}
                           </span>
-                          <div className="flex gap-4">
+                          <div className="flex gap-3 sm:gap-4">
                             {project.desktopPreview.navLinks.map((link) => (
                               <span key={link} className="font-sans text-[10px] text-fg-muted font-medium">
                                 {link}
@@ -174,19 +174,19 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                           <span className="font-sans text-[9px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
                             Viewport Preview
                           </span>
-                          <h4 className="text-xl font-bold text-fg leading-tight font-sans">
+                          <h4 className="text-lg sm:text-xl font-bold text-fg leading-tight font-sans">
                             {project.desktopPreview.heroHeadline}
                           </h4>
-                          <p className="mt-2 text-xs text-fg-muted leading-relaxed max-w-lg font-sans">
+                          <p className="mt-1.5 sm:mt-2 text-xs text-fg-muted leading-relaxed max-w-lg font-sans">
                             {project.desktopPreview.heroSub}
                           </p>
                         </div>
 
                         {/* Scope Specs Matrix */}
-                        <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border-hairline">
+                        <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-border-hairline">
                           {project.desktopPreview.scopeSpecs.map((s) => (
-                            <div key={s.label} className="bg-canvas-surface p-2 border border-border-hairline">
-                              <span className="font-mono text-[9px] text-fg-faint block uppercase">
+                            <div key={s.label} className="bg-canvas-surface p-1.5 sm:p-2 border border-border-hairline">
+                              <span className="font-mono text-[8px] sm:text-[9px] text-fg-faint block uppercase">
                                 {s.label}
                               </span>
                               <span className="font-sans text-xs font-semibold text-fg truncate">
@@ -197,9 +197,9 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                         </div>
 
                         {/* Section Cards */}
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                           {project.desktopPreview.sections.map((sec) => (
-                            <div key={sec.title} className="bg-canvas-subtle p-3 border border-border-hairline">
+                            <div key={sec.title} className="bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline">
                               <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
                                 {sec.tag}
                               </span>
@@ -221,7 +221,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="w-[280px] bg-canvas border-2 border-border-hover shadow-2xl rounded-2xl overflow-hidden relative"
+                      className="w-[260px] sm:w-[280px] bg-canvas border-2 border-border-hover shadow-2xl rounded-2xl overflow-hidden relative"
                     >
                       {/* Mobile Top Bar */}
                       <div className="bg-canvas-subtle px-3 py-2 flex items-center justify-between border-b border-border-hairline text-[10px] font-sans font-medium text-fg-faint">
@@ -268,8 +268,8 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             </div>
 
             {/* Strategic Analysis Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-              <div className="border border-border-hairline bg-canvas-subtle p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 pt-4">
+              <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <Compass size={18} className="text-fg-muted" />
                   <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
@@ -281,7 +281,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 </p>
               </div>
 
-              <div className="border border-border-hairline bg-canvas-subtle p-6">
+              <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <Layers size={18} className="text-fg-muted" />
                   <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
@@ -306,7 +306,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 {project.features.map((feat) => (
                   <div
                     key={feat.title}
-                    className="p-5 border border-border-hairline bg-canvas-surface flex flex-col justify-between"
+                    className="p-4 sm:p-5 border border-border-hairline bg-canvas-surface flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -333,7 +333,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 <ul className="space-y-1.5 font-sans text-xs text-fg-muted">
                   {project.deliverables.map((d) => (
                     <li key={d} className="flex items-center gap-2">
-                      <span className="text-fg-faint">→</span>
+                      <span className="text-fg-faint font-mono">→</span>
                       <span>{d}</span>
                     </li>
                   ))}
@@ -358,12 +358,12 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
             </div>
 
             {/* Direct Project Inquiry CTA: WhatsApp & Call */}
-            <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div>
                 <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider block mb-1">
                   Start a Similar Project
                 </span>
-                <h4 className="text-lg font-bold text-fg font-sans">
+                <h4 className="text-base sm:text-lg font-bold text-fg font-sans">
                   Interested in a similar website for your business?
                 </h4>
                 <p className="text-xs sm:text-sm text-fg-muted mt-1 font-sans">
@@ -371,13 +371,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto shrink-0">
                 <Button
                   variant="outline"
                   size="md"
                   href={CONTACT_INFO.phoneHref}
                   icon={<Phone size={15} />}
-                  className="text-xs"
+                  className="text-xs flex-1 sm:flex-initial justify-center"
                 >
                   Call Us
                 </Button>
@@ -389,6 +389,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   icon={<WhatsAppIcon size={16} />}
+                  className="flex-1 sm:flex-initial justify-center"
                 >
                   Discuss on WhatsApp
                 </Button>

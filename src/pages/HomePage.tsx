@@ -65,7 +65,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="flex items-center gap-2 mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
+              className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
             >
               <span className="font-mono text-fg-faint text-[11px]">00</span>
               <span className="text-border-hover">/</span>
@@ -79,7 +79,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tightest text-fg leading-[1.06]"
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
             >
               We design and build websites that help your business stand out and win clients.
             </motion.h1>
@@ -89,7 +89,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-6 sm:mt-8 text-lg sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
+              className="mt-5 sm:mt-8 text-base sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
             >
               High-impact, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
             </motion.p>
@@ -99,7 +99,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-10 flex flex-wrap items-center gap-3.5"
+              className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-3.5"
             >
               <Button
                 variant="primary"
@@ -108,6 +108,7 @@ export const HomePage: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={<WhatsAppIcon size={18} />}
+                className="w-full sm:w-auto justify-center"
               >
                 Chat on WhatsApp
               </Button>
@@ -117,7 +118,7 @@ export const HomePage: React.FC = () => {
                 size="lg"
                 href={CONTACT_INFO.phoneHref}
                 icon={<Phone size={16} />}
-                className="text-sm"
+                className="text-sm w-full sm:w-auto justify-center"
               >
                 Call Us
               </Button>
@@ -127,7 +128,7 @@ export const HomePage: React.FC = () => {
                 size="lg"
                 to="/projects"
                 icon={<ArrowRight size={16} />}
-                className="text-fg-muted hover:text-fg border-border-hairline hover:border-fg"
+                className="text-fg-muted hover:text-fg border-border-hairline hover:border-fg w-full sm:w-auto justify-center"
               >
                 Projects & Concepts
               </Button>
@@ -138,7 +139,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.45 }}
-              className="mt-16 pt-8 border-t border-border-hairline grid grid-cols-2 md:grid-cols-4 gap-4"
+              className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
             >
               {valuePoints.map((point) => (
                 <div key={point} className="flex items-start gap-2.5">
@@ -154,9 +155,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 01 / Capabilities Matrix Teaser */}
-      <section className="py-24 border-b border-border-hairline bg-canvas-subtle">
+      <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
               index="01"
               tag="CORE CAPABILITIES"
@@ -212,23 +213,23 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 02 / Studio Manifesto Teaser */}
-      <section className="py-24 border-b border-border-hairline bg-canvas">
+      <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
               <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
                 <span className="font-mono text-fg-faint text-[11px]">02</span>
                 <span className="text-border-hover">/</span>
                 <span className="tracking-widest text-fg-muted">Studio Manifesto</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
                 No templates. No slow page builders. 100% code ownership.
               </h2>
               <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
                 Most agencies trap businesses in bloated WordPress plugins or slow drag-and-drop systems. We handcraft bespoke React and TypeScript digital flagships that load under 500ms and remain completely in your control forever.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
                 <div className="border-l border-border-hairline pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
                     <Zap size={14} /> &lt; 500ms
@@ -250,7 +251,7 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-5 border border-border-hairline bg-canvas-subtle p-8 space-y-6">
+            <div className="lg:col-span-5 border border-border-hairline bg-canvas-subtle p-6 sm:p-8 space-y-6">
               <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
                 Studio Philosophy
               </span>
@@ -275,9 +276,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 03 / Projects & Concepts Teaser Banner (Portfolio Archive) */}
-      <section className="py-20 border-b border-border-hairline bg-canvas-subtle">
+      <section className="py-16 sm:py-20 border-b border-border-hairline bg-canvas-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border border-border-hairline bg-canvas p-8 sm:p-12 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 relative overflow-hidden">
+          <div className="border border-border-hairline bg-canvas p-6 sm:p-10 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 relative overflow-hidden">
             <div className="max-w-2xl space-y-3">
               <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
                 <span className="font-mono text-fg-faint text-[11px]">03</span>
@@ -292,7 +293,7 @@ export const HomePage: React.FC = () => {
               <p className="text-sm sm:text-base text-fg-muted leading-relaxed">
                 Inspect dedicated case studies with live desktop (1440px) vs. mobile (390px) responsive viewport simulations across clinical practices, architectural ateliers, luxury commerce, and SaaS platforms.
               </p>
-              <div className="flex flex-wrap gap-4 pt-2 font-mono text-xs text-fg-subtle">
+              <div className="flex flex-wrap gap-3 sm:gap-4 pt-2 font-mono text-xs text-fg-subtle">
                 <span className="flex items-center gap-1.5">
                   <Layout size={14} className="text-fg" /> Flagship Concepts
                 </span>
@@ -305,12 +306,13 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="shrink-0">
+            <div className="shrink-0 w-full sm:w-auto">
               <Button
                 variant="primary"
                 size="lg"
                 to="/projects"
                 icon={<ArrowRight size={16} />}
+                className="w-full sm:w-auto justify-center"
               >
                 View Projects & Concepts
               </Button>

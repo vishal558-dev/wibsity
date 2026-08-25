@@ -51,7 +51,7 @@ export const Principles: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-canvas p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
+                className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">

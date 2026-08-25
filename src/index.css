@@ -35,6 +35,12 @@
     letter-spacing: -0.01em;
   }
 
+  body {
+    overflow-x: hidden;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
   /* Architectural Grid utility */
   .grid-pattern {
     background-size: 40px 40px;

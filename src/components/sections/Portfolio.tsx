@@ -37,7 +37,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
           />
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-2 mt-6 md:mt-0">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-6 md:mt-0">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -57,7 +57,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
         {/* Project Cards Grid */}
         <motion.div
           layout
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"
         >
           <AnimatePresence>
             {filteredProjects.map((project, index) => (
@@ -73,7 +73,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                 {/* Visual Preview Container */}
                 <div
                   onClick={() => onSelectProject(project)}
-                  className="cursor-pointer bg-canvas-surface border-b border-border-hairline p-6 relative overflow-hidden group-hover:bg-canvas-elevated transition-colors"
+                  className="cursor-pointer bg-canvas-surface border-b border-border-hairline p-4 sm:p-6 relative overflow-hidden group-hover:bg-canvas-elevated transition-colors"
                 >
                   {/* Browser Mockup Chrome Header */}
                   <div className="flex items-center justify-between pb-3 mb-4 border-b border-border-hairline">
@@ -92,7 +92,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                   </div>
 
                   {/* Simulated Desktop Preview Viewport */}
-                  <div className="bg-canvas border border-border-hairline p-5 rounded-sm relative shadow-inner">
+                  <div className="bg-canvas border border-border-hairline p-3.5 sm:p-5 rounded-sm relative shadow-inner">
                     <div className="flex items-center justify-between mb-3 border-b border-border-hairline pb-2">
                       <span className="font-sans text-xs font-bold text-fg tracking-tight">
                         {project.title.split(' ')[0]}
@@ -114,7 +114,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                     </p>
 
                     {/* Scope Specs pills in preview (Honest architectural details) */}
-                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border-hairline/60">
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-2 border-t border-border-hairline/60">
                       {project.desktopPreview.scopeSpecs.map((spec) => (
                         <div key={spec.label} className="bg-canvas-surface p-1.5 border border-border-hairline">
                           <div className="font-mono text-[9px] text-fg-faint uppercase truncate">
@@ -137,7 +137,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                 </div>
 
                 {/* Card Content & Details */}
-                <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+                <div className="p-5 sm:p-8 flex flex-col justify-between flex-1">
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <div className="flex items-center gap-2 text-xs font-sans">

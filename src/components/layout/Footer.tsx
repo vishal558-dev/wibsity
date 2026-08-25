@@ -17,8 +17,8 @@ export const Footer: React.FC = () => {
   return (
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
       {/* Upper CTA Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div className="border border-border-hairline bg-canvas-subtle p-8 sm:p-12 lg:p-16 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
+        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-12 lg:p-16 relative">
           <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:block font-semibold">
             DIRECT INTAKE
           </div>
@@ -27,14 +27,14 @@ export const Footer: React.FC = () => {
             <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-3">
               Project Inquiry
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
               Ready to build a website that sets your business apart?
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-fg-muted leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-lg text-fg-muted leading-relaxed">
               We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Connect directly via WhatsApp, phone, or view our contact hub.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
               <Button
                 variant="primary"
                 size="lg"
@@ -42,6 +42,7 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={<WhatsAppIcon size={18} />}
+                className="w-full sm:w-auto justify-center"
               >
                 Chat on WhatsApp
               </Button>
@@ -50,7 +51,7 @@ export const Footer: React.FC = () => {
                 size="lg"
                 href={CONTACT_INFO.phoneHref}
                 icon={<Phone size={16} />}
-                className="text-sm"
+                className="text-sm w-full sm:w-auto justify-center"
               >
                 Call Us
               </Button>
@@ -60,7 +61,7 @@ export const Footer: React.FC = () => {
                 to="/contact"
                 onClick={handleLinkClick}
                 icon={<ArrowUpRight size={16} />}
-                className="text-sm border-border-hairline hover:border-fg"
+                className="text-sm border-border-hairline hover:border-fg w-full sm:w-auto justify-center"
               >
                 Contact Details
               </Button>
@@ -75,7 +76,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Directory Links */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 pt-12 border-t border-border-hairline">
+        <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 pt-8 sm:pt-12 border-t border-border-hairline">
           {/* Brand Column */}
           <div className="md:col-span-1 space-y-3">
             <Link to="/" onClick={handleLinkClick} className="inline-block focus:outline-none" aria-label="wibsity home">

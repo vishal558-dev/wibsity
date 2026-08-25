@@ -108,7 +108,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2 mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
+            className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
           >
             <span className="font-mono text-fg-faint text-[11px]">00</span>
             <span className="text-border-hover">/</span>
@@ -122,7 +122,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tightest text-fg leading-[1.06]"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
           >
             We design and build websites that help your business stand out and win clients.
           </motion.h1>
@@ -132,7 +132,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 sm:mt-8 text-lg sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
+            className="mt-5 sm:mt-8 text-base sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
           >
             High-quality, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
           </motion.p>
@@ -142,7 +142,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-10 flex flex-wrap items-center gap-3.5"
+            className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-3.5"
           >
             <Button
               variant="primary"
@@ -151,6 +151,7 @@ export const Hero: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               icon={<WhatsAppIcon size={18} />}
+              className="w-full sm:w-auto justify-center"
             >
               Chat on WhatsApp
             </Button>
@@ -160,7 +161,7 @@ export const Hero: React.FC = () => {
               size="lg"
               href={CONTACT_INFO.phoneHref}
               icon={<Phone size={16} />}
-              className="text-sm"
+              className="text-sm w-full sm:w-auto justify-center"
             >
               Call Us
             </Button>
@@ -170,7 +171,7 @@ export const Hero: React.FC = () => {
               size="lg"
               href="#work"
               icon={<ArrowDown size={16} />}
-              className="text-fg-muted hover:text-fg"
+              className="text-fg-muted hover:text-fg w-full sm:w-auto justify-center"
             >
               Explore Works
             </Button>
@@ -181,7 +182,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.45 }}
-            className="mt-16 pt-8 border-t border-border-hairline grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
           >
             {valuePoints.map((point) => (
               <div key={point} className="flex items-start gap-2.5">

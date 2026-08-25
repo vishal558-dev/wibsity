@@ -47,10 +47,10 @@ export const ContactPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-7 border border-border-hairline bg-canvas-subtle p-8 sm:p-12 space-y-8"
+            className="lg:col-span-7 border border-border-hairline bg-canvas-subtle p-5 sm:p-10 lg:p-12 space-y-6 sm:space-y-8"
           >
             {/* Live Availability Status */}
-            <div className="flex items-center justify-between pb-6 border-b border-border-hairline">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-border-hairline">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="font-sans text-xs text-fg uppercase tracking-wider font-semibold">
@@ -62,7 +62,7 @@ export const ContactPage: React.FC = () => {
               </span>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight leading-tight">
                 Connect directly with the studio.
               </h2>
@@ -72,17 +72,17 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Direct Action Cards */}
-            <div className="space-y-4 pt-2">
+            <div className="space-y-3 sm:space-y-4 pt-2">
               {/* WhatsApp Card */}
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border border-border-hairline bg-canvas p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-canvas-surface border border-border-hairline text-fg">
-                    <WhatsAppIcon size={22} />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                    <WhatsAppIcon size={20} />
                   </div>
                   <div>
                     <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
@@ -105,11 +105,11 @@ export const ContactPage: React.FC = () => {
               {/* Phone Card */}
               <a
                 href={CONTACT_INFO.phoneHref}
-                className="group border border-border-hairline bg-canvas p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-canvas-surface border border-border-hairline text-fg">
-                    <Phone size={20} />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                    <Phone size={18} />
                   </div>
                   <div>
                     <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
@@ -132,17 +132,17 @@ export const ContactPage: React.FC = () => {
               {/* Email Card */}
               <a
                 href={CONTACT_INFO.emailHref}
-                className="group border border-border-hairline bg-canvas p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-canvas-surface border border-border-hairline text-fg">
-                    <Mail size={20} />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                    <Mail size={18} />
                   </div>
                   <div>
                     <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
                       WRITTEN BRIEF
                     </span>
-                    <h3 className="text-base font-bold text-fg font-mono text-sm">
+                    <h3 className="text-base font-bold text-fg font-mono text-xs sm:text-sm">
                       {CONTACT_INFO.email}
                     </h3>
                     <p className="text-xs text-fg-muted mt-0.5">
@@ -165,7 +165,7 @@ export const ContactPage: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="lg:col-span-5 space-y-6"
           >
-            <div className="border border-border-hairline bg-canvas p-8 space-y-6">
+            <div className="border border-border-hairline bg-canvas p-6 sm:p-8 space-y-6">
               <span className="font-mono text-[11px] text-fg-faint uppercase tracking-wider block">
                 // WHAT TO EXPECT
               </span>
@@ -194,7 +194,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Quick Turnaround Assurance */}
-            <div className="border border-border-hairline bg-canvas-subtle p-6 flex items-center gap-4">
+            <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-6 flex items-center gap-4">
               <Clock size={20} className="text-fg-muted shrink-0" />
               <div>
                 <span className="text-xs font-bold text-fg block">

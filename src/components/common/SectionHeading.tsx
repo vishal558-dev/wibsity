@@ -35,7 +35,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center gap-2 mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
+        className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
       >
         <span className="font-mono text-fg-faint text-[11px]">{index}</span>
         <span className="text-border-hover">/</span>
@@ -47,7 +47,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-[1.12]"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-fg leading-[1.14]"
       >
         {title}
       </motion.h2>
@@ -58,7 +58,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 text-base sm:text-lg text-fg-muted max-w-2xl leading-relaxed"
+          className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-fg-muted max-w-2xl leading-relaxed"
         >
           {description}
         </motion.p>

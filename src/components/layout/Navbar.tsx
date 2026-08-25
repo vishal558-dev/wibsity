@@ -42,8 +42,8 @@ export const Navbar: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-canvas/90 backdrop-blur-md border-b border-border-hairline py-3.5'
-          : 'bg-transparent py-5'
+          ? 'bg-canvas/90 backdrop-blur-md border-b border-border-hairline py-2.5 sm:py-3.5'
+          : 'bg-transparent py-3 sm:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +52,7 @@ export const Navbar: React.FC = () => {
           <Link
             to="/"
             onClick={handleNavClick}
-            className="flex items-center gap-3.5 group focus:outline-none"
+            className="flex items-center gap-3 group focus:outline-none"
             aria-label="wibsity home"
           >
             <img
@@ -126,29 +126,29 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Quick Action Icons */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              className="w-9 h-9 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="WhatsApp wibsity"
             >
               <WhatsAppIcon size={16} />
             </a>
             <a
               href={CONTACT_INFO.phoneHref}
-              className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              className="w-9 h-9 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="Call wibsity"
             >
               <Phone size={16} />
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface cursor-pointer"
+              className="w-9 h-9 shrink-0 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
           </div>
         </div>

@@ -40,7 +40,7 @@ export const ProjectsPage: React.FC = () => {
           />
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-2 mt-6 md:mt-0">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-6 md:mt-0">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -60,7 +60,7 @@ export const ProjectsPage: React.FC = () => {
         {/* Project Cards Grid */}
         <motion.div
           layout
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"
         >
           <AnimatePresence>
             {filteredProjects.map((project, index) => (
@@ -76,7 +76,7 @@ export const ProjectsPage: React.FC = () => {
                 {/* Visual Preview Container */}
                 <Link
                   to={`/projects/${project.slug}`}
-                  className="block bg-canvas-surface border-b border-border-hairline p-6 relative overflow-hidden group-hover:bg-canvas-elevated transition-colors"
+                  className="block bg-canvas-surface border-b border-border-hairline p-4 sm:p-6 relative overflow-hidden group-hover:bg-canvas-elevated transition-colors"
                 >
                   {/* Browser Mockup Chrome Header */}
                   <div className="flex items-center justify-between pb-3 mb-4 border-b border-border-hairline">
@@ -93,14 +93,14 @@ export const ProjectsPage: React.FC = () => {
                   </div>
 
                   {/* Mockup Preview Area */}
-                  <div className="space-y-4 py-4">
+                  <div className="space-y-3 sm:space-y-4 py-3 sm:py-4">
                     <span className="font-mono text-[11px] text-fg-faint block">
                       // {project.clientType}
                     </span>
-                    <h3 className="text-2xl font-bold text-fg tracking-tight group-hover:text-neutral-200 transition-colors">
+                    <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight group-hover:text-neutral-200 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-sm text-fg-muted line-clamp-2 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-fg-muted line-clamp-2 leading-relaxed">
                       {project.tagline}
                     </p>
                   </div>
@@ -123,7 +123,7 @@ export const ProjectsPage: React.FC = () => {
                 </Link>
 
                 {/* Project Details Footer */}
-                <div className="p-6 bg-canvas flex flex-col justify-between flex-1">
+                <div className="p-5 sm:p-6 bg-canvas flex flex-col justify-between flex-1">
                   <div className="space-y-3">
                     <p className="text-xs text-fg-muted leading-relaxed">
                       {project.summary}
@@ -140,8 +140,8 @@ export const ProjectsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-6 mt-6 border-t border-border-hairline flex items-center justify-between">
-                    <span className="text-[11px] font-mono text-fg-faint">
+                  <div className="pt-5 sm:pt-6 mt-5 sm:mt-6 border-t border-border-hairline flex items-center justify-between">
+                    <span className="text-[10px] sm:text-[11px] font-mono text-fg-faint">
                       ARCHITECTURAL CASE STUDY
                     </span>
                     <Link
@@ -159,7 +159,7 @@ export const ProjectsPage: React.FC = () => {
         </motion.div>
 
         {/* Custom Project Scoping Note */}
-        <div className="mt-16 p-8 border border-border-hairline bg-canvas-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="mt-12 sm:mt-16 p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1">
             <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-1">
               Custom Requirements
@@ -171,7 +171,7 @@ export const ProjectsPage: React.FC = () => {
               We design custom workflows, practice directories, and commerce layouts from scratch. Contact us directly to discuss your project scope.
             </p>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto shrink-0">
             <Button
               variant="primary"
               size="md"
@@ -179,6 +179,7 @@ export const ProjectsPage: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               icon={<WhatsAppIcon size={14} />}
+              className="flex-1 sm:flex-initial justify-center"
             >
               Discuss on WhatsApp
             </Button>
@@ -186,7 +187,7 @@ export const ProjectsPage: React.FC = () => {
               variant="outline"
               size="md"
               to="/contact"
-              className="text-xs"
+              className="text-xs flex-1 sm:flex-initial justify-center"
             >
               Contact Hub
             </Button>
