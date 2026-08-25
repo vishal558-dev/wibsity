@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Phone, MessageSquare } from 'lucide-react';
 import { Button } from '../common/Button';
 
-interface NavbarProps {
-  onOpenInquiry: (projectReference?: string) => void;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
+export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -26,6 +22,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
     { label: 'Process', href: '#process', index: '04' },
     { label: 'FAQ', href: '#faq', index: '05' },
   ];
+
+  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
 
   return (
     <header
@@ -53,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -66,31 +64,51 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
             ))}
           </nav>
 
-          {/* Actions */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Actions: Call & WhatsApp */}
+          <div className="hidden sm:flex items-center gap-2.5">
+            <Button
+              variant="outline"
+              size="sm"
+              href="tel:+918448948791"
+              icon={<Phone size={13} />}
+              className="font-mono text-xs"
+            >
+              Call: +91 8448948791
+            </Button>
             <Button
               variant="primary"
               size="sm"
-              onClick={() => onOpenInquiry()}
-              icon={<ArrowUpRight size={14} />}
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              icon={<MessageSquare size={13} />}
+              className="font-sans text-xs"
             >
-              Start a Project
+              WhatsApp
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle & Direct Call */}
           <div className="flex sm:hidden items-center gap-2">
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => onOpenInquiry()}
-              className="text-xs px-3 py-1.5"
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              aria-label="WhatsApp wibsity"
             >
-              Inquire
-            </Button>
+              <MessageSquare size={16} />
+            </a>
+            <a
+              href="tel:+918448948791"
+              className="p-2 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              aria-label="Call wibsity"
+            >
+              <Phone size={16} />
+            </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface"
+              className="p-2 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface cursor-pointer"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -121,18 +139,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
                   <span className="font-mono text-xs text-fg-faint">{link.index}</span>
                 </a>
               ))}
-              <div className="pt-3">
+              
+              {/* Direct Call & WhatsApp in Mobile Drawer */}
+              <div className="pt-3 space-y-2">
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenInquiry();
-                  }}
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full justify-center"
-                  icon={<ArrowUpRight size={16} />}
+                  icon={<MessageSquare size={16} />}
                 >
-                  Start a Project
+                  WhatsApp: +91 8448948791
+                </Button>
+                <Button
+                  variant="outline"
+                  size="md"
+                  href="tel:+918448948791"
+                  className="w-full justify-center font-mono text-xs"
+                  icon={<Phone size={15} />}
+                >
+                  Call: +91 8448948791
                 </Button>
               </div>
             </nav>

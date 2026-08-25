@@ -3,20 +3,18 @@ import { motion } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
 import { Badge } from '../common/Badge';
 import { servicesData } from '../../data/services';
-import { Layout, Layers, RefreshCw, Sliders, ArrowUpRight, Check, Clock } from 'lucide-react';
+import { Layout, Layers, RefreshCw, Sliders, Check, Clock, Phone, MessageSquare } from 'lucide-react';
 import { Button } from '../common/Button';
 
-interface ServicesProps {
-  onOpenInquiry: (serviceName?: string) => void;
-}
-
-export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
+export const Services: React.FC = () => {
   const iconMap = {
     Layout: Layout,
     Layers: Layers,
     RefreshCw: RefreshCw,
     Sliders: Sliders,
   };
+
+  const baseWhatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
 
   return (
     <section id="services" className="py-24 border-b border-border-hairline bg-canvas relative">
@@ -31,6 +29,10 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {servicesData.map((service, idx) => {
             const Icon = iconMap[service.iconName];
+            const serviceWhatsappUrl = `https://wa.me/918448948791?text=${encodeURIComponent(
+              `Hi wibsity, I'd like to discuss a project for ${service.title}.`
+            )}`;
+
             return (
               <motion.div
                 key={service.id}
@@ -100,10 +102,12 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => onOpenInquiry(service.title)}
-                    icon={<ArrowUpRight size={14} />}
+                    href={serviceWhatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    icon={<MessageSquare size={14} />}
                   >
-                    Inquire About This
+                    Discuss on WhatsApp
                   </Button>
                 </div>
               </motion.div>
@@ -111,28 +115,41 @@ export const Services: React.FC<ServicesProps> = ({ onOpenInquiry }) => {
           })}
         </div>
 
-        {/* Turnaround Supporting Note & Qualification Box */}
-        <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Turnaround Supporting Note & Direct Actions */}
+        <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="flex items-start gap-3.5">
             <Clock size={20} className="text-fg-muted shrink-0 mt-0.5" />
             <div className="space-y-1">
               <p className="font-sans text-sm font-semibold text-fg">
                 Typical turnaround: 5–7 days for standard website projects.
               </p>
-              <p className="font-sans text-xs text-fg-muted leading-relaxed">
+              <p className="font-sans text-xs text-fg-muted leading-relaxed max-w-2xl">
                 Timelines vary depending on project scope, complexity, and client feedback turnaround. The specific timeline is always confirmed and agreed upon before the project begins.
               </p>
             </div>
           </div>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => onOpenInquiry()}
-            icon={<ArrowUpRight size={14} />}
-            className="shrink-0"
-          >
-            Start a Conversation
-          </Button>
+          
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              href="tel:+918448948791"
+              icon={<Phone size={14} />}
+              className="font-mono text-xs"
+            >
+              Call: +91 8448948791
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              href={baseWhatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              icon={<MessageSquare size={14} />}
+            >
+              WhatsApp Us
+            </Button>
+          </div>
         </div>
       </div>
     </section>

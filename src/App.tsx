@@ -8,7 +8,6 @@ import { Services } from './components/sections/Services';
 import { Process } from './components/sections/Process';
 import { FAQ } from './components/sections/FAQ';
 import { CaseStudyDrawer } from './components/sections/CaseStudyDrawer';
-import { InquiryModal } from './components/modals/InquiryModal';
 import type { Project } from './types';
 import { useLenis } from './hooks/useLenis';
 
@@ -19,63 +18,28 @@ export function App() {
   // Selected project for interactive case study drawer
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
-  // Inquiry modal state
-  const [inquiryOpen, setInquiryOpen] = useState(false);
-  const [inquiryService, setInquiryService] = useState<string>('');
-  const [inquiryProjectRef, setInquiryProjectRef] = useState<string>('');
-
-  const handleOpenInquiry = (serviceOrProject?: string) => {
-    if (serviceOrProject) {
-      if (
-        serviceOrProject.includes('Website') ||
-        serviceOrProject.includes('Landing Page') ||
-        serviceOrProject.includes('Redesign') ||
-        serviceOrProject.includes('Custom')
-      ) {
-        setInquiryService(serviceOrProject);
-        setInquiryProjectRef('');
-      } else {
-        setInquiryProjectRef(serviceOrProject);
-        setInquiryService('');
-      }
-    } else {
-      setInquiryService('');
-      setInquiryProjectRef('');
-    }
-    setInquiryOpen(true);
-  };
-
   return (
     <div className="min-h-screen bg-canvas text-fg flex flex-col font-sans selection:bg-fg selection:text-canvas">
-      {/* Fixed Sticky Header */}
-      <Navbar onOpenInquiry={() => handleOpenInquiry()} />
+      {/* Fixed Sticky Header with Call and WhatsApp actions */}
+      <Navbar />
 
       {/* Main Content Sections */}
       <main className="flex-1">
-        <Hero onOpenInquiry={() => handleOpenInquiry()} />
+        <Hero />
         <Principles />
         <Portfolio onSelectProject={(project) => setActiveProject(project)} />
-        <Services onOpenInquiry={(service) => handleOpenInquiry(service)} />
+        <Services />
         <Process />
         <FAQ />
       </main>
 
-      {/* Typographic Monolith Footer */}
-      <Footer onOpenInquiry={() => handleOpenInquiry()} />
+      {/* Typographic Monolith Footer with direct phone & WhatsApp */}
+      <Footer />
 
       {/* Interactive Case Study Drawer */}
       <CaseStudyDrawer
         project={activeProject}
         onClose={() => setActiveProject(null)}
-        onOpenInquiry={(projectTitle) => handleOpenInquiry(projectTitle)}
-      />
-
-      {/* Project Kickoff / Intake Modal */}
-      <InquiryModal
-        isOpen={inquiryOpen}
-        onClose={() => setInquiryOpen(false)}
-        initialService={inquiryService}
-        projectReference={inquiryProjectRef}
       />
     </div>
   );

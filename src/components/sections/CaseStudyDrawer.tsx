@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Monitor, Smartphone, ArrowUpRight, CheckCircle2, Layers, Cpu, Compass } from 'lucide-react';
+import { X, Monitor, Smartphone, CheckCircle2, Layers, Cpu, Compass, Phone, MessageSquare } from 'lucide-react';
 import type { Project } from '../../types';
 import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
@@ -8,13 +8,11 @@ import { Button } from '../common/Button';
 interface CaseStudyDrawerProps {
   project: Project | null;
   onClose: () => void;
-  onOpenInquiry: (projectReference: string) => void;
 }
 
 export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
   project,
   onClose,
-  onOpenInquiry,
 }) => {
   const [viewportMode, setViewportMode] = useState<'desktop' | 'mobile'>('desktop');
 
@@ -34,6 +32,10 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
   }, [project, onClose]);
 
   if (!project) return null;
+
+  const projectWhatsappUrl = `https://wa.me/918448948791?text=${encodeURIComponent(
+    `Hi wibsity, I'd like to discuss a project similar to ${project.title}.`
+  )}`;
 
   return (
     <AnimatePresence>
@@ -354,7 +356,7 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
               </div>
             </div>
 
-            {/* Direct Project Inquiry CTA */}
+            {/* Direct Project Inquiry CTA: WhatsApp & Call */}
             <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div>
                 <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider block mb-1">
@@ -364,22 +366,32 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
                   Interested in a similar website for your business?
                 </h4>
                 <p className="text-xs sm:text-sm text-fg-muted mt-1 font-sans">
-                  Start a direct project conversation and we’ll prepare a tailored roadmap for your requirements.
+                  Reach out directly via WhatsApp or phone call to discuss your project requirements with the founder.
                 </p>
               </div>
 
-              <Button
-                variant="primary"
-                size="md"
-                onClick={() => {
-                  onClose();
-                  onOpenInquiry(project.title);
-                }}
-                icon={<ArrowUpRight size={16} />}
-                className="shrink-0"
-              >
-                Discuss a Similar Project
-              </Button>
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <Button
+                  variant="outline"
+                  size="md"
+                  href="tel:+918448948791"
+                  icon={<Phone size={15} />}
+                  className="font-mono text-xs"
+                >
+                  Call: +91 8448948791
+                </Button>
+
+                <Button
+                  variant="primary"
+                  size="md"
+                  href={projectWhatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  icon={<MessageSquare size={16} />}
+                >
+                  WhatsApp: +91 8448948791
+                </Button>
+              </div>
             </div>
           </div>
         </motion.div>

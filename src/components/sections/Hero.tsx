@@ -1,16 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { animate, stagger } from 'animejs';
-import { ArrowDown, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Phone, MessageSquare } from 'lucide-react';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
-interface HeroProps {
-  onOpenInquiry: () => void;
-}
-
-export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
+export const Hero: React.FC = () => {
   const svgLinesRef = useRef<SVGSVGElement | null>(null);
   const prefersReduced = useReducedMotion();
 
@@ -34,6 +30,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
     '100% Client Code Ownership',
     'Clear Fixed-Scope Proposals',
   ];
+
+  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
 
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-20 overflow-hidden border-b border-border-hairline bg-canvas">
@@ -139,29 +137,42 @@ export const Hero: React.FC<HeroProps> = ({ onOpenInquiry }) => {
             High-quality, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
           </motion.p>
 
-          {/* Action CTAs */}
+          {/* Action CTAs: Direct WhatsApp, Call, and Explore */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-10 flex flex-wrap items-center gap-4"
+            className="mt-10 flex flex-wrap items-center gap-3.5"
           >
             <Button
               variant="primary"
               size="lg"
-              onClick={() => onOpenInquiry()}
-              icon={<ArrowUpRight size={18} />}
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              icon={<MessageSquare size={18} />}
             >
-              Start a Project
+              WhatsApp: +91 8448948791
             </Button>
 
             <Button
-              variant="secondary"
+              variant="outline"
+              size="lg"
+              href="tel:+918448948791"
+              icon={<Phone size={16} />}
+              className="font-mono text-sm"
+            >
+              Call: +91 8448948791
+            </Button>
+
+            <Button
+              variant="ghost"
               size="lg"
               href="#work"
               icon={<ArrowDown size={16} />}
+              className="text-fg-muted hover:text-fg"
             >
-              Explore Concept Works
+              Explore Works
             </Button>
           </motion.div>
 

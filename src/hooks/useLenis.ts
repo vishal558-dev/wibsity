@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Lenis from 'lenis';
 import { useReducedMotion } from './useReducedMotion';
 
@@ -39,7 +39,7 @@ export function useLenis() {
     };
   }, [reducedMotion]);
 
-  const scrollTo = (target: string | HTMLElement, options?: { offset?: number; immediate?: boolean }) => {
+  const scrollTo = useCallback((target: string | HTMLElement, options?: { offset?: number; immediate?: boolean }) => {
     if (lenisRef.current) {
       lenisRef.current.scrollTo(target, options);
     } else {
@@ -53,7 +53,9 @@ export function useLenis() {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  };
+  }, []);
 
-  return { lenis: lenisRef.current, scrollTo };
+  const getLenis = useCallback(() => lenisRef.current, []);
+
+  return { getLenis, scrollTo };
 }

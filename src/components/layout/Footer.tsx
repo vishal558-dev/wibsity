@@ -1,13 +1,10 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Phone, MessageSquare, Mail } from 'lucide-react';
 import { Button } from '../common/Button';
 
-interface FooterProps {
-  onOpenInquiry: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
+export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I'd%20like%20to%20discuss%20a%20website%20project.";
 
   return (
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
@@ -26,23 +23,34 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
               Ready to build a website that sets your business apart?
             </h2>
             <p className="mt-4 text-base sm:text-lg text-fg-muted leading-relaxed">
-              We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Reach out to discuss your project requirements.
+              We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Connect directly via WhatsApp or phone call.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button
                 variant="primary"
                 size="lg"
-                onClick={() => onOpenInquiry()}
-                icon={<ArrowUpRight size={18} />}
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                icon={<MessageSquare size={18} />}
               >
-                Start a Conversation
+                WhatsApp: +91 8448948791
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                href="tel:+918448948791"
+                icon={<Phone size={16} />}
+                className="font-mono text-sm"
+              >
+                Call: +91 8448948791
               </Button>
               <a
                 href="mailto:hello@wibsity.com"
-                className="font-mono text-xs text-fg-muted hover:text-fg underline underline-offset-4 tracking-wider transition-colors px-2 py-3"
+                className="font-mono text-xs text-fg-muted hover:text-fg underline underline-offset-4 tracking-wider transition-colors px-2 py-3 flex items-center gap-1.5"
               >
-                hello@wibsity.com
+                <Mail size={14} /> hello@wibsity.com
               </a>
             </div>
           </div>
@@ -123,15 +131,31 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry }) => {
             <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Direct Contact
             </span>
-            <p className="font-sans text-xs text-fg-muted leading-relaxed mb-3">
-              Direct inquiries and project briefs welcome.
-            </p>
-            <a
-              href="mailto:hello@wibsity.com"
-              className="inline-block font-mono text-xs text-fg border border-border-hairline bg-canvas-surface px-3 py-1.5 hover:border-fg transition-colors"
-            >
-              hello@wibsity.com
-            </a>
+            <div className="space-y-2.5 font-sans text-xs text-fg-muted">
+              <a
+                href="tel:+918448948791"
+                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors font-mono"
+              >
+                <Phone size={13} className="text-fg-muted" />
+                <span>+91 8448948791</span>
+              </a>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors font-sans"
+              >
+                <MessageSquare size={13} className="text-fg-muted" />
+                <span>WhatsApp: +91 8448948791</span>
+              </a>
+              <a
+                href="mailto:hello@wibsity.com"
+                className="flex items-center gap-2 text-fg-muted hover:text-fg transition-colors font-mono"
+              >
+                <Mail size={13} className="text-fg-faint" />
+                <span>hello@wibsity.com</span>
+              </a>
+            </div>
           </div>
         </div>
 

@@ -74,13 +74,3 @@ export interface FAQItem {
   answer: string;
   category: 'Engagement' | 'Process' | 'Ownership' | 'Technical';
 }
-
-export interface InquiryFormState {
-  name: string;
-  email: string;
-  businessName: string;
-  serviceInterest: string;
-  projectReference: string;
-  projectBrief: string;
-  timeline: string;
-}

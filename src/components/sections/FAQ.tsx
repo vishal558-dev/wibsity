@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
 import { faqsData } from '../../data/faqs';
-import { Plus, Minus, HelpCircle } from 'lucide-react';
+import { Plus, Minus, HelpCircle, Phone, MessageSquare } from 'lucide-react';
 
 export const FAQ: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(faqsData[0].id);
@@ -17,6 +17,8 @@ export const FAQ: React.FC = () => {
   const toggleFaq = (id: string) => {
     setActiveId(activeId === id ? null : id);
   };
+
+  const whatsappUrl = "https://wa.me/918448948791?text=Hi%20wibsity,%20I%20have%20a%20question%20about%20your%20services.";
 
   return (
     <section id="faq" className="py-24 border-b border-border-hairline bg-canvas relative">
@@ -93,20 +95,31 @@ export const FAQ: React.FC = () => {
           })}
         </div>
 
-        {/* Support Help Box */}
-        <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex items-center justify-between max-w-4xl">
+        {/* Direct Connect Help Box */}
+        <div className="mt-12 p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl">
           <div className="flex items-center gap-3">
-            <HelpCircle size={20} className="text-fg-muted" />
+            <HelpCircle size={20} className="text-fg-muted shrink-0" />
             <span className="font-sans text-xs text-fg-muted font-medium">
               Have a specific question not addressed above?
             </span>
           </div>
-          <a
-            href="mailto:hello@wibsity.com"
-            className="font-sans text-xs font-semibold text-fg underline underline-offset-4 hover:text-neutral-300 transition-colors"
-          >
-            Direct Inquiry →
-          </a>
+          <div className="flex items-center gap-4 text-xs font-sans">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
+            >
+              <MessageSquare size={13} /> WhatsApp
+            </a>
+            <span className="text-border-hover">|</span>
+            <a
+              href="tel:+918448948791"
+              className="font-semibold font-mono text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
+            >
+              <Phone size={13} /> +91 8448948791
+            </a>
+          </div>
         </div>
       </div>
     </section>
