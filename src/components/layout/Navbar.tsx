@@ -35,15 +35,17 @@ export const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Brand Wordmark */}
+          {/* Brand Logo */}
           <a
             href="#"
-            className="flex items-center gap-3 group focus:outline-none"
+            className="flex items-center gap-3.5 group focus:outline-none"
             aria-label="wibsity home"
           >
-            <span className="font-sans text-xl sm:text-2xl font-extrabold tracking-tightest text-fg group-hover:text-neutral-300 transition-colors">
-              wibsity
-            </span>
+            <img
+              src="/logo.png"
+              alt="wibsity"
+              className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+            />
             <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 border border-border-hairline bg-canvas-surface text-[10px] font-mono uppercase tracking-wider text-fg-muted">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Accepting Projects

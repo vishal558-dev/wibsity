@@ -57,7 +57,21 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Directory Links */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border-hairline">
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 pt-12 border-t border-border-hairline">
+          {/* Brand Column */}
+          <div className="md:col-span-1 space-y-3">
+            <a href="#" className="inline-block focus:outline-none" aria-label="wibsity home">
+              <img
+                src="/logo.png"
+                alt="wibsity"
+                className="h-5 sm:h-6 w-auto object-contain"
+              />
+            </a>
+            <p className="font-sans text-xs text-fg-muted leading-relaxed">
+              Digital design and web engineering studio for modern brands and growing practices.
+            </p>
+          </div>
+
           <div>
             <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-4">
               Navigation
@@ -161,8 +175,14 @@ export const Footer: React.FC = () => {
 
         {/* Legal and System Notice */}
         <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-fg-faint">
-          <div>
-            © {currentYear} wibsity. All rights reserved.
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/logo-mark.png"
+              alt=""
+              aria-hidden="true"
+              className="h-3.5 w-auto object-contain opacity-75"
+            />
+            <span>© {currentYear} wibsity. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
             <span>WEB DESIGN & ENGINEERING STUDIO</span>
