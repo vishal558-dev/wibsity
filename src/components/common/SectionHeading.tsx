@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Badge } from './Badge';
 import { cn } from '../../utils/cn';
 
 interface SectionHeadingProps {
@@ -36,11 +35,11 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center gap-2 mb-4"
+        className="flex items-center gap-2 mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
       >
-        <Badge variant="outline">
-          {index} / {tag}
-        </Badge>
+        <span className="font-mono text-fg-faint text-[11px]">{index}</span>
+        <span className="text-border-hover">/</span>
+        <span className="tracking-widest text-fg-muted">{tag}</span>
       </motion.div>
 
       <motion.h2

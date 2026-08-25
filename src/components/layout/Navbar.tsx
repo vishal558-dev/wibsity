@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -18,11 +19,10 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Work', href: '#work', index: '01' },
-    { label: 'Services', href: '#services', index: '02' },
-    { label: 'Principles', href: '#principles', index: '03' },
-    { label: 'Process', href: '#process', index: '04' },
-    { label: 'FAQ', href: '#faq', index: '05' },
+    { label: 'Projects & Concepts', to: '/projects', index: '01' },
+    { label: 'Services', to: '/services', index: '02' },
+    { label: 'Studio', to: '/about', index: '03' },
+    { label: 'Contact', to: '/contact', index: '04' },
   ];
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
@@ -38,8 +38,8 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
-          <a
-            href="#"
+          <Link
+            to="/"
             className="flex items-center gap-3.5 group focus:outline-none"
             aria-label="wibsity home"
           >
@@ -48,23 +48,42 @@ export const Navbar: React.FC = () => {
               alt="wibsity"
               className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
             />
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 border border-border-hairline bg-canvas-surface text-[10px] font-mono uppercase tracking-wider text-fg-muted">
+            <span className="hidden sm:inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Accepting Projects
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main Navigation">
+          <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-xs font-sans font-medium tracking-wide text-fg-muted hover:text-fg transition-colors flex items-center gap-1.5 py-1"
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `text-xs font-sans tracking-wide transition-all flex items-center gap-1.5 py-1 relative ${
+                    isActive
+                      ? 'text-fg font-semibold'
+                      : 'text-fg-muted hover:text-fg font-medium'
+                  }`
+                }
               >
-                <span className="font-mono text-fg-faint text-[10px]">{link.index}</span>
-                <span>{link.label}</span>
-              </a>
+                {({ isActive }) => (
+                  <>
+                    <span className={`font-mono text-[10px] ${isActive ? 'text-fg' : 'text-fg-faint'}`}>
+                      {link.index}
+                    </span>
+                    <span>{link.label}</span>
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavIndicator"
+                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-fg"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </>
+                )}
+              </NavLink>
             ))}
           </nav>
 
@@ -73,7 +92,7 @@ export const Navbar: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              href="tel:+918448948791"
+              href={CONTACT_INFO.phoneHref}
               icon={<Phone size={13} />}
               className="text-xs"
             >
@@ -93,7 +112,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Quick Action Icons */}
-          <div className="flex sm:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-2">
             <a
               href={whatsappUrl}
               target="_blank"
@@ -129,19 +148,29 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="sm:hidden bg-canvas-surface border-b border-border-hairline px-4 pt-4 pb-6 overflow-hidden"
+            className="md:hidden bg-canvas-surface border-b border-border-hairline px-4 pt-4 pb-6 overflow-hidden"
           >
             <nav className="flex flex-col space-y-3">
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
+                <NavLink
+                  key={link.to}
+                  to={link.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans text-fg-muted hover:text-fg"
+                  className={({ isActive }) =>
+                    `flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans ${
+                      isActive ? 'text-fg font-semibold' : 'text-fg-muted hover:text-fg'
+                    }`
+                  }
                 >
-                  <span>{link.label}</span>
-                  <span className="font-mono text-xs text-fg-faint">{link.index}</span>
-                </a>
+                  {({ isActive }) => (
+                    <>
+                      <span>{link.label}</span>
+                      <span className={`font-mono text-xs ${isActive ? 'text-fg' : 'text-fg-faint'}`}>
+                        {link.index}
+                      </span>
+                    </>
+                  )}
+                </NavLink>
               ))}
               
               {/* Clean Call & WhatsApp Buttons in Mobile Drawer */}

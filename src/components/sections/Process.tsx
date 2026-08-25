@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
-import { Badge } from '../common/Badge';
 import { processData } from '../../data/process';
 
 export const Process: React.FC = () => {
@@ -28,7 +27,9 @@ export const Process: React.FC = () => {
               <div>
                 {/* Step Top */}
                 <div className="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
-                  <Badge variant="outline" size="sm">Step {step.step}</Badge>
+                  <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
+                    Step {step.step}
+                  </span>
                   <span className="font-sans text-xs font-semibold text-fg-subtle">{step.focus}</span>
                 </div>
 

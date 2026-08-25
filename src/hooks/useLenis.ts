@@ -23,6 +23,9 @@ export function useLenis() {
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== 'undefined') {
+      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    }
 
     let rafId: number;
     function raf(time: number) {
@@ -36,6 +39,9 @@ export function useLenis() {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      if (typeof window !== 'undefined') {
+        delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      }
     };
   }, [reducedMotion]);
 

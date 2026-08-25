@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, type HTMLMotionProps } from 'motion/react';
 import { cn } from '../../utils/cn';
 
@@ -10,6 +11,7 @@ export interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'>
   iconPosition?: 'left' | 'right';
   className?: string;
   href?: string;
+  to?: string;
   target?: string;
   rel?: string;
 }
@@ -22,6 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconPosition = 'right',
   className,
   href,
+  to,
   target,
   rel,
   ...props
@@ -62,6 +65,14 @@ export const Button: React.FC<ButtonProps> = ({
       )}
     </>
   );
+
+  if (to) {
+    return (
+      <Link to={to} className={baseClasses}>
+        {content}
+      </Link>
+    );
+  }
 
   if (href) {
     return (

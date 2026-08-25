@@ -1,47 +1,61 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { Hero } from './components/sections/Hero';
-import { Principles } from './components/sections/Principles';
-import { Portfolio } from './components/sections/Portfolio';
-import { Services } from './components/sections/Services';
-import { Process } from './components/sections/Process';
-import { FAQ } from './components/sections/FAQ';
-import { CaseStudyDrawer } from './components/sections/CaseStudyDrawer';
-import type { Project } from './types';
+import { ScrollToTop } from './components/common/ScrollToTop';
+import { HomePage } from './pages/HomePage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { CaseStudyPage } from './pages/CaseStudyPage';
+import { ServicesPage } from './pages/ServicesPage';
+import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { useLenis } from './hooks/useLenis';
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="flex-1 flex flex-col"
+      >
+        <Routes location={location}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:slug" element={<CaseStudyPage />} />
+          <Route path="/work" element={<Navigate to="/projects" replace />} />
+          <Route path="/work/:slug" element={<CaseStudyPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 
 export function App() {
   // Initialize smooth scrolling with reduced-motion fallback
   useLenis();
 
-  // Selected project for interactive case study drawer
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-
   return (
-    <div className="min-h-screen bg-canvas text-fg flex flex-col font-sans selection:bg-fg selection:text-canvas">
-      {/* Fixed Sticky Header with Call and WhatsApp actions */}
-      <Navbar />
-
-      {/* Main Content Sections */}
-      <main className="flex-1">
-        <Hero />
-        <Principles />
-        <Portfolio onSelectProject={(project) => setActiveProject(project)} />
-        <Services />
-        <Process />
-        <FAQ />
-      </main>
-
-      {/* Typographic Monolith Footer with direct phone & WhatsApp */}
-      <Footer />
-
-      {/* Interactive Case Study Drawer */}
-      <CaseStudyDrawer
-        project={activeProject}
-        onClose={() => setActiveProject(null)}
-      />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-canvas text-fg flex flex-col font-sans selection:bg-fg selection:text-canvas">
+        <ScrollToTop />
+        <Navbar />
+        <main className="flex-1 flex flex-col">
+          <AnimatedRoutes />
+        </main>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Phone, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
@@ -25,7 +26,7 @@ export const Footer: React.FC = () => {
               Ready to build a website that sets your business apart?
             </h2>
             <p className="mt-4 text-base sm:text-lg text-fg-muted leading-relaxed">
-              We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Connect directly via WhatsApp or phone call.
+              We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Connect directly via WhatsApp, phone, or view our contact hub.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -48,6 +49,15 @@ export const Footer: React.FC = () => {
               >
                 Call Us
               </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                to="/contact"
+                icon={<ArrowUpRight size={16} />}
+                className="text-sm border-border-hairline hover:border-fg"
+              >
+                Contact Details
+              </Button>
               <a
                 href={CONTACT_INFO.emailHref}
                 className="font-mono text-xs text-fg-muted hover:text-fg underline underline-offset-4 tracking-wider transition-colors px-2 py-3 flex items-center gap-1.5"
@@ -62,13 +72,13 @@ export const Footer: React.FC = () => {
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 pt-12 border-t border-border-hairline">
           {/* Brand Column */}
           <div className="md:col-span-1 space-y-3">
-            <a href="#" className="inline-block focus:outline-none" aria-label="wibsity home">
+            <Link to="/" className="inline-block focus:outline-none" aria-label="wibsity home">
               <img
                 src="/logo.png"
                 alt="wibsity"
                 className="h-5 sm:h-6 w-auto object-contain"
               />
-            </a>
+            </Link>
             <p className="font-sans text-xs text-fg-muted leading-relaxed">
               Digital design and web engineering studio for modern brands and growing practices.
             </p>
@@ -80,34 +90,28 @@ export const Footer: React.FC = () => {
             </span>
             <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>
-                <a href="#work" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/projects" className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">01</span>
-                  <span>Concept Works</span>
-                </a>
+                  <span>Projects & Concepts</span>
+                </Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/services" className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">02</span>
-                  <span>Services & Capabilities</span>
-                </a>
+                  <span>Services & Process</span>
+                </Link>
               </li>
               <li>
-                <a href="#principles" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/about" className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">03</span>
-                  <span>Studio Principles</span>
-                </a>
+                  <span>Studio Principles & FAQ</span>
+                </Link>
               </li>
               <li>
-                <a href="#process" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/contact" className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">04</span>
-                  <span>4-Step Process</span>
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-fg transition-colors flex items-center gap-2">
-                  <span className="font-mono text-fg-faint text-[10px]">05</span>
-                  <span>Business FAQ</span>
-                </a>
+                  <span>Contact Hub</span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -117,10 +121,26 @@ export const Footer: React.FC = () => {
               Capabilities
             </span>
             <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
-              <li>Business Websites</li>
-              <li>Landing Pages</li>
-              <li>Website Redesigns</li>
-              <li>Custom Web Systems</li>
+              <li>
+                <Link to="/services" className="hover:text-fg transition-colors">
+                  Business Websites
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-fg transition-colors">
+                  Landing Pages
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-fg transition-colors">
+                  Website Redesigns
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-fg transition-colors">
+                  Custom Web Systems
+                </Link>
+              </li>
             </ul>
           </div>
 

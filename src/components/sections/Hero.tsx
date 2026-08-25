@@ -4,7 +4,6 @@ import { animate, stagger } from 'animejs';
 import { ArrowDown, CheckCircle2, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
-import { Badge } from '../common/Badge';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { CONTACT_INFO } from '../../data/contact';
 
@@ -109,14 +108,13 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2.5 mb-6"
+            className="flex items-center gap-2 mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
           >
-            <Badge variant="outline">
-              00 / STUDIO INTRODUCTION
-            </Badge>
-            <span className="font-sans text-xs font-medium text-fg-subtle">
-              WEB DESIGN & ENGINEERING
-            </span>
+            <span className="font-mono text-fg-faint text-[11px]">00</span>
+            <span className="text-border-hover">/</span>
+            <span className="tracking-widest text-fg-muted">Studio Introduction</span>
+            <span className="text-border-hover hidden sm:inline">•</span>
+            <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering</span>
           </motion.div>
 
           {/* Main Headline */}

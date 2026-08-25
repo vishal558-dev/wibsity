@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Monitor, Smartphone, CheckCircle2, Layers, Cpu, Compass, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import type { Project } from '../../types';
-import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
 
@@ -60,11 +59,13 @@ export const CaseStudyDrawer: React.FC<CaseStudyDrawerProps> = ({
         >
           {/* Header Bar */}
           <div className="sticky top-0 z-20 bg-canvas/95 backdrop-blur-md border-b border-border-hairline p-4 sm:p-6 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <Badge variant="active" size="sm">{project.badge}</Badge>
-              <Badge variant="outline" size="sm">{project.categoryLabel}</Badge>
-              <span className="font-mono text-xs text-fg-subtle truncate max-w-[180px] sm:max-w-none">
-                Design Study / {project.slug}
+            <div className="flex items-center gap-2.5 text-xs font-sans">
+              <span className="font-semibold text-fg uppercase tracking-wider">{project.badge}</span>
+              <span className="text-border-hover">•</span>
+              <span className="text-fg-muted uppercase tracking-wider">{project.categoryLabel}</span>
+              <span className="text-border-hover hidden sm:inline">•</span>
+              <span className="font-sans text-xs text-fg-subtle truncate max-w-[180px] sm:max-w-none hidden sm:inline">
+                Design Study ({project.slug})
               </span>
             </div>
 

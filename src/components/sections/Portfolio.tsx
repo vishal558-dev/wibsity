@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
-import { Badge } from '../common/Badge';
 import { projectsData } from '../../data/projects';
 import type { Project, ProjectCategory } from '../../types';
 import { ArrowUpRight, Smartphone, Monitor } from 'lucide-react';
@@ -141,13 +140,14 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject }) => {
                 <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="active" size="sm">
+                      <div className="flex items-center gap-2 text-xs font-sans">
+                        <span className="font-semibold text-fg uppercase tracking-wider">
                           {project.badge}
-                        </Badge>
-                        <Badge variant="outline" size="sm">
+                        </span>
+                        <span className="text-border-hover">•</span>
+                        <span className="text-fg-muted uppercase tracking-wider">
                           {project.categoryLabel}
-                        </Badge>
+                        </span>
                       </div>
                     </div>
 

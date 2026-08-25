@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { SectionHeading } from '../common/SectionHeading';
-import { Badge } from '../common/Badge';
 import { servicesData } from '../../data/services';
 import { Layout, Layers, RefreshCw, Sliders, Check, Clock, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -45,8 +44,9 @@ export const Services: React.FC = () => {
                   {/* Card Header */}
                   <div className="flex items-center justify-between pb-6 mb-6 border-b border-border-hairline">
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" size="sm">{service.index}</Badge>
-                      <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider">
+                      <span className="font-mono text-xs text-fg-faint font-semibold">{service.index}</span>
+                      <span className="text-border-hover text-xs">/</span>
+                      <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
                         Capability
                       </span>
                     </div>

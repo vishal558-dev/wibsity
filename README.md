@@ -78,36 +78,45 @@ wibsity/
 ├── vite.config.ts
 └── src/
     ├── main.tsx
-    ├── App.tsx
+    ├── App.tsx                      # React Router v7 root with animated routes & Lenis
     ├── index.css
+    ├── pages/
+    │   ├── HomePage.tsx             # Ultra-minimalist monograph & featured concepts
+    │   ├── WorkPage.tsx             # Filterable portfolio & concept works archive
+    │   ├── CaseStudyPage.tsx        # Dedicated full-page case study & viewport simulator
+    │   ├── ServicesPage.tsx         # 4 Core capabilities & 4-step delivery methodology
+    │   ├── AboutPage.tsx            # Studio principles, manifesto & categorized FAQs
+    │   ├── ContactPage.tsx          # Minimalist direct contact & initiation hub
+    │   └── NotFoundPage.tsx         # Swiss editorial 404 handler
     ├── types/
-    │   └── index.ts                 # TypeScript definitions (Project, Service, FAQ, Inquiry)
+    │   └── index.ts                 # TypeScript definitions (Project, Service, FAQ, etc.)
     ├── data/
     │   ├── projects.ts              # Rich case study data & interactive viewports
     │   ├── services.ts              # 4 Core business service offerings
     │   ├── process.ts               # 4-Step delivery methodology
-    │   └── faqs.ts                  # Categorized business FAQs
+    │   ├── faqs.ts                  # Categorized business FAQs
+    │   └── contact.ts               # Centralized phone, email, and WhatsApp config
     ├── hooks/
     │   ├── useLenis.ts              # Lenis smooth scroll hook + reduced-motion guard
     │   └── useReducedMotion.ts      # Accessibility preference hook
     ├── components/
     │   ├── common/
     │   │   ├── Badge.tsx            # Monospace system tag [ 01 // TAG ]
-    │   │   ├── Button.tsx           # High-contrast editorial button
-    │   │   └── SectionHeading.tsx   # Standardized Swiss editorial section header
+    │   │   ├── Button.tsx           # High-contrast editorial button (with router 'to' prop)
+    │   │   ├── ScrollToTop.tsx      # Coordinated router scroll-to-top handler
+    │   │   ├── SectionHeading.tsx   # Standardized Swiss editorial section header
+    │   │   └── WhatsAppIcon.tsx     # Crisp branded SVG icon
     │   ├── layout/
-    │   │   ├── Navbar.tsx           # Sticky header with availability badge
-    │   │   └── Footer.tsx           # Typographic monolith footer
-    │   ├── sections/
-    │   │   ├── Hero.tsx             # Customer-focused hero & anime.js gridlines
-    │   │   ├── Principles.tsx       # Studio principles & business value
-    │   │   ├── Portfolio.tsx        # Filterable selected works showcase
-    │   │   ├── CaseStudyDrawer.tsx  # Interactive case study drawer & viewport toggle
-    │   │   ├── Services.tsx         # 4 Core services bento grid
-    │   │   ├── Process.tsx          # 4-Step delivery methodology
-    │   │   └── FAQ.tsx              # Architectural accordion FAQ
-    │   └── modals/
-    │       └── InquiryModal.tsx     # Direct project conversation modal
+    │   │   ├── Navbar.tsx           # Sticky header with active NavLinks & mobile drawer
+    │   │   └── Footer.tsx           # Typographic monolith footer with router directory
+    │   └── sections/
+    │       ├── Hero.tsx             # Customer-focused hero & anime.js gridlines
+    │       ├── Principles.tsx       # Studio principles & business value
+    │       ├── Portfolio.tsx        # Filterable selected works showcase
+    │       ├── CaseStudyDrawer.tsx  # Interactive case study drawer & viewport toggle
+    │       ├── Services.tsx         # 4 Core services bento grid
+    │       ├── Process.tsx          # 4-Step delivery methodology
+    │       └── FAQ.tsx              # Architectural accordion FAQ
     └── utils/
         └── cn.ts                    # Class name merger (clsx + twMerge)
 ```
