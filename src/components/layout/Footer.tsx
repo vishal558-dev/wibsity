@@ -194,7 +194,7 @@ export const Footer: React.FC = () => {
 
       {/* Typographic Wordmark at bottom */}
       <div className="w-full select-none pointer-events-none overflow-hidden flex justify-center py-4 opacity-[0.06] border-t border-border-hairline">
-        <span className="font-sans font-black text-[18vw] leading-none tracking-tighter text-fg uppercase">
+        <span className="font-sans font-black text-[18vw] leading-none tracking-tighter text-fg lowercase">
           wibsity
         </span>
       </div>
