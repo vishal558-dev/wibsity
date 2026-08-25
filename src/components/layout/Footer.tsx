@@ -4,23 +4,28 @@ import { Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
+import { smoothScrollToTop } from '../../utils/scroll';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
+
+  const handleLinkClick = () => {
+    smoothScrollToTop(0.9);
+  };
 
   return (
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
       {/* Upper CTA Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
         <div className="border border-border-hairline bg-canvas-subtle p-8 sm:p-12 lg:p-16 relative">
-          <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-fg-faint uppercase tracking-wider hidden sm:block">
+          <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:block font-semibold">
             DIRECT INTAKE
           </div>
 
           <div className="max-w-3xl">
-            <span className="font-mono text-xs text-fg-muted uppercase tracking-wider block mb-3">
-              00 / PROJECT INQUIRY
+            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-3">
+              Project Inquiry
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
               Ready to build a website that sets your business apart?
@@ -53,6 +58,7 @@ export const Footer: React.FC = () => {
                 variant="ghost"
                 size="lg"
                 to="/contact"
+                onClick={handleLinkClick}
                 icon={<ArrowUpRight size={16} />}
                 className="text-sm border-border-hairline hover:border-fg"
               >
@@ -72,7 +78,7 @@ export const Footer: React.FC = () => {
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 pt-12 border-t border-border-hairline">
           {/* Brand Column */}
           <div className="md:col-span-1 space-y-3">
-            <Link to="/" className="inline-block focus:outline-none" aria-label="wibsity home">
+            <Link to="/" onClick={handleLinkClick} className="inline-block focus:outline-none" aria-label="wibsity home">
               <img
                 src="/logo.png"
                 alt="wibsity"
@@ -90,25 +96,25 @@ export const Footer: React.FC = () => {
             </span>
             <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>
-                <Link to="/projects" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/projects" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">01</span>
                   <span>Projects & Concepts</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">02</span>
                   <span>Services & Process</span>
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">03</span>
                   <span>Studio Principles & FAQ</span>
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-fg transition-colors flex items-center gap-2">
+                <Link to="/contact" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">04</span>
                   <span>Contact Hub</span>
                 </Link>
@@ -122,22 +128,22 @@ export const Footer: React.FC = () => {
             </span>
             <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>
-                <Link to="/services" className="hover:text-fg transition-colors">
+                <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors">
                   Business Websites
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-fg transition-colors">
+                <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors">
                   Landing Pages
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-fg transition-colors">
+                <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors">
                   Website Redesigns
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-fg transition-colors">
+                <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors">
                   Custom Web Systems
                 </Link>
               </li>

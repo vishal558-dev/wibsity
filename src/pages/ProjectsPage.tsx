@@ -161,8 +161,8 @@ export const ProjectsPage: React.FC = () => {
         {/* Custom Project Scoping Note */}
         <div className="mt-16 p-8 border border-border-hairline bg-canvas-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1">
-            <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
-              // CUSTOM REQUIREMENTS
+            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-1">
+              Custom Requirements
             </span>
             <h4 className="text-lg font-bold text-fg">
               Need a bespoke digital flagship tailored to your exact business?

@@ -5,6 +5,7 @@ import { Menu, X, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
+import { smoothScrollToTop } from '../../utils/scroll';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,6 +28,15 @@ export const Navbar: React.FC = () => {
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
+  const handleNavClick = () => {
+    smoothScrollToTop(0.9);
+  };
+
+  const handleMobileNavClick = () => {
+    setMobileMenuOpen(false);
+    smoothScrollToTop(0.9);
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
@@ -40,6 +50,7 @@ export const Navbar: React.FC = () => {
           {/* Brand Logo */}
           <Link
             to="/"
+            onClick={handleNavClick}
             className="flex items-center gap-3.5 group focus:outline-none"
             aria-label="wibsity home"
           >
@@ -60,6 +71,7 @@ export const Navbar: React.FC = () => {
               <NavLink
                 key={link.to}
                 to={link.to}
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `text-xs font-sans tracking-wide transition-all flex items-center gap-1.5 py-1 relative ${
                     isActive
@@ -155,7 +167,7 @@ export const Navbar: React.FC = () => {
                 <NavLink
                   key={link.to}
                   to={link.to}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={handleMobileNavClick}
                   className={({ isActive }) =>
                     `flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans ${
                       isActive ? 'text-fg font-semibold' : 'text-fg-muted hover:text-fg'

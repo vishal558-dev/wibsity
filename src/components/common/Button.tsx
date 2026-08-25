@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, type HTMLMotionProps } from 'motion/react';
 import { cn } from '../../utils/cn';
+import { smoothScrollToTop } from '../../utils/scroll';
 
 export interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   children: React.ReactNode;
@@ -68,7 +69,16 @@ export const Button: React.FC<ButtonProps> = ({
 
   if (to) {
     return (
-      <Link to={to} className={baseClasses}>
+      <Link
+        to={to}
+        className={baseClasses}
+        onClick={(e) => {
+          smoothScrollToTop(0.9);
+          if (props.onClick) {
+            (props.onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>)(e);
+          }
+        }}
+      >
         {content}
       </Link>
     );
