@@ -96,6 +96,12 @@ export const Footer: React.FC = () => {
             </span>
             <ul className="space-y-2.5 font-sans text-xs text-fg-muted">
               <li>
+                <Link to="/" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
+                  <span className="font-mono text-fg-faint text-[10px]">00</span>
+                  <span>Home</span>
+                </Link>
+              </li>
+              <li>
                 <Link to="/projects" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
                   <span className="font-mono text-fg-faint text-[10px]">01</span>
                   <span>Projects & Concepts</span>

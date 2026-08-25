@@ -20,6 +20,7 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
+    { label: 'Home', to: '/', index: '00', end: true },
     { label: 'Projects & Concepts', to: '/projects', index: '01' },
     { label: 'Services', to: '/services', index: '02' },
     { label: 'Studio', to: '/about', index: '03' },
@@ -71,6 +72,7 @@ export const Navbar: React.FC = () => {
               <NavLink
                 key={link.to}
                 to={link.to}
+                end={link.end}
                 onClick={handleNavClick}
                 className={({ isActive }) =>
                   `text-xs font-sans tracking-wide transition-all flex items-center gap-1.5 py-1 relative ${
@@ -167,6 +169,7 @@ export const Navbar: React.FC = () => {
                 <NavLink
                   key={link.to}
                   to={link.to}
+                  end={link.end}
                   onClick={handleMobileNavClick}
                   className={({ isActive }) =>
                     `flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans ${
