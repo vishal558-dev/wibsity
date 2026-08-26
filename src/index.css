@@ -15,6 +15,11 @@
   --color-fg-subtle: #71717a;
   --color-fg-faint: #52525b;
 
+  --color-accent: #4b50fe;
+  --color-accent-light: #7c82ff;
+  --color-accent-dark: #2432fc;
+  --color-accent-fg: #f5f6ff;
+
   --font-sans: "General Sans", Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "Space Mono", monospace;
 
@@ -44,10 +49,31 @@
   /* Architectural Grid utility */
   .grid-pattern {
     background-size: 40px 40px;
-    background-image: 
+    background-image:
       linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
+
+  ::selection {
+    background-color: rgba(75, 80, 254, 0.32);
+    color: #fafafa;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-accent-light);
+    outline-offset: 2px;
+  }
+}
+
+/* Soft radial brand glow, used sparingly for depth behind hero/CTA surfaces */
+.accent-glow {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(75, 80, 254, 0.5), transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 /* Custom scrollbar for desktop */
@@ -66,7 +92,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #4b50fe;
 }
 
 /* Lenis smooth scrolling styles */

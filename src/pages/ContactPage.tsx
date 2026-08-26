@@ -78,10 +78,10 @@ export const ContactPage: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
                     <WhatsAppIcon size={20} />
                   </div>
                   <div>
@@ -96,7 +96,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-fg group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Open Chat</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -105,10 +105,10 @@ export const ContactPage: React.FC = () => {
               {/* Phone Card */}
               <a
                 href={CONTACT_INFO.phoneHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
                     <Phone size={18} />
                   </div>
                   <div>
@@ -123,7 +123,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-fg group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Call Now</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -132,10 +132,10 @@ export const ContactPage: React.FC = () => {
               {/* Email Card */}
               <a
                 href={CONTACT_INFO.emailHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-fg transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-fg shrink-0">
+                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
                     <Mail size={18} />
                   </div>
                   <div>
@@ -150,7 +150,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-fg group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Send Email</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -179,7 +179,7 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-4 pt-4 border-t border-border-hairline">
                 {engagementPoints.map((pt) => (
                   <div key={pt.title} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
+                    <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-fg font-sans">
                         {pt.title}
@@ -195,7 +195,7 @@ export const ContactPage: React.FC = () => {
 
             {/* Quick Turnaround Assurance */}
             <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-6 flex items-center gap-4">
-              <Clock size={20} className="text-fg-muted shrink-0" />
+              <Clock size={20} className="text-accent-light shrink-0" />
               <div>
                 <span className="text-xs font-bold text-fg block">
                   5–7 Day Sprint Cycles

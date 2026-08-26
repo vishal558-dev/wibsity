@@ -69,13 +69,13 @@ export const AboutPage: React.FC = () => {
               </p>
               <div className="pt-4 flex flex-wrap items-center gap-4 sm:gap-6 font-sans text-xs text-fg-subtle">
                 <span className="flex items-center gap-2">
-                  <Sparkles size={14} className="text-fg" /> Swiss Editorial Aesthetic
+                  <Sparkles size={14} className="text-accent-light" /> Swiss Editorial Aesthetic
                 </span>
                 <span className="flex items-center gap-2">
-                  <Zap size={14} className="text-fg" /> Sub-500ms Performance
+                  <Zap size={14} className="text-accent-light" /> Sub-500ms Performance
                 </span>
                 <span className="flex items-center gap-2">
-                  <Code size={14} className="text-fg" /> 100% Clean Code
+                  <Code size={14} className="text-accent-light" /> 100% Clean Code
                 </span>
               </div>
             </div>
@@ -103,14 +103,14 @@ export const AboutPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
+                  className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle border-t-2 border-t-transparent hover:border-t-accent transition-all duration-300"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-8">
                       <span className="font-mono text-xs font-semibold text-fg-faint group-hover:text-fg-muted transition-colors">
                         {p.index}
                       </span>
-                      <Icon size={20} className="text-fg-muted group-hover:text-fg transition-colors" />
+                      <Icon size={20} className="text-fg-muted group-hover:text-accent-light transition-colors" />
                     </div>
                     <h4 className="text-lg font-bold text-fg tracking-tight mb-3">
                       {p.title}
@@ -154,11 +154,11 @@ export const AboutPage: React.FC = () => {
                     className="w-full flex items-start justify-between text-left gap-4 group cursor-pointer focus:outline-none py-1"
                     aria-expanded={isOpen}
                   >
-                    <h4 className="text-base sm:text-lg font-bold text-fg group-hover:text-neutral-300 transition-colors font-sans pr-2 leading-snug flex-1">
+                    <h4 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-light transition-colors font-sans pr-2 leading-snug flex-1">
                       {faq.question}
                     </h4>
 
-                    <div className="p-1.5 sm:p-1 border border-border-hairline bg-canvas-surface text-fg-muted group-hover:text-fg group-hover:border-fg shrink-0 transition-colors mt-0.5">
+                    <div className="p-1.5 sm:p-1 border border-border-hairline bg-canvas-surface text-fg-muted group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5">
                       {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                     </div>
                   </button>

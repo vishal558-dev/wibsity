@@ -88,7 +88,7 @@ export const CaseStudyPage: React.FC = () => {
                 onClick={() => setViewportMode('desktop')}
                 className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-sans font-medium transition-colors cursor-pointer ${
                   viewportMode === 'desktop'
-                    ? 'bg-fg text-canvas font-semibold'
+                    ? 'bg-accent text-accent-fg font-semibold'
                     : 'text-fg-muted hover:text-fg'
                 }`}
               >
@@ -98,7 +98,7 @@ export const CaseStudyPage: React.FC = () => {
                 onClick={() => setViewportMode('mobile')}
                 className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-sans font-medium transition-colors cursor-pointer ${
                   viewportMode === 'mobile'
-                    ? 'bg-fg text-canvas font-semibold'
+                    ? 'bg-accent text-accent-fg font-semibold'
                     : 'text-fg-muted hover:text-fg'
                 }`}
               >
@@ -235,7 +235,7 @@ export const CaseStudyPage: React.FC = () => {
                     </div>
 
                     <div className="pt-2">
-                      <div className="w-full bg-fg text-canvas font-sans text-[11px] text-center uppercase font-bold py-2 shadow">
+                      <div className="w-full bg-gradient-to-b from-accent-light to-accent-dark text-accent-fg font-sans text-[11px] text-center uppercase font-bold py-2 shadow">
                         {project.mobilePreview.ctaText}
                       </div>
                     </div>
@@ -290,7 +290,7 @@ export const CaseStudyPage: React.FC = () => {
               >
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-fg shrink-0" />
+                    <CheckCircle2 size={16} className="text-accent-light shrink-0" />
                     <h4 className="font-bold text-sm sm:text-base text-fg font-sans">
                       {feat.title}
                     </h4>
@@ -382,7 +382,7 @@ export const CaseStudyPage: React.FC = () => {
         <div className="pt-8 sm:pt-12 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Link
             to={`/projects/${prevProject.slug}`}
-            className="group border border-border-hairline bg-canvas-surface hover:border-fg p-5 sm:p-6 transition-colors"
+            className="group border border-border-hairline bg-canvas-surface hover:border-accent/60 p-5 sm:p-6 transition-colors"
           >
             <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider flex items-center gap-1.5 mb-2">
               <ArrowLeft size={12} /> Previous Concept
@@ -397,7 +397,7 @@ export const CaseStudyPage: React.FC = () => {
 
           <Link
             to={`/projects/${nextProject.slug}`}
-            className="group border border-border-hairline bg-canvas-surface hover:border-fg p-5 sm:p-6 transition-colors text-left sm:text-right"
+            className="group border border-border-hairline bg-canvas-surface hover:border-accent/60 p-5 sm:p-6 transition-colors text-left sm:text-right"
           >
             <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider flex items-center sm:justify-end gap-1.5 mb-2">
               Next Concept <ArrowRight size={12} />

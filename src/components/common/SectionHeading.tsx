@@ -38,7 +38,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
       >
         <span className="font-mono text-fg-faint text-[11px]">{index}</span>
-        <span className="text-border-hover">/</span>
+        <span className="text-accent">/</span>
         <span className="tracking-widest text-fg-muted">{tag}</span>
       </motion.div>
 

@@ -50,13 +50,19 @@ export const HomePage: React.FC = () => {
             preserveAspectRatio="none"
           >
             <line x1="0" y1="25%" x2="100%" y2="25%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
-            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
+            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="currentColor" strokeWidth="1" className="grid-line text-accent/25" />
             <line x1="0" y1="75%" x2="100%" y2="75%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
             <line x1="20%" y1="0" x2="20%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
-            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
+            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-accent/25" />
             <line x1="80%" y1="0" x2="80%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
           </svg>
         </div>
+
+        {/* Soft brand-color depth glow, kept behind content and heavily blurred */}
+        <div className="accent-glow w-[36rem] h-[36rem] -top-40 right-[-10rem] opacity-30 z-0" aria-hidden="true" />
+
+        {/* Accent boundary line at the base of the hero */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" aria-hidden="true" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="max-w-4xl">
@@ -68,7 +74,7 @@ export const HomePage: React.FC = () => {
               className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
             >
               <span className="font-mono text-fg-faint text-[11px]">00</span>
-              <span className="text-border-hover">/</span>
+              <span className="text-accent">/</span>
               <span className="tracking-widest text-fg-muted">Studio Introduction</span>
               <span className="text-border-hover hidden sm:inline">•</span>
               <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering</span>
@@ -81,7 +87,10 @@ export const HomePage: React.FC = () => {
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
             >
-              We design and build websites that help your business stand out and win clients.
+              We design and build websites that help your business{' '}
+              <span className="bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent">
+                stand out and win clients.
+              </span>
             </motion.h1>
 
             {/* Subtitle */}
@@ -128,7 +137,7 @@ export const HomePage: React.FC = () => {
                 size="lg"
                 to="/projects"
                 icon={<ArrowRight size={16} />}
-                className="text-fg-muted hover:text-fg border-border-hairline hover:border-fg w-full sm:w-auto justify-center"
+                className="text-fg-muted hover:text-accent-light border-border-hairline hover:border-accent/60 w-full sm:w-auto justify-center"
               >
                 Projects & Concepts
               </Button>
@@ -143,7 +152,7 @@ export const HomePage: React.FC = () => {
             >
               {valuePoints.map((point) => (
                 <div key={point} className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
                   <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
                     {point}
                   </span>
@@ -168,7 +177,7 @@ export const HomePage: React.FC = () => {
             <div className="mt-6 md:mt-0">
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted hover:text-fg border border-border-hairline bg-canvas-surface hover:border-fg px-4 py-2.5 transition-colors"
+                className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted hover:text-accent-light border border-border-hairline bg-canvas-surface hover:border-accent/60 px-4 py-2.5 transition-colors"
               >
                 <span>Explore Full Scope & Process</span>
                 <ArrowRight size={14} />
@@ -180,7 +189,7 @@ export const HomePage: React.FC = () => {
             {servicesData.map((service) => (
               <div
                 key={service.id}
-                className="border border-border-hairline bg-canvas p-6 flex flex-col justify-between hover:border-fg/40 transition-colors"
+                className="border border-border-hairline bg-canvas p-6 flex flex-col justify-between hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_16px_40px_-24px_rgba(75,80,254,0.6)] transition-all"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
@@ -201,7 +210,7 @@ export const HomePage: React.FC = () => {
 
                 <Link
                   to="/services"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-fg transition-colors pt-4 border-t border-border-hairline"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-accent-light transition-colors pt-4 border-t border-border-hairline"
                 >
                   <span>View Details</span>
                   <ArrowRight size={12} />
@@ -219,7 +228,7 @@ export const HomePage: React.FC = () => {
             <div className="lg:col-span-7 space-y-6">
               <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
                 <span className="font-mono text-fg-faint text-[11px]">02</span>
-                <span className="text-border-hover">/</span>
+                <span className="text-accent">/</span>
                 <span className="tracking-widest text-fg-muted">Studio Manifesto</span>
               </div>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
@@ -230,21 +239,21 @@ export const HomePage: React.FC = () => {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
-                <div className="border-l border-border-hairline pl-4">
+                <div className="border-l border-accent/40 pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <Zap size={14} /> &lt; 500ms
+                    <Zap size={14} className="text-accent-light" /> &lt; 500ms
                   </div>
                   <p className="text-xs text-fg-muted">Sub-second load target</p>
                 </div>
-                <div className="border-l border-border-hairline pl-4">
+                <div className="border-l border-accent/40 pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <ShieldCheck size={14} /> 100%
+                    <ShieldCheck size={14} className="text-accent-light" /> 100%
                   </div>
                   <p className="text-xs text-fg-muted">Code & IP ownership</p>
                 </div>
-                <div className="border-l border-border-hairline pl-4">
+                <div className="border-l border-accent/40 pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <Code size={14} /> React 19
+                    <Code size={14} className="text-accent-light" /> React 19
                   </div>
                   <p className="text-xs text-fg-muted">Modern frontend stack</p>
                 </div>
@@ -265,7 +274,7 @@ export const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg hover:underline underline-offset-4"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4"
                 >
                   Read Studio Principles <ArrowRight size={13} />
                 </Link>
@@ -282,7 +291,7 @@ export const HomePage: React.FC = () => {
             <div className="max-w-2xl space-y-3">
               <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
                 <span className="font-mono text-fg-faint text-[11px]">03</span>
-                <span className="text-border-hover">/</span>
+                <span className="text-accent">/</span>
                 <span className="tracking-widest text-fg-muted">Portfolio Archive</span>
                 <span className="text-border-hover hidden sm:inline">•</span>
                 <span className="text-fg-subtle hidden sm:inline text-[11px]">Interactive Viewports</span>
@@ -295,13 +304,13 @@ export const HomePage: React.FC = () => {
               </p>
               <div className="flex flex-wrap gap-3 sm:gap-4 pt-2 font-mono text-xs text-fg-subtle">
                 <span className="flex items-center gap-1.5">
-                  <Layout size={14} className="text-fg" /> Flagship Concepts
+                  <Layout size={14} className="text-accent-light" /> Flagship Concepts
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Layers size={14} className="text-fg" /> Practice Concepts
+                  <Layers size={14} className="text-accent-light" /> Practice Concepts
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Sparkles size={14} className="text-fg" /> Brand Experiences
+                  <Sparkles size={14} className="text-accent-light" /> Brand Experiences
                 </span>
               </div>
             </div>

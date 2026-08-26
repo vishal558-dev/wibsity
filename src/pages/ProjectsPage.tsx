@@ -47,8 +47,8 @@ export const ProjectsPage: React.FC = () => {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`font-sans text-xs font-medium px-3.5 py-1.5 border transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat.id
-                    ? 'bg-fg text-canvas border-fg font-semibold'
-                    : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg hover:border-border-hover'
+                    ? 'bg-accent text-accent-fg border-accent-dark font-semibold'
+                    : 'bg-canvas-surface border-border-hairline text-fg-muted hover:text-fg hover:border-accent/50'
                 }`}
               >
                 {cat.label}
@@ -71,7 +71,7 @@ export const ProjectsPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group border border-border-hairline bg-canvas-subtle hover:border-fg/40 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="group border border-border-hairline bg-canvas-subtle hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_24px_56px_-32px_rgba(75,80,254,0.65)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Visual Preview Container */}
                 <Link
@@ -97,7 +97,7 @@ export const ProjectsPage: React.FC = () => {
                     <span className="font-mono text-[11px] text-fg-faint block">
                       // {project.clientType}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight group-hover:text-neutral-200 transition-colors">
+                    <h3 className="text-xl sm:text-2xl font-bold text-fg tracking-tight group-hover:text-accent-light transition-colors">
                       {project.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-fg-muted line-clamp-2 leading-relaxed">
@@ -116,7 +116,7 @@ export const ProjectsPage: React.FC = () => {
                         {project.stack.slice(0, 3).join(' • ')}
                       </span>
                     </div>
-                    <span className="inline-flex items-center gap-1 text-xs font-mono text-fg group-hover:translate-x-0.5 transition-transform">
+                    <span className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-0.5 transition-transform">
                       Inspect Case Study <ArrowUpRight size={13} />
                     </span>
                   </div>

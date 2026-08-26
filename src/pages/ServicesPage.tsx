@@ -42,7 +42,7 @@ export const ServicesPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="border border-border-hairline bg-canvas-subtle p-5 sm:p-8 lg:p-10 flex flex-col justify-between group hover:border-fg/40 transition-colors"
+                  className="border border-border-hairline bg-canvas-subtle p-5 sm:p-8 lg:p-10 flex flex-col justify-between group hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_20px_48px_-28px_rgba(75,80,254,0.6)] transition-all"
                 >
                   <div>
                     {/* Card Header */}
@@ -61,7 +61,7 @@ export const ServicesPage: React.FC = () => {
                           <span className="hidden sm:inline font-sans text-xs text-fg-faint font-medium">
                             {service.scopeType}
                           </span>
-                          <Icon size={18} className="text-fg-muted group-hover:text-fg transition-colors shrink-0" />
+                          <Icon size={18} className="text-fg-muted group-hover:text-accent-light transition-colors shrink-0" />
                         </div>
                       </div>
                       <div className="sm:hidden mt-2 text-xs font-sans text-fg-faint font-medium">
@@ -97,7 +97,7 @@ export const ServicesPage: React.FC = () => {
                       </span>
                       {service.deliverables.map((item) => (
                         <div key={item} className="flex items-start gap-2 text-xs text-fg-muted font-sans">
-                          <Check size={14} className="text-fg shrink-0 mt-0.5" />
+                          <Check size={14} className="text-accent-light shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -130,7 +130,7 @@ export const ServicesPage: React.FC = () => {
         {/* Turnaround Guarantee Banner */}
         <div className="p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
-            <Clock size={24} className="text-fg-muted shrink-0 mt-0.5" />
+            <Clock size={24} className="text-accent-light shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h3 className="font-sans text-base font-bold text-fg">
                 Typical turnaround: 5–7 days for standard website projects.
@@ -182,7 +182,7 @@ export const ServicesPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle transition-colors duration-300"
+                className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle border-t-2 border-t-transparent hover:border-t-accent transition-all duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">

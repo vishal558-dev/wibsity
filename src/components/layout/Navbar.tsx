@@ -84,14 +84,14 @@ export const Navbar: React.FC = () => {
               >
                 {({ isActive }) => (
                   <>
-                    <span className={`font-mono text-[10px] ${isActive ? 'text-fg' : 'text-fg-faint'}`}>
+                    <span className={`font-mono text-[10px] ${isActive ? 'text-accent-light' : 'text-fg-faint'}`}>
                       {link.index}
                     </span>
                     <span>{link.label}</span>
                     {isActive && (
                       <motion.span
                         layoutId="activeNavIndicator"
-                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-fg"
+                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gradient-to-r from-accent to-accent-light"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -180,7 +180,7 @@ export const Navbar: React.FC = () => {
                   {({ isActive }) => (
                     <>
                       <span>{link.label}</span>
-                      <span className={`font-mono text-xs ${isActive ? 'text-fg' : 'text-fg-faint'}`}>
+                      <span className={`font-mono text-xs ${isActive ? 'text-accent-light' : 'text-fg-faint'}`}>
                         {link.index}
                       </span>
                     </>

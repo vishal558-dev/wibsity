@@ -18,13 +18,16 @@ export const Footer: React.FC = () => {
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
       {/* Upper CTA Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
-        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-12 lg:p-16 relative">
-          <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:block font-semibold">
+        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-12 lg:p-16 relative overflow-hidden">
+          <div className="accent-glow w-72 h-72 -top-24 -right-24 opacity-60" aria-hidden="true" />
+
+          <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:flex items-center gap-1.5 font-semibold">
+            <span className="w-1.5 h-1.5 bg-accent inline-block" />
             DIRECT INTAKE
           </div>
 
-          <div className="max-w-3xl">
-            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-3">
+          <div className="max-w-3xl relative">
+            <span className="font-sans text-xs font-semibold text-accent-light uppercase tracking-wider block mb-3">
               Project Inquiry
             </span>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
