@@ -123,7 +123,7 @@ export const HomePage: React.FC = () => {
               </Button>
 
               <Button
-                variant="outline"
+                variant="ghost"
                 size="lg"
                 href={CONTACT_INFO.phoneHref}
                 icon={<Phone size={16} />}
@@ -137,7 +137,7 @@ export const HomePage: React.FC = () => {
                 size="lg"
                 to="/projects"
                 icon={<ArrowRight size={16} />}
-                className="text-fg-muted hover:text-accent-light border-border-hairline hover:border-accent/60 w-full sm:w-auto justify-center"
+                className="text-fg-muted hover:text-accent-light w-full sm:w-auto justify-center"
               >
                 Projects & Concepts
               </Button>

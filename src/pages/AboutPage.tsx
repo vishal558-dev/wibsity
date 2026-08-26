@@ -93,35 +93,31 @@ export const AboutPage: React.FC = () => {
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-hairline border border-border-hairline">
+          <div className="divide-y divide-border-hairline border-t border-border-hairline">
             {principles.map((p, idx) => {
               const Icon = p.icon;
               return (
                 <motion.div
                   key={p.index}
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle border-t-2 border-t-transparent hover:border-t-accent transition-all duration-300"
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  className="group py-8 sm:py-10 pl-5 sm:pl-8 border-l-2 border-transparent hover:border-accent transition-colors duration-300 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-8 items-start"
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-8">
-                      <span className="font-mono text-xs font-semibold text-fg-faint group-hover:text-fg-muted transition-colors">
-                        {p.index}
-                      </span>
-                      <Icon size={20} className="text-fg-muted group-hover:text-accent-light transition-colors" />
-                    </div>
-                    <h4 className="text-lg font-bold text-fg tracking-tight mb-3">
+                  <div className="sm:col-span-2 flex items-center gap-3 sm:block">
+                    <span className="font-mono text-2xl sm:text-3xl font-semibold text-fg-subtle group-hover:text-accent-light transition-colors">
+                      {p.index}
+                    </span>
+                    <Icon size={18} className="text-fg-muted group-hover:text-accent-light transition-colors sm:mt-2" />
+                  </div>
+                  <div className="sm:col-span-10">
+                    <h4 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2">
                       {p.title}
                     </h4>
-                    <p className="text-sm text-fg-muted leading-relaxed">
+                    <p className="text-sm sm:text-base text-fg-muted leading-relaxed max-w-2xl">
                       {p.desc}
                     </p>
-                  </div>
-
-                  <div className="mt-8 pt-4 border-t border-border-hairline/50 font-sans text-[11px] text-fg-faint uppercase tracking-wider">
-                    Core Standard
                   </div>
                 </motion.div>
               );

@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
                 Chat on WhatsApp
               </Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="lg"
                 href={CONTACT_INFO.phoneHref}
                 icon={<Phone size={16} />}
@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
                 to="/contact"
                 onClick={handleLinkClick}
                 icon={<ArrowUpRight size={16} />}
-                className="text-sm border-border-hairline hover:border-fg w-full sm:w-auto justify-center"
+                className="text-sm w-full sm:w-auto justify-center"
               >
                 Contact Details
               </Button>

@@ -356,7 +356,7 @@ export const CaseStudyPage: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto shrink-0">
             <Button
-              variant="outline"
+              variant="ghost"
               size="md"
               href={CONTACT_INFO.phoneHref}
               icon={<Phone size={15} />}

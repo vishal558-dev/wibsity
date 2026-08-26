@@ -184,7 +184,7 @@ export const ProjectsPage: React.FC = () => {
               Discuss on WhatsApp
             </Button>
             <Button
-              variant="outline"
+              variant="ghost"
               size="md"
               to="/contact"
               className="text-xs flex-1 sm:flex-initial justify-center"

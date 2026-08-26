@@ -143,7 +143,7 @@ export const ServicesPage: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto shrink-0">
             <Button
-              variant="outline"
+              variant="ghost"
               size="md"
               href={CONTACT_INFO.phoneHref}
               icon={<Phone size={14} />}
@@ -174,51 +174,57 @@ export const ServicesPage: React.FC = () => {
             description="We keep communication direct and transparent with structured milestones, visual design reviews, and predictable delivery momentum."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-hairline border border-border-hairline">
-            {processData.map((step, idx) => (
-              <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-canvas p-6 sm:p-8 flex flex-col justify-between group hover:bg-canvas-subtle border-t-2 border-t-transparent hover:border-t-accent transition-all duration-300"
-              >
-                <div>
-                  <div className="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
-                    <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
-                      Step {step.step}
-                    </span>
-                    <span className="font-sans text-xs text-fg-subtle">
+          <div className="relative">
+            <div className="absolute left-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-accent/70 via-border-hairline to-transparent hidden sm:block" />
+
+            <div className="space-y-10 sm:space-y-12">
+              {processData.map((step, idx) => (
+                <motion.div
+                  key={step.step}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="relative flex flex-col sm:flex-row gap-4 sm:gap-8"
+                >
+                  <div className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-0 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-canvas border border-accent/50 flex items-center justify-center font-mono text-xs font-semibold text-accent-light shrink-0 z-10">
+                      {step.step}
+                    </div>
+                    <span className="sm:hidden font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
                       {step.focus}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-fg tracking-tight mb-3 font-sans">
-                    {step.name}
-                  </h3>
-                  <p className="text-xs text-fg-muted leading-relaxed mb-6 font-sans">
-                    {step.description}
-                  </p>
+                  <div className="flex-1 pb-2 sm:pb-0">
+                    <div className="hidden sm:flex items-center gap-3 mb-2">
+                      <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
+                        {step.focus}
+                      </span>
+                      <span className="font-mono text-[10px] text-fg-faint">
+                        {step.code}
+                      </span>
+                    </div>
 
-                  <div className="space-y-1.5 pt-4 border-t border-border-hairline/60">
-                    <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-2">
-                      Milestone Output
-                    </span>
-                    {step.deliverables.map((item) => (
-                      <div key={item} className="flex items-start gap-1.5 text-xs text-fg-subtle font-sans">
-                        <span className="text-fg-faint font-mono mt-0.5">→</span>
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                    <h3 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2 font-sans">
+                      {step.name}
+                    </h3>
+                    <p className="text-sm text-fg-muted leading-relaxed mb-4 max-w-2xl font-sans">
+                      {step.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-x-6 gap-y-1.5">
+                      {step.deliverables.map((item) => (
+                        <div key={item} className="flex items-center gap-1.5 text-xs text-fg-subtle font-sans">
+                          <span className="text-accent font-mono">→</span>
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                <div className="mt-8 pt-4 border-t border-border-hairline/40 font-mono text-[10px] text-fg-faint">
-                  {step.step} of 04 // {step.code}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 
