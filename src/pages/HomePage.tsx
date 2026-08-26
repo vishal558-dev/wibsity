@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
 import { animate, stagger } from 'animejs';
 import { CheckCircle2, Phone, ArrowRight, ShieldCheck, Zap, Code, Layout, Layers, Sparkles } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
@@ -9,6 +9,73 @@ import { SectionHeading } from '../components/common/SectionHeading';
 import { servicesData } from '../data/services';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { CONTACT_INFO } from '../data/contact';
+
+/** Editorial highlighter-style stroke rendered behind a short headline phrase. */
+const Highlight: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="relative inline-block whitespace-nowrap">
+    <span className="relative z-10">{children}</span>
+    <svg
+      className="absolute left-0 right-0 -bottom-0.5 sm:-bottom-1 w-full h-[0.3em]"
+      viewBox="0 0 300 24"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4,14 C60,4 120,20 180,10 C220,4 262,17 296,9"
+        stroke="var(--color-accent)"
+        strokeWidth="10"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.85"
+      />
+    </svg>
+  </span>
+);
+
+/** Subtle magnetic pull for a single, deliberate hero CTA. Hover-only enhancement; the wrapped element stays a fully clickable link/button on its own. */
+const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
+  const prefersReduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 200, damping: 16, mass: 0.3 });
+  const springY = useSpring(y, { stiffness: 200, damping: 16, mass: 0.3 });
+
+  if (prefersReduced) {
+    return <div className={className}>{children}</div>;
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left - rect.width / 2) * 0.25);
+    y.set((e.clientY - rect.top - rect.height / 2) * 0.35);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business', 'stand', 'out', 'and'];
+
+const wordVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+};
 
 export const HomePage: React.FC = () => {
   const svgLinesRef = useRef<SVGSVGElement | null>(null);
@@ -64,7 +131,7 @@ export const HomePage: React.FC = () => {
         {/* Accent boundary line at the base of the hero */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" aria-hidden="true" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full lg:flex lg:items-center lg:justify-between lg:gap-12">
           <div className="max-w-4xl">
             {/* Clean Unboxed Eyebrow */}
             <motion.div
@@ -81,17 +148,30 @@ export const HomePage: React.FC = () => {
             </motion.div>
 
             {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
-            >
-              We design and build websites that help your business{' '}
-              <span className="bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent">
-                stand out and win clients.
-              </span>
-            </motion.h1>
+            {prefersReduced ? (
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]">
+                We design and build websites that help your business stand out and{' '}
+                <Highlight>win clients.</Highlight>
+              </h1>
+            ) : (
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.045, delayChildren: 0.1 } } }}
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
+              >
+                {headlineLeadWords.map((word, i) => (
+                  <React.Fragment key={i}>
+                    <motion.span variants={wordVariants} style={{ display: 'inline-block' }}>
+                      {word}
+                    </motion.span>{' '}
+                  </React.Fragment>
+                ))}
+                <motion.span variants={wordVariants} style={{ display: 'inline-block' }}>
+                  <Highlight>win clients.</Highlight>
+                </motion.span>
+              </motion.h1>
+            )}
 
             {/* Subtitle */}
             <motion.p
@@ -110,17 +190,19 @@ export const HomePage: React.FC = () => {
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-3.5"
             >
-              <Button
-                variant="primary"
-                size="lg"
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                icon={<WhatsAppIcon size={18} />}
-                className="w-full sm:w-auto justify-center"
-              >
-                Chat on WhatsApp
-              </Button>
+              <MagneticCTA className="w-full sm:w-auto">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  icon={<WhatsAppIcon size={18} />}
+                  className="w-full sm:w-auto justify-center"
+                >
+                  Chat on WhatsApp
+                </Button>
+              </MagneticCTA>
 
               <Button
                 variant="ghost"
@@ -158,6 +240,29 @@ export const HomePage: React.FC = () => {
                   </span>
                 </div>
               ))}
+            </motion.div>
+          </div>
+
+          {/* Quiet architectural mark, desktop only — breaks the single-column hero silhouette */}
+          <div className="hidden lg:flex relative w-full max-w-xs shrink-0 items-center justify-center py-12">
+            <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.16]" aria-hidden="true">
+              <polygon points="130,30 230,30 190,290 90,290" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
+            </svg>
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="relative border border-border-hairline bg-canvas-subtle px-5 py-4 shadow-[0_0_40px_-14px_rgba(75,80,254,0.4)]"
+            >
+              <span className="block font-mono text-[10px] text-fg-faint uppercase tracking-widest mb-1">
+                Engineering Target
+              </span>
+              <span className="block font-mono text-2xl font-semibold text-accent-light">
+                &lt; 500ms
+              </span>
+              <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
+                Sub-second load, on every build
+              </span>
             </motion.div>
           </div>
         </div>
