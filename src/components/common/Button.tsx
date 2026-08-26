@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
     'inline-flex items-center justify-center font-medium font-sans transition-all duration-200 cursor-pointer select-none text-center relative group',
     {
       // Variants
-      'bg-gradient-to-b from-accent-light to-accent-dark text-accent-fg hover:from-accent-light hover:to-accent border border-accent-dark/60 font-semibold shadow-[0_0_0_1px_rgba(75,80,254,0.15),0_8px_24px_-8px_rgba(75,80,254,0.55)] hover:shadow-[0_0_0_1px_rgba(124,130,255,0.3),0_10px_32px_-6px_rgba(75,80,254,0.7)] active:scale-[0.98]':
+      'bg-gradient-to-b from-accent to-accent-dark text-accent-fg hover:from-accent hover:to-accent-dark border border-accent-dark/60 font-semibold shadow-[0_0_0_1px_rgba(75,80,254,0.15),0_8px_24px_-8px_rgba(75,80,254,0.55)] hover:shadow-[0_0_0_1px_rgba(124,130,255,0.3),0_10px_32px_-6px_rgba(75,80,254,0.7)] active:scale-[0.98]':
         variant === 'primary',
       'bg-canvas-surface text-fg hover:bg-canvas-elevated hover:border-accent/50 border border-border-hairline':
         variant === 'secondary',

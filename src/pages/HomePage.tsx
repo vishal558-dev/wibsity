@@ -152,7 +152,7 @@ export const HomePage: React.FC = () => {
             >
               {valuePoints.map((point) => (
                 <div key={point} className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
                   <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
                     {point}
                   </span>

@@ -97,7 +97,7 @@ export const ServicesPage: React.FC = () => {
                       </span>
                       {service.deliverables.map((item) => (
                         <div key={item} className="flex items-start gap-2 text-xs text-fg-muted font-sans">
-                          <Check size={14} className="text-accent-light shrink-0 mt-0.5" />
+                          <Check size={14} className="text-fg shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </div>
                       ))}

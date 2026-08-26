@@ -179,7 +179,7 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-4 pt-4 border-t border-border-hairline">
                 {engagementPoints.map((pt) => (
                   <div key={pt.title} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
+                    <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-fg font-sans">
                         {pt.title}

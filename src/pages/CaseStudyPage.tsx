@@ -290,7 +290,7 @@ export const CaseStudyPage: React.FC = () => {
               >
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-accent-light shrink-0" />
+                    <CheckCircle2 size={16} className="text-fg shrink-0" />
                     <h4 className="font-bold text-sm sm:text-base text-fg font-sans">
                       {feat.title}
                     </h4>
