@@ -10,28 +10,6 @@ import { servicesData } from '../data/services';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { CONTACT_INFO } from '../data/contact';
 
-/** Editorial highlighter-style stroke rendered behind a short headline phrase. */
-const Highlight: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="relative inline-block whitespace-nowrap">
-    <span className="relative z-10">{children}</span>
-    <svg
-      className="absolute left-0 right-0 -bottom-0.5 sm:-bottom-1 w-full h-[0.3em]"
-      viewBox="0 0 300 24"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M4,14 C60,4 120,20 180,10 C220,4 262,17 296,9"
-        stroke="var(--color-accent)"
-        strokeWidth="10"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.85"
-      />
-    </svg>
-  </span>
-);
-
 /** Subtle magnetic pull for a single, deliberate hero CTA. Hover-only enhancement; the wrapped element stays a fully clickable link/button on its own. */
 const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
   const prefersReduced = useReducedMotion();
@@ -70,7 +48,7 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
   );
 };
 
-const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business', 'stand', 'out', 'and'];
+const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business'];
 
 const wordVariants: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -80,6 +58,14 @@ const wordVariants: Variants = {
 export const HomePage: React.FC = () => {
   const svgLinesRef = useRef<SVGSVGElement | null>(null);
   const prefersReduced = useReducedMotion();
+  const [headlineReady, setHeadlineReady] = React.useState(false);
+
+  useEffect(() => {
+    // Guarantees the browser paints the pre-animation state as a real frame
+    // before the stagger starts, so it isn't swallowed on a congested first-load.
+    const id = requestAnimationFrame(() => setHeadlineReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     if (prefersReduced || !svgLinesRef.current) return;
@@ -150,13 +136,13 @@ export const HomePage: React.FC = () => {
             {/* Headline */}
             {prefersReduced ? (
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]">
-                We design and build websites that help your business stand out and{' '}
-                <Highlight>win clients.</Highlight>
+                We design and build websites that help your business{' '}
+                <span className="text-accent-light">stand out.</span>
               </h1>
             ) : (
               <motion.h1
                 initial="hidden"
-                animate="visible"
+                animate={headlineReady ? 'visible' : 'hidden'}
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.045, delayChildren: 0.1 } } }}
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
               >
@@ -168,7 +154,7 @@ export const HomePage: React.FC = () => {
                   </React.Fragment>
                 ))}
                 <motion.span variants={wordVariants} style={{ display: 'inline-block' }}>
-                  <Highlight>win clients.</Highlight>
+                  <span className="text-accent-light">stand out.</span>
                 </motion.span>
               </motion.h1>
             )}
