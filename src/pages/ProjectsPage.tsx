@@ -86,6 +86,11 @@ export const ProjectsPage: React.FC = () => {
                       <span className="w-2 h-2 rounded-full bg-zinc-600 group-hover:bg-zinc-500 transition-colors" />
                     </div>
                     <div className="flex items-center gap-2">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: project.desktopPreview.accentColor }}
+                        aria-hidden="true"
+                      />
                       <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider">
                         {project.categoryLabel}
                       </span>

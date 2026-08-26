@@ -17,6 +17,16 @@ import { Button } from '../components/common/Button';
 import { projectsData } from '../data/projects';
 import { CONTACT_INFO } from '../data/contact';
 
+/** WCAG relative luminance, used to pick readable text over an arbitrary per-project accent color. */
+function isLightColor(hex: string): boolean {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.slice(0, 2), 16) / 255;
+  const g = parseInt(c.slice(2, 4), 16) / 255;
+  const b = parseInt(c.slice(4, 6), 16) / 255;
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.6;
+}
+
 export const CaseStudyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [viewportMode, setViewportMode] = useState<'desktop' | 'mobile'>('desktop');
@@ -27,6 +37,10 @@ export const CaseStudyPage: React.FC = () => {
   if (!project) {
     return <Navigate to="/projects" replace />;
   }
+
+  const ctaTextColor = isLightColor(project.desktopPreview.accentColor)
+    ? 'var(--color-canvas)'
+    : 'var(--color-accent-fg)';
 
   const prevProject = currentIndex > 0 ? projectsData[currentIndex - 1] : projectsData[projectsData.length - 1];
   const nextProject = currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : projectsData[0];
@@ -134,7 +148,10 @@ export const CaseStudyPage: React.FC = () => {
                   <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
                     {/* Mock Nav Bar */}
                     <div className="flex items-center justify-between border-b border-border-hairline pb-2 sm:pb-3">
-                      <span className="font-sans text-xs font-bold text-fg">
+                      <span
+                        className="font-sans text-xs font-bold"
+                        style={{ color: project.desktopPreview.accentColor }}
+                      >
                         {project.title.split(' ')[0]}
                       </span>
                       <div className="flex gap-3 sm:gap-4">
@@ -173,22 +190,82 @@ export const CaseStudyPage: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* Section Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                      {project.desktopPreview.sections.map((sec) => (
-                        <div key={sec.title} className="bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline">
-                          <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
-                            {sec.tag}
-                          </span>
-                          <h5 className="text-[11px] font-bold text-fg mb-1 font-sans">
-                            {sec.title}
-                          </h5>
-                          <p className="text-[9px] text-fg-muted leading-snug font-sans">
-                            {sec.desc}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                    {/* Section Cards — layout shape varies by concept category so previews don't all look identical */}
+                    {project.category === 'practice' ? (
+                      <div className="space-y-2 sm:space-y-2.5">
+                        {project.desktopPreview.sections.map((sec) => (
+                          <div
+                            key={sec.title}
+                            className="flex items-start justify-between gap-3 bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline"
+                          >
+                            <div>
+                              <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
+                                {sec.tag}
+                              </span>
+                              <h5 className="text-[11px] font-bold text-fg font-sans">
+                                {sec.title}
+                              </h5>
+                            </div>
+                            <p className="text-[9px] text-fg-muted leading-snug font-sans max-w-[55%] text-right">
+                              {sec.desc}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : project.category === 'commerce' ? (
+                      <div className="divide-y divide-border-hairline border border-border-hairline bg-canvas-subtle">
+                        {project.desktopPreview.sections.map((sec) => (
+                          <div key={sec.title} className="p-2.5 sm:p-3">
+                            <div className="flex items-center justify-between mb-1">
+                              <h5 className="text-[11px] font-bold text-fg font-sans">
+                                {sec.title}
+                              </h5>
+                              <span className="font-mono text-[8px] text-fg-faint uppercase">
+                                {sec.tag}
+                              </span>
+                            </div>
+                            <p className="text-[9px] text-fg-muted leading-snug font-sans">
+                              {sec.desc}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : project.category === 'brand' ? (
+                      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+                        {project.desktopPreview.sections.map((sec) => (
+                          <div key={sec.title} className="border border-border-hairline overflow-hidden">
+                            <div
+                              className="h-8 sm:h-10"
+                              style={{ backgroundColor: project.desktopPreview.accentColor, opacity: 0.35 }}
+                            />
+                            <div className="bg-canvas-subtle p-2 sm:p-2.5">
+                              <span className="font-mono text-[8px] text-fg-faint block uppercase mb-0.5">
+                                {sec.tag}
+                              </span>
+                              <h5 className="text-[10px] font-bold text-fg font-sans leading-tight">
+                                {sec.title}
+                              </h5>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                        {project.desktopPreview.sections.map((sec) => (
+                          <div key={sec.title} className="bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline">
+                            <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
+                              {sec.tag}
+                            </span>
+                            <h5 className="text-[11px] font-bold text-fg mb-1 font-sans">
+                              {sec.title}
+                            </h5>
+                            <p className="text-[9px] text-fg-muted leading-snug font-sans">
+                              {sec.desc}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ) : (
@@ -235,7 +312,10 @@ export const CaseStudyPage: React.FC = () => {
                     </div>
 
                     <div className="pt-2">
-                      <div className="w-full bg-gradient-to-b from-accent-light to-accent-dark text-accent-fg font-sans text-[11px] text-center uppercase font-bold py-2 shadow">
+                      <div
+                        className="w-full font-sans text-[11px] text-center uppercase font-bold py-2 shadow"
+                        style={{ backgroundColor: project.desktopPreview.accentColor, color: ctaTextColor }}
+                      >
                         {project.mobilePreview.ctaText}
                       </div>
                     </div>
