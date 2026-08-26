@@ -22,8 +22,8 @@ export const ContactPage: React.FC = () => {
       desc: 'Clear scope boundaries, deliverable checklists, and fixed pricing agreed upon before project start.',
     },
     {
-      title: '100% IP & Asset Ownership',
-      desc: 'Full ownership of all source code, Tailwind configurations, and domain assets with zero lock-in.',
+      title: 'Domain Ownership',
+      desc: 'Your domain is registered in your name and always yours — no lock-in.',
     },
   ];
 

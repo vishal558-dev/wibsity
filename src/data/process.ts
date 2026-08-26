@@ -43,11 +43,11 @@ export const processData: ProcessStep[] = [
     code: 'STEP_04',
     name: 'Testing, Launch & Full Handover',
     focus: 'Testing & Transfer',
-    description: 'We conduct final cross-device testing, connect your custom domain and SSL, and transfer full ownership of the codebase and assets to you with zero lock-in.',
+    description: 'We conduct final cross-device testing, connect your custom domain and SSL, and complete a full handover walkthrough so your domain and site are ready to go live under your control.',
     deliverables: [
       'Cross-Device & Browser Quality Check',
       'Custom Domain & SSL Setup Assistance',
-      'Full Source Code & Asset Transfer',
+      'Domain & Hosting Handover',
       'Client Walkthrough & Documentation',
     ],
   },

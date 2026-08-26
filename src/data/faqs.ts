@@ -16,8 +16,8 @@ export const faqsData: FAQItem[] = [
   {
     id: 'faq-3',
     category: 'Ownership',
-    question: 'Do I own my website and domain name once completed?',
-    answer: 'Yes, 100%. Unlike agencies that trap you in proprietary site-builders or monthly hostage fees, you own all source code, assets, domains, and design files upon final delivery. We hand over the complete codebase and deployment setup so you have total autonomy.',
+    question: 'Do I own my domain once the project is completed?',
+    answer: 'Yes. Your domain is registered in your name and is yours to keep, transfer, or manage independently — no lock-in, ever. We don’t trap you in proprietary site-builders or monthly hostage fees, and you’re never dependent on us to keep your site running.',
   },
   {
     id: 'faq-4',

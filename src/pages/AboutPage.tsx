@@ -36,8 +36,8 @@ export const AboutPage: React.FC = () => {
     {
       index: '04',
       icon: ShieldCheck,
-      title: '100% Client Ownership',
-      desc: 'You own all source code, design files, and domain assets completely. No proprietary website builder lock-in, no hostage maintenance fees, and no monthly platform dependencies.',
+      title: 'Domain Ownership',
+      desc: 'Your domain is registered and owned by you from day one. No proprietary website builder lock-in, no hostage maintenance fees, and no monthly platform dependencies.',
     },
   ];
 
@@ -135,7 +135,7 @@ export const AboutPage: React.FC = () => {
               Frequently Asked Questions
             </h3>
             <p className="text-sm text-fg-muted mt-2 max-w-xl">
-              Clear answers to scoping, turnaround expectations, source code ownership, and technical standards.
+              Clear answers to scoping, turnaround expectations, domain ownership, and technical standards.
             </p>
           </div>
 

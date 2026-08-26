@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
 import { animate, stagger } from 'animejs';
-import { CheckCircle2, Phone, ArrowRight, ShieldCheck, Zap, Code, Layout, Layers, Sparkles } from 'lucide-react';
+import { CheckCircle2, Phone, ArrowRight, Globe, Zap, Code, Layout, Layers, Sparkles } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
@@ -57,6 +57,7 @@ const wordVariants: Variants = {
 
 export const HomePage: React.FC = () => {
   const svgLinesRef = useRef<SVGSVGElement | null>(null);
+  const scanLineRef = useRef<SVGRectElement | null>(null);
   const prefersReduced = useReducedMotion();
   const [headlineReady, setHeadlineReady] = React.useState(false);
 
@@ -81,10 +82,22 @@ export const HomePage: React.FC = () => {
     }
   }, [prefersReduced]);
 
+  useEffect(() => {
+    if (prefersReduced || !scanLineRef.current) return;
+
+    animate(scanLineRef.current, {
+      translateY: [0, 250],
+      duration: 2800,
+      direction: 'alternate',
+      loop: true,
+      ease: 'inOutSine',
+    });
+  }, [prefersReduced]);
+
   const valuePoints = [
     'Direct Founder Collaboration',
     'Sub-Second Performance Target',
-    '100% Code & Asset Ownership',
+    'Domain Ownership Included',
     'Clear Fixed-Scope Proposals',
   ];
 
@@ -229,27 +242,71 @@ export const HomePage: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Quiet architectural mark, desktop only — breaks the single-column hero silhouette */}
-          <div className="hidden lg:flex relative w-full max-w-xs shrink-0 items-center justify-center py-12">
+          {/* Quiet architectural mark + engineering panel, desktop only — breaks the single-column hero silhouette */}
+          <div className="hidden lg:flex relative w-full max-w-xs shrink-0 items-center justify-center py-16">
             <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.16]" aria-hidden="true">
+              <defs>
+                <clipPath id="hero-mark-clip">
+                  <polygon points="130,30 230,30 190,290 90,290" />
+                </clipPath>
+              </defs>
               <polygon points="130,30 230,30 190,290 90,290" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
+              <rect
+                ref={scanLineRef}
+                x="60"
+                y="20"
+                width="200"
+                height="3"
+                fill="var(--color-accent-light)"
+                clipPath="url(#hero-mark-clip)"
+                opacity="0.7"
+              />
             </svg>
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative border border-border-hairline bg-canvas-subtle px-5 py-4 shadow-[0_0_40px_-14px_rgba(75,80,254,0.4)]"
-            >
-              <span className="block font-mono text-[10px] text-fg-faint uppercase tracking-widest mb-1">
-                Engineering Target
-              </span>
-              <span className="block font-mono text-2xl font-semibold text-accent-light">
-                &lt; 500ms
-              </span>
-              <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
-                Sub-second load, on every build
-              </span>
-            </motion.div>
+
+            <div className="relative flex flex-col items-start">
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="relative border border-border-hairline bg-canvas-subtle px-5 py-4 shadow-[0_0_40px_-14px_rgba(75,80,254,0.4)]"
+              >
+                <div className="flex items-center gap-1.5 mb-2.5">
+                  <span className={`w-1.5 h-1.5 rounded-full bg-accent-light ${prefersReduced ? '' : 'animate-pulse'}`} />
+                  <span className="font-mono text-[9px] text-fg-subtle uppercase tracking-widest">
+                    System Status · Operational
+                  </span>
+                </div>
+                <span className="block font-mono text-[10px] text-fg-faint uppercase tracking-widest mb-1">
+                  Engineering Target
+                </span>
+                <span className="block font-mono text-2xl font-semibold text-accent-light">
+                  &lt; 500ms
+                </span>
+                <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
+                  Sub-second load, on every build
+                </span>
+              </motion.div>
+
+              {/* Connector tick linking the two panel cards */}
+              <div className="w-px h-5 ml-8 bg-gradient-to-b from-accent/50 to-transparent" aria-hidden="true" />
+
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.78, ease: [0.16, 1, 0.3, 1] }}
+                className="relative ml-8 border border-border-hairline bg-canvas-subtle px-4 py-3"
+              >
+                <span className="block font-mono text-[9px] text-fg-faint uppercase tracking-widest mb-0.5">
+                  Domain
+                </span>
+                <span className="block font-mono text-lg font-semibold text-accent-light">
+                  Always Yours
+                </span>
+                <span className="block text-[11px] text-fg-muted mt-0.5 max-w-[9rem]">
+                  Domain ownership included
+                </span>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -323,10 +380,10 @@ export const HomePage: React.FC = () => {
                 <span className="tracking-widest text-fg-muted">Studio Manifesto</span>
               </div>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
-                No templates. No slow page builders. 100% code ownership.
+                No templates. No slow page builders. Just fast, modern code.
               </h2>
               <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                Most agencies trap businesses in bloated WordPress plugins or slow drag-and-drop systems. We handcraft bespoke React and TypeScript digital flagships that load under 500ms and remain completely in your control forever.
+                Most agencies trap businesses in bloated WordPress plugins or slow drag-and-drop systems. We handcraft bespoke React and TypeScript digital flagships that load under 500ms and are built to give your business a real competitive edge.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
@@ -338,9 +395,9 @@ export const HomePage: React.FC = () => {
                 </div>
                 <div className="border-l border-accent/40 pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <ShieldCheck size={14} className="text-accent-light" /> 100%
+                    <Globe size={14} className="text-accent-light" /> Domain
                   </div>
-                  <p className="text-xs text-fg-muted">Code & IP ownership</p>
+                  <p className="text-xs text-fg-muted">Full ownership, always yours</p>
                 </div>
                 <div className="border-l border-accent/40 pl-4">
                   <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
