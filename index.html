@@ -1,6 +1,26 @@
 <!doctype html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="scroll-smooth">
   <head>
+    <!-- Sets data-theme before first paint to avoid a flash of the wrong theme.
+         Mirrors src/hooks/useTheme.ts's resolution logic exactly (same
+         localStorage key, same matchMedia query) — it can't import that
+         hook directly because it must run before any JS bundle loads. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('wibsity-theme');
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- SPA redirect decode script for direct deep link reloads on static hosts -->
