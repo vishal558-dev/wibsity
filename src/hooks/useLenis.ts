@@ -7,8 +7,14 @@ export function useLenis() {
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    // If user prefers reduced motion, do not initialize smooth scrolling
-    if (reducedMotion || typeof window === 'undefined') {
+    // Skip smooth-scroll entirely on reduced-motion and on touch devices —
+    // mobile browsers already give native momentum scrolling, and touch
+    // input doesn't produce the wheel deltas Lenis is built to smooth, so
+    // running it there is pure CPU/battery overhead with no UX benefit.
+    const isCoarsePointer = typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(pointer: coarse)').matches
+      : false;
+    if (reducedMotion || isCoarsePointer || typeof window === 'undefined') {
       return;
     }
 

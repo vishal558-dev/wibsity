@@ -69,14 +69,34 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Fontshare: General Sans & Satoshi (Premium Modern Grotesks) -->
+    <!-- Fontshare: General Sans & Satoshi (Premium Modern Grotesks)
+         Google Fonts: JetBrains Mono for supporting technical metadata
+         Loaded via the preload+swap pattern so these third-party stylesheets
+         don't block the initial paint on a slow mobile connection — the
+         browser fetches them in parallel with everything else, then swaps
+         them in as regular stylesheets once ready. The <noscript> fallback
+         covers the no-JS case. font-display=swap in each URL still governs
+         in-page text visibility while each font family itself loads. -->
     <link rel="preconnect" href="https://api.fontshare.com" />
-    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
-
-    <!-- Google Fonts: JetBrains Mono for supporting technical metadata -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link
+      rel="preload"
+      as="style"
+      href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    </noscript>
 
     <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">

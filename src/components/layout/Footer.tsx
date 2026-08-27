@@ -90,6 +90,10 @@ export const Footer: React.FC = () => {
               <img
                 src={logoSrc}
                 alt="wibsity"
+                width={938}
+                height={296}
+                loading="lazy"
+                decoding="async"
                 className="h-5 sm:h-6 w-auto object-contain"
               />
             </Link>
@@ -216,6 +220,10 @@ export const Footer: React.FC = () => {
               src={logoMarkSrc}
               alt=""
               aria-hidden="true"
+              width={334}
+              height={243}
+              loading="lazy"
+              decoding="async"
               className="h-3.5 w-auto object-contain opacity-75"
             />
             <span>© {currentYear} wibsity. All rights reserved.</span>

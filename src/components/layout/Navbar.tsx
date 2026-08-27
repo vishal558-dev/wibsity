@@ -62,6 +62,9 @@ export const Navbar: React.FC = () => {
             <img
               src={logoSrc}
               alt="wibsity"
+              width={938}
+              height={296}
+              decoding="async"
               className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
             />
             <span className="hidden sm:inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1">
