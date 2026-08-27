@@ -8,6 +8,8 @@ A conversion-focused redesign pass (see Changelog below) is largely complete: br
 ## Changelog (redesign pass)
 Reverse-chronological summary of what changed and why, so a future session doesn't have to re-derive it from `git log`:
 
+- **(debt cleanup)** — Deleted vestigial `tailwind.config.js` (confirmed no `@config` reference and duplicate/conflicting tokens vs. `src/index.css`) and unused `src/App.css`. Reimplemented the two `animejs` hero-grid effects (gridline stagger fade-in, scan-line loop) using `motion/react`, then removed the `animejs`/`@types/animejs` dependency entirely — `motion` is now the only animation library. Rewrote `README.md` to match the actual page/component structure and removed its stale "100% code ownership" claim.
+- **`b9ce7dc`** — Projects & Concepts (`/projects`, `/work`) temporarily unrouted (redirects to `/`) until there's real client work to show; nav, footer, and homepage teaser banner no longer link to it. Data and page components left intact for re-enabling later.
 - **`e26100a`** — Deleted `components/sections/*` (Hero, Principles, Portfolio, Services, Process, FAQ, CaseStudyDrawer) and `components/common/Badge.tsx`. Confirmed zero imports first; this closes the "duplicated page markup" debt item below.
 - **`98e9fc0`** — Projects data: replaced invented brand names ("Vanguard Health & Surgery" etc.) with niche/category names ("Surgical Practice" etc.). Also fixed every project concept preview rendering identically — `desktopPreview.accentColor` existed per-project but was never wired into any rendering; now drives the mock nav wordmark, mobile CTA button, and card swatch, plus the "Section Cards" layout shape now varies by `category` (stat-strip / menu-row / swatch grid / card grid).
 - **`e39e33b`** — Hero right panel gained a connected companion stat card and scan-line detail. Ownership messaging reframed sitewide: removed every "100% code/IP ownership" claim (hero, manifesto, Contact, About principles, ownership FAQ, process handover step) and replaced with domain-ownership-only language — see the Content guardrails section in `CLAUDE.md`.
@@ -18,18 +20,11 @@ Reverse-chronological summary of what changed and why, so a future session doesn
 - **`050f0c8`** — Introduced the brand accent color system, extracted by sampling actual pixel colors from `public/logo-mark.png` (not invented): `accent` `#4B50FE`, `accent-light` `#7C82FF`, `accent-dark` `#2432FC`. Threaded through buttons, hover states, borders, and the recurring `/` separator.
 
 ## Known Technical Debt
-- **Conflicting Tailwind token sources**: `tailwind.config.js` and `src/index.css`'s `@theme` block both define colors/fonts/tracking with different values. `@theme` is the one actually in effect; `tailwind.config.js` is likely vestigial.
-- **Stale README**: references files/routes that no longer match the real project structure.
-- **`src/App.css` is unused** leftover Vite boilerplate.
-- **`animejs` is a narrow-purpose dependency** (hero-grid effect) that overlaps with `motion`, already in use for everything else.
-- **Main JS bundle is still ~480kB** (under Vite's 500kB warning threshold after route-splitting, but still the largest chunk) — further splitting (e.g. deferring `motion`/`animejs` off the critical path) hasn't been attempted.
+- **Main JS bundle is still ~480kB** (under Vite's 500kB warning threshold after route-splitting, but still the largest chunk) — further splitting (e.g. deferring `motion` off the critical path) hasn't been attempted.
 
 ## Current Priority
 1. Improve the Wibsity website's UI/UX and conversion quality. *(Substantially underway — see Changelog.)*
 
 ## Later
-- Resolve the Tailwind config conflict (retire `tailwind.config.js` or reconcile it with `src/index.css`).
-- Rewrite the README to match the actual structure.
-- Remove unused `src/App.css`.
-- Evaluate dropping `animejs` in favor of `motion`.
 - Revisit main bundle size further if it approaches the 500kB warning threshold again.
+- Real client case studies to replace the "Studio Concept" placeholders, at which point Projects & Concepts can be re-routed and re-linked.

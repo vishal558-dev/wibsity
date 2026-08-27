@@ -10,7 +10,7 @@ Web design/dev studio marketing site. React 19 + Vite + TypeScript + Tailwind CS
 
 ## Architecture & Routing
 `main.tsx` → `App.tsx` (`BrowserRouter` + `AnimatePresence` page transitions) → `pages/*.tsx`, one per route:
-`/`, `/projects`, `/projects/:slug`, `/services`, `/about`, `/contact`, plus legacy `/work` and `/work/:slug` redirecting to `/projects`, and a `*` 404 catch-all.
+`/`, `/services`, `/about`, `/contact`, a `*` 404 catch-all, and `/projects`, `/projects/:slug`, `/work`, `/work/:slug` which all currently redirect to `/` — Projects & Concepts is temporarily hidden from navigation until there's real client work to show (the page, data, and routes are still in the codebase, see the note below).
 
 Pages pull content from `data/*.ts` (typed via `types/index.ts`) and compose `components/{common,layout}`.
 
@@ -24,16 +24,18 @@ Actually used and consistent across pages — safe to extend:
 - `components/common/Button.tsx`, `SectionHeading.tsx`, `WhatsAppIcon.tsx`, `ScrollToTop.tsx`
 - `components/layout/Navbar.tsx`, `Footer.tsx`
 - `utils/cn.ts` (clsx + tailwind-merge) — use this for all conditional/merged className logic
-- `hooks/useLenis.ts` (smooth scroll, exposes `window.__lenis` global consumed by `utils/scroll.ts`) and `hooks/useReducedMotion.ts` (gates Lenis + anime.js; respect this when adding motion)
+- `hooks/useLenis.ts` (smooth scroll, exposes `window.__lenis` global consumed by `utils/scroll.ts`) and `hooks/useReducedMotion.ts` (gates Lenis + `motion`; respect this when adding motion)
+
+**Projects & Concepts is unrouted right now.** `/projects` and `/work` (and their `:slug` variants) `<Navigate to="/" replace />` in `App.tsx` — there's no nav or footer link to them either. `data/projects.ts`, `pages/ProjectsPage.tsx`, and `pages/CaseStudyPage.tsx` are all left intact specifically so this can be flipped back on later without a rebuild; don't delete them as "unused."
 
 ## Styling / design tokens
 **`src/index.css`'s `@theme` block is the authoritative Tailwind v4 token source** (colors, fonts, tracking) — it matches the actual fonts loaded in `index.html`.
 
 **Brand accent color**: extracted directly from the logo mark (`public/logo-mark.png`), not invented — `--color-accent` (`#4B50FE`), `--color-accent-light` (`#7C82FF`), `--color-accent-dark` (`#2432FC`), `--color-accent-fg` (`#F5F6FF`, for text on filled accent backgrounds). Used for `Button`'s `primary` variant (gradient `accent` → `accent-dark`, verified ≥5:1 contrast — do not fade toward `accent-light` in a button fill, that drops contrast below WCAG AA), interactive hover states/borders/glows, the recurring `/` separator in `SectionHeading` and inline eyebrows, and the active nav indicator. Keep it restrained: it's a functional/interactive color, not a default decorative one — most of the page should stay the existing dark/neutral tokens (`canvas`, `canvas-subtle`, `canvas-surface`, `fg`, `fg-muted`, etc.), with accent reserved for the single primary action and brand touchpoints.
 
-**`tailwind.config.js` appears vestigial**: it redefines the same token names with different values (different font stack, different tracking scale) and is not referenced via `@config` in `index.css`, so it's likely dead/ignored. Do not edit it expecting a visible effect — change tokens in `src/index.css` `@theme` instead. Flag to the user before touching `tailwind.config.js`.
+**There is no `tailwind.config.js`** — it was confirmed vestigial (never referenced via `@config`, defined conflicting duplicate tokens) and deleted. `src/index.css`'s `@theme` block is the only place to add or change tokens.
 
-**`src/App.css` is unused** (leftover Vite template boilerplate, never imported). Don't add styles to it.
+**There is no `src/App.css`** — it was unused leftover Vite template boilerplate, never imported, and was deleted.
 
 ## Deployment
 Vercel is the primary deployment target (`vercel.json` has a catch-all SPA rewrite). A vite-config plugin also copies `dist/index.html` → `dist/404.html` as a static-host fallback, but no Netlify `_redirects` exists in the repo — don't assume Netlify support without verifying.
@@ -46,6 +48,7 @@ Vercel is the primary deployment target (`vercel.json` has a catch-all SPA rewri
 
 ## Conventions for editing
 - Reuse `Button`, `SectionHeading`, `cn()`, and the layout components rather than reinventing patterns already established in `pages/*.tsx`.
-- Don't add new tokens to `tailwind.config.js`; add them to `src/index.css` `@theme`.
+- Add design tokens to `src/index.css` `@theme` (there's no `tailwind.config.js` anymore).
+- `motion` (`motion/react`) is the only animation library in the project — `animejs` was removed after its two hero-grid effects were reimplemented with `motion`. Don't reintroduce it for new animation; use `motion` instead.
 - Preserve the reduced-motion gating pattern when adding new animation.
 - **One filled `primary` Button per CTA cluster.** Every other action in the same group should be `ghost` or a plain text link — don't stack multiple bordered/filled buttons of similar visual weight next to each other (this was a deliberate fix; don't regress it).

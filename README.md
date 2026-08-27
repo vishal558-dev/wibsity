@@ -2,73 +2,51 @@
 
 > Clean, fast, high-impact web design for businesses, founders, modern practices, and growing brands.
 
-wibsity is an editorial web design and digital engineering studio website built with **React 19**, **Vite 6**, **TypeScript**, and **Tailwind CSS**. It follows a **Minimalist Swiss Editorial** design system featuring purposeful motion, accessible smooth scrolling, and an interactive portfolio centerpiece with responsive viewport simulation.
+wibsity is a web design and engineering studio's own marketing site, built with **React 19**, **Vite**, **TypeScript**, and **Tailwind CSS v4**. It uses a minimalist, high-contrast editorial design system with purposeful motion and accessible smooth scrolling.
 
 ---
 
-## ✨ Features
+## Tech Stack
 
-- **Minimalist Swiss Editorial Design**: High-contrast monochrome palette (`#08080a` canvas, `#fafafa` typography, `#27272a` hairline borders, uppercase monospace system tags).
-- **Interactive Portfolio & Case Study Centerpiece**:
-  - Filterable selected works showcase across Digital Flagships, Practice Portals, Brand Experiences, and Commerce.
-  - Interactive **Desktop (1440px) vs Mobile (390px) Viewport Switcher** simulating live responsive layouts.
-  - Deep-dive strategic breakdowns (The Challenge, UX Strategy, Architectural Features, Stack).
-  - Integrated inquiry action connecting case studies to the project intake modal.
-- **Direct, Empowering Copywriting**: Authentic, value-driven positioning tailored for businesses, founders, and modern practices with zero fake social proof.
-- **4 Core Capabilities**: Business Websites, High-Converting Landing Pages, Modern Website Redesigns, and Custom Web Experiences.
-- **Studio Principles & 4-Step Methodology**: Clear communication of value, sub-second performance, 100% code ownership, and structured delivery.
-- **Business FAQ Accordion**: Categorized, searchable answers to scoping, timelines, and technical standards.
-- **Project Brief Intake Modal**: Frictionless conversation starter with validation and pre-attached project references.
-- **Strictly Domain-Agnostic Routing**: Fully relative paths and internal state triggers ready for immediate custom domain deployment.
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: [React 19](https://react.dev/) + [Vite 6](https://vite.dev/)
+- **Framework**: [React 19](https://react.dev/) + [Vite](https://vite.dev/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animation & Motion**: [Motion (`motion/react`)](https://motion.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (config lives in `src/index.css`'s `@theme` block, not `tailwind.config.js`)
+- **Routing**: [React Router v7](https://reactrouter.com/)
+- **Animation & Motion**: [Motion (`motion/react`)](https://motion.dev/) — the only animation library in use
 - **Smooth Scrolling**: [Lenis](https://lenis.darkroom.engineering/) (with `prefers-reduced-motion` compliance)
-- **Specialized Geometric Animations**: [Anime.js v4](https://animejs.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js (v18+ recommended)
-- npm / pnpm / yarn
+- npm
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone <your-repo-url>
 cd wibsity
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-### Building for Production
+### Other scripts
 
 ```bash
-# Typecheck and build optimized bundle
-npm run build
-
-# Preview production build locally
-npm run preview
+npm run build    # tsc -b && vite build
+npm run lint     # oxlint
+npm run preview  # preview the production build locally
 ```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
+
+Page markup is inlined directly in `pages/*.tsx` — there is no `components/sections/*` layer. To change what renders on a page (hero copy, FAQ, services grid, etc.), edit the relevant page file directly.
 
 ```
 wibsity/
@@ -78,51 +56,53 @@ wibsity/
 ├── vite.config.ts
 └── src/
     ├── main.tsx
-    ├── App.tsx                      # React Router v7 root with animated routes & Lenis
-    ├── index.css
+    ├── App.tsx                      # Router root: routes, page transitions, Lenis init
+    ├── index.css                    # Tailwind v4 @theme — the single source of design tokens
     ├── pages/
-    │   ├── HomePage.tsx             # Ultra-minimalist monograph & featured concepts
-    │   ├── WorkPage.tsx             # Filterable portfolio & concept works archive
-    │   ├── CaseStudyPage.tsx        # Dedicated full-page case study & viewport simulator
-    │   ├── ServicesPage.tsx         # 4 Core capabilities & 4-step delivery methodology
-    │   ├── AboutPage.tsx            # Studio principles, manifesto & categorized FAQs
-    │   ├── ContactPage.tsx          # Minimalist direct contact & initiation hub
-    │   └── NotFoundPage.tsx         # Swiss editorial 404 handler
+    │   ├── HomePage.tsx             # Landing page (statically imported; every other page is lazy-loaded)
+    │   ├── ProjectsPage.tsx         # Projects & Concepts archive (currently unrouted — see note below)
+    │   ├── CaseStudyPage.tsx        # Per-project case study with desktop/mobile viewport simulator
+    │   ├── ServicesPage.tsx         # Core capabilities & delivery methodology
+    │   ├── AboutPage.tsx            # Studio principles & FAQ
+    │   ├── ContactPage.tsx          # Direct contact hub
+    │   └── NotFoundPage.tsx         # 404 handler
     ├── types/
-    │   └── index.ts                 # TypeScript definitions (Project, Service, FAQ, etc.)
+    │   └── index.ts                 # Project, Service, FAQ, etc. type definitions
     ├── data/
-    │   ├── projects.ts              # Rich case study data & interactive viewports
-    │   ├── services.ts              # 4 Core business service offerings
-    │   ├── process.ts               # 4-Step delivery methodology
-    │   ├── faqs.ts                  # Categorized business FAQs
+    │   ├── projects.ts              # Project/concept case study content
+    │   ├── services.ts              # Core service offerings
+    │   ├── process.ts               # Delivery methodology steps
+    │   ├── faqs.ts                  # Categorized FAQs
     │   └── contact.ts               # Centralized phone, email, and WhatsApp config
     ├── hooks/
     │   ├── useLenis.ts              # Lenis smooth scroll hook + reduced-motion guard
     │   └── useReducedMotion.ts      # Accessibility preference hook
     ├── components/
     │   ├── common/
-    │   │   ├── Badge.tsx            # Monospace system tag [ 01 // TAG ]
-    │   │   ├── Button.tsx           # High-contrast editorial button (with router 'to' prop)
-    │   │   ├── ScrollToTop.tsx      # Coordinated router scroll-to-top handler
-    │   │   ├── SectionHeading.tsx   # Standardized Swiss editorial section header
-    │   │   └── WhatsAppIcon.tsx     # Crisp branded SVG icon
-    │   ├── layout/
-    │   │   ├── Navbar.tsx           # Sticky header with active NavLinks & mobile drawer
-    │   │   └── Footer.tsx           # Typographic monolith footer with router directory
-    │   └── sections/
-    │       ├── Hero.tsx             # Customer-focused hero & anime.js gridlines
-    │       ├── Principles.tsx       # Studio principles & business value
-    │       ├── Portfolio.tsx        # Filterable selected works showcase
-    │       ├── CaseStudyDrawer.tsx  # Interactive case study drawer & viewport toggle
-    │       ├── Services.tsx         # 4 Core services bento grid
-    │       ├── Process.tsx          # 4-Step delivery methodology
-    │       └── FAQ.tsx              # Architectural accordion FAQ
+    │   │   ├── Button.tsx           # Shared button (supports both router `to` and external `href`)
+    │   │   ├── ScrollToTop.tsx      # Router scroll-to-top handler
+    │   │   ├── SectionHeading.tsx   # Standardized section header
+    │   │   └── WhatsAppIcon.tsx     # Branded SVG icon
+    │   └── layout/
+    │       ├── Navbar.tsx           # Sticky header with active NavLinks & mobile drawer
+    │       └── Footer.tsx           # Footer with site directory
     └── utils/
-        └── cn.ts                    # Class name merger (clsx + twMerge)
+        ├── cn.ts                    # Class name merger (clsx + tailwind-merge)
+        └── scroll.ts                # Lenis-aware scroll helpers
 ```
+
+**Note on Projects & Concepts**: the `/projects` and `/work` routes currently redirect to the homepage — the page is temporarily hidden from navigation until there's real client work to showcase, rather than concept-only placeholders. The page, its data, and its route are all still in the codebase and can be re-enabled by restoring the routes in `App.tsx` and the nav/footer links.
 
 ---
 
-## 📄 License
+## Content Guardrails
+
+- The site never claims code/IP ownership transfer to the client — it does not promise "full ownership of the code" or similar. Domain ownership is the one explicit ownership claim it makes.
+- Project entries use niche/category names ("Surgical Practice"), never invented brand names, and are labeled as concept work, not real past clients.
+- No fabricated testimonials or metrics — value claims trace back to real, existing copy (turnaround time, fixed-scope process, direct founder contact).
+
+---
+
+## License
 
 MIT © [wibsity](https://wibsity.com)

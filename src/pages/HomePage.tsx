@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
-import { animate, stagger } from 'animejs';
 import { CheckCircle2, Phone, ArrowRight, Globe, Zap, Code } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
@@ -50,14 +49,21 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
 
 const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business'];
 
+const heroGridLines = [
+  { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-zinc-700' },
+  { x1: '0', y1: '50%', x2: '100%', y2: '50%', color: 'text-accent/25' },
+  { x1: '0', y1: '75%', x2: '100%', y2: '75%', color: 'text-zinc-700' },
+  { x1: '20%', y1: '0', x2: '20%', y2: '100%', color: 'text-zinc-700' },
+  { x1: '50%', y1: '0', x2: '50%', y2: '100%', color: 'text-accent/25' },
+  { x1: '80%', y1: '0', x2: '80%', y2: '100%', color: 'text-zinc-700' },
+];
+
 const wordVariants: Variants = {
   hidden: { opacity: 0, y: 18 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
 };
 
 export const HomePage: React.FC = () => {
-  const svgLinesRef = useRef<SVGSVGElement | null>(null);
-  const scanLineRef = useRef<SVGRectElement | null>(null);
   const prefersReduced = useReducedMotion();
   const [headlineReady, setHeadlineReady] = React.useState(false);
 
@@ -67,32 +73,6 @@ export const HomePage: React.FC = () => {
     const id = requestAnimationFrame(() => setHeadlineReady(true));
     return () => cancelAnimationFrame(id);
   }, []);
-
-  useEffect(() => {
-    if (prefersReduced || !svgLinesRef.current) return;
-
-    const lines = svgLinesRef.current.querySelectorAll('.grid-line');
-    if (lines.length > 0) {
-      animate(lines, {
-        opacity: [0.05, 0.4],
-        duration: 1200,
-        delay: stagger(100),
-        ease: 'inOutSine',
-      });
-    }
-  }, [prefersReduced]);
-
-  useEffect(() => {
-    if (prefersReduced || !scanLineRef.current) return;
-
-    animate(scanLineRef.current, {
-      translateY: [0, 250],
-      duration: 2800,
-      direction: 'alternate',
-      loop: true,
-      ease: 'inOutSine',
-    });
-  }, [prefersReduced]);
 
   const valuePoints = [
     'Direct Founder Collaboration',
@@ -110,17 +90,29 @@ export const HomePage: React.FC = () => {
         {/* Animated Background Architectural Grid */}
         <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
           <svg
-            ref={svgLinesRef}
             className="w-full h-full"
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="none"
           >
-            <line x1="0" y1="25%" x2="100%" y2="25%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
-            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="currentColor" strokeWidth="1" className="grid-line text-accent/25" />
-            <line x1="0" y1="75%" x2="100%" y2="75%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
-            <line x1="20%" y1="0" x2="20%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
-            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-accent/25" />
-            <line x1="80%" y1="0" x2="80%" y2="100%" stroke="currentColor" strokeWidth="1" className="grid-line text-zinc-700" />
+            {heroGridLines.map((line, i) =>
+              prefersReduced ? (
+                <line key={i} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="currentColor" strokeWidth="1" className={line.color} />
+              ) : (
+                <motion.line
+                  key={i}
+                  x1={line.x1}
+                  y1={line.y1}
+                  x2={line.x2}
+                  y2={line.y2}
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  className={line.color}
+                  initial={{ opacity: 0.05 }}
+                  animate={{ opacity: 0.4 }}
+                  transition={{ duration: 1.2, delay: i * 0.1, ease: 'easeInOut' }}
+                />
+              )
+            )}
           </svg>
         </div>
 
@@ -242,16 +234,29 @@ export const HomePage: React.FC = () => {
                 </clipPath>
               </defs>
               <polygon points="130,30 230,30 190,290 90,290" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
-              <rect
-                ref={scanLineRef}
-                x="60"
-                y="20"
-                width="200"
-                height="3"
-                fill="var(--color-accent-light)"
-                clipPath="url(#hero-mark-clip)"
-                opacity="0.7"
-              />
+              {prefersReduced ? (
+                <rect
+                  x="60"
+                  y="20"
+                  width="200"
+                  height="3"
+                  fill="var(--color-accent-light)"
+                  clipPath="url(#hero-mark-clip)"
+                  opacity="0.7"
+                />
+              ) : (
+                <motion.rect
+                  x="60"
+                  width="200"
+                  height="3"
+                  fill="var(--color-accent-light)"
+                  clipPath="url(#hero-mark-clip)"
+                  opacity="0.7"
+                  initial={{ y: 20 }}
+                  animate={{ y: [20, 270] }}
+                  transition={{ duration: 2.8, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+                />
+              )}
             </svg>
 
             <div className="relative flex flex-col items-start">
