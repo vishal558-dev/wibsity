@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../components/common/Button';
-import { ArrowLeft, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
 
 export const NotFoundPage: React.FC = () => {
   return (
@@ -13,14 +13,11 @@ export const NotFoundPage: React.FC = () => {
           Page Not Found
         </h1>
         <p className="text-sm sm:text-base text-fg-muted max-w-md mx-auto leading-relaxed">
-          The requested route does not exist or has been moved. Return to the homepage or explore our selected works archive.
+          The requested route does not exist or has been moved.
         </p>
         <div className="pt-4 flex items-center justify-center gap-3">
           <Button variant="primary" size="md" to="/" icon={<Home size={15} />}>
             Return Home
-          </Button>
-          <Button variant="outline" size="md" to="/projects" icon={<ArrowLeft size={15} />}>
-            View Projects
           </Button>
         </div>
       </div>

@@ -106,26 +106,20 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/projects" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
-                  <span className="font-mono text-fg-faint text-[10px]">01</span>
-                  <span>Projects & Concepts</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
-                  <span className="font-mono text-fg-faint text-[10px]">02</span>
+                  <span className="font-mono text-fg-faint text-[10px]">01</span>
                   <span>Services & Process</span>
                 </Link>
               </li>
               <li>
                 <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
-                  <span className="font-mono text-fg-faint text-[10px]">03</span>
+                  <span className="font-mono text-fg-faint text-[10px]">02</span>
                   <span>Studio Principles & FAQ</span>
                 </Link>
               </li>
               <li>
                 <Link to="/contact" onClick={handleLinkClick} className="hover:text-fg transition-colors flex items-center gap-2">
-                  <span className="font-mono text-fg-faint text-[10px]">04</span>
+                  <span className="font-mono text-fg-faint text-[10px]">03</span>
                   <span>Contact Hub</span>
                 </Link>
               </li>

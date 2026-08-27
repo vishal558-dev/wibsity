@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
 import { animate, stagger } from 'animejs';
-import { CheckCircle2, Phone, ArrowRight, Globe, Zap, Code, Layout, Layers, Sparkles } from 'lucide-react';
+import { CheckCircle2, Phone, ArrowRight, Globe, Zap, Code } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
@@ -213,15 +213,6 @@ export const HomePage: React.FC = () => {
                 Call Us
               </Button>
 
-              <Button
-                variant="ghost"
-                size="lg"
-                to="/projects"
-                icon={<ArrowRight size={16} />}
-                className="text-fg-muted hover:text-accent-light w-full sm:w-auto justify-center"
-              >
-                Projects & Concepts
-              </Button>
             </motion.div>
 
             {/* Value Verification Grid */}
@@ -427,52 +418,6 @@ export const HomePage: React.FC = () => {
                   Read Studio Principles <ArrowRight size={13} />
                 </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 03 / Projects & Concepts Teaser Banner (Portfolio Archive) */}
-      <section className="py-16 sm:py-20 border-b border-border-hairline bg-canvas-subtle">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border border-border-hairline bg-canvas p-6 sm:p-10 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 relative overflow-hidden">
-            <div className="max-w-2xl space-y-3">
-              <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
-                <span className="font-mono text-fg-faint text-[11px]">03</span>
-                <span className="text-accent">/</span>
-                <span className="tracking-widest text-fg-muted">Portfolio Archive</span>
-                <span className="text-border-hover hidden sm:inline">•</span>
-                <span className="text-fg-subtle hidden sm:inline text-[11px]">Interactive Viewports</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-fg tracking-tight">
-                Explore our Projects & Concepts archive.
-              </h2>
-              <p className="text-sm sm:text-base text-fg-muted leading-relaxed">
-                Inspect dedicated case studies with live desktop (1440px) vs. mobile (390px) responsive viewport simulations across clinical practices, architectural ateliers, luxury commerce, and SaaS platforms.
-              </p>
-              <div className="flex flex-wrap gap-3 sm:gap-4 pt-2 font-mono text-xs text-fg-subtle">
-                <span className="flex items-center gap-1.5">
-                  <Layout size={14} className="text-accent-light" /> Flagship Concepts
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Layers size={14} className="text-accent-light" /> Practice Concepts
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Sparkles size={14} className="text-accent-light" /> Brand Experiences
-                </span>
-              </div>
-            </div>
-
-            <div className="shrink-0 w-full sm:w-auto">
-              <Button
-                variant="primary"
-                size="lg"
-                to="/projects"
-                icon={<ArrowRight size={16} />}
-                className="w-full sm:w-auto justify-center"
-              >
-                View Projects & Concepts
-              </Button>
             </div>
           </div>
         </div>

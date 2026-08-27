@@ -10,8 +10,6 @@ import { useLenis } from './hooks/useLenis';
 // Lazy-loaded: keeps the initial bundle for "/" small so the hero's
 // entrance animation isn't competing with parsing/executing every
 // other page's code on first paint.
-const ProjectsPage = lazy(() => import('./pages/ProjectsPage').then((m) => ({ default: m.ProjectsPage })));
-const CaseStudyPage = lazy(() => import('./pages/CaseStudyPage').then((m) => ({ default: m.CaseStudyPage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then((m) => ({ default: m.ServicesPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })));
@@ -33,10 +31,11 @@ function AnimatedRoutes() {
         <Suspense fallback={<div className="flex-1 bg-canvas" />}>
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:slug" element={<CaseStudyPage />} />
-            <Route path="/work" element={<Navigate to="/projects" replace />} />
-            <Route path="/work/:slug" element={<CaseStudyPage />} />
+            {/* Projects & Concepts is temporarily hidden until there's real client work to show — see data/projects.ts and pages/ProjectsPage.tsx, still intact for re-enabling. */}
+            <Route path="/projects" element={<Navigate to="/" replace />} />
+            <Route path="/projects/:slug" element={<Navigate to="/" replace />} />
+            <Route path="/work" element={<Navigate to="/" replace />} />
+            <Route path="/work/:slug" element={<Navigate to="/" replace />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

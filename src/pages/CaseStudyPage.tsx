@@ -35,7 +35,7 @@ export const CaseStudyPage: React.FC = () => {
   const project = projectsData[currentIndex];
 
   if (!project) {
-    return <Navigate to="/projects" replace />;
+    return <Navigate to="/" replace />;
   }
 
   const ctaTextColor = isLightColor(project.desktopPreview.accentColor)
