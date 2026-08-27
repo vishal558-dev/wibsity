@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { smoothScrollToTop, resetScrollPosition } from '../../utils/scroll';
 
@@ -20,8 +20,11 @@ export function ScrollToTop() {
     }
   }, []);
 
-  useEffect(() => {
-    // Reset immediately for new route
+  useLayoutEffect(() => {
+    // Reset synchronously, before the browser paints the new route —
+    // otherwise the outgoing page's AnimatePresence exit frame briefly
+    // paints at whatever scroll offset the previous page was left at
+    // (e.g. the footer) before this could snap it back to the top.
     resetScrollPosition();
 
     // Smoothly ensure alignment once page transition settles
