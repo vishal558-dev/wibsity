@@ -71,10 +71,6 @@
   color-scheme: light;
 }
 
-:root[data-theme="light"] ::selection {
-  color: #08080a;
-}
-
 @layer base {
   :root {
     color-scheme: dark;

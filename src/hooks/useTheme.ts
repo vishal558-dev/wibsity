@@ -11,8 +11,12 @@ function getSystemTheme(): Theme {
 
 function getStoredTheme(): Theme | null {
   if (typeof window === 'undefined') return null;
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === 'light' || stored === 'dark' ? stored : null;
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    return stored === 'light' || stored === 'dark' ? stored : null;
+  } catch {
+    return null;
+  }
 }
 
 function applyTheme(theme: Theme) {
@@ -47,7 +51,12 @@ export function useTheme(): { theme: Theme; setTheme: (next: Theme) => void } {
   }, [theme]);
 
   const setTheme = useCallback((next: Theme) => {
-    window.localStorage.setItem(STORAGE_KEY, next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // Persistence unavailable (storage-blocked context); keep the toggle
+      // working for this session even though it won't survive a reload.
+    }
     setThemeState(next);
   }, []);
 

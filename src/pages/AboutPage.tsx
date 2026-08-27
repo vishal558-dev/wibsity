@@ -192,14 +192,14 @@ export const AboutPage: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
+                className="font-semibold text-fg hover:text-fg-muted transition-colors flex items-center gap-1.5"
               >
                 <WhatsAppIcon size={13} /> WhatsApp
               </a>
               <span className="text-border-hover">|</span>
               <a
                 href={CONTACT_INFO.phoneHref}
-                className="font-semibold text-fg hover:text-neutral-300 transition-colors flex items-center gap-1.5"
+                className="font-semibold text-fg hover:text-fg-muted transition-colors flex items-center gap-1.5"
               >
                 <Phone size={13} /> Call Us
               </a>

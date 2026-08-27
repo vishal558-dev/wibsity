@@ -180,7 +180,7 @@ export const Footer: React.FC = () => {
             <div className="space-y-2.5 font-sans text-xs text-fg-muted">
               <a
                 href={CONTACT_INFO.phoneHref}
-                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
+                className="flex items-center gap-2 text-fg hover:text-fg-muted transition-colors"
               >
                 <Phone size={13} className="text-fg-muted" />
                 <span>Call Us</span>
@@ -189,7 +189,7 @@ export const Footer: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-fg hover:text-neutral-300 transition-colors"
+                className="flex items-center gap-2 text-fg hover:text-fg-muted transition-colors"
               >
                 <WhatsAppIcon size={13} className="text-fg-muted" />
                 <span>Chat on WhatsApp</span>
