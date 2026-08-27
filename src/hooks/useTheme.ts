@@ -3,6 +3,10 @@ import { useState, useEffect, useCallback } from 'react';
 export type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'wibsity-theme';
+// Fired whenever any useTheme() instance changes the theme, so every other
+// mounted instance (e.g. Navbar and Footer each call this hook separately)
+// re-syncs immediately instead of only picking up the change on next mount.
+const THEME_CHANGE_EVENT = 'wibsity-theme-change';
 
 function getSystemTheme(): Theme {
   if (typeof window === 'undefined' || !window.matchMedia) return 'dark';
@@ -31,19 +35,32 @@ export function useTheme(): { theme: Theme; setTheme: (next: Theme) => void } {
   const [theme, setThemeState] = useState<Theme>(() => getStoredTheme() ?? getSystemTheme());
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
+    if (typeof window === 'undefined') return;
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const onThemeChange = (event: Event) => {
+      setThemeState((event as CustomEvent<Theme>).detail);
+    };
+    window.addEventListener(THEME_CHANGE_EVENT, onThemeChange);
 
-    const listener = (event: MediaQueryListEvent) => {
-      // Only follow the OS preference live if the viewer hasn't made an explicit choice.
-      if (getStoredTheme() === null) {
-        setThemeState(event.matches ? 'dark' : 'light');
+    let mediaQuery: MediaQueryList | undefined;
+    let onSystemChange: ((event: MediaQueryListEvent) => void) | undefined;
+    if (window.matchMedia) {
+      mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      onSystemChange = (event) => {
+        // Only follow the OS preference live if the viewer hasn't made an explicit choice.
+        if (getStoredTheme() === null) {
+          setThemeState(event.matches ? 'dark' : 'light');
+        }
+      };
+      mediaQuery.addEventListener('change', onSystemChange);
+    }
+
+    return () => {
+      window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange);
+      if (mediaQuery && onSystemChange) {
+        mediaQuery.removeEventListener('change', onSystemChange);
       }
     };
-
-    mediaQuery.addEventListener('change', listener);
-    return () => mediaQuery.removeEventListener('change', listener);
   }, []);
 
   useEffect(() => {
@@ -58,6 +75,7 @@ export function useTheme(): { theme: Theme; setTheme: (next: Theme) => void } {
       // working for this session even though it won't survive a reload.
     }
     setThemeState(next);
+    window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: next }));
   }, []);
 
   return { theme, setTheme };

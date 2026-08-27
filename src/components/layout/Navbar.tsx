@@ -14,6 +14,7 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,7 +60,7 @@ export const Navbar: React.FC = () => {
             aria-label="wibsity home"
           >
             <img
-              src="/logo.png"
+              src={logoSrc}
               alt="wibsity"
               className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
             />
@@ -106,7 +107,7 @@ export const Navbar: React.FC = () => {
 
           {/* Actions: Clean Call & WhatsApp Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <ThemeToggle theme={theme} onToggle={toggleTheme} className="hidden md:flex" />
             <Button
               variant="outline"
               size="sm"

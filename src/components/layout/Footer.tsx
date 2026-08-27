@@ -5,10 +5,14 @@ import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
 import { smoothScrollToTop } from '../../utils/scroll';
+import { useTheme } from '../../hooks/useTheme';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
+  const { theme } = useTheme();
+  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png';
+  const logoMarkSrc = theme === 'light' ? '/logo-mark-light.png' : '/logo-mark.png';
 
   const handleLinkClick = () => {
     smoothScrollToTop(0.9);
@@ -84,7 +88,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-1 space-y-3">
             <Link to="/" onClick={handleLinkClick} className="inline-block focus:outline-none" aria-label="wibsity home">
               <img
-                src="/logo.png"
+                src={logoSrc}
                 alt="wibsity"
                 className="h-5 sm:h-6 w-auto object-contain"
               />
@@ -209,7 +213,7 @@ export const Footer: React.FC = () => {
         <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-fg-faint">
           <div className="flex items-center gap-2.5">
             <img
-              src="/logo-mark.png"
+              src={logoMarkSrc}
               alt=""
               aria-hidden="true"
               className="h-3.5 w-auto object-contain opacity-75"
