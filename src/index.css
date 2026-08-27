@@ -20,12 +20,59 @@
   --color-accent-dark: #2432fc;
   --color-accent-fg: #f5f6ff;
 
+  /* Fixed poles used only for picking readable text against an arbitrary,
+     non-theme color (e.g. a project's own brand accent in CaseStudyPage).
+     These must NEVER be redefined per-theme — see the light override block below. */
+  --color-ink-fixed: #08080a;
+  --color-paper-fixed: #fafafa;
+
+  /* Decorative hero background grid lines — needs its own token because
+     `text-zinc-700` (the old hardcoded class) is unreadably faint on a white canvas. */
+  --color-grid-line: #3f3f46;
+
   --font-sans: "General Sans", Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "Space Mono", monospace;
 
   --tracking-tightest: -0.04em;
   --tracking-tighter: -0.025em;
   --tracking-widest-plus: 0.14em;
+}
+
+/* Light theme token overrides. Mirrors the dark zinc scale at the same
+   distance from neutral gray, so contrast ratios stay predictable:
+   fg-on-canvas is ~19:1 and fg-muted-on-canvas is ~7:1 in both themes.
+   accent / accent-dark / accent-fg are intentionally NOT overridden here —
+   they're only ever used inside a filled accent-colored surface (button
+   gradients), so the page canvas color doesn't affect their contrast.
+   --color-ink-fixed and --color-paper-fixed are also intentionally absent
+   here — see the comment on their declaration in @theme above. */
+:root[data-theme="light"] {
+  --color-canvas: #ffffff;
+  --color-canvas-subtle: #f4f4f5;
+  --color-canvas-surface: #e4e4e7;
+  --color-canvas-elevated: #d4d4d8;
+
+  --color-border-hairline: #e4e4e7;
+  --color-border-hover: #d4d4d8;
+  --color-border-active: #a1a1aa;
+
+  --color-fg: #09090b;
+  --color-fg-muted: #52525b;
+  --color-fg-subtle: #71717a;
+  --color-fg-faint: #a1a1aa;
+
+  /* Darker tint than dark mode's, so text/links using this token stay
+     WCAG AA-legible directly on a white canvas (~11.7:1 vs. ~2:1 if the
+     dark-mode value were reused as-is). */
+  --color-accent-light: #2432fc;
+
+  --color-grid-line: #d4d4d8;
+
+  color-scheme: light;
+}
+
+:root[data-theme="light"] ::selection {
+  color: #08080a;
 }
 
 @layer base {
@@ -83,16 +130,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #08080a;
+  background: var(--color-canvas);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--color-border-hairline);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b50fe;
+  background: var(--color-accent);
 }
 
 /* Lenis smooth scrolling styles */
@@ -114,4 +161,14 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Smooth the canvas/text repaint on theme toggle. Gated behind
+   prefers-reduced-motion so it never fights the site's existing
+   reduced-motion conventions (see hooks/useReducedMotion.ts). */
+@media (prefers-reduced-motion: no-preference) {
+  html,
+  body {
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
 }
