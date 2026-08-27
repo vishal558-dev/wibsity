@@ -105,4 +105,4 @@ wibsity/
 
 ## License
 
-MIT © [wibsity](https://wibsity.com)
+MIT © [wibsity](https://wibsity.in)

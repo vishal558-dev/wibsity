@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wibsity.com/sitemap.xml
+Sitemap: https://wibsity.in/sitemap.xml

@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Navbar } from './components/layout/Navbar';
@@ -6,6 +6,9 @@ import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { HomePage } from './pages/HomePage';
 import { useLenis } from './hooks/useLenis';
+import { useSEO } from './hooks/useSEO';
+import { routeSEO, NOT_FOUND_SEO } from './data/seo';
+import { faqsData } from './data/faqs';
 
 // Lazy-loaded: keeps the initial bundle for "/" small so the hero's
 // entrance animation isn't competing with parsing/executing every
@@ -15,8 +18,45 @@ const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default:
 const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 
+/**
+ * The FAQ content already lives on /about (data/faqs.ts) but wasn't marked
+ * up as structured data anywhere. Reusing it here makes /about eligible for
+ * FAQ rich results without duplicating any copy.
+ */
+function useAboutFaqJsonLd() {
+  return useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqsData.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    }),
+    []
+  );
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
+  const matchedSEO = routeSEO[location.pathname];
+  const activeSEO = matchedSEO ?? { ...NOT_FOUND_SEO, path: location.pathname };
+  const aboutFaqJsonLd = useAboutFaqJsonLd();
+
+  // Per-route head tags: without this every route shared the homepage's
+  // <title>/description/canonical, which reads as duplicate content to
+  // search engines. See src/data/seo.ts and src/hooks/useSEO.ts.
+  useSEO({
+    title: activeSEO.title,
+    description: activeSEO.description,
+    path: activeSEO.path,
+    jsonLd: location.pathname === '/about' ? aboutFaqJsonLd : undefined,
+    noindex: !matchedSEO,
+  });
 
   return (
     <AnimatePresence mode="wait">
