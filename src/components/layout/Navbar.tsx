@@ -6,10 +6,14 @@ import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
 import { smoothScrollToTop } from '../../utils/scroll';
+import { useTheme } from '../../hooks/useTheme';
+import { ThemeToggle } from '../common/ThemeToggle';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,6 +106,7 @@ export const Navbar: React.FC = () => {
 
           {/* Actions: Clean Call & WhatsApp Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
             <Button
               variant="outline"
               size="sm"
@@ -126,6 +131,7 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Quick Action Icons */}
           <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
             <a
               href={whatsappUrl}
               target="_blank"
