@@ -11,7 +11,7 @@ export const faqsData: FAQItem[] = [
     id: 'faq-2',
     category: 'Process',
     question: 'What is the typical turnaround timeline for a project?',
-    answer: 'Typical turnaround: 5–7 days for standard website projects. Timelines can vary depending on project scope, complexity, custom features, and the speed of client feedback. The specific timeline is always confirmed and agreed upon before the project begins.',
+    answer: 'Typical turnaround: 3–5 days for standard website projects, and 5–7+ days for advanced, customized sites. Timelines can vary depending on project scope, complexity, custom features, and the speed of client feedback. The specific timeline is always confirmed and agreed upon before the project begins.',
   },
   {
     id: 'faq-3',

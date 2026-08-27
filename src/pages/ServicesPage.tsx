@@ -133,7 +133,7 @@ export const ServicesPage: React.FC = () => {
             <Clock size={24} className="text-accent-light shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h3 className="font-sans text-base font-bold text-fg">
-                Typical turnaround: 5–7 days for standard website projects.
+                Typical turnaround: 3–5 days for standard sites, 5–7+ days for advanced, customized builds.
               </h3>
               <p className="font-sans text-xs sm:text-sm text-fg-muted leading-relaxed max-w-2xl">
                 We work in dedicated, focused sprints with direct founder communication. Timelines are scoped clearly and confirmed in writing prior to project kickoff.

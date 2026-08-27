@@ -173,7 +173,7 @@ export const Footer: React.FC = () => {
               </p>
               <p className="text-fg-faint">Direct Founder Collaboration</p>
               <p className="text-fg-muted leading-relaxed">
-                Typical turnaround: 5–7 days for standard website projects.
+                Typical turnaround: 3–5 days standard, 5–7+ days for advanced, customized sites.
               </p>
               <p className="text-[11px] text-fg-faint leading-snug">
                 Timelines vary by scope and are confirmed before kickoff.

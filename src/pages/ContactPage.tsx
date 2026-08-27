@@ -14,8 +14,8 @@ export const ContactPage: React.FC = () => {
       desc: 'You speak directly with the web engineer and designer building your site, never an account manager.',
     },
     {
-      title: '5–7 Day Typical Delivery',
-      desc: 'Standard website projects are delivered within 5–7 business days in dedicated execution sprints.',
+      title: '3–5 Day Typical Delivery',
+      desc: 'Standard website projects are delivered within 3–5 business days; advanced, customized builds take 5–7+ days in dedicated execution sprints.',
     },
     {
       title: 'Transparent Fixed Scope',
@@ -198,10 +198,10 @@ export const ContactPage: React.FC = () => {
               <Clock size={20} className="text-accent-light shrink-0" />
               <div>
                 <span className="text-xs font-bold text-fg block">
-                  5–7 Day Sprint Cycles
+                  3–5 Day Sprint Cycles
                 </span>
                 <span className="text-[11px] text-fg-muted">
-                  Standard website builds are delivered rapidly without cutting quality.
+                  Standard builds ship in 3–5 days; advanced, customized sites take 5–7+ days without cutting quality.
                 </span>
               </div>
             </div>
