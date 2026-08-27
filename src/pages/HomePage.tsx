@@ -50,12 +50,12 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
 const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business'];
 
 const heroGridLines = [
-  { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-zinc-700' },
+  { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-[color:var(--color-grid-line)]' },
   { x1: '0', y1: '50%', x2: '100%', y2: '50%', color: 'text-accent/25' },
-  { x1: '0', y1: '75%', x2: '100%', y2: '75%', color: 'text-zinc-700' },
-  { x1: '20%', y1: '0', x2: '20%', y2: '100%', color: 'text-zinc-700' },
+  { x1: '0', y1: '75%', x2: '100%', y2: '75%', color: 'text-[color:var(--color-grid-line)]' },
+  { x1: '20%', y1: '0', x2: '20%', y2: '100%', color: 'text-[color:var(--color-grid-line)]' },
   { x1: '50%', y1: '0', x2: '50%', y2: '100%', color: 'text-accent/25' },
-  { x1: '80%', y1: '0', x2: '80%', y2: '100%', color: 'text-zinc-700' },
+  { x1: '80%', y1: '0', x2: '80%', y2: '100%', color: 'text-[color:var(--color-grid-line)]' },
 ];
 
 const wordVariants: Variants = {

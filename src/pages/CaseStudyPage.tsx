@@ -39,8 +39,8 @@ export const CaseStudyPage: React.FC = () => {
   }
 
   const ctaTextColor = isLightColor(project.desktopPreview.accentColor)
-    ? 'var(--color-canvas)'
-    : 'var(--color-accent-fg)';
+    ? 'var(--color-ink-fixed)'
+    : 'var(--color-paper-fixed)';
 
   const prevProject = currentIndex > 0 ? projectsData[currentIndex - 1] : projectsData[projectsData.length - 1];
   const nextProject = currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : projectsData[0];
@@ -122,7 +122,7 @@ export const CaseStudyPage: React.FC = () => {
           </div>
 
           {/* Viewport Display Box */}
-          <div className="min-h-[380px] sm:min-h-[440px] flex items-center justify-center bg-canvas-surface/40 border border-border-hairline p-2 sm:p-8 overflow-hidden">
+          <div className="min-h-[380px] sm:min-h-[440px] flex items-center justify-center bg-[color:color-mix(in_srgb,var(--color-canvas-surface)_40%,transparent)] border border-border-hairline p-2 sm:p-8 overflow-hidden">
             <AnimatePresence mode="wait">
               {viewportMode === 'desktop' ? (
                 <motion.div
