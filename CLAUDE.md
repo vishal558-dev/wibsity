@@ -2,6 +2,9 @@
 
 Web design/dev studio marketing site. React 19 + Vite + TypeScript + Tailwind CSS v4 + react-router-dom.
 
+## Keep this file current
+**When a change in this session is major — a new architectural pattern, a changed convention, a deleted/renamed file this doc references, a rewritten section of a page, a new non-obvious asset — update the relevant section of this file as part of that same piece of work, not as a separate follow-up someone has to ask for.** A routine content tweak or a one-line style fix doesn't need a doc update; something a future session would otherwise get wrong or rebuild from scratch by reading stale guidance does. Before writing a claim here, verify it against the actual code (grep for it, don't just describe intent) — a wrong doc is worse than no doc. This file already reflects that discipline (see the Animation section's account of the LazyMotion regression, or the corrected favicon/OG-image paragraph) — keep extending it that way rather than letting new decisions go undocumented.
+
 ## Commands
 - `npm run dev` — dev server
 - `npm run build` — `tsc -b && vite build`
