@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
               <Link
                 to="/contact"
                 onClick={handleLinkClick}
-                className="font-sans text-xs font-semibold text-fg-muted hover:text-fg underline underline-offset-4 transition-colors"
+                className="font-sans text-xs font-semibold text-fg-muted hover:text-fg underline underline-offset-4 transition-colors -my-3.5 py-3.5"
               >
                 or view contact details
               </Link>
@@ -83,25 +83,25 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2.5 font-sans text-xs text-fg-muted">
-            <Link to="/" onClick={handleLinkClick} className="hover:text-fg transition-colors">
+          <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-1 font-sans text-xs text-fg-muted">
+            <Link to="/" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Home
             </Link>
-            <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors">
+            <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Services
             </Link>
-            <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors">
+            <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Studio & FAQ
             </Link>
-            <Link to="/contact" onClick={handleLinkClick} className="hover:text-fg transition-colors">
+            <Link to="/contact" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Contact
             </Link>
           </nav>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2.5 font-sans text-xs text-fg-muted">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 font-sans text-xs text-fg-muted">
             <a
               href={CONTACT_INFO.phoneHref}
-              className="flex items-center gap-2 hover:text-fg transition-colors"
+              className="flex items-center gap-2 hover:text-fg transition-colors -my-3.5 py-3.5"
             >
               <Phone size={13} className="text-fg-faint" />
               <span>Call</span>
@@ -110,14 +110,14 @@ export const Footer: React.FC = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-fg transition-colors"
+              className="flex items-center gap-2 hover:text-fg transition-colors -my-3.5 py-3.5"
             >
               <WhatsAppIcon size={13} className="text-fg-faint" />
               <span>WhatsApp</span>
             </a>
             <a
               href={CONTACT_INFO.emailHref}
-              className="flex items-center gap-2 hover:text-fg transition-colors font-mono"
+              className="flex items-center gap-2 hover:text-fg transition-colors font-mono -my-3.5 py-3.5"
             >
               <Mail size={13} className="text-fg-faint" />
               <span>{CONTACT_INFO.email}</span>

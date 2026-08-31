@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, LazyMotion, m } from 'motion/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
@@ -13,10 +13,16 @@ import { faqsData } from './data/faqs';
 // Lazy-loaded: keeps the initial bundle for "/" small so the hero's
 // entrance animation isn't competing with parsing/executing every
 // other page's code on first paint.
-const ServicesPage = lazy(() => import('./pages/ServicesPage').then((m) => ({ default: m.ServicesPage })));
-const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
-const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
+const ServicesPage = lazy(() => import('./pages/ServicesPage').then((mod) => ({ default: mod.ServicesPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then((mod) => ({ default: mod.AboutPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((mod) => ({ default: mod.ContactPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((mod) => ({ default: mod.NotFoundPage })));
+
+// Splits Framer Motion's animation engine into its own chunk instead of
+// shipping it in the eager entry bundle — it's the single largest
+// contributor to first-load JS on a page whose own headline promises
+// sub-second loads. LazyMotion below fetches this only after first paint.
+const loadMotionFeatures = () => import('./motionFeatures').then((mod) => mod.default);
 
 /**
  * The FAQ content already lives on /about (data/faqs.ts) but wasn't marked
@@ -60,7 +66,7 @@ function AnimatedRoutes() {
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
+      <m.div
         key={location.pathname}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -82,7 +88,7 @@ function AnimatedRoutes() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }
@@ -92,16 +98,18 @@ export function App() {
   useLenis();
 
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-canvas text-fg flex flex-col font-sans selection:bg-fg selection:text-canvas">
-        <ScrollToTop />
-        <Navbar />
-        <main className="flex-1 flex flex-col">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <LazyMotion features={loadMotionFeatures} strict>
+      <BrowserRouter>
+        <div className="min-h-screen bg-canvas text-fg flex flex-col font-sans selection:bg-fg selection:text-canvas">
+          <ScrollToTop />
+          <Navbar />
+          <main className="flex-1 flex flex-col">
+            <AnimatedRoutes />
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </LazyMotion>
   );
 }
 

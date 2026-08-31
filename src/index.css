@@ -12,8 +12,14 @@
 
   --color-fg: #fafafa;
   --color-fg-muted: #a1a1aa;
-  --color-fg-subtle: #71717a;
-  --color-fg-faint: #52525b;
+  /* fg-subtle/fg-faint were zinc-500/zinc-600 (#71717a/#52525b), which read
+     at 4.14:1 and 2.59:1 against this canvas — both fail WCAG AA (4.5:1) for
+     the real text they carry (section indices, step codes, footer copy).
+     Bumped up the zinc scale to clear AA with a small margin while staying
+     visually dimmer than fg-muted (7.81:1). See the light override below for
+     the equivalent light-theme fix. */
+  --color-fg-subtle: #83838c;
+  --color-fg-faint: #797982;
 
   --color-accent: #4b50fe;
   --color-accent-light: #7c82ff;
@@ -59,7 +65,10 @@
   --color-fg: #09090b;
   --color-fg-muted: #52525b;
   --color-fg-subtle: #71717a;
-  --color-fg-faint: #a1a1aa;
+  /* #a1a1aa read at 2.56:1 on white — fails AA for the real text it carries.
+     Darkened to clear 4.5:1 while staying a touch lighter (lower contrast)
+     than fg-subtle, preserving the muted > subtle > faint hierarchy. */
+  --color-fg-faint: #74747d;
 
   /* Darker tint than dark mode's, so text/links using this token stay
      WCAG AA-legible directly on a white canvas (~11.7:1 vs. ~2:1 if the

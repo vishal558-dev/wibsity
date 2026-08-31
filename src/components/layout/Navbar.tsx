@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { Menu, X, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { Button } from '../common/Button';
@@ -96,7 +96,7 @@ export const Navbar: React.FC = () => {
                     </span>
                     <span>{link.label}</span>
                     {isActive && (
-                      <motion.span
+                      <m.span
                         layoutId="activeNavIndicator"
                         className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gradient-to-r from-accent to-accent-light"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
@@ -140,21 +140,21 @@ export const Navbar: React.FC = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              className="w-11 h-11 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="WhatsApp wibsity"
             >
               <WhatsAppIcon size={16} />
             </a>
             <a
               href={CONTACT_INFO.phoneHref}
-              className="w-9 h-9 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
+              className="w-11 h-11 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
               aria-label="Call wibsity"
             >
               <Phone size={16} />
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-9 h-9 shrink-0 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
+              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
@@ -166,7 +166,7 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -221,7 +221,7 @@ export const Navbar: React.FC = () => {
                 </Button>
               </div>
             </nav>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

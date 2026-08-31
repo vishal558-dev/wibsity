@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { cn } from '../../utils/cn';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -10,6 +10,10 @@ interface SectionHeadingProps {
   description?: string;
   align?: 'left' | 'center';
   className?: string;
+  /** Each route's SectionHeading is its page's main heading, so callers
+   * should pass "h1" for that instance — everywhere else this defaults to
+   * "h2" so a page never ends up with two h1s or a heading level skip. */
+  as?: 'h1' | 'h2';
 }
 
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
@@ -19,8 +23,10 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   description,
   align = 'left',
   className,
+  as = 'h2',
 }) => {
   const prefersReduced = useReducedMotion();
+  const Heading = as === 'h1' ? m.h1 : m.h2;
 
   return (
     <div
@@ -33,7 +39,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         className
       )}
     >
-      <motion.div
+      <m.div
         initial={prefersReduced ? false : { opacity: 0, y: 12 }}
         whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
@@ -43,9 +49,9 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         <span className="font-mono text-fg-faint text-[11px]">{index}</span>
         <span className="text-accent">/</span>
         <span className="tracking-widest text-fg-muted">{tag}</span>
-      </motion.div>
+      </m.div>
 
-      <motion.h2
+      <Heading
         initial={prefersReduced ? false : { opacity: 0, y: 16 }}
         whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
@@ -53,10 +59,10 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-fg leading-[1.14]"
       >
         {title}
-      </motion.h2>
+      </Heading>
 
       {description && (
-        <motion.p
+        <m.p
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
@@ -64,7 +70,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-fg-muted max-w-2xl leading-relaxed"
         >
           {description}
-        </motion.p>
+        </m.p>
       )}
     </div>
   );

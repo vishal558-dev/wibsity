@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { faqsData } from '../data/faqs';
 import { principlesData } from '../data/about';
@@ -24,6 +24,7 @@ export const AboutPage: React.FC = () => {
         {/* Page Header */}
         <div>
           <SectionHeading
+            as="h1"
             index="03"
             tag="STUDIO & PRINCIPLES"
             title="Practical engineering standards, not design fluff."
@@ -75,7 +76,7 @@ export const AboutPage: React.FC = () => {
             {principlesData.map((p, idx) => {
               const Icon = p.icon;
               return (
-                <motion.div
+                <m.div
                   key={p.index}
                   initial={prefersReduced ? false : { opacity: 0, y: 12 }}
                   whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
@@ -102,7 +103,7 @@ export const AboutPage: React.FC = () => {
                     className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-12 bg-accent/50 group-hover:bg-accent transition-colors"
                     aria-hidden="true"
                   />
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -123,7 +124,7 @@ export const AboutPage: React.FC = () => {
           </div>
 
           {/* Accordion */}
-          <div className="border-t border-border-hairline divide-y divide-border-hairline max-w-4xl">
+          <div className="border-t border-border-hairline divide-y divide-border-hairline max-w-4xl mx-auto">
             {faqsData.map((faq) => {
               const isOpen = activeFaqId === faq.id;
               return (
@@ -144,7 +145,7 @@ export const AboutPage: React.FC = () => {
 
                   <AnimatePresence>
                     {isOpen && (
-                      <motion.div
+                      <m.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -154,7 +155,7 @@ export const AboutPage: React.FC = () => {
                         <div className="mt-3.5 pr-2 sm:pr-8 text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
                           <p>{faq.answer}</p>
                         </div>
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
                 </div>
@@ -163,7 +164,7 @@ export const AboutPage: React.FC = () => {
           </div>
 
           {/* Still have questions */}
-          <div className="mt-10 sm:mt-12 p-5 sm:p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl">
+          <div className="mt-10 sm:mt-12 p-5 sm:p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl mx-auto">
             <div className="flex items-center gap-3">
               <HelpCircle size={20} className="text-fg-muted shrink-0" />
               <span className="font-sans text-xs text-fg-muted font-medium">

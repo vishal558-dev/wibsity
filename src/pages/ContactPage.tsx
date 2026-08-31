@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { Phone, Mail, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
@@ -14,6 +14,7 @@ export const ContactPage: React.FC = () => {
         {/* Page Header */}
         <div>
           <SectionHeading
+            as="h1"
             index="04"
             tag="DIRECT INITIATION HUB"
             title="Start a conversation about your website."
@@ -24,7 +25,7 @@ export const ContactPage: React.FC = () => {
         {/* Contact Monolith Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Direct Channels Box (7 cols) */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -137,10 +138,10 @@ export const ContactPage: React.FC = () => {
                 </div>
               </a>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Engagement Standards Box (5 cols) */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
@@ -173,7 +174,7 @@ export const ContactPage: React.FC = () => {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </div>

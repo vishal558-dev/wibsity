@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
-import { CheckCircle2, Phone, ArrowRight, Zap, Globe, Code } from 'lucide-react';
+import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
+import { CheckCircle2, Phone, ArrowRight, Code } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { servicesData } from '../data/services';
+import { processData } from '../data/process';
+import { faqsData } from '../data/faqs';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { CONTACT_INFO } from '../data/contact';
 
@@ -35,7 +37,7 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
   };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -43,7 +45,7 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -98,7 +100,7 @@ export const HomePage: React.FC = () => {
               prefersReduced ? (
                 <line key={i} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="currentColor" strokeWidth="1" className={line.color} />
               ) : (
-                <motion.line
+                <m.line
                   key={i}
                   x1={line.x1}
                   y1={line.y1}
@@ -116,8 +118,10 @@ export const HomePage: React.FC = () => {
           </svg>
         </div>
 
-        {/* Soft brand-color depth glow, kept behind content and heavily blurred */}
-        <div className="accent-glow w-[36rem] h-[36rem] -top-40 right-[-10rem] opacity-30 z-0" aria-hidden="true" />
+        {/* Soft brand-color depth glow, kept behind content and heavily blurred.
+            Scaled down below sm — at the full 36rem size it's wider than a phone
+            viewport and washes out the whole top of the hero. */}
+        <div className="accent-glow w-[18rem] h-[18rem] -top-24 right-[-6rem] opacity-20 sm:w-[36rem] sm:h-[36rem] sm:-top-40 sm:right-[-10rem] sm:opacity-30 z-0" aria-hidden="true" />
 
         {/* Accent boundary line at the base of the hero */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" aria-hidden="true" />
@@ -125,7 +129,7 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full lg:flex lg:items-center lg:justify-between lg:gap-12">
           <div className="max-w-4xl">
             {/* Clean Unboxed Eyebrow */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -136,7 +140,7 @@ export const HomePage: React.FC = () => {
               <span className="tracking-widest text-fg-muted">Studio Introduction</span>
               <span className="text-border-hover hidden sm:inline">•</span>
               <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering</span>
-            </motion.div>
+            </m.div>
 
             {/* Headline */}
             {prefersReduced ? (
@@ -145,7 +149,7 @@ export const HomePage: React.FC = () => {
                 <span className="text-accent-light">stand out.</span>
               </h1>
             ) : (
-              <motion.h1
+              <m.h1
                 initial="hidden"
                 animate={headlineReady ? 'visible' : 'hidden'}
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
@@ -153,29 +157,29 @@ export const HomePage: React.FC = () => {
               >
                 {headlineLeadWords.map((word, i) => (
                   <React.Fragment key={i}>
-                    <motion.span variants={wordVariants} style={{ display: 'inline-block' }}>
+                    <m.span variants={wordVariants} style={{ display: 'inline-block' }}>
                       {word}
-                    </motion.span>{' '}
+                    </m.span>{' '}
                   </React.Fragment>
                 ))}
-                <motion.span variants={wordVariants} style={{ display: 'inline-block' }}>
+                <m.span variants={wordVariants} style={{ display: 'inline-block' }}>
                   <span className="text-accent-light">stand out.</span>
-                </motion.span>
-              </motion.h1>
+                </m.span>
+              </m.h1>
             )}
 
             {/* Subtitle */}
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="mt-5 sm:mt-8 text-base sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
             >
               High-impact, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
-            </motion.p>
+            </m.p>
 
             {/* Actions */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
@@ -205,10 +209,10 @@ export const HomePage: React.FC = () => {
                 Call Us
               </Button>
 
-            </motion.div>
+            </m.div>
 
             {/* Value Verification Grid */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.32 }}
@@ -222,7 +226,7 @@ export const HomePage: React.FC = () => {
                   </span>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Quiet architectural mark + engineering panel, desktop only — breaks the single-column hero silhouette */}
@@ -254,7 +258,7 @@ export const HomePage: React.FC = () => {
             </svg>
 
             <div className="relative flex flex-col items-start">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
@@ -275,12 +279,12 @@ export const HomePage: React.FC = () => {
                 <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
                   Sub-second load, on every build
                 </span>
-              </motion.div>
+              </m.div>
 
               {/* Connector tick linking the two panel cards */}
               <div className="w-px h-5 ml-8 bg-gradient-to-b from-accent/50 to-transparent" aria-hidden="true" />
 
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.54, ease: [0.16, 1, 0.3, 1] }}
@@ -295,7 +299,7 @@ export const HomePage: React.FC = () => {
                 <span className="block text-[11px] text-fg-muted mt-0.5 max-w-[9rem]">
                   Domain ownership included
                 </span>
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </div>
@@ -363,7 +367,7 @@ export const HomePage: React.FC = () => {
 
                 <Link
                   to="/services"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-accent-light transition-colors pt-4 border-t border-border-hairline"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-accent-light transition-colors pt-4 -mb-2.5 pb-2.5 border-t border-border-hairline"
                 >
                   <span>View Details</span>
                   <ArrowRight size={12} />
@@ -391,24 +395,9 @@ export const HomePage: React.FC = () => {
                 We handcraft bespoke React and TypeScript flagships instead of bloated page builders.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
-                <div className="border-l border-accent/40 pl-4">
-                  <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <Zap size={14} className="text-accent-light" /> &lt; 500ms
-                  </div>
-                  <p className="text-xs text-fg-muted">Sub-second load target</p>
-                </div>
-                <div className="border-l border-accent/40 pl-4">
-                  <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <Globe size={14} className="text-accent-light" /> Domain
-                  </div>
-                  <p className="text-xs text-fg-muted">Full ownership, always yours</p>
-                </div>
-                <div className="border-l border-accent/40 pl-4">
-                  <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold mb-1">
-                    <Code size={14} className="text-accent-light" /> React 19
-                  </div>
-                  <p className="text-xs text-fg-muted">Modern frontend stack</p>
+              <div className="pt-4 sm:pt-6 border-l border-accent/40 pl-4 inline-flex">
+                <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold">
+                  <Code size={14} className="text-accent-light shrink-0" /> React 19 &amp; TypeScript
                 </div>
               </div>
             </div>
@@ -427,12 +416,81 @@ export const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4 -my-3 py-3"
                 >
                   Read Studio Principles <ArrowRight size={13} />
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 03 / Process Teaser */}
+      <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas-subtle">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
+            <SectionHeading
+              index="03"
+              tag="HOW WE WORK"
+              title="A structured 4-step workflow from kickoff to launch."
+              description="Direct communication and predictable milestones — no black box."
+              className="mb-0"
+            />
+            <div className="mt-6 md:mt-0">
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted hover:text-accent-light border border-border-hairline bg-canvas-surface hover:border-accent/60 px-4 py-2.5 transition-colors"
+              >
+                <span>See Full Methodology</span>
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-b border-border-hairline divide-y sm:divide-y-0 lg:divide-x divide-border-hairline">
+            {processData.map((step) => (
+              <div key={step.step} className="px-0 lg:px-6 py-6 first:pt-0 lg:first:pl-0 lg:last:pr-0">
+                <span className="font-mono text-xs text-accent-light font-semibold">{step.step}</span>
+                <h3 className="text-base font-bold text-fg tracking-tight mt-2 mb-1.5">{step.name}</h3>
+                <p className="text-xs text-fg-muted leading-relaxed">{step.focus}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 04 / FAQ Teaser */}
+      <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
+            <SectionHeading
+              index="04"
+              tag="COMMON QUESTIONS"
+              title="What people ask before they message us."
+              description="The three questions that come up in nearly every first conversation."
+              className="mb-0"
+            />
+            <div className="mt-6 md:mt-0">
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted hover:text-accent-light border border-border-hairline bg-canvas-surface hover:border-accent/60 px-4 py-2.5 transition-colors"
+              >
+                <span>View All FAQs</span>
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            {faqsData.slice(0, 3).map((faq) => (
+              <div key={faq.id} className="border-t-2 border-fg pt-5">
+                <h3 className="text-base font-bold text-fg tracking-tight mb-2.5 leading-snug">
+                  {faq.question}
+                </h3>
+                <p className="text-sm text-fg-muted leading-relaxed">{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

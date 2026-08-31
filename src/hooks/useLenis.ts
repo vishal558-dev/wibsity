@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
-import Lenis from 'lenis';
+import type Lenis from 'lenis';
 import { useReducedMotion } from './useReducedMotion';
 
 export function useLenis() {
@@ -18,32 +18,40 @@ export function useLenis() {
       return;
     }
 
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.5,
+    // Dynamically imported so Lenis never ships in the eager entry bundle —
+    // it's a scroll-feel enhancement, not something the hero needs to paint,
+    // and this branch already only runs for fine-pointer, motion-OK devices.
+    let cancelled = false;
+    let rafId: number;
+
+    import('lenis').then(({ default: LenisCtor }) => {
+      if (cancelled) return;
+
+      const lenis = new LenisCtor({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 0.9,
+        touchMultiplier: 1.5,
+      });
+
+      lenisRef.current = lenis;
+      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
+      function raf(time: number) {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
+      rafId = requestAnimationFrame(raf);
     });
 
-    lenisRef.current = lenis;
-    if (typeof window !== 'undefined') {
-      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
-    }
-
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-
-    rafId = requestAnimationFrame(raf);
-
     return () => {
+      cancelled = true;
       cancelAnimationFrame(rafId);
-      lenis.destroy();
+      lenisRef.current?.destroy();
       lenisRef.current = null;
       if (typeof window !== 'undefined') {
         delete (window as unknown as { __lenis?: Lenis }).__lenis;

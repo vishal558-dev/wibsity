@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, type HTMLMotionProps } from 'motion/react';
+import { m, type HTMLMotionProps } from 'motion/react';
 import { cn } from '../../utils/cn';
 import { smoothScrollToTop } from '../../utils/scroll';
 
@@ -98,12 +98,12 @@ export const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <motion.button
+    <m.button
       whileTap={{ scale: 0.98 }}
       className={baseClasses}
       {...props}
     >
       {content}
-    </motion.button>
+    </m.button>
   );
 };

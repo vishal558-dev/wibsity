@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
+import { Check } from 'lucide-react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { Button } from '../components/common/Button';
 import { servicesData } from '../data/services';
@@ -27,6 +28,7 @@ export const ServicesPage: React.FC = () => {
         {/* Page Header */}
         <div>
           <SectionHeading
+            as="h1"
             index="02"
             tag="SERVICES & CAPABILITIES"
             title="Focused web services built for real business needs."
@@ -39,7 +41,7 @@ export const ServicesPage: React.FC = () => {
               const Icon = iconMap[service.iconName];
 
               return (
-                <motion.div
+                <m.div
                   key={service.id}
                   initial={prefersReduced ? false : { opacity: 0, y: 20 }}
                   whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
@@ -73,9 +75,9 @@ export const ServicesPage: React.FC = () => {
                     </div>
 
                     {/* Title & Tagline */}
-                    <h2 className="text-xl sm:text-2xl sm:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
                       {service.title}
-                    </h2>
+                    </h3>
                     <p className="text-sm font-medium text-fg-muted mb-5 sm:mb-6 font-sans">
                       {service.tagline}
                     </p>
@@ -108,7 +110,7 @@ export const ServicesPage: React.FC = () => {
                       Inquire on WhatsApp
                     </Button>
                   </div>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -166,7 +168,7 @@ export const ServicesPage: React.FC = () => {
 
             <div className="space-y-10 sm:space-y-12">
               {processData.map((step, idx) => (
-                <motion.div
+                <m.div
                   key={step.step}
                   initial={prefersReduced ? false : { opacity: 0, y: 16 }}
                   whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
@@ -183,24 +185,35 @@ export const ServicesPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="flex-1 pb-2 sm:pb-0">
-                    <div className="hidden sm:flex items-center gap-3 mb-2">
-                      <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
-                        {step.focus}
-                      </span>
-                      <span className="font-mono text-[10px] text-fg-faint">
-                        {step.code}
-                      </span>
+                  <div className="flex-1 pb-2 sm:pb-0 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+                    <div>
+                      <div className="hidden sm:flex items-center gap-3 mb-2">
+                        <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
+                          {step.focus}
+                        </span>
+                        <span className="font-mono text-[10px] text-fg-faint">
+                          {step.code}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2 font-sans">
+                        {step.name}
+                      </h3>
+                      <p className="text-sm text-fg-muted leading-relaxed max-w-2xl font-sans">
+                        {step.description}
+                      </p>
                     </div>
 
-                    <h3 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2 font-sans">
-                      {step.name}
-                    </h3>
-                    <p className="text-sm text-fg-muted leading-relaxed max-w-2xl font-sans">
-                      {step.description}
-                    </p>
+                    <ul className="space-y-2 lg:pt-7 lg:border-l lg:border-border-hairline lg:pl-8">
+                      {step.deliverables.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-fg-muted font-sans">
+                          <Check size={13} className="text-accent-light shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
