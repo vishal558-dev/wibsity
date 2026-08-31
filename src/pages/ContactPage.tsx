@@ -1,31 +1,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
-import { Phone, Mail, Clock, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Phone, Mail, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
-import { CONTACT_INFO } from '../data/contact';
+import { CONTACT_INFO, engagementPoints } from '../data/contact';
 
 export const ContactPage: React.FC = () => {
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
-
-  const engagementPoints = [
-    {
-      title: 'Direct Founder Dialogue',
-      desc: 'You speak directly with the web engineer and designer building your site, never an account manager.',
-    },
-    {
-      title: '3–5 Day Typical Delivery',
-      desc: 'Standard website projects are delivered within 3–5 business days; advanced, customized builds take 5–7+ days in dedicated execution sprints.',
-    },
-    {
-      title: 'Transparent Fixed Scope',
-      desc: 'Clear scope boundaries, deliverable checklists, and fixed pricing agreed upon before project start.',
-    },
-    {
-      title: 'Domain Ownership',
-      desc: 'Your domain is registered in your name and always yours — no lock-in.',
-    },
-  ];
 
   return (
     <div className="pt-32 pb-24 bg-canvas min-h-screen">
@@ -190,19 +171,6 @@ export const ContactPage: React.FC = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Quick Turnaround Assurance */}
-            <div className="border border-border-hairline bg-canvas-subtle p-5 sm:p-6 flex items-center gap-4">
-              <Clock size={20} className="text-accent-light shrink-0" />
-              <div>
-                <span className="text-xs font-bold text-fg block">
-                  3–5 Day Sprint Cycles
-                </span>
-                <span className="text-[11px] text-fg-muted">
-                  Standard builds ship in 3–5 days; advanced, customized sites take 5–7+ days without cutting quality.
-                </span>
               </div>
             </div>
           </motion.div>

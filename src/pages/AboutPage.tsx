@@ -1,45 +1,20 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
-import { Button } from '../components/common/Button';
 import { faqsData } from '../data/faqs';
-import { Eye, Zap, Target, ShieldCheck, Plus, Minus, HelpCircle, Phone, ArrowRight, Code, Sparkles } from 'lucide-react';
+import { principlesData } from '../data/about';
+import { Plus, Minus, HelpCircle, Phone, Code, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 export const AboutPage: React.FC = () => {
+  const prefersReduced = useReducedMotion();
   const [activeFaqId, setActiveFaqId] = useState<string | null>(faqsData[0].id);
 
   const toggleFaq = (id: string) => {
     setActiveFaqId(activeFaqId === id ? null : id);
   };
-
-  const principles = [
-    {
-      index: '01',
-      icon: Eye,
-      title: 'First Impressions Command Trust',
-      desc: 'When potential clients land on your website, they make an instant judgment about your business. Clean typography, generous spacing, and modern design immediately signal competence and high standards.',
-    },
-    {
-      index: '02',
-      icon: Zap,
-      title: 'Speed & Mobile Performance',
-      desc: 'The vast majority of modern buyers browse on mobile devices. Our code is lightweight and optimized for sub-second loading, so potential customers never bounce due to sluggish performance.',
-    },
-    {
-      index: '03',
-      icon: Target,
-      title: 'Clarity & Conversion',
-      desc: 'Great web design makes it effortless for visitors to understand what you do and take action—whether booking a consultation, requesting a proposal, or initiating contact directly.',
-    },
-    {
-      index: '04',
-      icon: ShieldCheck,
-      title: 'Domain Ownership',
-      desc: 'Your domain is registered and owned by you from day one. No proprietary website builder lock-in, no hostage maintenance fees, and no monthly platform dependencies.',
-    },
-  ];
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
 
@@ -56,7 +31,7 @@ export const AboutPage: React.FC = () => {
           />
 
           {/* Studio Manifesto Monograph */}
-          <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-16 relative overflow-hidden">
+          <div className="grid-pattern border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-16 relative overflow-hidden">
             <div className="max-w-3xl space-y-6">
               <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
                 The wibsity Ethos
@@ -77,48 +52,56 @@ export const AboutPage: React.FC = () => {
                 <span className="flex items-center gap-2">
                   <Code size={14} className="text-accent-light" /> 100% Clean Code
                 </span>
+                <span className="flex items-center gap-2">
+                  <ShieldCheck size={14} className="text-accent-light" /> Domain Ownership Included
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 4 Core Principles Grid */}
+        {/* 3 Core Principles — literal pillars */}
         <div>
-          <div className="mb-8">
+          <div className="mb-10 sm:mb-12">
             <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-2">
               Core Foundations
             </span>
             <h3 className="text-2xl font-bold text-fg">
-              The 4 Non-Negotiable Pillars
+              The 3 Non-Negotiable Pillars
             </h3>
           </div>
 
-          <div className="divide-y divide-border-hairline border-t border-border-hairline">
-            {principles.map((p, idx) => {
+          <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-b border-border-hairline divide-y sm:divide-y-0 sm:divide-x divide-border-hairline">
+            {principlesData.map((p, idx) => {
               const Icon = p.icon;
               return (
                 <motion.div
                   key={p.index}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+                  whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                  className="group py-8 sm:py-10 pl-5 sm:pl-8 border-l-2 border-transparent hover:border-accent transition-colors duration-300 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-8 items-start"
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="group relative flex flex-col items-center text-center px-6 sm:px-8 py-12 sm:py-14 bg-canvas-subtle hover:bg-canvas-surface transition-colors"
                 >
-                  <div className="sm:col-span-2 flex items-center gap-3 sm:block">
-                    <span className="font-mono text-2xl sm:text-3xl font-semibold text-fg-subtle group-hover:text-accent-light transition-colors">
-                      {p.index}
-                    </span>
-                    <Icon size={18} className="text-fg-muted group-hover:text-accent-light transition-colors sm:mt-2" />
+                  {/* Capital */}
+                  <span
+                    className="absolute top-0 left-1/2 -translate-x-1/2 h-[3px] w-12 bg-accent/50 group-hover:bg-accent transition-colors"
+                    aria-hidden="true"
+                  />
+
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-border-hairline bg-canvas text-fg-muted group-hover:text-accent-light group-hover:border-accent/50 transition-colors">
+                    <Icon size={22} />
                   </div>
-                  <div className="sm:col-span-10">
-                    <h4 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2">
-                      {p.title}
-                    </h4>
-                    <p className="text-sm sm:text-base text-fg-muted leading-relaxed max-w-2xl">
-                      {p.desc}
-                    </p>
-                  </div>
+
+                  <span className="font-mono text-xs text-fg-faint mb-3">{p.index}</span>
+                  <h4 className="text-lg font-bold text-fg tracking-tight mb-3">{p.title}</h4>
+                  <p className="text-sm text-fg-muted leading-relaxed max-w-[15rem]">{p.desc}</p>
+
+                  {/* Base */}
+                  <span
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-12 bg-accent/50 group-hover:bg-accent transition-colors"
+                    aria-hidden="true"
+                  />
                 </motion.div>
               );
             })}
@@ -205,30 +188,6 @@ export const AboutPage: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Direct CTA */}
-        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div className="space-y-2 max-w-xl">
-            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
-              Studio Collaboration
-            </span>
-            <h3 className="text-2xl font-bold text-fg">
-              Ready to elevate your digital presence?
-            </h3>
-            <p className="text-xs sm:text-sm text-fg-muted">
-              Connect directly with our team to discuss your goals and receive a clear proposal.
-            </p>
-          </div>
-          <Button
-            variant="primary"
-            size="lg"
-            to="/contact"
-            icon={<ArrowRight size={16} />}
-            className="w-full sm:w-auto justify-center"
-          >
-            Get In Touch
-          </Button>
         </div>
       </div>
     </div>

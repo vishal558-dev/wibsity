@@ -4,11 +4,14 @@ import { SectionHeading } from '../components/common/SectionHeading';
 import { Button } from '../components/common/Button';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
-import { Layout, Layers, RefreshCw, Sliders, Check, Clock, Phone, ArrowRight } from 'lucide-react';
+import { Layout, Layers, RefreshCw, Sliders, Clock, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 export const ServicesPage: React.FC = () => {
+  const prefersReduced = useReducedMotion();
+
   const iconMap = {
     Layout: Layout,
     Layers: Layers,
@@ -38,8 +41,8 @@ export const ServicesPage: React.FC = () => {
               return (
                 <motion.div
                   key={service.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+                  whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="border border-border-hairline bg-canvas-subtle p-5 sm:p-8 lg:p-10 flex flex-col justify-between group hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_20px_48px_-28px_rgba(75,80,254,0.6)] transition-all"
@@ -73,11 +76,8 @@ export const ServicesPage: React.FC = () => {
                     <h2 className="text-xl sm:text-2xl sm:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
                       {service.title}
                     </h2>
-                    <p className="text-sm font-medium text-fg-muted mb-3 sm:mb-4 font-sans">
+                    <p className="text-sm font-medium text-fg-muted mb-5 sm:mb-6 font-sans">
                       {service.tagline}
-                    </p>
-                    <p className="text-xs sm:text-sm text-fg-subtle leading-relaxed mb-5 sm:mb-6 font-sans">
-                      {service.description}
                     </p>
 
                     {/* Target Audience */}
@@ -88,19 +88,6 @@ export const ServicesPage: React.FC = () => {
                       <p className="text-xs text-fg-muted leading-relaxed font-sans">
                         {service.forWhom}
                       </p>
-                    </div>
-
-                    {/* Deliverables List */}
-                    <div className="space-y-2 mb-6 sm:mb-8">
-                      <span className="font-sans text-[11px] font-semibold text-fg-muted uppercase tracking-wider block mb-2">
-                        Deliverable Scope
-                      </span>
-                      {service.deliverables.map((item) => (
-                        <div key={item} className="flex items-start gap-2 text-xs text-fg-muted font-sans">
-                          <Check size={14} className="text-fg shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
                     </div>
                   </div>
 
@@ -128,7 +115,7 @@ export const ServicesPage: React.FC = () => {
         </div>
 
         {/* Turnaround Guarantee Banner */}
-        <div className="p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="grid-pattern p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <Clock size={24} className="text-accent-light shrink-0 mt-0.5" />
             <div className="space-y-1">
@@ -181,8 +168,8 @@ export const ServicesPage: React.FC = () => {
               {processData.map((step, idx) => (
                 <motion.div
                   key={step.step}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                  whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="relative flex flex-col sm:flex-row gap-4 sm:gap-8"
@@ -209,47 +196,14 @@ export const ServicesPage: React.FC = () => {
                     <h3 className="text-lg sm:text-xl font-bold text-fg tracking-tight mb-2 font-sans">
                       {step.name}
                     </h3>
-                    <p className="text-sm text-fg-muted leading-relaxed mb-4 max-w-2xl font-sans">
+                    <p className="text-sm text-fg-muted leading-relaxed max-w-2xl font-sans">
                       {step.description}
                     </p>
-
-                    <div className="flex flex-wrap gap-x-6 gap-y-1.5">
-                      {step.deliverables.map((item) => (
-                        <div key={item} className="flex items-center gap-1.5 text-xs text-fg-subtle font-sans">
-                          <span className="text-accent font-mono">→</span>
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Ready to begin */}
-        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div className="space-y-2 max-w-xl">
-            <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
-              // PROJECT INITIATION
-            </span>
-            <h3 className="text-2xl font-bold text-fg">
-              Have a project in mind? Let&apos;s evaluate the scope together.
-            </h3>
-            <p className="text-xs sm:text-sm text-fg-muted">
-              Whether you need a full digital flagship, a rapid landing page, or a custom web feature, we provide transparent recommendations and fixed-timeline proposals.
-            </p>
-          </div>
-          <Button
-            variant="primary"
-            size="lg"
-            to="/contact"
-            icon={<ArrowRight size={16} />}
-            className="w-full sm:w-auto justify-center"
-          >
-            Open Contact Hub
-          </Button>
         </div>
       </div>
     </div>

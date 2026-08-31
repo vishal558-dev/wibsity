@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { cn } from '../../utils/cn';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 interface SectionHeadingProps {
   index: string;
@@ -19,6 +20,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   align = 'left',
   className,
 }) => {
+  const prefersReduced = useReducedMotion();
+
   return (
     <div
       className={cn(
@@ -31,8 +34,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       )}
     >
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+        whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
@@ -43,8 +46,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       </motion.div>
 
       <motion.h2
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+        whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-fg leading-[1.14]"
@@ -54,8 +57,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
 
       {description && (
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+          whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-fg-muted max-w-2xl leading-relaxed"

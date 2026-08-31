@@ -7,7 +7,7 @@ export const servicesData: Service[] = [
     title: 'Business Websites',
     tagline: 'Authoritative multi-page digital flagships built to build trust and capture inquiries.',
     description: 'Comprehensive digital presences tailored for modern practices, consultancies, architectural studios, and commercial businesses. Structured with clear information architecture, high-grade typography, and deliberate conversion pathways.',
-    forWhom: 'Established companies, professional firms, and modern practices looking for an uncompromising digital flagship.',
+    forWhom: 'Established companies & professional firms.',
     deliverables: [
       'Custom Multi-Page Architectural Design (Home, Services, About, Insights, Contact)',
       'Responsive Mobile-First Frontend Engineering',
@@ -24,7 +24,7 @@ export const servicesData: Service[] = [
     title: 'High-Converting Landing Pages',
     tagline: 'Focused single-page digital assets engineered to turn targeted traffic into qualified leads.',
     description: 'Precision-engineered landing pages built for product releases, focused service campaigns, and marketing initiatives. Designed around clear visual hierarchy, direct value communication, and frictionless action triggers.',
-    forWhom: 'Founders, marketers, and businesses launching a new service, product, or paid acquisition campaign.',
+    forWhom: 'Founders launching a new service or campaign.',
     deliverables: [
       'Conversion-Optimized Section Architecture & Wireframing',
       'Compelling Visual Hierarchy & Interactive Product Previews',
@@ -41,7 +41,7 @@ export const servicesData: Service[] = [
     title: 'Website Redesigns & Modernization',
     tagline: 'Complete architectural and visual overhaul of existing websites that have fallen behind.',
     description: 'We audit your existing web presence, eliminate clutter and technical debt, and transform slow, outdated layouts into sharp, modern, high-performing digital assets that reflect where your business is today.',
-    forWhom: 'Brands with an outdated, sluggish, or cluttered website that no longer represents their current caliber.',
+    forWhom: 'Brands with an outdated or sluggish website.',
     deliverables: [
       'Comprehensive UX & Conversion Audit of Current Site',
       'Modern Visual Identity & Design System Upgrade',
@@ -58,7 +58,7 @@ export const servicesData: Service[] = [
     title: 'Custom Web Experiences & Features',
     tagline: 'Tailored interactive tools, booking workflows, and client intake portals.',
     description: 'When standard templates fall short, we build custom interactive web features that elevate your user experience—from interactive service configurators to seamless appointment flows and custom member portals.',
-    forWhom: 'Businesses with specialized workflows, interactive product showcases, or custom client engagement needs.',
+    forWhom: 'Businesses with specialized workflow needs.',
     deliverables: [
       'Custom Interactive UI Logic & State Machines',
       'Online Scheduling & Booking Engine Integration',

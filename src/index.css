@@ -89,12 +89,14 @@
     overflow-wrap: break-word;
   }
 
-  /* Architectural Grid utility */
+  /* Architectural Grid utility — uses the theme-aware grid-line token so it
+     stays subtle on both the dark and light canvas (a flat rgba(255,255,255)
+     line would be invisible on the light theme's white background). */
   .grid-pattern {
     background-size: 40px 40px;
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in srgb, var(--color-grid-line) 35%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-grid-line) 35%, transparent) 1px, transparent 1px);
   }
 
   ::selection {
@@ -117,6 +119,45 @@
   background: radial-gradient(closest-side, rgba(75, 80, 254, 0.5), transparent 70%);
   filter: blur(60px);
   pointer-events: none;
+}
+
+/* Compositor-only (transform) loop for the hero side-panel scan line — avoids
+   animating the SVG rect's y attribute directly, which forces a layout
+   recalc every frame for as long as the infinite loop runs. */
+@keyframes hero-scan-line {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(250px);
+  }
+}
+
+.hero-scan-line {
+  animation: hero-scan-line 2.8s ease-in-out infinite alternate;
+}
+
+/* Capability ticker — pure-CSS marquee, preferred over a JS-driven loop for
+   an element that runs continuously for as long as the page is open. The
+   track renders its content twice back-to-back and translates by exactly
+   -50% so the loop is seamless. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }
 
 /* Custom scrollbar for desktop */

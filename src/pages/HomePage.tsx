@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, type Variants } from 'motion/react';
-import { CheckCircle2, Phone, ArrowRight, Globe, Zap, Code } from 'lucide-react';
+import { CheckCircle2, Phone, ArrowRight, Zap, Globe, Code } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
@@ -148,7 +148,7 @@ export const HomePage: React.FC = () => {
               <motion.h1
                 initial="hidden"
                 animate={headlineReady ? 'visible' : 'hidden'}
-                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.045, delayChildren: 0.1 } } }}
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
               >
                 {headlineLeadWords.map((word, i) => (
@@ -168,7 +168,7 @@ export const HomePage: React.FC = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="mt-5 sm:mt-8 text-base sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
             >
               High-impact, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
@@ -178,7 +178,7 @@ export const HomePage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-3.5"
             >
               <MagneticCTA className="w-full sm:w-auto">
@@ -211,7 +211,7 @@ export const HomePage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: 0.32 }}
               className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
             >
               {valuePoints.map((point) => (
@@ -230,40 +230,34 @@ export const HomePage: React.FC = () => {
             <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.16]" aria-hidden="true">
               <defs>
                 <clipPath id="hero-mark-clip">
-                  <polygon points="130,30 230,30 190,290 90,290" />
+                  <rect x="90" y="54" width="140" height="250" />
                 </clipPath>
               </defs>
-              <polygon points="130,30 230,30 190,290 90,290" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
-              {prefersReduced ? (
-                <rect
-                  x="60"
-                  y="20"
-                  width="200"
-                  height="3"
-                  fill="var(--color-accent-light)"
-                  clipPath="url(#hero-mark-clip)"
-                  opacity="0.7"
-                />
-              ) : (
-                <motion.rect
-                  x="60"
-                  width="200"
-                  height="3"
-                  fill="var(--color-accent-light)"
-                  clipPath="url(#hero-mark-clip)"
-                  opacity="0.7"
-                  initial={{ y: 20 }}
-                  animate={{ y: [20, 270] }}
-                  transition={{ duration: 2.8, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
-                />
-              )}
+              {/* Back viewport — a paired mobile frame, for depth */}
+              <rect x="40" y="150" width="90" height="150" rx="10" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.5" />
+              {/* Front viewport — a browser window with a chrome bar */}
+              <rect x="90" y="30" width="140" height="274" rx="6" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
+              <line x1="90" y1="54" x2="230" y2="54" stroke="var(--color-accent)" strokeWidth="1.5" />
+              <circle cx="104" cy="42" r="3" fill="var(--color-accent)" />
+              <circle cx="116" cy="42" r="3" fill="var(--color-accent)" />
+              <circle cx="128" cy="42" r="3" fill="var(--color-accent)" />
+              <rect
+                x="100"
+                y="54"
+                width="120"
+                height="3"
+                fill="var(--color-accent-light)"
+                clipPath="url(#hero-mark-clip)"
+                opacity="0.7"
+                className={prefersReduced ? undefined : 'hero-scan-line'}
+              />
             </svg>
 
             <div className="relative flex flex-col items-start">
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
                 className="relative border border-border-hairline bg-canvas-subtle px-5 py-4 shadow-[0_0_40px_-14px_rgba(75,80,254,0.4)]"
               >
                 <div className="flex items-center gap-1.5 mb-2.5">
@@ -289,7 +283,7 @@ export const HomePage: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.78, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.6, delay: 0.54, ease: [0.16, 1, 0.3, 1] }}
                 className="relative ml-8 border border-border-hairline bg-canvas-subtle px-4 py-3"
               >
                 <span className="block font-mono text-[9px] text-fg-faint uppercase tracking-widest mb-0.5">
@@ -307,6 +301,21 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Capability Ticker — pure-CSS marquee, decorative */}
+      <div className="border-b border-border-hairline bg-canvas-subtle overflow-hidden" aria-hidden="true">
+        <div className="flex w-max marquee-track py-3 sm:py-4">
+          {[...servicesData, ...servicesData].map((service, i) => (
+            <span
+              key={`${service.id}-${i}`}
+              className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 shrink-0 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-fg-muted whitespace-nowrap"
+            >
+              {service.title}
+              <span className="text-accent">/</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* 01 / Capabilities Matrix Teaser */}
       <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -315,7 +324,7 @@ export const HomePage: React.FC = () => {
               index="01"
               tag="CORE CAPABILITIES"
               title="Built for modern businesses & founders."
-              description="We specialize in four distinct digital engineering offerings designed to clarify your message, accelerate load speeds, and convert visitors."
+              description="Four digital engineering offerings built to convert visitors."
               className="mb-0"
             />
             <div className="mt-6 md:mt-0">
@@ -379,7 +388,7 @@ export const HomePage: React.FC = () => {
                 No templates. No slow page builders. Just fast, modern code.
               </h2>
               <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                Most agencies trap businesses in bloated WordPress plugins or slow drag-and-drop systems. We handcraft bespoke React and TypeScript digital flagships that load under 500ms and are built to give your business a real competitive edge.
+                We handcraft bespoke React and TypeScript flagships instead of bloated page builders.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
