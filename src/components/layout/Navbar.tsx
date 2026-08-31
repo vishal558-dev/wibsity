@@ -27,8 +27,9 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { label: 'Home', to: '/', index: '00', end: true },
     { label: 'Services', to: '/services', index: '01' },
-    { label: 'Studio', to: '/about', index: '02' },
-    { label: 'Contact', to: '/contact', index: '03' },
+    { label: 'Projects', to: '/projects', index: '02' },
+    { label: 'Studio', to: '/about', index: '03' },
+    { label: 'Contact', to: '/contact', index: '04' },
   ];
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;

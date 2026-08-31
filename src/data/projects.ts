@@ -1,5 +1,19 @@
 import type { Project } from '../types';
 
+/**
+ * Self-initiated design concepts — not client work. Every entry is titled by
+ * its niche ("Surgical Practice"), never by an invented company name, and
+ * carries no fabricated testimonials, results, or metrics. The `badge` field is
+ * surfaced prominently on both /projects and each case study, and the mock
+ * frames themselves carry a "Concept" marker, so a screenshot taken out of
+ * context still can't read as a real engagement.
+ *
+ * Three concepts, three deliberately different site archetypes — an
+ * appointment-led practice, an editorial monograph, and a product storefront.
+ * Each one's `preview` uses a different data shape (see ConceptPreview in
+ * types/index.ts), which is what stops the three mocks drifting back into one
+ * shared template with three tints.
+ */
 export const projectsData: Project[] = [
   {
     id: 'surgical-practice',
@@ -7,59 +21,72 @@ export const projectsData: Project[] = [
     title: 'Surgical Practice',
     badge: 'Studio Concept',
     clientType: 'Medical & Surgical Practice Concept',
-    category: 'practice',
-    categoryLabel: 'Practice Concept',
-    tagline: 'A patient-first digital concept exploring streamlined appointment intake and clinical clarity.',
-    summary: 'A conceptual design study exploring how a modern surgical practice can present complex procedural guides with reassuring clarity while streamlining consultation inquiries.',
-    challenge: 'Medical websites often overwhelm patients with dense clinical terminology and fragmented contact options. The objective was to design a clean, reassuring layout that makes specialist information and intake pathways immediately accessible.',
-    strategy: 'We developed a structured layout pairing calm whitespace with straightforward procedural taxonomies, physician credentials, and a frictionless multi-step consultation intake flow.',
+    tagline: 'A patient-first concept exploring streamlined appointment intake and clinical clarity.',
+    summary:
+      'A design study exploring how a modern surgical practice can present complex procedural information with reassuring clarity, while making the consultation pathway the most obvious action on every screen.',
+    challenge:
+      'Medical websites routinely overwhelm patients with dense clinical terminology and scatter contact options across the page. The objective was a calm, reassuring layout where specialist information and the intake pathway are both immediately findable under stress.',
+    strategy:
+      'A low-density layout with generous whitespace and a wide horizontal rhythm: plain-language department taxonomies, credentials stated as quiet microtext rather than badges, and a booking action pinned so it is never more than one glance away.',
     deliverables: [
       'Practice Flagship & Patient Intake Layouts',
       'Specialist Department & Physician Directory UI',
       'Consultation Scheduling Modal Architecture',
-      'Mobile-Optimized Clinic Location & Wayfinding',
-      'Pre-Op Patient Information Taxonomy',
+      'Mobile Clinic Location & Wayfinding',
+      'Pre-Operative Information Taxonomy',
     ],
     features: [
       {
         title: 'Triage-Guided Intake',
-        description: 'Guides patients to the relevant surgical specialist based on procedural symptoms in three clear steps.',
+        description:
+          'Routes a patient to the relevant specialist from their presenting symptoms in three plain-language steps.',
       },
       {
         title: 'Procedural Clarity Index',
-        description: 'Structured layout detailing surgical recovery expectations, physician credentials, and facility info.',
+        description:
+          'Structured layout covering recovery expectations, physician credentials, and facility detail without clinical jargon.',
       },
       {
-        title: 'Mobile Consultation Action',
-        description: 'Persistent, non-intrusive mobile consultation trigger accessible across all device viewports.',
+        title: 'Persistent Booking Action',
+        description:
+          'A non-intrusive consultation trigger that stays reachable at every scroll depth and viewport width.',
       },
     ],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'Accessible Forms', 'Motion'],
-    desktopPreview: {
-      heroHeadline: 'Advanced Surgical Care. Patient-First Clarity.',
-      heroSub: 'A design concept for specialized clinical practices featuring clear department navigation and online consultation intake.',
-      navLinks: ['Departments', 'Surgeons', 'Preparation', 'Locations', 'Book Intake'],
-      accentColor: '#38bdf8',
-      scopeSpecs: [
-        { label: 'Template Scope', value: '5 Page Layouts' },
-        { label: 'Core Focus', value: 'Patient Intake UX' },
-        { label: 'Design System', value: 'Clinical Precision' },
+    scopeSpecs: [
+      { label: 'Template Scope', value: '5 Page Layouts' },
+      { label: 'Core Focus', value: 'Patient Intake UX' },
+      { label: 'Density', value: 'Low / Spacious' },
+    ],
+    preview: {
+      layout: 'clinic',
+      accent: '#38bdf8',
+      wordmark: 'Surgical Practice',
+      nav: ['Departments', 'Surgeons', 'Preparation', 'Locations'],
+      headline: 'Advanced surgical care, explained clearly.',
+      standfirst:
+        'Specialist consultations across orthopedics, cardiovascular, and spine — with preparation guidance written in plain language.',
+      trustMarkers: ['Board-Certified Surgeons', 'Same-Week Consultations', 'Accredited Day-Care Theatre'],
+      bookingCta: 'Book a Consultation',
+      departments: [
+        {
+          code: '01',
+          name: 'Orthopedic & Joint Reconstruction',
+          blurb: 'Minimally invasive arthroscopic and restorative joint procedures.',
+        },
+        {
+          code: '02',
+          name: 'Cardiovascular Care',
+          blurb: 'Endovascular and surgical cardiovascular consultation pathways.',
+        },
+        {
+          code: '03',
+          name: 'Spine & Neurological Surgery',
+          blurb: 'Precision spinal decompression and microsurgical care.',
+        },
       ],
-      sections: [
-        { title: 'Orthopedic & Joint Reconstruction', desc: 'Minimally invasive arthroscopic and restorative joint procedures.', tag: 'DEPT_01' },
-        { title: 'Cardiovascular Care', desc: 'Specialized endovascular and surgical cardiovascular consultations.', tag: 'DEPT_02' },
-        { title: 'Spine & Neurological Surgery', desc: 'Precision spinal decompression and microsurgical care pathways.', tag: 'DEPT_03' },
-      ],
-    },
-    mobilePreview: {
-      headline: 'Surgical Care & Patient Intake',
-      ctaText: 'Schedule Consultation',
-      highlight: 'Mobile layout prioritized around 1-tap consultation scheduling and clear procedural summaries.',
-      sections: [
-        { title: 'Orthopedics & Joint', tag: 'DEPARTMENT' },
-        { title: 'Spine & Neurology', tag: 'DEPARTMENT' },
-        { title: 'Patient Preparation Guide', tag: 'RESOURCES' },
-      ],
+      mobileHeadline: 'Advanced surgical care, explained clearly.',
+      mobileCta: 'Book a Consultation',
     },
   },
   {
@@ -68,120 +95,56 @@ export const projectsData: Project[] = [
     title: 'Architecture Studio',
     badge: 'Studio Concept',
     clientType: 'Contemporary Architecture Atelier Concept',
-    category: 'flagship',
-    categoryLabel: 'Flagship Concept',
-    tagline: 'An architectural monograph concept built around high-contrast spatial grids and blueprint overlays.',
-    summary: 'A design study for an architectural practice, demonstrating how disciplined grid structures and intentional whitespace allow spatial photography and blueprints to command focus.',
-    challenge: 'Many architecture websites rely on cluttered, unorganized galleries that dilute the studio’s design perspective. The goal was to build a clean, chronological project matrix that presents both photography and technical drawings with clarity.',
-    strategy: 'We designed a modular Swiss blueprint grid with hairline structural borders, high-contrast typography, and an interactive blueprint inspection layout.',
+    tagline: 'An editorial monograph concept where type and negative space carry the work.',
+    summary:
+      'A design study for an architectural practice, demonstrating how a disciplined asymmetric grid and a near-achromatic palette let spatial photography and drawings command the page without competing with the interface around them.',
+    challenge:
+      'Architecture sites tend toward cluttered galleries that flatten a studio’s point of view into a wall of thumbnails. The goal was a chronological monograph that reads like a printed publication rather than a CMS index.',
+    strategy:
+      'A type-dominant, deliberately asymmetric composition: an oversized display line allowed to break the frame, image plates set in unequal proportion rather than a uniform grid, and a numbered project index set in tabular figures.',
     deliverables: [
       'Spatial Portfolio System & Monograph Index',
       'Interactive Blueprint & Specification Layout',
-      'Commission Inquiry & RFP Brief Flow',
+      'Commission Inquiry & Brief Flow',
       'Studio Philosophy & Press Archive Layouts',
       'High-Resolution Image Grid Architecture',
     ],
     features: [
       {
-        title: 'Spatial Blueprint Overlay',
-        description: 'Interactive layout toggle switching between finished structural photography and technical architectural drawings.',
+        title: 'Asymmetric Plate Composition',
+        description:
+          'Image slots set in unequal proportion and offset from the type column, so no two projects present identically.',
       },
       {
-        title: 'Project Taxonomy Matrix',
-        description: 'Filterable structure organizing projects across residential, civic, and commercial adaptive reuse categories.',
+        title: 'Tabular Project Index',
+        description:
+          'A numbered chronological index with aligned place and year columns, set in tabular figures so the rows scan cleanly.',
       },
       {
-        title: 'Structured RFP Brief Flow',
-        description: 'A qualification form guiding prospective clients through site typology, square footage, and timeline parameters.',
+        title: 'Structured Commission Brief',
+        description:
+          'A qualification flow guiding prospective clients through site typology, area, and timeline before contact.',
       },
     ],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'Lenis Smooth Scroll', 'Motion'],
-    desktopPreview: {
-      heroHeadline: 'Spaces Engineered for Clarity and Permanence.',
-      heroSub: 'A studio concept exploring spatial portfolio curation, structural drawings, and clean commission inquiries.',
-      navLinks: ['Selected Works', 'Atelier', 'Monographs', 'Blueprint Index', 'Inquire'],
-      accentColor: '#e4e4e7',
-      scopeSpecs: [
-        { label: 'Template Scope', value: 'Portfolio & Atelier' },
-        { label: 'Core Focus', value: 'Spatial Grid UX' },
-        { label: 'Layout Model', value: '12-Col Modular' },
-      ],
-      sections: [
-        { title: 'Lakefront Monolith Residence', desc: 'Exposed structural concrete volume framed against natural lake topography.', tag: 'RESIDENTIAL' },
-        { title: 'Civic Cultural Pavilion', desc: 'Charred timber pavilion integrating public gardens with modern steel framing.', tag: 'CIVIC' },
-        { title: 'Commercial Office Tower', desc: 'Multi-story commercial workspace featuring passive shading facades.', tag: 'COMMERCIAL' },
-      ],
-    },
-    mobilePreview: {
-      headline: 'Architectural Monograph & Portfolio',
-      ctaText: 'Commission a Project',
-      highlight: 'Mobile portfolio layout optimized for full-width architectural imagery and quick project qualification.',
-      sections: [
-        { title: 'Lakefront Residence', tag: 'PROJECT_01' },
-        { title: 'Civic Pavilion', tag: 'PROJECT_02' },
-        { title: 'Commercial Tower', tag: 'PROJECT_03' },
-      ],
-    },
-  },
-  {
-    id: 'millwork-fabrication',
-    slug: 'millwork-fabrication',
-    title: 'Millwork & Fabrication',
-    badge: 'Studio Concept',
-    clientType: 'Architectural Millwork & Fabrication Concept',
-    category: 'brand',
-    categoryLabel: 'Brand Concept',
-    tagline: 'A materials-focused studio concept bridging craftsmanship with commercial project briefs.',
-    summary: 'A conceptual design study for a custom millwork workshop, focusing on material grain catalogs, joinery details, and commercial trade inquiry workflows.',
-    challenge: 'Artisan fabrication studios often struggle to showcase the technical precision required for high-value commercial commissions. The goal was to present materials and joinery craftsmanship with industrial clarity.',
-    strategy: 'We structured an editorial layout emphasizing material species, technical joinery inspections, and a straightforward sample request flow.',
-    deliverables: [
-      'Commercial Fixture Catalog & Joinery Index',
-      'Material & Timber Species Specifier UI',
-      'Trade Sample Request & Estimating Brief',
-      'Workshop Capabilities & Tooling Section',
-      'High-Resolution Texture & Detail Inspection Views',
+    scopeSpecs: [
+      { label: 'Template Scope', value: 'Portfolio & Atelier' },
+      { label: 'Core Focus', value: 'Editorial Composition' },
+      { label: 'Density', value: 'Minimal / Type-Led' },
     ],
-    features: [
-      {
-        title: 'Material Specifier Matrix',
-        description: 'Interactive visual library detailing timber species, natural grain patterns, and durable matte architectural finishes.',
-      },
-      {
-        title: 'Trade Partner Portal',
-        description: 'A dedicated intake funnel for general contractors and interior architects to submit project drawings for estimation.',
-      },
-      {
-        title: 'Joinery Detail Inspections',
-        description: 'High-clarity visual viewports displaying dovetail connections, mortise joints, and steel subframes.',
-      },
-    ],
-    stack: ['React', 'TypeScript', 'Tailwind CSS', 'Motion', 'Anime.js'],
-    desktopPreview: {
-      heroHeadline: 'Architectural Millwork. Raw Timber. Precision Joinery.',
-      heroSub: 'A concept showcasing architectural timber fixtures, material options, and trade commission inquiries.',
-      navLinks: ['Workshop', 'Materials', 'Commercial Works', 'Trade Portal', 'Request Sample'],
-      accentColor: '#d97706',
-      scopeSpecs: [
-        { label: 'Template Scope', value: 'Catalog & Works' },
-        { label: 'Core Focus', value: 'Material Specifier' },
-        { label: 'Inquiry Path', value: 'Sample Request' },
+    preview: {
+      layout: 'monograph',
+      accent: '#5B6473',
+      wordmark: 'Atelier',
+      displayLine: 'Spaces engineered for permanence',
+      discipline: 'Selected Works — 2019 / 2026',
+      indexEntries: [
+        { no: '01', project: 'Lakefront Monolith Residence', place: 'Alibaug', year: '2024' },
+        { no: '02', project: 'Civic Cultural Pavilion', place: 'Ahmedabad', year: '2023' },
+        { no: '03', project: 'Adaptive Reuse Warehouse', place: 'Panjim', year: '2021' },
       ],
-      sections: [
-        { title: 'Executive Boardroom Table', desc: 'Solid claro walnut slab with integrated blackened steel cable management spine.', tag: 'COMMERCIAL' },
-        { title: 'Acoustic Slat Wall Paneling', desc: 'Precision CNC-machined white oak acoustic baffles for modern workspaces.', tag: 'ACOUSTIC' },
-        { title: 'Architectural Cabinetry Sanctuary', desc: 'Smoked glass and charred ash cabinetry with concealed flush LED channels.', tag: 'HOSPITALITY' },
-      ],
-    },
-    mobilePreview: {
-      headline: 'Architectural Millwork & Joinery',
-      ctaText: 'Request Trade Samples',
-      highlight: 'Mobile experience designed for trade partners and architects to quickly view timber specs and request samples.',
-      sections: [
-        { title: 'Walnut Boardroom Table', tag: 'FIXTURE' },
-        { title: 'Oak Acoustic Paneling', tag: 'WALLS' },
-        { title: 'Trade Sample Kit', tag: 'INQUIRY' },
-      ],
+      mobileHeadline: 'Spaces engineered for permanence',
+      mobileCta: 'Commission a Project',
     },
   },
   {
@@ -190,120 +153,76 @@ export const projectsData: Project[] = [
     title: 'Coffee Roastery',
     badge: 'Studio Concept',
     clientType: 'Roastery & Multi-Location Cafe Concept',
-    category: 'commerce',
-    categoryLabel: 'Commerce Concept',
-    tagline: 'A lightweight digital storefront concept balancing single-origin coffees with local cafe hours.',
-    summary: 'A design concept exploring how an independent coffee brand can present coffee subscriptions, origin stories, and multiple cafe locations without e-commerce clutter.',
-    challenge: 'Many coffee websites suffer from heavy plugin bloat and slow load times on mobile. The goal was to design an instant-loading, clean storefront with clear flavor notes and cafe hours.',
-    strategy: 'We developed a lightweight layout with a 3-step coffee taste guide, live cafe schedules, and a streamlined subscription selection.',
+    tagline: 'A warm storefront concept balancing single-origin retail against local cafe hours.',
+    summary:
+      'A design study exploring how an independent roastery can sell subscriptions and single-origin lots alongside its cafe locations, at a much higher information density than the other concepts, without tipping into plugin-heavy storefront clutter.',
+    challenge:
+      'Independent coffee sites carry a lot of detail per product — origin, process, roast level, tasting notes, price — and usually resolve it by either hiding everything behind a product page or shipping a slow, plugin-heavy storefront.',
+    strategy:
+      'A tight modular grid that puts the full product signature on the card itself: origin tag, roast level as a scannable dot scale, tasting notes, and price in tabular figures. Warm brand fill carries the promo strip and the cart, so commerce reads as commerce.',
     deliverables: [
       'Single-Origin Subscription Storefront Layout',
-      'Interactive Roast & Flavor Profile Guide',
-      'Multi-Location Cafe Directory & Seasonal Menu Index',
+      'Interactive Roast & Flavour Profile Guide',
+      'Multi-Location Cafe Directory & Seasonal Menu',
       'Wholesale Partner Inquiry Architecture',
       'Mobile-First Quick Ordering Flow',
     ],
     features: [
       {
-        title: 'Flavor & Roast Matrix',
-        description: 'Interactive tasting visualizer mapping acidity, roast body, sweetness, and washing process.',
+        title: 'Roast Level Dot Scale',
+        description:
+          'A five-step roast indicator readable at card size, so lots can be compared without opening a product page.',
       },
       {
         title: 'Cafe Network Directory',
-        description: 'Clear layout displaying neighborhood cafe addresses, opening hours, and seasonal batch brews on bar.',
+        description:
+          'Neighbourhood addresses, opening hours, and the batch currently on bar, laid out as a scannable strip.',
       },
       {
         title: 'Wholesale Partner Onboarding',
-        description: 'Direct inquiry workflow for restaurants, offices, and cafes seeking coffee supply partnerships.',
+        description:
+          'A separate inquiry path for restaurants, offices, and cafes seeking a supply relationship rather than retail.',
       },
     ],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'Motion', 'Lenis'],
-    desktopPreview: {
-      heroHeadline: 'Direct-Trade Single Origins. Small-Batch Roasted.',
-      heroSub: 'A studio concept exploring direct-trade coffee profiles, subscription selection, and local cafe navigation.',
-      navLinks: ['Current Roasts', 'Subscriptions', 'Cafe Locations', 'Wholesale', 'Taste Guide'],
-      accentColor: '#10b981',
-      scopeSpecs: [
-        { label: 'Template Scope', value: 'Storefront & Cafes' },
-        { label: 'Core Focus', value: 'Flavor Matrix' },
-        { label: 'Performance', value: 'Sub-Second Build' },
-      ],
-      sections: [
-        { title: 'Gedeb Single-Origin Micro-Lot', desc: 'Washed process with notes of bergamot, jasmine blossom, and lemon peel.', tag: 'ETHIOPIA' },
-        { title: 'Pink Bourbon Natural Lot', desc: 'Natural fermentation producing wild strawberry, guava, and raw honey notes.', tag: 'COLOMBIA' },
-        { title: 'High-Elevation Shade Grown', desc: 'High-altitude lot featuring dark cocoa nibs, brown sugar, and toasted almond.', tag: 'GUATEMALA' },
-      ],
-    },
-    mobilePreview: {
-      headline: 'Specialty Roastery & Subscriptions',
-      ctaText: 'Explore Coffee Lots',
-      highlight: 'One-thumb mobile ordering interface for coffee subscriptions and fast cafe location lookup.',
-      sections: [
-        { title: 'Single-Origin Ethiopian Lot', tag: 'ETHIOPIA' },
-        { title: 'Colombian Natural Lot', tag: 'COLOMBIA' },
-        { title: 'Find Your Nearest Cafe', tag: 'LOCATIONS' },
-      ],
-    },
-  },
-  {
-    id: 'wealth-advisory',
-    slug: 'wealth-advisory',
-    title: 'Wealth Advisory',
-    badge: 'Studio Concept',
-    clientType: 'Independent Wealth Advisory Concept',
-    category: 'practice',
-    categoryLabel: 'Practice Concept',
-    tagline: 'An authoritative editorial concept establishing clarity and discretion for private advisory firms.',
-    summary: 'A conceptual design study for a wealth advisory practice, demonstrating how clean editorial typography and structured service pillars build confidence and encourage confidential inquiries.',
-    challenge: 'Financial advisory websites frequently rely on stock graphics and cluttered tables that create confusion. The goal was to build a disciplined, publication-grade layout focused on service clarity.',
-    strategy: 'We designed a typography-led editorial system with clear wealth management pillars, macroeconomic commentary layouts, and a private intake questionnaire.',
-    deliverables: [
-      'Practice Website & Editorial Typography Layouts',
-      'Confidential Client Intake & Discovery Questionnaire',
-      'Quarterly Commentary & Market Letters Layout',
-      'Service Pillars & Fiduciary Standard Disclosures',
-      'Client Portal Access Gateway',
+    scopeSpecs: [
+      { label: 'Template Scope', value: 'Storefront & Cafes' },
+      { label: 'Core Focus', value: 'Product Comparison' },
+      { label: 'Density', value: 'High / Modular' },
     ],
-    features: [
-      {
-        title: 'Structured Advisory Pillars',
-        description: 'Clear layout categorizing business succession, estate structuring, and core portfolio management.',
-      },
-      {
-        title: 'Editorial Insights Reader',
-        description: 'A clean, distraction-free reading experience for quarterly macroeconomic letters and client memos.',
-      },
-      {
-        title: 'Confidential Discovery Intake',
-        description: 'A structured consultation request form designed to capture preliminary goals with complete privacy.',
-      },
-    ],
-    stack: ['React', 'TypeScript', 'Tailwind CSS', 'Motion'],
-    desktopPreview: {
-      heroHeadline: 'Strategic Advisory. Built for Long-Term Clarity.',
-      heroSub: 'A publication-grade concept for advisory firms featuring structured service pillars and confidential intake.',
-      navLinks: ['Philosophy', 'Advisory Pillars', 'Quarterly Letters', 'Fiduciary Standards', 'Client Intake'],
-      accentColor: '#a1a1aa',
-      scopeSpecs: [
-        { label: 'Template Scope', value: 'Practice & Insights' },
-        { label: 'Core Focus', value: 'Advisory Pillars' },
-        { label: 'Intake Path', value: 'Confidential Brief' },
+    preview: {
+      layout: 'storefront',
+      accent: '#C2703D',
+      wordmark: 'Roastery',
+      promo: 'Free shipping over ₹1,500 · Roasted every Monday',
+      nav: ['Current Roasts', 'Subscriptions', 'Cafes', 'Wholesale'],
+      cartCount: 3,
+      products: [
+        {
+          name: 'Gedeb Micro-Lot',
+          origin: 'Ethiopia',
+          roast: 2,
+          price: '₹1,450',
+          notes: 'Bergamot, jasmine, lemon peel',
+        },
+        {
+          name: 'Pink Bourbon Natural',
+          origin: 'Colombia',
+          roast: 3,
+          price: '₹1,620',
+          notes: 'Strawberry, guava, raw honey',
+        },
+        {
+          name: 'Shade-Grown Reserve',
+          origin: 'Guatemala',
+          roast: 4,
+          price: '₹1,280',
+          notes: 'Cocoa nib, brown sugar, almond',
+        },
       ],
-      sections: [
-        { title: 'Business Succession Planning', desc: 'Transition frameworks, pre-sale restructuring, and founder liquidity strategies.', tag: 'CORPORATE' },
-        { title: 'Estate & Trust Frameworks', desc: 'Multi-generational asset transfer, family governance, and trust design.', tag: 'FAMILY' },
-        { title: 'Core Portfolio Architecture', desc: 'Disciplined index allocation, tax-loss strategies, and risk management.', tag: 'ADVISORY' },
-      ],
-    },
-    mobilePreview: {
-      headline: 'Private Wealth & Advisory Counsel',
-      ctaText: 'Schedule Confidential Intake',
-      highlight: 'Distraction-free mobile reading experience for market letters and confidential consultation requests.',
-      sections: [
-        { title: 'Business Succession Planning', tag: 'PILLAR' },
-        { title: 'Estate & Trust Architecture', tag: 'PILLAR' },
-        { title: 'Quarterly Economic Review', tag: 'INSIGHTS' },
-      ],
+      hours: 'Cafe hours — Mon to Fri 07:30–19:00 · Sat & Sun 08:00–20:00',
+      mobileHeadline: 'Small-batch single origins',
+      mobileCta: 'Shop Current Roasts',
     },
   },
 ];

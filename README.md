@@ -60,16 +60,16 @@ wibsity/
     ├── index.css                    # Tailwind v4 @theme — the single source of design tokens
     ├── pages/
     │   ├── HomePage.tsx             # Landing page (statically imported; every other page is lazy-loaded)
-    │   ├── ProjectsPage.tsx         # Projects & Concepts archive (currently unrouted — see note below)
-    │   ├── CaseStudyPage.tsx        # Per-project case study with desktop/mobile viewport simulator
+    │   ├── ProjectsPage.tsx         # Projects & Concepts — three showcase bands, one per concept
+    │   ├── CaseStudyPage.tsx        # Per-concept case study with desktop/mobile viewport simulator
     │   ├── ServicesPage.tsx         # Core capabilities & delivery methodology
     │   ├── AboutPage.tsx            # Studio principles & FAQ
     │   ├── ContactPage.tsx          # Direct contact hub
     │   └── NotFoundPage.tsx         # 404 handler
     ├── types/
-    │   └── index.ts                 # Project, Service, FAQ, etc. type definitions
+    │   └── index.ts                 # Project, ConceptPreview, Service, FAQ, etc. type definitions
     ├── data/
-    │   ├── projects.ts              # Project/concept case study content
+    │   ├── projects.ts              # The three studio concepts and their case study content
     │   ├── services.ts              # Core service offerings
     │   ├── process.ts               # Delivery methodology steps
     │   ├── faqs.ts                  # Categorized FAQs
@@ -91,7 +91,7 @@ wibsity/
         └── scroll.ts                # Lenis-aware scroll helpers
 ```
 
-**Note on Projects & Concepts**: the `/projects` and `/work` routes currently redirect to the homepage — the page is temporarily hidden from navigation until there's real client work to showcase, rather than concept-only placeholders. The page, its data, and its route are all still in the codebase and can be re-enabled by restoring the routes in `App.tsx` and the nav/footer links.
+**Note on Projects & Concepts**: `/projects` is live and linked from the navbar and footer. It carries exactly three concepts, each rendering a different site archetype (`clinic`, `monograph`, `storefront`) from a different preview data shape — see `components/projects/ConceptPreview.tsx`. The legacy `/work` paths redirect to `/projects`. Individual case studies at `/projects/:slug` are deliberately `noindex, follow`: they describe hypothetical businesses in a shared section structure, which is too thin to warrant standalone search results, so `/projects` is the canonical portfolio page. See `CASE_STUDY_NOINDEX` in `src/data/seo.ts`.
 
 ---
 

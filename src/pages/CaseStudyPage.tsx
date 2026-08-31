@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,18 +14,9 @@ import {
 } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
+import { ConceptPreview } from '../components/projects/ConceptPreview';
 import { projectsData } from '../data/projects';
 import { CONTACT_INFO } from '../data/contact';
-
-/** WCAG relative luminance, used to pick readable text over an arbitrary per-project accent color. */
-function isLightColor(hex: string): boolean {
-  const c = hex.replace('#', '');
-  const r = parseInt(c.slice(0, 2), 16) / 255;
-  const g = parseInt(c.slice(2, 4), 16) / 255;
-  const b = parseInt(c.slice(4, 6), 16) / 255;
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return luminance > 0.6;
-}
 
 export const CaseStudyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,43 +26,41 @@ export const CaseStudyPage: React.FC = () => {
   const project = projectsData[currentIndex];
 
   if (!project) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/projects" replace />;
   }
 
-  const ctaTextColor = isLightColor(project.desktopPreview.accentColor)
-    ? 'var(--color-ink-fixed)'
-    : 'var(--color-paper-fixed)';
-
-  const prevProject = currentIndex > 0 ? projectsData[currentIndex - 1] : projectsData[projectsData.length - 1];
-  const nextProject = currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : projectsData[0];
+  const prevProject =
+    currentIndex > 0 ? projectsData[currentIndex - 1] : projectsData[projectsData.length - 1];
+  const nextProject =
+    currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : projectsData[0];
 
   const whatsappUrl = `${CONTACT_INFO.whatsappUrl}%20regarding%20${encodeURIComponent(project.title)}`;
 
+  const toggleClass = (active: boolean) =>
+    `flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 min-h-11 px-4 text-xs font-sans transition-colors cursor-pointer ${
+      active ? 'bg-accent text-accent-fg font-semibold' : 'text-fg-muted hover:text-fg font-medium'
+    }`;
+
   return (
     <div className="pt-32 pb-24 bg-canvas min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        {/* Top Breadcrumbs & Back Navigation */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16">
+        {/* Breadcrumb & concept badge */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border-hairline">
           <Link
             to="/projects"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-fg-muted hover:text-fg transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-fg-muted hover:text-fg transition-colors -my-3 py-3"
           >
             <ArrowLeft size={14} />
-            <span>Back to Projects & Concepts</span>
+            <span>All Concepts</span>
           </Link>
 
-          <div className="flex items-center gap-3 text-xs font-sans">
-            <span className="font-semibold text-fg uppercase tracking-wider">
-              {project.badge}
-            </span>
-            <span className="text-border-hover">•</span>
-            <span className="text-fg-muted uppercase tracking-wider">
-              {project.categoryLabel}
-            </span>
-          </div>
+          <span className="inline-flex items-center gap-1.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-fg-subtle border border-border-hairline bg-canvas-subtle px-2.5 py-1">
+            <span className="w-1.5 h-1.5 bg-fg-faint shrink-0" aria-hidden="true" />
+            {project.badge}
+          </span>
         </div>
 
-        {/* Project Header Monograph */}
+        {/* Header */}
         <div className="max-w-4xl space-y-4">
           <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
             {project.clientType}
@@ -82,9 +71,14 @@ export const CaseStudyPage: React.FC = () => {
           <p className="text-base sm:text-xl text-fg-muted leading-relaxed pt-2">
             {project.tagline}
           </p>
+          <p className="text-sm text-fg-subtle leading-relaxed border-l-2 border-border-hover pl-4 mt-6">
+            <span className="font-semibold text-fg-muted">A studio concept, not client work.</span>{' '}
+            This business does not exist — the layout, content, and brand below were created by
+            wibsity as a design study, and represent no past engagement, client, or result.
+          </p>
         </div>
 
-        {/* Interactive Responsive Viewport Simulator */}
+        {/* Viewport simulator */}
         <section className="border border-border-hairline bg-canvas-subtle p-3 sm:p-8 space-y-4 sm:space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-border-hairline">
             <div>
@@ -92,248 +86,71 @@ export const CaseStudyPage: React.FC = () => {
                 Responsive Viewport Simulator
               </span>
               <span className="font-sans text-xs text-fg-muted">
-                Interactive preview testing typography scale, hierarchy, and navigation behavior
+                The same concept composed for each breakpoint
               </span>
             </div>
 
-            {/* Viewport Toggles */}
             <div className="flex items-center border border-border-hairline bg-canvas-surface p-0.5 w-full sm:w-auto">
               <button
+                type="button"
                 onClick={() => setViewportMode('desktop')}
-                className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-sans font-medium transition-colors cursor-pointer ${
-                  viewportMode === 'desktop'
-                    ? 'bg-accent text-accent-fg font-semibold'
-                    : 'text-fg-muted hover:text-fg'
-                }`}
+                aria-pressed={viewportMode === 'desktop'}
+                className={toggleClass(viewportMode === 'desktop')}
               >
-                <Monitor size={14} /> Desktop (1440px)
+                <Monitor size={14} aria-hidden="true" /> Desktop
               </button>
               <button
+                type="button"
                 onClick={() => setViewportMode('mobile')}
-                className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-sans font-medium transition-colors cursor-pointer ${
-                  viewportMode === 'mobile'
-                    ? 'bg-accent text-accent-fg font-semibold'
-                    : 'text-fg-muted hover:text-fg'
-                }`}
+                aria-pressed={viewportMode === 'mobile'}
+                className={toggleClass(viewportMode === 'mobile')}
               >
-                <Smartphone size={14} /> Mobile (390px)
+                <Smartphone size={14} aria-hidden="true" /> Mobile
               </button>
             </div>
           </div>
 
-          {/* Viewport Display Box */}
-          <div className="min-h-[380px] sm:min-h-[440px] flex items-center justify-center bg-[color:color-mix(in_srgb,var(--color-canvas-surface)_40%,transparent)] border border-border-hairline p-2 sm:p-8 overflow-hidden">
+          <div className="min-h-[380px] sm:min-h-[460px] flex items-center justify-center bg-[color:color-mix(in_srgb,var(--color-canvas-surface)_40%,transparent)] border border-border-hairline p-2 sm:p-8 overflow-hidden">
             <AnimatePresence mode="wait">
-              {viewportMode === 'desktop' ? (
-                <motion.div
-                  key="desktop-viewport"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-full max-w-3xl bg-canvas border border-border-hairline shadow-2xl overflow-hidden rounded-sm"
-                >
-                  {/* Browser Chrome */}
-                  <div className="bg-canvas-subtle border-b border-border-hairline px-3 sm:px-4 py-2.5 flex items-center justify-between text-[11px] font-mono text-fg-faint">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                    </div>
-                    <span className="truncate">{project.slug}.wibsity.studio</span>
-                    <span>100% SCALE</span>
-                  </div>
-
-                  {/* Desktop Preview Content */}
-                  <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
-                    {/* Mock Nav Bar */}
-                    <div className="flex items-center justify-between border-b border-border-hairline pb-2 sm:pb-3">
-                      <span
-                        className="font-sans text-xs font-bold"
-                        style={{ color: project.desktopPreview.accentColor }}
-                      >
-                        {project.title.split(' ')[0]}
-                      </span>
-                      <div className="flex gap-3 sm:gap-4">
-                        {project.desktopPreview.navLinks.map((link) => (
-                          <span key={link} className="font-sans text-[10px] text-fg-muted font-medium">
-                            {link}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Hero */}
-                    <div>
-                      <span className="font-sans text-[9px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
-                        Live Concept Viewport
-                      </span>
-                      <h4 className="text-xl sm:text-2xl font-bold text-fg leading-tight font-sans">
-                        {project.desktopPreview.heroHeadline}
-                      </h4>
-                      <p className="mt-1.5 sm:mt-2 text-xs text-fg-muted leading-relaxed max-w-lg font-sans">
-                        {project.desktopPreview.heroSub}
-                      </p>
-                    </div>
-
-                    {/* Scope Specs Matrix */}
-                    <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-border-hairline">
-                      {project.desktopPreview.scopeSpecs.map((s) => (
-                        <div key={s.label} className="bg-canvas-surface p-1.5 sm:p-2.5 border border-border-hairline">
-                          <span className="font-mono text-[8px] sm:text-[9px] text-fg-faint block uppercase">
-                            {s.label}
-                          </span>
-                          <span className="font-sans text-xs font-semibold text-fg truncate">
-                            {s.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Section Cards — layout shape varies by concept category so previews don't all look identical */}
-                    {project.category === 'practice' ? (
-                      <div className="space-y-2 sm:space-y-2.5">
-                        {project.desktopPreview.sections.map((sec) => (
-                          <div
-                            key={sec.title}
-                            className="flex items-start justify-between gap-3 bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline"
-                          >
-                            <div>
-                              <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
-                                {sec.tag}
-                              </span>
-                              <h5 className="text-[11px] font-bold text-fg font-sans">
-                                {sec.title}
-                              </h5>
-                            </div>
-                            <p className="text-[9px] text-fg-muted leading-snug font-sans max-w-[55%] text-right">
-                              {sec.desc}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : project.category === 'commerce' ? (
-                      <div className="divide-y divide-border-hairline border border-border-hairline bg-canvas-subtle">
-                        {project.desktopPreview.sections.map((sec) => (
-                          <div key={sec.title} className="p-2.5 sm:p-3">
-                            <div className="flex items-center justify-between mb-1">
-                              <h5 className="text-[11px] font-bold text-fg font-sans">
-                                {sec.title}
-                              </h5>
-                              <span className="font-mono text-[8px] text-fg-faint uppercase">
-                                {sec.tag}
-                              </span>
-                            </div>
-                            <p className="text-[9px] text-fg-muted leading-snug font-sans">
-                              {sec.desc}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : project.category === 'brand' ? (
-                      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-                        {project.desktopPreview.sections.map((sec) => (
-                          <div key={sec.title} className="border border-border-hairline overflow-hidden">
-                            <div
-                              className="h-8 sm:h-10"
-                              style={{ backgroundColor: project.desktopPreview.accentColor, opacity: 0.35 }}
-                            />
-                            <div className="bg-canvas-subtle p-2 sm:p-2.5">
-                              <span className="font-mono text-[8px] text-fg-faint block uppercase mb-0.5">
-                                {sec.tag}
-                              </span>
-                              <h5 className="text-[10px] font-bold text-fg font-sans leading-tight">
-                                {sec.title}
-                              </h5>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                        {project.desktopPreview.sections.map((sec) => (
-                          <div key={sec.title} className="bg-canvas-subtle p-2.5 sm:p-3 border border-border-hairline">
-                            <span className="font-mono text-[8px] text-fg-faint block uppercase mb-1">
-                              {sec.tag}
-                            </span>
-                            <h5 className="text-[11px] font-bold text-fg mb-1 font-sans">
-                              {sec.title}
-                            </h5>
-                            <p className="text-[9px] text-fg-muted leading-snug font-sans">
-                              {sec.desc}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="mobile-viewport"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-[260px] sm:w-[300px] bg-canvas border-2 border-border-hover shadow-2xl rounded-2xl overflow-hidden relative"
-                >
-                  {/* Mobile Top Bar */}
-                  <div className="bg-canvas-subtle px-3 py-2 flex items-center justify-between border-b border-border-hairline text-[10px] font-sans font-medium text-fg-faint">
-                    <span>9:41</span>
-                    <div className="w-12 h-2.5 bg-neutral-800 rounded-full" />
-                    <span>5G 100%</span>
-                  </div>
-
-                  {/* Mobile Content */}
-                  <div className="p-4 space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-border-hairline pb-2">
-                      <span className="font-sans text-xs font-bold text-fg">
-                        {project.title.split(' ')[0]}
-                      </span>
-                      <span className="font-sans text-[9px] text-fg-faint font-semibold uppercase">Menu</span>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-bold text-fg leading-tight font-sans">
-                        {project.mobilePreview.headline}
-                      </h4>
-                      <p className="mt-1 text-[11px] text-fg-muted leading-snug font-sans">
-                        {project.mobilePreview.highlight}
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      {project.mobilePreview.sections.map((sec) => (
-                        <div key={sec.title} className="p-2 bg-canvas-surface border border-border-hairline flex items-center justify-between">
-                          <span className="text-[11px] text-fg font-medium font-sans">{sec.title}</span>
-                          <span className="font-mono text-[8px] text-fg-faint">{sec.tag}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="pt-2">
-                      <div
-                        className="w-full font-sans text-[11px] text-center uppercase font-bold py-2 shadow"
-                        style={{ backgroundColor: project.desktopPreview.accentColor, color: ctaTextColor }}
-                      >
-                        {project.mobilePreview.ctaText}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
+              <m.div
+                key={viewportMode}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className={viewportMode === 'desktop' ? 'w-full max-w-3xl' : ''}
+              >
+                <ConceptPreview
+                  preview={project.preview}
+                  title={project.title}
+                  scale="viewport"
+                  device={viewportMode}
+                  className="shadow-2xl"
+                />
+              </m.div>
             </AnimatePresence>
           </div>
+
+          <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            {project.scopeSpecs.map((spec) => (
+              <div key={spec.label} className="bg-canvas-surface border border-border-hairline p-3">
+                <dt className="font-mono text-[10px] uppercase tracking-wider text-fg-faint block mb-1">
+                  {spec.label}
+                </dt>
+                <dd className="font-sans text-sm font-semibold text-fg">{spec.value}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
-        {/* Strategic Analysis & UX Challenge */}
+        {/* Challenge & strategy */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-8 space-y-4">
             <div className="flex items-center gap-2">
-              <Compass size={18} className="text-fg-muted" />
-              <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+              <Compass size={18} className="text-fg-muted" aria-hidden="true" />
+              <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
                 01 / Design Challenge
-              </h3>
+              </h2>
             </div>
             <p className="text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
               {project.challenge}
@@ -342,10 +159,10 @@ export const CaseStudyPage: React.FC = () => {
 
           <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-8 space-y-4">
             <div className="flex items-center gap-2">
-              <Layers size={18} className="text-fg-muted" />
-              <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
-                02 / UX & Layout Strategy
-              </h3>
+              <Layers size={18} className="text-fg-muted" aria-hidden="true" />
+              <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+                02 / UX &amp; Layout Strategy
+              </h2>
             </div>
             <p className="text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
               {project.strategy}
@@ -353,47 +170,45 @@ export const CaseStudyPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Key Features Breakdown */}
+        {/* Features */}
         <section className="space-y-6">
           <div className="flex items-center gap-2">
-            <Cpu size={18} className="text-fg-muted" />
-            <h3 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
+            <Cpu size={18} className="text-fg-muted" aria-hidden="true" />
+            <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
               03 / Architectural Features
-            </h3>
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {project.features.map((feat) => (
               <div
                 key={feat.title}
-                className="p-5 sm:p-6 border border-border-hairline bg-canvas-surface flex flex-col justify-between"
+                className="p-5 sm:p-6 border border-border-hairline bg-canvas-surface space-y-3"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-fg shrink-0" />
-                    <h4 className="font-bold text-sm sm:text-base text-fg font-sans">
-                      {feat.title}
-                    </h4>
-                  </div>
-                  <p className="text-xs sm:text-sm text-fg-muted leading-relaxed font-sans">
-                    {feat.description}
-                  </p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-fg shrink-0" aria-hidden="true" />
+                  <h3 className="font-bold text-sm sm:text-base text-fg font-sans">{feat.title}</h3>
                 </div>
+                <p className="text-xs sm:text-sm text-fg-muted leading-relaxed font-sans">
+                  {feat.description}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Deliverables & Technical Stack */}
+        {/* Deliverables & stack */}
         <section className="border-t border-border-hairline pt-8 sm:pt-12 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
           <div>
-            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3 sm:mb-4">
+            <h2 className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3 sm:mb-4">
               Scope of Deliverables
-            </span>
+            </h2>
             <ul className="space-y-2 sm:space-y-2.5 font-sans text-sm text-fg-muted">
               {project.deliverables.map((d) => (
                 <li key={d} className="flex items-start gap-2.5">
-                  <span className="text-fg-faint font-mono mt-0.5">→</span>
+                  <span className="text-fg-faint font-mono mt-0.5" aria-hidden="true">
+                    &rarr;
+                  </span>
                   <span>{d}</span>
                 </li>
               ))}
@@ -401,9 +216,9 @@ export const CaseStudyPage: React.FC = () => {
           </div>
 
           <div>
-            <span className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3 sm:mb-4">
-              Technical Architecture & Stack
-            </span>
+            <h2 className="font-sans text-xs font-semibold text-fg uppercase tracking-wider block mb-3 sm:mb-4">
+              Technical Architecture &amp; Stack
+            </h2>
             <div className="flex flex-wrap gap-2">
               {project.stack.map((s) => (
                 <span
@@ -415,22 +230,24 @@ export const CaseStudyPage: React.FC = () => {
               ))}
             </div>
             <p className="mt-4 text-xs text-fg-muted leading-relaxed">
-              Every concept is built following Swiss minimalist typography, high-contrast monochrome tokens, and sub-500ms performance budgets.
+              Every concept is built on the same foundations we ship client work on: semantic
+              markup, theme-token styling, and a sub-500ms performance budget.
             </p>
           </div>
         </section>
 
-        {/* Direct Project Inquiry CTA */}
+        {/* CTA */}
         <section className="border border-border-hairline bg-canvas-subtle p-6 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
             <span className="font-sans text-xs font-semibold text-fg-subtle uppercase tracking-wider block mb-1">
               Start a Project
             </span>
-            <h4 className="text-lg sm:text-xl font-bold text-fg font-sans">
-              Interested in a similar digital flagship for your business?
-            </h4>
+            <h2 className="text-lg sm:text-xl font-bold text-fg font-sans">
+              Want this level of structure for your business?
+            </h2>
             <p className="text-xs sm:text-sm text-fg-muted mt-1 font-sans max-w-xl">
-              Connect directly with the founder on WhatsApp or phone to review your scope and get a fixed-timeline proposal.
+              Connect directly with the founder on WhatsApp or phone to review your scope and get a
+              fixed-timeline proposal.
             </p>
           </div>
 
@@ -458,18 +275,21 @@ export const CaseStudyPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Project Pagination Navigation */}
-        <div className="pt-8 sm:pt-12 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        {/* Pagination */}
+        <nav
+          aria-label="Concept pagination"
+          className="pt-8 sm:pt-12 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
+        >
           <Link
             to={`/projects/${prevProject.slug}`}
             className="group border border-border-hairline bg-canvas-surface hover:border-accent/60 p-5 sm:p-6 transition-colors"
           >
             <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider flex items-center gap-1.5 mb-2">
-              <ArrowLeft size={12} /> Previous Concept
+              <ArrowLeft size={12} aria-hidden="true" /> Previous Concept
             </span>
-            <h5 className="font-bold text-base text-fg group-hover:text-neutral-200 transition-colors">
+            <span className="font-bold text-base text-fg group-hover:text-accent-light transition-colors block">
               {prevProject.title}
-            </h5>
+            </span>
             <span className="font-mono text-xs text-fg-muted mt-1 block">
               {prevProject.clientType}
             </span>
@@ -480,16 +300,16 @@ export const CaseStudyPage: React.FC = () => {
             className="group border border-border-hairline bg-canvas-surface hover:border-accent/60 p-5 sm:p-6 transition-colors text-left sm:text-right"
           >
             <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider flex items-center sm:justify-end gap-1.5 mb-2">
-              Next Concept <ArrowRight size={12} />
+              Next Concept <ArrowRight size={12} aria-hidden="true" />
             </span>
-            <h5 className="font-bold text-base text-fg group-hover:text-neutral-200 transition-colors">
+            <span className="font-bold text-base text-fg group-hover:text-accent-light transition-colors block">
               {nextProject.title}
-            </h5>
+            </span>
             <span className="font-mono text-xs text-fg-muted mt-1 block">
               {nextProject.clientType}
             </span>
           </Link>
-        </div>
+        </nav>
       </div>
     </div>
   );
