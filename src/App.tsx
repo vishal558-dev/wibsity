@@ -65,7 +65,13 @@ function AnimatedRoutes() {
   });
 
   return (
-    <AnimatePresence mode="wait">
+    // initial={false}: skips the enter animation on the very first mount, so
+    // first paint never depends on requestAnimationFrame firing — a page
+    // opened in a background tab (rAF is paused there) would otherwise stay
+    // at this wrapper's opacity:0 until the tab is focused. Route-to-route
+    // transitions after that still animate normally since the user is
+    // necessarily focused on the tab to trigger navigation.
+    <AnimatePresence mode="wait" initial={false}>
       <m.div
         key={location.pathname}
         initial={{ opacity: 0, y: 8 }}

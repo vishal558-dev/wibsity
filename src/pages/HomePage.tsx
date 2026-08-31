@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
 import { CheckCircle2, Phone, ArrowRight, Code } from 'lucide-react';
@@ -67,14 +67,6 @@ const wordVariants: Variants = {
 
 export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
-  const [headlineReady, setHeadlineReady] = React.useState(false);
-
-  useEffect(() => {
-    // Guarantees the browser paints the pre-animation state as a real frame
-    // before the stagger starts, so it isn't swallowed on a congested first-load.
-    const id = requestAnimationFrame(() => setHeadlineReady(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   const valuePoints = [
     'Direct Founder Collaboration',
@@ -151,7 +143,7 @@ export const HomePage: React.FC = () => {
             ) : (
               <m.h1
                 initial="hidden"
-                animate={headlineReady ? 'visible' : 'hidden'}
+                animate="visible"
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
               >
@@ -306,7 +298,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Capability Ticker — pure-CSS marquee, decorative */}
-      <div className="border-b border-border-hairline bg-canvas-subtle overflow-hidden" aria-hidden="true">
+      <div className="marquee-fade border-b border-border-hairline bg-canvas-subtle overflow-hidden" aria-hidden="true">
         <div className="flex w-max marquee-track py-3 sm:py-4">
           {[...servicesData, ...servicesData].map((service, i) => (
             <span

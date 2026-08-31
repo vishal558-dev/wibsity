@@ -51,7 +51,7 @@ export const AboutPage: React.FC = () => {
                   <Zap size={14} className="text-accent-light" /> Sub-500ms Performance
                 </span>
                 <span className="flex items-center gap-2">
-                  <Code size={14} className="text-accent-light" /> 100% Clean Code
+                  <Code size={14} className="text-accent-light" /> No Page Builders
                 </span>
                 <span className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-accent-light" /> Domain Ownership Included
@@ -64,9 +64,11 @@ export const AboutPage: React.FC = () => {
         {/* 3 Core Principles — literal pillars */}
         <div>
           <div className="mb-10 sm:mb-12">
-            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-2">
-              Core Foundations
-            </span>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
+              <span className="font-mono text-fg-faint text-[11px]">3.1</span>
+              <span className="text-accent">/</span>
+              <span className="tracking-widest text-fg-muted">Core Foundations</span>
+            </div>
             <h3 className="text-2xl font-bold text-fg">
               The 3 Non-Negotiable Pillars
             </h3>
@@ -112,9 +114,11 @@ export const AboutPage: React.FC = () => {
         {/* FAQ Section */}
         <div>
           <div className="mb-10 sm:mb-12">
-            <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block mb-2">
-              Transparent Guidance
-            </span>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
+              <span className="font-mono text-fg-faint text-[11px]">3.2</span>
+              <span className="text-accent">/</span>
+              <span className="tracking-widest text-fg-muted">Transparent Guidance</span>
+            </div>
             <h3 className="text-2xl sm:text-3xl font-bold text-fg">
               Frequently Asked Questions
             </h3>

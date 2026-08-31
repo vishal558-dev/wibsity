@@ -78,8 +78,11 @@ export const ServicesPage: React.FC = () => {
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
                       {service.title}
                     </h3>
-                    <p className="text-sm font-medium text-fg-muted mb-5 sm:mb-6 font-sans">
+                    <p className="text-sm font-medium text-fg-muted mb-3 font-sans">
                       {service.tagline}
+                    </p>
+                    <p className="text-xs sm:text-sm text-fg-muted leading-relaxed mb-5 sm:mb-6 font-sans">
+                      {service.description}
                     </p>
 
                     {/* Target Audience */}
@@ -93,11 +96,9 @@ export const ServicesPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Footer Action */}
-                  <div className="pt-5 sm:pt-6 border-t border-border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <span className="font-sans text-xs text-fg-faint hidden sm:inline">
-                      {service.scopeType}
-                    </span>
+                  {/* Footer Action — scope type already shown in the card
+                      header above; repeating it here just diluted the CTA. */}
+                  <div className="pt-5 sm:pt-6 border-t border-border-hairline flex sm:justify-end">
                     <Button
                       variant="outline"
                       size="sm"

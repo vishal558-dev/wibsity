@@ -20,7 +20,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, onToggle, class
         className
       )}
     >
-      {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
+      {/* Shows the destination, not the current state — the label already
+          says "Switch to X mode", so the icon should match that. */}
+      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
     </button>
   );
 };

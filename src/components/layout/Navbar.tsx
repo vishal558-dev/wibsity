@@ -67,9 +67,13 @@ export const Navbar: React.FC = () => {
               decoding="async"
               className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
             />
-            <span className="hidden sm:inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Accepting Projects
+            {/* Dot alone below sm — the "Accepting Projects" text is cut for
+                space, but the availability signal itself (what WhatsApp
+                visitors on mobile actually check for) still shows. */}
+            <span className="inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1" title="Accepting Projects">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true" />
+              <span className="hidden sm:inline">Accepting Projects</span>
+              <span className="sm:hidden sr-only">Accepting Projects</span>
             </span>
           </Link>
 

@@ -163,6 +163,13 @@
   animation: marquee 28s linear infinite;
 }
 
+/* Fades the ticker's contents in/out at the viewport edge instead of
+   hard-clipping mid-letter. */
+.marquee-fade {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

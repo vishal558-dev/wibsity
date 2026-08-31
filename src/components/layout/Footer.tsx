@@ -20,17 +20,19 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
-      {/* Upper CTA Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
-        <div className="border border-border-hairline bg-canvas-subtle p-6 sm:p-12 lg:p-16 relative overflow-hidden">
-          <div className="accent-glow w-72 h-72 -top-24 -right-24 opacity-60" aria-hidden="true" />
+      {/* Upper CTA Banner — full-bleed band rather than another boxed card,
+          so the footer's primary CTA reads as a real section break instead
+          of one more bordered rectangle in the stack. */}
+      <div className="w-full border-b border-border-hairline bg-canvas-subtle relative overflow-hidden">
+        <div className="accent-glow w-96 h-96 -top-32 -right-24 opacity-50" aria-hidden="true" />
 
-          <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:flex items-center gap-1.5 font-semibold">
-            <span className="w-1.5 h-1.5 bg-accent inline-block" />
-            DIRECT INTAKE
-          </div>
+        <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:flex items-center gap-1.5 font-semibold">
+          <span className="w-1.5 h-1.5 bg-accent inline-block" />
+          DIRECT INTAKE
+        </div>
 
-          <div className="max-w-3xl relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28 relative">
+          <div className="max-w-3xl">
             <span className="font-sans text-xs font-semibold text-accent-light uppercase tracking-wider block mb-3">
               Project Inquiry
             </span>
@@ -63,7 +65,9 @@ export const Footer: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Footer Links Row */}
         <div className="mt-12 sm:mt-16 flex flex-col md:flex-row md:items-start justify-between gap-8 pt-8 sm:pt-12 border-t border-border-hairline">
           <div className="space-y-3 max-w-xs">
