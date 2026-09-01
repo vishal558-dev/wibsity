@@ -3,7 +3,7 @@ import { m, AnimatePresence } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { faqsData } from '../data/faqs';
 import { principlesData } from '../data/about';
-import { Plus, Minus, HelpCircle, Phone, Code, Sparkles, Zap, ShieldCheck } from 'lucide-react';
+import { Plus, Minus, HelpCircle, Phone, Code, Sparkles, Accessibility, ShieldCheck } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -48,7 +48,7 @@ export const AboutPage: React.FC = () => {
                   <Sparkles size={14} className="text-accent-light" /> Swiss Editorial Aesthetic
                 </span>
                 <span className="flex items-center gap-2">
-                  <Zap size={14} className="text-accent-light" /> Sub-500ms Performance
+                  <Accessibility size={14} className="text-accent-light" /> WCAG AA Accessible
                 </span>
                 <span className="flex items-center gap-2">
                   <Code size={14} className="text-accent-light" /> No Page Builders

@@ -1,6 +1,6 @@
 import React from 'react';
 import { m } from 'motion/react';
-import { Check } from 'lucide-react';
+import { Check, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { Button } from '../components/common/Button';
 import { servicesData } from '../data/services';
@@ -9,6 +9,15 @@ import { Layout, Layers, RefreshCw, Sliders, Clock, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+
+/** One icon per process step (data/process.ts step codes), giving the
+ * methodology timeline a visual anchor instead of a bare number. */
+const processIcons: Record<string, LucideIcon> = {
+  STEP_01: Network,
+  STEP_02: LayoutTemplate,
+  STEP_03: MonitorSmartphone,
+  STEP_04: Rocket,
+};
 
 export const ServicesPage: React.FC = () => {
   const prefersReduced = useReducedMotion();
@@ -168,7 +177,9 @@ export const ServicesPage: React.FC = () => {
             <div className="absolute left-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-accent/70 via-border-hairline to-transparent hidden sm:block" />
 
             <div className="space-y-10 sm:space-y-12">
-              {processData.map((step, idx) => (
+              {processData.map((step, idx) => {
+                const StepIcon = processIcons[step.code];
+                return (
                 <m.div
                   key={step.step}
                   initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -178,8 +189,11 @@ export const ServicesPage: React.FC = () => {
                   className="relative flex flex-col sm:flex-row gap-4 sm:gap-8"
                 >
                   <div className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-0 shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-canvas border border-accent/50 flex items-center justify-center font-mono text-xs font-semibold text-accent-light shrink-0 z-10">
-                      {step.step}
+                    <div className="relative w-11 h-11 rounded-full bg-canvas border border-accent/50 flex items-center justify-center shrink-0 z-10">
+                      <StepIcon size={18} className="text-accent-light" aria-hidden="true" />
+                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-canvas-elevated border border-border-hairline flex items-center justify-center font-mono text-[8px] font-semibold text-fg-faint">
+                        {step.step}
+                      </span>
                     </div>
                     <span className="sm:hidden font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
                       {step.focus}
@@ -215,7 +229,8 @@ export const ServicesPage: React.FC = () => {
                     </ul>
                   </div>
                 </m.div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

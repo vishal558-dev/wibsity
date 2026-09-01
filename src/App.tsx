@@ -23,8 +23,8 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((mod) => ({ 
 
 // Splits Framer Motion's animation engine into its own chunk instead of
 // shipping it in the eager entry bundle — it's the single largest
-// contributor to first-load JS on a page whose own headline promises
-// sub-second loads. LazyMotion below fetches this only after first paint.
+// contributor to first-load JS, and this site needs to load fast on a
+// slow mobile connection. LazyMotion below fetches this only after first paint.
 const loadMotionFeatures = () => import('./motionFeatures').then((mod) => mod.default);
 
 /**

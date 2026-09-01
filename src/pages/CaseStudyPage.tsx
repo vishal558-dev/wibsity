@@ -231,7 +231,7 @@ export const CaseStudyPage: React.FC = () => {
             </div>
             <p className="mt-4 text-xs text-fg-muted leading-relaxed">
               Every concept is built on the same foundations we ship client work on: semantic
-              markup, theme-token styling, and a sub-500ms performance budget.
+              markup, theme-token styling, and WCAG AA-checked contrast throughout.
             </p>
           </div>
         </section>

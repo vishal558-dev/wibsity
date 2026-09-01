@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
-import { CheckCircle2, Phone, ArrowRight, Code } from 'lucide-react';
+import { CheckCircle2, Phone, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
@@ -51,6 +51,56 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
 
 const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', 'help', 'your', 'business'];
 
+/** A real, verbatim excerpt of this repo's own Button.tsx (src/components/common/Button.tsx),
+ * trimmed to the most illustrative props — not a fabricated example. Manually tokenized rather
+ * than pulled in via a syntax-highlighter package, since a 12-line static snippet doesn't
+ * justify shipping a whole highlighting library to every visitor. */
+const manifestoCodeLines: { text: string; cls: string }[][] = [
+  [
+    { text: 'export interface ', cls: 'text-accent-light' },
+    { text: 'ButtonProps ', cls: 'text-fg' },
+    { text: 'extends ', cls: 'text-accent-light' },
+    { text: 'Omit', cls: 'text-fg-muted' },
+    { text: '<', cls: 'text-fg-muted' },
+    { text: 'HTMLMotionProps', cls: 'text-fg-muted' },
+    { text: "<'button'>, 'children'> {", cls: 'text-fg-muted' },
+  ],
+  [
+    { text: '  children', cls: 'text-fg' },
+    { text: ': ', cls: 'text-fg-muted' },
+    { text: 'React.ReactNode', cls: 'text-fg-muted' },
+    { text: ';', cls: 'text-fg-muted' },
+  ],
+  [
+    { text: '  variant', cls: 'text-fg' },
+    { text: '?: ', cls: 'text-fg-muted' },
+    { text: "'primary' | 'secondary' | 'outline' | 'ghost'", cls: 'text-fg-subtle' },
+    { text: ';', cls: 'text-fg-muted' },
+  ],
+  [
+    { text: '  size', cls: 'text-fg' },
+    { text: '?: ', cls: 'text-fg-muted' },
+    { text: "'sm' | 'md' | 'lg'", cls: 'text-fg-subtle' },
+    { text: ';', cls: 'text-fg-muted' },
+  ],
+  [
+    { text: '  icon', cls: 'text-fg' },
+    { text: '?: ', cls: 'text-fg-muted' },
+    { text: 'React.ReactNode', cls: 'text-fg-muted' },
+    { text: ';', cls: 'text-fg-muted' },
+  ],
+  [{ text: '  // ...href, to, className, and more', cls: 'text-fg-faint' }],
+  [{ text: '}', cls: 'text-fg-muted' }],
+];
+
+/** Mirrors the same lookup in ServicesPage.tsx — one icon per process step. */
+const processIcons: Record<string, LucideIcon> = {
+  STEP_01: Network,
+  STEP_02: LayoutTemplate,
+  STEP_03: MonitorSmartphone,
+  STEP_04: Rocket,
+};
+
 const heroGridLines = [
   { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-[color:var(--color-grid-line)]' },
   { x1: '0', y1: '50%', x2: '100%', y2: '50%', color: 'text-accent/25' },
@@ -70,7 +120,7 @@ export const HomePage: React.FC = () => {
 
   const valuePoints = [
     'Direct Founder Collaboration',
-    'Sub-Second Performance Target',
+    'Accessible By Default',
     'Domain Ownership Included',
     'Clear Fixed-Scope Proposals',
   ];
@@ -221,22 +271,45 @@ export const HomePage: React.FC = () => {
             </m.div>
           </div>
 
-          {/* Quiet architectural mark + engineering panel, desktop only — breaks the single-column hero silhouette */}
+          {/* Architectural mark + engineering panel, desktop only — breaks the
+              single-column hero silhouette. The device illustration now carries
+              actual weight instead of a barely-visible ghost outline, and its
+              staggered plates loosely echo the monograph archetype on
+              /projects (not a literal screenshot — just a visual rhyme that
+              gives "View Studio Concepts" below something to point at). */}
           <div className="hidden lg:flex relative w-full max-w-xs shrink-0 items-center justify-center py-16">
-            <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.16]" aria-hidden="true">
+            <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.55]" aria-hidden="true">
               <defs>
                 <clipPath id="hero-mark-clip">
                   <rect x="90" y="54" width="140" height="250" />
                 </clipPath>
+                <linearGradient id="hero-plate-wide" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="hero-plate-tall" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--color-accent-light)" stopOpacity="0.45" />
+                  <stop offset="100%" stopColor="var(--color-accent-light)" stopOpacity="0" />
+                </linearGradient>
               </defs>
               {/* Back viewport — a paired mobile frame, for depth */}
-              <rect x="40" y="150" width="90" height="150" rx="10" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.5" />
-              {/* Front viewport — a browser window with a chrome bar */}
-              <rect x="90" y="30" width="140" height="274" rx="6" fill="none" stroke="var(--color-accent)" strokeWidth="2" />
+              <rect x="40" y="150" width="90" height="150" rx="10" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.4" />
+              {/* Front viewport — a browser window, now a filled panel rather than a bare outline */}
+              <rect x="90" y="30" width="140" height="274" rx="6" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
               <line x1="90" y1="54" x2="230" y2="54" stroke="var(--color-accent)" strokeWidth="1.5" />
               <circle cx="104" cy="42" r="3" fill="var(--color-accent)" />
               <circle cx="116" cy="42" r="3" fill="var(--color-accent)" />
               <circle cx="128" cy="42" r="3" fill="var(--color-accent)" />
+
+              {/* Masthead rule + display headline bars, standing in for page content */}
+              <line x1="102" y1="68" x2="218" y2="68" stroke="var(--color-accent)" strokeWidth="1" opacity="0.5" />
+              <rect x="102" y="80" width="98" height="9" fill="var(--color-fg)" opacity="0.5" />
+              <rect x="102" y="94" width="68" height="9" fill="var(--color-fg)" opacity="0.3" />
+
+              {/* Staggered plates, the monograph archetype's signature composition */}
+              <rect x="102" y="152" width="88" height="28" fill="url(#hero-plate-wide)" stroke="var(--color-border-hairline)" />
+              <rect x="150" y="114" width="52" height="88" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
+
               <rect
                 x="100"
                 y="54"
@@ -263,13 +336,13 @@ export const HomePage: React.FC = () => {
                   </span>
                 </div>
                 <span className="block font-mono text-[10px] text-fg-faint uppercase tracking-widest mb-1">
-                  Engineering Target
+                  Accessibility Standard
                 </span>
                 <span className="block font-mono text-2xl font-semibold text-accent-light">
-                  &lt; 500ms
+                  WCAG AA
                 </span>
                 <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
-                  Sub-second load, on every build
+                  Contrast &amp; keyboard nav, by default
                 </span>
               </m.div>
 
@@ -291,6 +364,21 @@ export const HomePage: React.FC = () => {
                 <span className="block text-[11px] text-fg-muted mt-0.5 max-w-[9rem]">
                   Domain ownership included
                 </span>
+              </m.div>
+
+              {/* Ties the illustration above to the real thing it's rhyming with */}
+              <m.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.66, ease: [0.16, 1, 0.3, 1] }}
+                className="ml-8 mt-4"
+              >
+                <Link
+                  to="/projects"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4 -my-3 py-3"
+                >
+                  View Studio Concepts <ArrowRight size={13} />
+                </Link>
               </m.div>
             </div>
           </div>
@@ -387,10 +475,36 @@ export const HomePage: React.FC = () => {
                 We handcraft bespoke React and TypeScript flagships instead of bloated page builders.
               </p>
 
-              <div className="pt-4 sm:pt-6 border-l border-accent/40 pl-4 inline-flex">
-                <div className="flex items-center gap-2 text-fg font-mono text-sm font-semibold">
-                  <Code size={14} className="text-accent-light shrink-0" /> React 19 &amp; TypeScript
+              {/* Real code, not an invented example — see the comment on
+                  manifestoCodeLines above. Illustrates the headline instead
+                  of just asserting it. */}
+              <div className="pt-2 border border-border-hairline bg-canvas-elevated overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-border-hairline bg-canvas-surface">
+                  <div className="flex items-center gap-1.5" aria-hidden="true">
+                    <span className="w-1.5 h-1.5 rounded-full bg-border-active" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-border-hover" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-border-hover" />
+                  </div>
+                  <span className="font-mono text-[10px] text-fg-faint flex items-center gap-1.5">
+                    <Code size={11} className="shrink-0" /> Button.tsx
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-wider text-fg-subtle">
+                    Real Code
+                  </span>
                 </div>
+                <pre className="p-4 sm:p-5 overflow-x-auto text-[11px] sm:text-xs leading-[1.7] font-mono">
+                  <code>
+                    {manifestoCodeLines.map((line, i) => (
+                      <div key={i}>
+                        {line.map((tok, j) => (
+                          <span key={j} className={tok.cls}>
+                            {tok.text}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
+                  </code>
+                </pre>
               </div>
             </div>
 
@@ -441,13 +555,19 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-b border-border-hairline divide-y sm:divide-y-0 lg:divide-x divide-border-hairline">
-            {processData.map((step) => (
-              <div key={step.step} className="px-0 lg:px-6 py-6 first:pt-0 lg:first:pl-0 lg:last:pr-0">
-                <span className="font-mono text-xs text-accent-light font-semibold">{step.step}</span>
-                <h3 className="text-base font-bold text-fg tracking-tight mt-2 mb-1.5">{step.name}</h3>
-                <p className="text-xs text-fg-muted leading-relaxed">{step.focus}</p>
-              </div>
-            ))}
+            {processData.map((step) => {
+              const StepIcon = processIcons[step.code];
+              return (
+                <div key={step.step} className="px-0 lg:px-6 py-6 first:pt-0 lg:first:pl-0 lg:last:pr-0">
+                  <div className="flex items-center gap-2.5">
+                    <StepIcon size={16} className="text-accent-light shrink-0" aria-hidden="true" />
+                    <span className="font-mono text-xs text-accent-light font-semibold">{step.step}</span>
+                  </div>
+                  <h3 className="text-base font-bold text-fg tracking-tight mt-2 mb-1.5">{step.name}</h3>
+                  <p className="text-xs text-fg-muted leading-relaxed">{step.focus}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

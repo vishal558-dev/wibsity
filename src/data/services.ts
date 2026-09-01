@@ -28,7 +28,7 @@ export const servicesData: Service[] = [
     deliverables: [
       'Conversion-Optimized Section Architecture & Wireframing',
       'Compelling Visual Hierarchy & Interactive Product Previews',
-      'Fast-Loading Static Page Build (< 500ms target)',
+      'Fast-Loading, Fully Accessible Page Build (WCAG AA)',
       'Direct CRM / Form Webhook Integrations',
       'A/B Testing Structure Readiness',
     ],

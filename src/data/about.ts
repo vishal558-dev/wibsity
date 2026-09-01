@@ -1,4 +1,4 @@
-import { Eye, Zap, Target, type LucideIcon } from 'lucide-react';
+import { Eye, Accessibility, Target, type LucideIcon } from 'lucide-react';
 
 export interface Principle {
   index: string;
@@ -16,9 +16,9 @@ export const principlesData: Principle[] = [
   },
   {
     index: '02',
-    icon: Zap,
-    title: 'Speed & Mobile Performance',
-    desc: 'Our code is lightweight and optimized for sub-second loading, so mobile visitors never bounce due to sluggish performance.',
+    icon: Accessibility,
+    title: 'Accessible by Default',
+    desc: 'Every build targets WCAG AA contrast and full keyboard navigation from day one — not a retrofit after launch, which is where most template sites stop.',
   },
   {
     index: '03',
