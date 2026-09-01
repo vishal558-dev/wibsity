@@ -126,7 +126,7 @@ export const ServicesPage: React.FC = () => {
         </div>
 
         {/* Turnaround Guarantee Banner */}
-        <div className="grid-pattern p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="panel-texture p-6 sm:p-8 border border-border-hairline bg-canvas-subtle flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <Clock size={24} className="text-accent-light shrink-0 mt-0.5" />
             <div className="space-y-1">

@@ -31,7 +31,7 @@ export const AboutPage: React.FC = () => {
           />
 
           {/* Studio Manifesto Monograph */}
-          <div className="grid-pattern border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-16 relative overflow-hidden">
+          <div className="panel-texture border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-16 relative overflow-hidden">
             <div className="max-w-3xl space-y-6">
               <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
                 The wibsity Ethos

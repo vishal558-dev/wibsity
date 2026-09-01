@@ -122,14 +122,21 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Architectural Grid utility — uses the theme-aware grid-line token so it
-     stays subtle on both the dark and light canvas (a flat rgba(255,255,255)
-     line would be invisible on the light theme's white background). */
-  .grid-pattern {
-    background-size: 40px 40px;
+  /* Panel texture utility — a fine dot grid plus a soft accent-tinted glow
+     in one corner, used behind the two banner/panel cards (About's ethos
+     panel, Services' turnaround guarantee) that need more presence than a
+     plain bordered box. Replaces an earlier crossing-line grid, which read
+     as flat graph paper rather than a deliberate texture. Both layers are
+     plain gradients — no blur filter, no extra DOM node or SVG asset, so
+     background-image's own box-clipping keeps it contained without needing
+     `overflow-hidden` on the caller, and it re-themes for free the same way
+     the line-grid did (grid-line token; accent is theme-invariant, see the
+     styling section of CLAUDE.md). */
+  .panel-texture {
     background-image:
-      linear-gradient(to right, color-mix(in srgb, var(--color-grid-line) 35%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-grid-line) 35%, transparent) 1px, transparent 1px);
+      radial-gradient(560px circle at 88% 8%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 68%),
+      radial-gradient(color-mix(in srgb, var(--color-grid-line) 55%, transparent) 1px, transparent 1.5px);
+    background-size: auto, 22px 22px;
   }
 
   ::selection {
