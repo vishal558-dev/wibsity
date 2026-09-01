@@ -141,7 +141,7 @@ export const AboutPage: React.FC = () => {
                       {faq.question}
                     </h4>
 
-                    <div className="p-1.5 sm:p-1 border border-border-hairline bg-canvas-surface text-fg-muted group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5">
+                    <div className="p-1.5 sm:p-1 border border-accent/25 bg-canvas-surface text-accent-light group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5">
                       {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                     </div>
                   </button>
@@ -166,15 +166,18 @@ export const AboutPage: React.FC = () => {
             })}
           </div>
 
-          {/* Still have questions */}
-          <div className="mt-10 sm:mt-12 p-5 sm:p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3">
-              <HelpCircle size={20} className="text-fg-muted shrink-0" />
+          {/* Still have questions — same soft brand-glow treatment as Home's
+              FAQ teaser and the Footer CTA band; this strip was otherwise the
+              one fully neutral block left on the page. */}
+          <div className="relative overflow-hidden mt-10 sm:mt-12 p-5 sm:p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl mx-auto">
+            <div className="accent-glow w-72 h-72 -bottom-32 -right-16 opacity-15 z-0" aria-hidden="true" />
+            <div className="relative z-10 flex items-center gap-3">
+              <HelpCircle size={20} className="text-accent-light/80 shrink-0" />
               <span className="font-sans text-xs text-fg-muted font-medium">
                 Have a specific question not addressed above?
               </span>
             </div>
-            <div className="flex items-center gap-4 text-xs font-sans">
+            <div className="relative z-10 flex items-center gap-4 text-xs font-sans">
               <a
                 href={whatsappUrl}
                 target="_blank"

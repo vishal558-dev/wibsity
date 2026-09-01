@@ -74,7 +74,7 @@ export const ServicesPage: React.FC = () => {
                           <span className="hidden sm:inline font-sans text-xs text-fg-faint font-medium">
                             {service.scopeType}
                           </span>
-                          <Icon size={18} className="text-fg-muted group-hover:text-accent-light transition-colors shrink-0" />
+                          <Icon size={18} className="text-accent-light/70 group-hover:text-accent-light transition-colors shrink-0" />
                         </div>
                       </div>
                       <div className="sm:hidden mt-2 text-xs font-sans text-fg-faint font-medium">
@@ -94,7 +94,7 @@ export const ServicesPage: React.FC = () => {
                     </p>
 
                     {/* Target Audience */}
-                    <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 bg-canvas-surface border border-border-hairline">
+                    <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 bg-canvas-surface border border-border-hairline border-l-2 border-l-accent/30">
                       <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
                         Target Profile
                       </span>

@@ -374,14 +374,20 @@ export const HomePage: React.FC = () => {
             {servicesData.map((service) => (
               <div
                 key={service.id}
-                className="border border-border-hairline bg-canvas p-6 flex flex-col justify-between hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_16px_40px_-24px_rgba(75,80,254,0.6)] transition-all"
+                className="relative border border-border-hairline bg-canvas p-6 flex flex-col justify-between hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_16px_40px_-24px_rgba(75,80,254,0.6)] transition-all"
               >
+                {/* Permanent accent rule — a small at-rest color touch so
+                    the card isn't purely grayscale until hover. */}
+                <span
+                  className="absolute top-0 left-0 right-0 h-[2px] bg-accent/40"
+                  aria-hidden="true"
+                />
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span className="font-mono text-xs text-fg-faint">
                       {service.index}
                     </span>
-                    <span className="text-[11px] font-sans font-medium text-fg-subtle uppercase tracking-wider">
+                    <span className="text-[11px] font-sans font-medium text-accent-light uppercase tracking-wider">
                       {service.scopeType.split(' ')[0]} Scope
                     </span>
                   </div>
@@ -520,8 +526,12 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 04 / FAQ Teaser */}
-      <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden py-20 sm:py-24 border-b border-border-hairline bg-canvas">
+        {/* Same soft brand-glow treatment as the hero and the footer CTA band,
+            at a fraction of the intensity — the page's closing section
+            otherwise had zero accent presence at rest. */}
+        <div className="accent-glow w-[26rem] h-[26rem] -bottom-40 left-[-8rem] opacity-10 sm:opacity-15 z-0" aria-hidden="true" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
               tag="COMMON QUESTIONS"

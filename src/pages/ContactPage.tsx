@@ -33,7 +33,7 @@ export const ContactPage: React.FC = () => {
             {/* Live Availability Status */}
             <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-border-hairline">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-status-positive animate-pulse" />
                 <span className="font-sans text-xs text-fg uppercase tracking-wider font-semibold">
                   Currently Accepting Projects
                 </span>
@@ -146,7 +146,7 @@ export const ContactPage: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="lg:col-span-5 space-y-6"
           >
-            <div className="border border-border-hairline bg-canvas p-6 sm:p-8 space-y-6">
+            <div className="border border-border-hairline border-l-2 border-l-accent/30 bg-canvas p-6 sm:p-8 space-y-6">
               <span className="font-mono text-[11px] text-fg-faint uppercase tracking-wider block">
                 // WHAT TO EXPECT
               </span>
@@ -160,7 +160,7 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-4 pt-4 border-t border-border-hairline">
                 {engagementPoints.map((pt) => (
                   <div key={pt.title} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
+                    <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-fg font-sans">
                         {pt.title}

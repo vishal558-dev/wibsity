@@ -36,6 +36,12 @@
      `text-zinc-700` (the old hardcoded class) is unreadably faint on a white canvas. */
   --color-grid-line: #3f3f46;
 
+  /* "Accepting Projects" status dot (Navbar, ContactPage). Was a raw
+     `bg-emerald-400` class in both places — same hex, now a real token so it
+     isn't a color living outside the system. No light-theme override: it's a
+     small filled dot, not text, and reads fine against both canvases. */
+  --color-status-positive: #34d399;
+
   --font-sans: "General Sans", Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "Space Mono", monospace;
 
