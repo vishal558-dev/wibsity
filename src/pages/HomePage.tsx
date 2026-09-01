@@ -511,7 +511,7 @@ export const HomePage: React.FC = () => {
             {processData.map((step) => {
               const StepIcon = processIcons[step.code];
               return (
-                <div key={step.step} className="px-0 lg:px-6 py-6 first:pt-0 lg:first:pl-0 lg:last:pr-0">
+                <div key={step.step} className="px-0 lg:px-6 py-6 max-sm:first:pt-0 lg:first:pl-0 lg:last:pr-0">
                   <div className="flex items-center gap-2.5">
                     <StepIcon size={16} className="text-accent-light shrink-0" aria-hidden="true" />
                     <span className="font-mono text-xs text-accent-light font-semibold">{step.step}</span>
