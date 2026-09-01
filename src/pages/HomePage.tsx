@@ -271,17 +271,20 @@ export const HomePage: React.FC = () => {
             </m.div>
           </div>
 
-          {/* Architectural mark + engineering panel, desktop only — breaks the
-              single-column hero silhouette. The device illustration now carries
-              actual weight instead of a barely-visible ghost outline, and its
-              staggered plates loosely echo the monograph archetype on
-              /projects (not a literal screenshot — just a visual rhyme that
-              gives "View Studio Concepts" below something to point at). */}
-          <div className="hidden lg:flex relative w-full max-w-xs shrink-0 items-center justify-center py-16">
-            <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full opacity-[0.55]" aria-hidden="true">
+          {/* Desktop + mobile device illustration, desktop only — a generic,
+              self-contained browser/site mockup, no project-specific data. */}
+          <div className="hidden lg:flex w-full max-w-xs shrink-0 items-center justify-center py-16">
+            <m.svg
+              viewBox="0 0 320 320"
+              className="w-full h-full"
+              aria-hidden="true"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+            >
               <defs>
                 <clipPath id="hero-mark-clip">
-                  <rect x="90" y="54" width="140" height="250" />
+                  <rect x="20" y="64" width="230" height="146" />
                 </clipPath>
                 <linearGradient id="hero-plate-wide" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.4" />
@@ -292,95 +295,51 @@ export const HomePage: React.FC = () => {
                   <stop offset="100%" stopColor="var(--color-accent-light)" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              {/* Back viewport — a paired mobile frame, for depth */}
-              <rect x="40" y="150" width="90" height="150" rx="10" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.4" />
-              {/* Front viewport — a browser window, now a filled panel rather than a bare outline */}
-              <rect x="90" y="30" width="140" height="274" rx="6" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
-              <line x1="90" y1="54" x2="230" y2="54" stroke="var(--color-accent)" strokeWidth="1.5" />
-              <circle cx="104" cy="42" r="3" fill="var(--color-accent)" />
-              <circle cx="116" cy="42" r="3" fill="var(--color-accent)" />
-              <circle cx="128" cy="42" r="3" fill="var(--color-accent)" />
 
-              {/* Masthead rule + display headline bars, standing in for page content */}
-              <line x1="102" y1="68" x2="218" y2="68" stroke="var(--color-accent)" strokeWidth="1" opacity="0.5" />
-              <rect x="102" y="80" width="98" height="9" fill="var(--color-fg)" opacity="0.5" />
-              <rect x="102" y="94" width="68" height="9" fill="var(--color-fg)" opacity="0.3" />
+              {/* Desktop browser */}
+              <rect x="20" y="40" width="230" height="170" rx="8" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
+              <line x1="20" y1="64" x2="250" y2="64" stroke="var(--color-accent)" strokeWidth="1.5" />
+              <circle cx="34" cy="52" r="3" fill="var(--color-accent)" />
+              <circle cx="46" cy="52" r="3" fill="var(--color-accent)" />
+              <circle cx="58" cy="52" r="3" fill="var(--color-accent)" />
+              <rect x="76" y="48" width="100" height="8" rx="4" fill="none" stroke="var(--color-accent)" strokeWidth="1" opacity="0.5" />
 
-              {/* Staggered plates, the monograph archetype's signature composition */}
-              <rect x="102" y="152" width="88" height="28" fill="url(#hero-plate-wide)" stroke="var(--color-border-hairline)" />
-              <rect x="150" y="114" width="52" height="88" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
+              <circle cx="32" cy="78" r="4" fill="var(--color-accent)" />
+              <rect x="180" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
+              <rect x="200" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
+              <rect x="220" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
+
+              <rect x="32" y="94" width="150" height="10" fill="var(--color-fg)" opacity="0.5" />
+              <rect x="32" y="110" width="110" height="7" fill="var(--color-fg)" opacity="0.3" />
+              <rect x="32" y="126" width="56" height="16" rx="8" fill="var(--color-accent)" />
+
+              <rect x="32" y="156" width="90" height="44" fill="url(#hero-plate-wide)" stroke="var(--color-border-hairline)" />
+              <rect x="132" y="156" width="90" height="44" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
 
               <rect
-                x="100"
-                y="54"
-                width="120"
+                x="20"
+                y="64"
+                width="230"
                 height="3"
                 fill="var(--color-accent-light)"
                 clipPath="url(#hero-mark-clip)"
                 opacity="0.7"
                 className={prefersReduced ? undefined : 'hero-scan-line'}
               />
-            </svg>
 
-            <div className="relative flex flex-col items-start">
-              <m.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                className="relative border border-border-hairline bg-canvas-subtle px-5 py-4 shadow-[0_0_40px_-14px_rgba(75,80,254,0.4)]"
-              >
-                <div className="flex items-center gap-1.5 mb-2.5">
-                  <span className={`w-1.5 h-1.5 rounded-full bg-accent-light ${prefersReduced ? '' : 'animate-pulse'}`} />
-                  <span className="font-mono text-[9px] text-fg-subtle uppercase tracking-widest">
-                    System Status · Operational
-                  </span>
-                </div>
-                <span className="block font-mono text-[10px] text-fg-faint uppercase tracking-widest mb-1">
-                  Accessibility Standard
-                </span>
-                <span className="block font-mono text-2xl font-semibold text-accent-light">
-                  WCAG AA
-                </span>
-                <span className="block text-xs text-fg-muted mt-1 max-w-[10rem]">
-                  Contrast &amp; keyboard nav, by default
-                </span>
-              </m.div>
-
-              {/* Connector tick linking the two panel cards */}
-              <div className="w-px h-5 ml-8 bg-gradient-to-b from-accent/50 to-transparent" aria-hidden="true" />
-
-              <m.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.54, ease: [0.16, 1, 0.3, 1] }}
-                className="relative ml-8 border border-border-hairline bg-canvas-subtle px-4 py-3"
-              >
-                <span className="block font-mono text-[9px] text-fg-faint uppercase tracking-widest mb-0.5">
-                  Domain
-                </span>
-                <span className="block font-mono text-lg font-semibold text-accent-light">
-                  Always Yours
-                </span>
-                <span className="block text-[11px] text-fg-muted mt-0.5 max-w-[9rem]">
-                  Domain ownership included
-                </span>
-              </m.div>
-
-              {/* Ties the illustration above to the real thing it's rhyming with */}
-              <m.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.66, ease: [0.16, 1, 0.3, 1] }}
-                className="ml-8 mt-4"
-              >
-                <Link
-                  to="/projects"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4 -my-3 py-3"
-                >
-                  View Studio Concepts <ArrowRight size={13} />
-                </Link>
-              </m.div>
-            </div>
+              {/* Mobile phone — front/overlapping, drawn last so it paints above the desktop frame */}
+              <rect x="170" y="120" width="110" height="180" rx="18" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
+              <rect x="207" y="132" width="36" height="4" rx="2" fill="var(--color-accent)" opacity="0.5" />
+              <circle cx="190" cy="150" r="6" fill="var(--color-accent)" />
+              <rect x="202" y="145" width="50" height="5" fill="var(--color-fg)" opacity="0.5" />
+              <rect x="202" y="155" width="34" height="5" fill="var(--color-fg)" opacity="0.3" />
+              <rect x="182" y="168" width="88" height="54" rx="4" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
+              <rect x="182" y="230" width="88" height="6" fill="var(--color-fg)" opacity="0.5" />
+              <rect x="182" y="242" width="60" height="6" fill="var(--color-fg)" opacity="0.3" />
+              <rect x="182" y="254" width="88" height="18" rx="9" fill="var(--color-accent-light)" />
+              <circle cx="272" cy="254" r="4" fill="var(--color-accent-light)" className={prefersReduced ? undefined : 'animate-pulse'} />
+              <rect x="207" y="284" width="36" height="4" rx="2" fill="var(--color-fg)" opacity="0.3" />
+            </m.svg>
           </div>
         </div>
       </section>
