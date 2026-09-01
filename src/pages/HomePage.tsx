@@ -210,16 +210,6 @@ export const HomePage: React.FC = () => {
               </m.h1>
             )}
 
-            {/* Subtitle */}
-            <m.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 sm:mt-8 text-base sm:text-xl text-fg-muted max-w-2xl leading-relaxed"
-            >
-              High-impact, fast, and modern web design for businesses, founders, practices, and brands. No bloated retainers, no generic templates—just clean digital craft built to give your business an unfair advantage.
-            </m.p>
-
             {/* Actions */}
             <m.div
               initial={{ opacity: 0, y: 20 }}
