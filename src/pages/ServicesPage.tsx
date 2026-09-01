@@ -38,7 +38,6 @@ export const ServicesPage: React.FC = () => {
         <div>
           <SectionHeading
             as="h1"
-            index="02"
             tag="SERVICES & CAPABILITIES"
             title="Focused web services built for real business needs."
             description="We design and build clean, high-performing websites. No bloated packages or unnecessary complexity—just four core solutions engineered to give your business an unfair digital advantage."
@@ -167,7 +166,6 @@ export const ServicesPage: React.FC = () => {
         {/* 4-Step Engineering Methodology Section */}
         <div>
           <SectionHeading
-            index="03"
             tag="DELIVERY METHODOLOGY"
             title="A structured 4-step workflow from kickoff to launch."
             description="We keep communication direct and transparent with structured milestones, visual design reviews, and predictable delivery momentum."

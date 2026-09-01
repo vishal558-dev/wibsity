@@ -364,7 +364,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              index="01"
               tag="CORE CAPABILITIES"
               title="Built for modern businesses & founders."
               description="Four digital engineering offerings built to convert visitors."
@@ -496,7 +495,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              index="03"
               tag="HOW WE WORK"
               title="A structured 4-step workflow from kickoff to launch."
               description="Direct communication and predictable milestones — no black box."
@@ -536,7 +534,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              index="04"
               tag="COMMON QUESTIONS"
               title="What people ask before they message us."
               description="The three questions that come up in nearly every first conversation."

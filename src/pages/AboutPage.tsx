@@ -25,7 +25,6 @@ export const AboutPage: React.FC = () => {
         <div>
           <SectionHeading
             as="h1"
-            index="03"
             tag="STUDIO & PRINCIPLES"
             title="Practical engineering standards, not design fluff."
             description="In an era where every company is discovered online, your website is your most critical commercial asset. We focus on fundamentals that help your business build trust and grow."

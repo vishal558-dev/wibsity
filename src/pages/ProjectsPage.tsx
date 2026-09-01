@@ -168,7 +168,6 @@ export const ProjectsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           as="h1"
-          index="01"
           tag="PROJECTS & CONCEPTS"
           title="Three concepts, three different kinds of website."
           description="Self-initiated design studies exploring how the same studio approach adapts to genuinely different business models — an appointment-led practice, an editorial portfolio, and a product storefront. Each one is a full layout system, not a colour variation on the last."

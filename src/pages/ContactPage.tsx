@@ -15,7 +15,6 @@ export const ContactPage: React.FC = () => {
         <div>
           <SectionHeading
             as="h1"
-            index="04"
             tag="DIRECT INITIATION HUB"
             title="Start a conversation about your website."
             description="We collaborate with businesses, founders, and modern practices looking for clean design and fast performance. Reach out directly through your preferred channel."

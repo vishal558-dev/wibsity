@@ -149,7 +149,7 @@ export const CaseStudyPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Compass size={18} className="text-fg-muted" aria-hidden="true" />
               <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
-                01 / Design Challenge
+                Design Challenge
               </h2>
             </div>
             <p className="text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
@@ -161,7 +161,7 @@ export const CaseStudyPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Layers size={18} className="text-fg-muted" aria-hidden="true" />
               <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
-                02 / UX &amp; Layout Strategy
+                UX &amp; Layout Strategy
               </h2>
             </div>
             <p className="text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
@@ -175,7 +175,7 @@ export const CaseStudyPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <Cpu size={18} className="text-fg-muted" aria-hidden="true" />
             <h2 className="font-sans text-xs font-bold text-fg uppercase tracking-wider">
-              03 / Architectural Features
+              Architectural Features
             </h2>
           </div>
 

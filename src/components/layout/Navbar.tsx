@@ -25,11 +25,11 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Home', to: '/', index: '00', end: true },
-    { label: 'Services', to: '/services', index: '01' },
-    { label: 'Projects', to: '/projects', index: '02' },
-    { label: 'Studio', to: '/about', index: '03' },
-    { label: 'Contact', to: '/contact', index: '04' },
+    { label: 'Home', to: '/', end: true },
+    { label: 'Services', to: '/services' },
+    { label: 'Projects', to: '/projects' },
+    { label: 'About', to: '/about' },
+    { label: 'Contact', to: '/contact' },
   ];
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
@@ -96,9 +96,6 @@ export const Navbar: React.FC = () => {
               >
                 {({ isActive }) => (
                   <>
-                    <span className={`font-mono text-[10px] ${isActive ? 'text-accent-light' : 'text-fg-faint'}`}>
-                      {link.index}
-                    </span>
                     <span>{link.label}</span>
                     {isActive && (
                       <m.span
@@ -191,14 +188,7 @@ export const Navbar: React.FC = () => {
                     }`
                   }
                 >
-                  {({ isActive }) => (
-                    <>
-                      <span>{link.label}</span>
-                      <span className={`font-mono text-xs ${isActive ? 'text-accent-light' : 'text-fg-faint'}`}>
-                        {link.index}
-                      </span>
-                    </>
-                  )}
+                  <span>{link.label}</span>
                 </NavLink>
               ))}
               

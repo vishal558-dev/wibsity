@@ -4,7 +4,6 @@ import { cn } from '../../utils/cn';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 interface SectionHeadingProps {
-  index: string;
   tag: string;
   title: string;
   description?: string;
@@ -17,7 +16,6 @@ interface SectionHeadingProps {
 }
 
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
-  index,
   tag,
   title,
   description,
@@ -46,7 +44,6 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
       >
-        <span className="font-mono text-fg-faint text-[11px]">{index}</span>
         <span className="text-accent">/</span>
         <span className="tracking-widest text-fg-muted">{tag}</span>
       </m.div>
