@@ -7,12 +7,17 @@ import { Button } from '../common/Button';
 import { CONTACT_INFO } from '../../data/contact';
 import { smoothScrollToTop } from '../../utils/scroll';
 import { useTheme } from '../../hooks/useTheme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { cn } from '../../utils/cn';
+
+const MOBILE_MENU_ID = 'mobile-nav-drawer';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const prefersReduced = useReducedMotion();
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
   const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png';
 
@@ -23,6 +28,15 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { label: 'Home', to: '/', end: true },
@@ -71,7 +85,7 @@ export const Navbar: React.FC = () => {
                 space, but the availability signal itself (what WhatsApp
                 visitors on mobile actually check for) still shows. */}
             <span className="inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1" title="Accepting Projects">
-              <span className="w-1.5 h-1.5 rounded-full bg-status-positive animate-pulse shrink-0" aria-hidden="true" />
+              <span className={cn('w-1.5 h-1.5 rounded-full bg-status-positive shrink-0', !prefersReduced && 'animate-pulse')} aria-hidden="true" />
               <span className="hidden sm:inline">Accepting Projects</span>
               <span className="sm:hidden sr-only">Accepting Projects</span>
             </span>
@@ -157,6 +171,8 @@ export const Navbar: React.FC = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls={MOBILE_MENU_ID}
             >
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
@@ -168,6 +184,7 @@ export const Navbar: React.FC = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <m.div
+            id={MOBILE_MENU_ID}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

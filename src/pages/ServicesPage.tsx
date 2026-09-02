@@ -1,11 +1,23 @@
 import React from 'react';
 import { m } from 'motion/react';
-import { Check, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
+import {
+  Check,
+  Network,
+  LayoutTemplate,
+  MonitorSmartphone,
+  Rocket,
+  Layout,
+  Layers,
+  RefreshCw,
+  Sliders,
+  Clock,
+  Phone,
+  type LucideIcon,
+} from 'lucide-react';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { Button } from '../components/common/Button';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
-import { Layout, Layers, RefreshCw, Sliders, Clock, Phone } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -83,9 +95,9 @@ export const ServicesPage: React.FC = () => {
                     </div>
 
                     {/* Title & Tagline */}
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
                       {service.title}
-                    </h3>
+                    </h2>
                     <p className="text-sm font-medium text-fg-muted mb-3 font-sans">
                       {service.tagline}
                     </p>
@@ -101,6 +113,21 @@ export const ServicesPage: React.FC = () => {
                       <p className="text-xs text-fg-muted leading-relaxed font-sans">
                         {service.forWhom}
                       </p>
+                    </div>
+
+                    {/* Deliverables */}
+                    <div className="mb-2">
+                      <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-2.5">
+                        What's Included
+                      </span>
+                      <ul className="space-y-2">
+                        {service.deliverables.map((item) => (
+                          <li key={item} className="flex items-start gap-2.5 text-xs text-fg-muted font-sans leading-relaxed">
+                            <Check size={13} className="text-accent-light shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
 
@@ -130,9 +157,9 @@ export const ServicesPage: React.FC = () => {
           <div className="flex items-start gap-4">
             <Clock size={24} className="text-accent-light shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <h3 className="font-sans text-base font-bold text-fg">
+              <h2 className="font-sans text-base font-bold text-fg">
                 Typical turnaround: 3–5 days for standard sites, 5–7+ days for advanced, customized builds.
-              </h3>
+              </h2>
               <p className="font-sans text-xs sm:text-sm text-fg-muted leading-relaxed max-w-2xl">
                 We work in dedicated, focused sprints with direct founder communication. Timelines are scoped clearly and confirmed in writing prior to project kickoff.
               </p>

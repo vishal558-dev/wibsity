@@ -41,7 +41,6 @@
 
   --tracking-tightest: -0.04em;
   --tracking-tighter: -0.025em;
-  --tracking-widest-plus: 0.14em;
 }
 
 /* Light theme token overrides. Mirrors the dark zinc scale at the same

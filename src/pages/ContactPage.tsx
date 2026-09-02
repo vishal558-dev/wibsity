@@ -4,9 +4,12 @@ import { SectionHeading } from '../components/common/SectionHeading';
 import { Phone, Mail, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO, engagementPoints } from '../data/contact';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { cn } from '../utils/cn';
 
 export const ContactPage: React.FC = () => {
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
+  const prefersReduced = useReducedMotion();
 
   return (
     <div className="pt-32 pb-24 bg-canvas min-h-screen">
@@ -33,7 +36,7 @@ export const ContactPage: React.FC = () => {
             {/* Live Availability Status */}
             <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-border-hairline">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-status-positive animate-pulse" />
+                <span className={cn('w-2 h-2 rounded-full bg-status-positive', !prefersReduced && 'animate-pulse')} />
                 <span className="font-sans text-xs text-fg uppercase tracking-wider font-semibold">
                   Currently Accepting Projects
                 </span>
@@ -59,7 +62,7 @@ export const ContactPage: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
@@ -86,7 +89,7 @@ export const ContactPage: React.FC = () => {
               {/* Phone Card */}
               <a
                 href={CONTACT_INFO.phoneHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
@@ -113,7 +116,7 @@ export const ContactPage: React.FC = () => {
               {/* Email Card */}
               <a
                 href={CONTACT_INFO.emailHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors block"
+                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">

@@ -77,7 +77,11 @@ export const Footer: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Footer Links Row */}
-        <div className="mt-12 sm:mt-16 flex flex-col md:flex-row md:items-start justify-between gap-8 pt-8 sm:pt-12 border-t border-border-hairline">
+        {/* No border-t here — the <footer> element's own top border (or,
+            on the homepage, the CTA banner's border-b just above) already
+            divides this from what comes before it; a second hairline this
+            close below read as a redundant double rule. */}
+        <div className="mt-12 sm:mt-16 flex flex-col md:flex-row md:items-start justify-between gap-8 pt-8 sm:pt-12">
           <div className="space-y-3 max-w-xs">
             <Link to="/" onClick={handleLinkClick} className="inline-block focus:outline-none" aria-label="wibsity home">
               <img

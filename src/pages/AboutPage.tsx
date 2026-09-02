@@ -136,6 +136,7 @@ export const AboutPage: React.FC = () => {
                     onClick={() => toggleFaq(faq.id)}
                     className="w-full flex items-start justify-between text-left gap-4 group cursor-pointer focus:outline-none py-1"
                     aria-expanded={isOpen}
+                    aria-controls={`${faq.id}-panel`}
                   >
                     <h4 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-light transition-colors font-sans pr-2 leading-snug flex-1">
                       {faq.question}
@@ -155,7 +156,7 @@ export const AboutPage: React.FC = () => {
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="mt-3.5 pr-2 sm:pr-8 text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
+                        <div id={`${faq.id}-panel`} className="mt-3.5 pr-2 sm:pr-8 text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
                           <p>{faq.answer}</p>
                         </div>
                       </m.div>

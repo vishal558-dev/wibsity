@@ -11,7 +11,7 @@ export const faqsData: FAQItem[] = [
     id: 'faq-2',
     category: 'Process',
     question: 'What is the typical turnaround timeline for a project?',
-    answer: 'See our Turnaround Guarantee on the Services page — timelines are always confirmed in writing before the project begins.',
+    answer: 'Typically 3–5 days for standard sites and 5–7+ days for advanced, customized builds. We work in focused sprints with direct founder communication, and every timeline is confirmed in writing before the project begins.',
   },
   {
     id: 'faq-3',
