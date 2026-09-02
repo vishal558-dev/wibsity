@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { WhatsAppFab } from './components/common/WhatsAppFab';
 import { HomePage } from './pages/HomePage';
 import { useLenis } from './hooks/useLenis';
 import { useSEO } from './hooks/useSEO';
@@ -90,7 +91,17 @@ function AnimatedRoutes() {
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         className="flex-1 flex flex-col"
       >
-        <Suspense fallback={<div className="flex-1 bg-canvas" />}>
+        <Suspense
+          fallback={
+            <div className="flex-1 bg-canvas">
+              {/* Route-transition indicator for lazy-loaded pages. Plain CSS
+                  keyframe (route-loading.css rule below), not an `m` component —
+                  this has to animate the instant a route change fires, which can
+                  happen before the async-loaded motion engine chunk resolves. */}
+              <div className="route-loading-bar fixed top-0 left-0 right-0 z-50 h-[3px] bg-gradient-to-r from-accent via-accent-light to-accent" aria-hidden="true" />
+            </div>
+          }
+        >
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
@@ -118,6 +129,7 @@ export function App() {
             <AnimatedRoutes />
           </main>
           <Footer />
+          <WhatsAppFab />
         </div>
       </BrowserRouter>
       <Analytics />
