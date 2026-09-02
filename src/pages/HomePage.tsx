@@ -118,11 +118,33 @@ const wordVariants: Variants = {
 export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
 
+  // Mouse-follow 3D tilt for the hero device illustration — same useMotionValue/useSpring
+  // pattern as MagneticCTA above, applied as rotation instead of translation.
+  const heroDeviceRef = useRef<HTMLDivElement>(null);
+  const heroTiltX = useMotionValue(0);
+  const heroTiltY = useMotionValue(0);
+  const heroSpringTiltX = useSpring(heroTiltX, { stiffness: 200, damping: 20, mass: 0.4 });
+  const heroSpringTiltY = useSpring(heroTiltY, { stiffness: 200, damping: 20, mass: 0.4 });
+
+  const handleHeroDeviceMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!heroDeviceRef.current) return;
+    const rect = heroDeviceRef.current.getBoundingClientRect();
+    const offsetX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const offsetY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    heroTiltY.set(offsetX * 8);
+    heroTiltX.set(offsetY * -8);
+  };
+
+  const handleHeroDeviceMouseLeave = () => {
+    heroTiltX.set(0);
+    heroTiltY.set(0);
+  };
+
   const valuePoints = [
-    'Direct Founder Collaboration',
-    'Accessible By Default',
-    'Domain Ownership Included',
-    'Clear Fixed-Scope Proposals',
+    'Mobile Responsive',
+    'Pay 50% After Completion',
+    'SEO-Ready Structure',
+    'Fast Loading',
   ];
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
@@ -210,12 +232,29 @@ export const HomePage: React.FC = () => {
               </m.h1>
             )}
 
+            {/* Value Verification Grid */}
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.22 }}
+              className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
+            >
+              {valuePoints.map((point) => (
+                <div key={point} className="flex items-start gap-2.5">
+                  <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
+                  <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
+                    {point}
+                  </span>
+                </div>
+              ))}
+            </m.div>
+
             {/* Actions */}
             <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-3.5"
+              transition={{ duration: 0.5, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border-hairline flex flex-wrap items-center gap-3 sm:gap-3.5"
             >
               <MagneticCTA className="w-full sm:w-auto">
                 <Button
@@ -242,28 +281,17 @@ export const HomePage: React.FC = () => {
               </Button>
 
             </m.div>
-
-            {/* Value Verification Grid */}
-            <m.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.32 }}
-              className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border-hairline grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
-            >
-              {valuePoints.map((point) => (
-                <div key={point} className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-fg shrink-0 mt-0.5" />
-                  <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
-                    {point}
-                  </span>
-                </div>
-              ))}
-            </m.div>
           </div>
 
           {/* Desktop + mobile device illustration, desktop only — a generic,
               self-contained browser/site mockup, no project-specific data. */}
-          <div className="hidden lg:flex w-full max-w-xs shrink-0 items-center justify-center py-16">
+          <div
+            ref={heroDeviceRef}
+            className="hidden lg:flex w-full max-w-xs shrink-0 items-center justify-center py-16"
+            style={{ perspective: 800 }}
+            onMouseMove={prefersReduced ? undefined : handleHeroDeviceMouseMove}
+            onMouseLeave={prefersReduced ? undefined : handleHeroDeviceMouseLeave}
+          >
             <m.svg
               viewBox="0 0 320 320"
               className="w-full h-full"
@@ -271,6 +299,7 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+              style={{ rotateX: heroSpringTiltX, rotateY: heroSpringTiltY, transformPerspective: 800 }}
             >
               <defs>
                 <clipPath id="hero-mark-clip">
