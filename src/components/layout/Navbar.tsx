@@ -70,7 +70,7 @@ export const Navbar: React.FC = () => {
           <Link
             to="/"
             onClick={handleNavClick}
-            className="flex items-center gap-3 group focus:outline-none"
+            className="flex items-center gap-3 group"
             aria-label="wibsity home"
           >
             <img
@@ -169,7 +169,7 @@ export const Navbar: React.FC = () => {
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg focus:outline-none border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
+              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls={MOBILE_MENU_ID}

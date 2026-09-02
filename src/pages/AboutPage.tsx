@@ -134,7 +134,7 @@ export const AboutPage: React.FC = () => {
                 <div key={faq.id} className="py-5 sm:py-6 transition-colors">
                   <button
                     onClick={() => toggleFaq(faq.id)}
-                    className="w-full flex items-start justify-between text-left gap-4 group cursor-pointer focus:outline-none py-1"
+                    className="w-full flex items-start justify-between text-left gap-4 group cursor-pointer py-1"
                     aria-expanded={isOpen}
                     aria-controls={`${faq.id}-panel`}
                   >

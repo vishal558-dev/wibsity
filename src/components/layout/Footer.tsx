@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
             close below read as a redundant double rule. */}
         <div className="mt-12 sm:mt-16 flex flex-col md:flex-row md:items-start justify-between gap-8 pt-8 sm:pt-12">
           <div className="space-y-3 max-w-xs">
-            <Link to="/" onClick={handleLinkClick} className="inline-block focus:outline-none" aria-label="wibsity home">
+            <Link to="/" onClick={handleLinkClick} className="inline-block" aria-label="wibsity home">
               <img
                 src={logoSrc}
                 alt="wibsity"

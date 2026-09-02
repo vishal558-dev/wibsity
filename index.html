@@ -5,37 +5,11 @@
          Mirrors src/hooks/useTheme.ts's resolution logic exactly (same
          localStorage key, same matchMedia query) — it can't import that
          hook directly because it must run before any JS bundle loads. -->
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem('wibsity-theme');
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      })();
-    </script>
+    <script src="/theme-bootstrap.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- SPA redirect decode script for direct deep link reloads on static hosts -->
-    <script type="text/javascript">
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
-    </script>
+    <!-- Decodes GitHub Pages-style SPA redirects when using that static-host fallback. -->
+    <script src="/spa-redirect.js"></script>
     <title>wibsity — Digital Design & Web Engineering Studio</title>
     <meta name="description" content="wibsity is a modern web design and digital engineering studio. We build clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands." />
     <meta name="keywords" content="web design studio, web engineering, modern web design, website development, React web design, high-converting landing pages, website redesign, fast websites, wibsity" />
@@ -92,14 +66,15 @@
       rel="preload"
       as="style"
       href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
+      data-font-preload
     />
     <link
       rel="preload"
       as="style"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
+      data-font-preload
     />
+    <script src="/font-styles.js"></script>
     <noscript>
       <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
       <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
