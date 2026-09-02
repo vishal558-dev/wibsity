@@ -108,6 +108,8 @@ Actually used and consistent across pages — safe to extend:
 ## Deployment
 Vercel is the primary deployment target (`vercel.json` has a catch-all SPA rewrite). A vite-config plugin also copies `dist/index.html` → `dist/404.html` as a static-host fallback, but no Netlify `_redirects` exists in the repo — don't assume Netlify support without verifying.
 
+**Vercel Web Analytics is wired up via `@vercel/analytics/react`'s `<Analytics />`, rendered once in `App.tsx`** (a sibling of `<BrowserRouter>`, inside the `LazyMotion` boundary) — this is the plain-React package, not `@vercel/analytics/next` (the site is Vite, not Next.js). It needs no route-level wiring since it isn't tied to react-router. Adds ~1kB gzipped to the main bundle; in dev it logs `[Vercel Web Analytics] Debug mode is enabled` and sends no requests — real pageview data only starts flowing once a deploy lands on Vercel, no dashboard-side setup required beyond that.
+
 ## Content guardrails
 - **Never claim code/IP ownership transfer to the client.** The site does not promise "100% code ownership," "full IP ownership," or that the client receives Wibsity's underlying reusable code/components/tooling. This was deliberately removed from the hero, manifesto, About principles, Contact page, the ownership FAQ, and the process/handover step — don't reintroduce it.
 - **Domain ownership stays an explicit, positive claim** ("Domain Ownership", "Always Yours" etc.) — the client does own their domain; that's the one ownership claim the site makes.

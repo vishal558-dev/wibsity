@@ -1,6 +1,7 @@
 import { Suspense, lazy, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, LazyMotion, m } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
@@ -127,6 +128,7 @@ export function App() {
           <Footer />
         </div>
       </BrowserRouter>
+      <Analytics />
     </LazyMotion>
   );
 }
