@@ -76,8 +76,8 @@ export const Navbar: React.FC = () => {
             <img
               src={logoSrc}
               alt="wibsity"
-              width={355}
-              height={112}
+              width={178}
+              height={56}
               decoding="async"
               className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
             />
