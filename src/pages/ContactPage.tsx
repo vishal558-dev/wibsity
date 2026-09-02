@@ -153,9 +153,9 @@ export const ContactPage: React.FC = () => {
               <span className="font-mono text-[11px] text-fg-faint uppercase tracking-wider block">
                 // WHAT TO EXPECT
               </span>
-              <h3 className="text-xl font-bold text-fg">
+              <h2 className="text-xl font-bold text-fg">
                 No high-pressure sales. Straightforward technical collaboration.
-              </h3>
+              </h2>
               <p className="text-xs sm:text-sm text-fg-muted leading-relaxed">
                 When you contact wibsity, you speak directly with the engineer responsible for your build. We review your requirements, recommend the most effective scope, and provide a clear timeline.
               </p>
@@ -165,9 +165,9 @@ export const ContactPage: React.FC = () => {
                   <div key={pt.title} className="flex items-start gap-3">
                     <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-xs font-bold text-fg font-sans">
+                      <h3 className="text-xs font-bold text-fg font-sans">
                         {pt.title}
-                      </h4>
+                      </h3>
                       <p className="text-[11px] text-fg-muted mt-0.5 leading-relaxed">
                         {pt.desc}
                       </p>

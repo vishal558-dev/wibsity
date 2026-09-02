@@ -68,9 +68,9 @@ export const AboutPage: React.FC = () => {
               <span className="text-accent">/</span>
               <span className="tracking-widest text-fg-muted">Core Foundations</span>
             </div>
-            <h3 className="text-2xl font-bold text-fg">
+            <h2 className="text-2xl font-bold text-fg">
               The 3 Non-Negotiable Pillars
-            </h3>
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-b border-border-hairline divide-y sm:divide-y-0 sm:divide-x divide-border-hairline">
@@ -96,7 +96,7 @@ export const AboutPage: React.FC = () => {
                   </div>
 
                   <span className="font-mono text-xs text-fg-faint mb-3">{p.index}</span>
-                  <h4 className="text-lg font-bold text-fg tracking-tight mb-3">{p.title}</h4>
+                  <h3 className="text-lg font-bold text-fg tracking-tight mb-3">{p.title}</h3>
                   <p className="text-sm text-fg-muted leading-relaxed max-w-[15rem]">{p.desc}</p>
 
                   {/* Base */}
@@ -118,9 +118,9 @@ export const AboutPage: React.FC = () => {
               <span className="text-accent">/</span>
               <span className="tracking-widest text-fg-muted">Transparent Guidance</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-fg">
+            <h2 className="text-2xl sm:text-3xl font-bold text-fg">
               Frequently Asked Questions
-            </h3>
+            </h2>
             <p className="text-sm text-fg-muted mt-2 max-w-xl">
               Clear answers to scoping, turnaround expectations, domain ownership, and technical standards.
             </p>
@@ -138,9 +138,9 @@ export const AboutPage: React.FC = () => {
                     aria-expanded={isOpen}
                     aria-controls={`${faq.id}-panel`}
                   >
-                    <h4 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-light transition-colors font-sans pr-2 leading-snug flex-1">
+                    <h3 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-light transition-colors font-sans pr-2 leading-snug flex-1">
                       {faq.question}
-                    </h4>
+                    </h3>
 
                     <div className="p-1.5 sm:p-1 border border-accent/25 bg-canvas-surface text-accent-light group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5">
                       {isOpen ? <Minus size={16} /> : <Plus size={16} />}

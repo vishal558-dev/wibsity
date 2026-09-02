@@ -60,46 +60,47 @@ wibsity/
     ├── index.css                    # Tailwind v4 @theme — the single source of design tokens
     ├── pages/
     │   ├── HomePage.tsx             # Landing page (statically imported; every other page is lazy-loaded)
-    │   ├── ProjectsPage.tsx         # Projects & Concepts — three showcase bands, one per concept
-    │   ├── CaseStudyPage.tsx        # Per-concept case study with desktop/mobile viewport simulator
     │   ├── ServicesPage.tsx         # Core capabilities & delivery methodology
     │   ├── AboutPage.tsx            # Studio principles & FAQ
     │   ├── ContactPage.tsx          # Direct contact hub
     │   └── NotFoundPage.tsx         # 404 handler
     ├── types/
-    │   └── index.ts                 # Project, ConceptPreview, Service, FAQ, etc. type definitions
+    │   └── index.ts                 # Service, ProcessStep, and FAQItem type definitions
     ├── data/
-    │   ├── projects.ts              # The three studio concepts and their case study content
     │   ├── services.ts              # Core service offerings
     │   ├── process.ts               # Delivery methodology steps
     │   ├── faqs.ts                  # Categorized FAQs
-    │   └── contact.ts               # Centralized phone, email, and WhatsApp config
+    │   ├── about.ts                 # Core studio principles
+    │   ├── contact.ts               # Centralized phone, email, and WhatsApp config
+    │   └── seo.ts                   # Per-route SEO metadata
     ├── hooks/
     │   ├── useLenis.ts              # Lenis smooth scroll hook + reduced-motion guard
-    │   └── useReducedMotion.ts      # Accessibility preference hook
+    │   ├── useReducedMotion.ts      # Accessibility preference hook
+    │   ├── useSEO.ts                # Per-route head tags and structured data hook
+    │   └── useTheme.ts              # Dark/light theme management hook
     ├── components/
     │   ├── common/
     │   │   ├── Button.tsx           # Shared button (supports both router `to` and external `href`)
     │   │   ├── ScrollToTop.tsx      # Router scroll-to-top handler
     │   │   ├── SectionHeading.tsx   # Standardized section header
+    │   │   ├── ThemeToggle.tsx      # Dark/light theme toggle button
+    │   │   ├── WhatsAppFab.tsx      # Persistent mobile floating WhatsApp CTA
     │   │   └── WhatsAppIcon.tsx     # Branded SVG icon
     │   └── layout/
-    │       ├── Navbar.tsx           # Sticky header with active NavLinks & mobile drawer
+    │       ├── Navbar.tsx           # Sticky header with active NavLinks, theme toggle & mobile drawer
     │       └── Footer.tsx           # Footer with site directory
     └── utils/
         ├── cn.ts                    # Class name merger (clsx + tailwind-merge)
         └── scroll.ts                # Lenis-aware scroll helpers
 ```
 
-**Note on Projects & Concepts**: `/projects` is live and linked from the navbar and footer. It carries exactly three concepts, each rendering a different site archetype (`clinic`, `monograph`, `storefront`) from a different preview data shape — see `components/projects/ConceptPreview.tsx`. The legacy `/work` paths redirect to `/projects`. Individual case studies at `/projects/:slug` are deliberately `noindex, follow`: they describe hypothetical businesses in a shared section structure, which is too thin to warrant standalone search results, so `/projects` is the canonical portfolio page. See `CASE_STUDY_NOINDEX` in `src/data/seo.ts`.
-
 ---
 
 ## Content Guardrails
 
 - The site never claims code/IP ownership transfer to the client — it does not promise "full ownership of the code" or similar. Domain ownership is the one explicit ownership claim it makes.
-- Project entries use niche/category names ("Surgical Practice"), never invented brand names, and are labeled as concept work, not real past clients.
 - No fabricated testimonials or metrics — value claims trace back to real, existing copy (turnaround time, fixed-scope process, direct founder contact).
+- No unverified performance numbers ("< 500ms", "sub-second load") — claims focus on verified accessibility (WCAG AA) and clean engineering standards.
 
 ---
 
