@@ -102,9 +102,6 @@ export const Footer: React.FC = () => {
             <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Services
             </Link>
-            <Link to="/projects" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
-              Projects
-            </Link>
             <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
               Studio & FAQ
             </Link>

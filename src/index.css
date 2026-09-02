@@ -26,12 +26,6 @@
   --color-accent-dark: #2432fc;
   --color-accent-fg: #f5f6ff;
 
-  /* Fixed poles used only for picking readable text against an arbitrary,
-     non-theme color (e.g. a project's own brand accent in CaseStudyPage).
-     These must NEVER be redefined per-theme — see the light override block below. */
-  --color-ink-fixed: #08080a;
-  --color-paper-fixed: #fafafa;
-
   /* Decorative hero background grid lines — needs its own token because
      `text-zinc-700` (the old hardcoded class) is unreadably faint on a white canvas. */
   --color-grid-line: #3f3f46;
@@ -55,9 +49,7 @@
    fg-on-canvas is ~19:1 and fg-muted-on-canvas is ~7:1 in both themes.
    accent / accent-dark / accent-fg are intentionally NOT overridden here —
    they're only ever used inside a filled accent-colored surface (button
-   gradients), so the page canvas color doesn't affect their contrast.
-   --color-ink-fixed and --color-paper-fixed are also intentionally absent
-   here — see the comment on their declaration in @theme above. */
+   gradients), so the page canvas color doesn't affect their contrast. */
 :root[data-theme="light"] {
   --color-canvas: #ffffff;
   --color-canvas-subtle: #f4f4f5;

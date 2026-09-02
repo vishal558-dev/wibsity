@@ -1,5 +1,5 @@
 import { Suspense, lazy, useMemo } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, LazyMotion, m } from 'motion/react';
 import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/layout/Navbar';
@@ -8,9 +8,8 @@ import { ScrollToTop } from './components/common/ScrollToTop';
 import { HomePage } from './pages/HomePage';
 import { useLenis } from './hooks/useLenis';
 import { useSEO } from './hooks/useSEO';
-import { routeSEO, NOT_FOUND_SEO, caseStudySEO, CASE_STUDY_NOINDEX } from './data/seo';
+import { routeSEO, NOT_FOUND_SEO } from './data/seo';
 import { faqsData } from './data/faqs';
-import { projectsData } from './data/projects';
 
 // Lazy-loaded: keeps the initial bundle for "/" small so the hero's
 // entrance animation isn't competing with parsing/executing every
@@ -18,8 +17,6 @@ import { projectsData } from './data/projects';
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then((mod) => ({ default: mod.ServicesPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then((mod) => ({ default: mod.AboutPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then((mod) => ({ default: mod.ContactPage })));
-const ProjectsPage = lazy(() => import('./pages/ProjectsPage').then((mod) => ({ default: mod.ProjectsPage })));
-const CaseStudyPage = lazy(() => import('./pages/CaseStudyPage').then((mod) => ({ default: mod.CaseStudyPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((mod) => ({ default: mod.NotFoundPage })));
 
 // Splits Framer Motion's animation engine into its own chunk instead of
@@ -55,14 +52,7 @@ function AnimatedRoutes() {
   const location = useLocation();
   const aboutFaqJsonLd = useAboutFaqJsonLd();
 
-  // /projects/:slug can't be a static key in routeSEO, so it's resolved here.
-  // Without this the case studies would fall through to NOT_FOUND_SEO and ship
-  // a "Page Not Found" <title> on a page that renders perfectly well.
-  const caseStudy = location.pathname.startsWith('/projects/')
-    ? projectsData.find((p) => p.slug === location.pathname.slice('/projects/'.length))
-    : undefined;
-
-  const matchedSEO = caseStudy ? caseStudySEO(caseStudy) : routeSEO[location.pathname];
+  const matchedSEO = routeSEO[location.pathname];
   const activeSEO = matchedSEO ?? { ...NOT_FOUND_SEO, path: location.pathname };
 
   // Per-route head tags: without this every route shared the homepage's
@@ -73,7 +63,7 @@ function AnimatedRoutes() {
     description: activeSEO.description,
     path: activeSEO.path,
     jsonLd: location.pathname === '/about' ? aboutFaqJsonLd : undefined,
-    noindex: caseStudy ? CASE_STUDY_NOINDEX : !matchedSEO,
+    noindex: !matchedSEO,
   });
 
   return (
@@ -95,12 +85,6 @@ function AnimatedRoutes() {
         <Suspense fallback={<div className="flex-1 bg-canvas" />}>
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:slug" element={<CaseStudyPage />} />
-            {/* /work was an earlier path for the same content — kept as a
-                redirect so any existing link still resolves. */}
-            <Route path="/work" element={<Navigate to="/projects" replace />} />
-            <Route path="/work/:slug" element={<Navigate to="/projects" replace />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

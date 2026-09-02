@@ -21,12 +21,6 @@ export const routeSEO: Record<string, RouteSEO> = {
     description:
       'wibsity is a modern web design and digital engineering studio. We build clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands.',
   },
-  '/projects': {
-    path: '/projects',
-    title: 'Projects & Concepts — Web Design Case Studies | wibsity',
-    description:
-      'Three studio design concepts showing how wibsity structures genuinely different kinds of website — an appointment-led medical practice, an editorial architecture portfolio, and a coffee storefront.',
-  },
   '/services': {
     path: '/services',
     title: 'Web Design & Development Services | wibsity',
@@ -52,32 +46,3 @@ export const NOT_FOUND_SEO: RouteSEO = {
   title: 'Page Not Found | wibsity',
   description: 'The page you were looking for could not be found.',
 };
-
-/**
- * Per-concept metadata for /projects/:slug.
- *
- * These pages are deliberately `noindex, follow` (see CASE_STUDY_NOINDEX). Each
- * one carries roughly 300 words of unique prose about a *hypothetical* business,
- * laid out in a section structure identical across all three — which is thin
- * enough that three near-parallel pages would compete with /projects rather than
- * add anything a searcher wants to land on. /projects is the canonical portfolio
- * page and carries all three concepts; `follow` keeps the case-study links
- * crawlable so nothing is orphaned.
- *
- * Revisit this once concepts are replaced by real client work with distinct
- * outcomes, imagery, and substance to justify standalone results.
- */
-export const CASE_STUDY_NOINDEX = true;
-
-export function caseStudySEO(project: {
-  slug: string;
-  title: string;
-  clientType: string;
-  summary: string;
-}): RouteSEO {
-  return {
-    path: `/projects/${project.slug}`,
-    title: `${project.title} — Studio Concept | wibsity`,
-    description: project.summary,
-  };
-}
