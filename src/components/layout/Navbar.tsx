@@ -110,7 +110,7 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Actions: Clean Call & WhatsApp Buttons */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          <div className="hidden md:flex items-center gap-2.5">
             <ThemeToggle theme={theme} onToggle={toggleTheme} className="hidden md:flex" />
             <Button
               variant="outline"

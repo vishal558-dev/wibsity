@@ -110,7 +110,7 @@ export const ServicesPage: React.FC = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      href={`${whatsappUrl}%20regarding%20${encodeURIComponent(service.title)}`}
+                      href={`${whatsappUrl}?text=${encodeURIComponent(`Hi, I'd like to ask about ${service.title}.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       icon={<WhatsAppIcon size={14} />}

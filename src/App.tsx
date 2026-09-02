@@ -52,8 +52,16 @@ function AnimatedRoutes() {
   const location = useLocation();
   const aboutFaqJsonLd = useAboutFaqJsonLd();
 
-  const matchedSEO = routeSEO[location.pathname];
-  const activeSEO = matchedSEO ?? { ...NOT_FOUND_SEO, path: location.pathname };
+  // Routes match a trailing slash the same as without one (React Router's
+  // default non-strict matching), so the SEO lookup needs to normalize it
+  // too — otherwise "/services/" rendered the Services page under a
+  // "Page Not Found" title with noindex, since routeSEO only has "/services".
+  const normalizedPathname =
+    location.pathname !== '/' && location.pathname.endsWith('/')
+      ? location.pathname.slice(0, -1)
+      : location.pathname;
+  const matchedSEO = routeSEO[normalizedPathname];
+  const activeSEO = matchedSEO ?? { ...NOT_FOUND_SEO, path: normalizedPathname };
 
   // Per-route head tags: without this every route shared the homepage's
   // <title>/description/canonical, which reads as duplicate content to
@@ -62,7 +70,7 @@ function AnimatedRoutes() {
     title: activeSEO.title,
     description: activeSEO.description,
     path: activeSEO.path,
-    jsonLd: location.pathname === '/about' ? aboutFaqJsonLd : undefined,
+    jsonLd: normalizedPathname === '/about' ? aboutFaqJsonLd : undefined,
     noindex: !matchedSEO,
   });
 
