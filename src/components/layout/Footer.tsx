@@ -87,8 +87,8 @@ export const Footer: React.FC = () => {
               <img
                 src={logoSrc}
                 alt="wibsity"
-                width={938}
-                height={296}
+                width={355}
+                height={112}
                 loading="lazy"
                 decoding="async"
                 className="h-5 sm:h-6 w-auto object-contain"
@@ -148,8 +148,8 @@ export const Footer: React.FC = () => {
               src={logoMarkSrc}
               alt=""
               aria-hidden="true"
-              width={334}
-              height={243}
+              width={77}
+              height={56}
               loading="lazy"
               decoding="async"
               className="h-3.5 w-auto object-contain opacity-75"

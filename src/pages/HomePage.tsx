@@ -54,7 +54,11 @@ const headlineLeadWords = ['We', 'design', 'and', 'build', 'websites', 'that', '
 /** A real, verbatim excerpt of this repo's own Button.tsx (src/components/common/Button.tsx),
  * trimmed to the most illustrative props — not a fabricated example. Manually tokenized rather
  * than pulled in via a syntax-highlighter package, since a 12-line static snippet doesn't
- * justify shipping a whole highlighting library to every visitor. */
+ * justify shipping a whole highlighting library to every visitor.
+ * Tokens use `text-fg`/`text-fg-muted` only, not `-subtle`/`-faint` — those two are tuned for
+ * AA contrast against `--color-canvas`, but this panel sits on `bg-canvas-elevated` (and its
+ * header on `bg-canvas-surface`), where both fall to ~3.1–3.8:1 in light mode (and fg-faint to
+ * ~4.3:1 even in dark). `fg-muted` clears AA on every surface in both themes. */
 const manifestoCodeLines: { text: string; cls: string }[][] = [
   [
     { text: 'export interface ', cls: 'text-accent-light' },
@@ -74,13 +78,13 @@ const manifestoCodeLines: { text: string; cls: string }[][] = [
   [
     { text: '  variant', cls: 'text-fg' },
     { text: '?: ', cls: 'text-fg-muted' },
-    { text: "'primary' | 'secondary' | 'outline' | 'ghost'", cls: 'text-fg-subtle' },
+    { text: "'primary' | 'secondary' | 'outline' | 'ghost'", cls: 'text-fg-muted' },
     { text: ';', cls: 'text-fg-muted' },
   ],
   [
     { text: '  size', cls: 'text-fg' },
     { text: '?: ', cls: 'text-fg-muted' },
-    { text: "'sm' | 'md' | 'lg'", cls: 'text-fg-subtle' },
+    { text: "'sm' | 'md' | 'lg'", cls: 'text-fg-muted' },
     { text: ';', cls: 'text-fg-muted' },
   ],
   [
@@ -89,7 +93,7 @@ const manifestoCodeLines: { text: string; cls: string }[][] = [
     { text: 'React.ReactNode', cls: 'text-fg-muted' },
     { text: ';', cls: 'text-fg-muted' },
   ],
-  [{ text: '  // ...href, to, className, and more', cls: 'text-fg-faint' }],
+  [{ text: '  // ...href, to, className, and more', cls: 'text-fg-muted' }],
   [{ text: '}', cls: 'text-fg-muted' }],
 ];
 
@@ -468,10 +472,10 @@ export const HomePage: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-border-hover" />
                     <span className="w-1.5 h-1.5 rounded-full bg-border-hover" />
                   </div>
-                  <span className="font-mono text-[10px] text-fg-faint flex items-center gap-1.5">
+                  <span className="font-mono text-[10px] text-fg-muted flex items-center gap-1.5">
                     <Code size={11} className="shrink-0" /> Button.tsx
                   </span>
-                  <span className="font-mono text-[9px] uppercase tracking-wider text-fg-subtle">
+                  <span className="font-mono text-[9px] uppercase tracking-wider text-fg-muted">
                     Real Code
                   </span>
                 </div>

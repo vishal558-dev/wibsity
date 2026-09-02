@@ -216,7 +216,7 @@ export const ServicesPage: React.FC = () => {
                   <div className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-0 shrink-0">
                     <div className="relative w-11 h-11 rounded-full bg-canvas border border-accent/50 flex items-center justify-center shrink-0 z-10">
                       <StepIcon size={18} className="text-accent-light" aria-hidden="true" />
-                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-canvas-elevated border border-border-hairline flex items-center justify-center font-mono text-[8px] font-semibold text-fg-faint">
+                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-canvas-elevated border border-border-hairline flex items-center justify-center font-mono text-[8px] font-semibold text-fg-muted">
                         {step.step}
                       </span>
                     </div>

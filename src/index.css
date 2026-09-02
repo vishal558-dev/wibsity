@@ -72,7 +72,13 @@
      dark-mode value were reused as-is). */
   --color-accent-light: #2432fc;
 
-  --color-grid-line: #d4d4d8;
+  /* #d4d4d8 (the same distance from neutral gray as the dark-mode value)
+     blended at the hero grid's 0.4 stroke-opacity against a white canvas
+     came out essentially invisible — near-white deltas read far fainter
+     than the same numeric delta near black. Darkened enough to actually
+     be visible at a glance, matching dark mode's legibility rather than
+     its literal hex distance from canvas. */
+  --color-grid-line: #a1a1aa;
 
   color-scheme: light;
 }
@@ -143,13 +149,23 @@
   }
 }
 
-/* Soft radial brand glow, used sparingly for depth behind hero/CTA surfaces */
+/* Soft radial brand glow, used sparingly for depth behind hero/CTA surfaces.
+   Plain alpha compositing reads as a light source against the dark canvas
+   (adding a bright blue circle onto near-black genuinely looks like a glow),
+   but the same math on a white canvas can only ever darken/tint it — at
+   normal blend mode that read as a flat lavender smudge rather than depth.
+   `multiply` on the light theme makes it behave like a soft color wash
+   instead, which is the effect that actually holds up on a light surface. */
 .accent-glow {
   position: absolute;
   border-radius: 9999px;
   background: radial-gradient(closest-side, rgba(75, 80, 254, 0.5), transparent 70%);
   filter: blur(60px);
   pointer-events: none;
+}
+
+:root[data-theme="light"] .accent-glow {
+  mix-blend-mode: multiply;
 }
 
 /* Compositor-only (transform) loop for the hero side-panel scan line — avoids
