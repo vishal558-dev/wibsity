@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
 import { CheckCircle2, Phone, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
-import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
+import { StartProjectModal } from '../components/common/StartProjectModal';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
 import { faqsData } from '../data/faqs';
@@ -183,7 +183,7 @@ export const HomePage: React.FC = () => {
     'Fast Loading',
   ];
 
-  const whatsappUrl = CONTACT_INFO.whatsappUrl;
+  const [isStartProjectOpen, setStartProjectOpen] = useState(false);
 
   return (
     <div className="flex flex-col">
@@ -296,13 +296,11 @@ export const HomePage: React.FC = () => {
                 <Button
                   variant="primary"
                   size="lg"
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon={<WhatsAppIcon size={18} />}
+                  onClick={() => setStartProjectOpen(true)}
+                  icon={<ArrowRight size={18} />}
                   className="w-full sm:w-auto justify-center"
                 >
-                  Chat on WhatsApp
+                  Start a Project
                 </Button>
               </MagneticCTA>
 
@@ -590,6 +588,8 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <StartProjectModal open={isStartProjectOpen} onClose={() => setStartProjectOpen(false)} />
     </div>
   );
 };

@@ -16,7 +16,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com; font-src 'self' data: https://cdn.fontshare.com https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://api.fontshare.com https://fonts.googleapis.com; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com https://formspree.io; font-src 'self' data: https://cdn.fontshare.com https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://api.fontshare.com https://fonts.googleapis.com; upgrade-insecure-requests"
         },
         {
           "key": "Cross-Origin-Opener-Policy",

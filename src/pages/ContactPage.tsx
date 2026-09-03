@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { m } from 'motion/react';
 import { SectionHeading } from '../components/common/SectionHeading';
-import { Phone, Mail, CheckCircle2, ArrowUpRight } from 'lucide-react';
-import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
+import { Phone, Mail, CheckCircle2, ArrowUpRight, Rocket } from 'lucide-react';
+import { StartProjectModal } from '../components/common/StartProjectModal';
 import { CONTACT_INFO, engagementPoints } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { cn } from '../utils/cn';
 
 export const ContactPage: React.FC = () => {
-  const whatsappUrl = CONTACT_INFO.whatsappUrl;
   const prefersReduced = useReducedMotion();
+  const [isStartProjectOpen, setStartProjectOpen] = useState(false);
 
   return (
     <div className="pt-32 pb-24 bg-canvas min-h-screen">
@@ -57,34 +57,33 @@ export const ContactPage: React.FC = () => {
 
             {/* Direct Action Cards */}
             <div className="space-y-3 sm:space-y-4 pt-2">
-              {/* WhatsApp Card */}
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
+              {/* Start a Project Card */}
+              <button
+                type="button"
+                onClick={() => setStartProjectOpen(true)}
+                className="group w-full text-left border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
-                    <WhatsAppIcon size={20} />
+                    <Rocket size={20} />
                   </div>
                   <div>
                     <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
                       FASTEST RESPONSE
                     </span>
                     <h3 className="text-base font-bold text-fg">
-                      Chat on WhatsApp
+                      Start a Project
                     </h3>
                     <p className="text-xs text-fg-muted mt-0.5">
-                      Direct messaging with the founder for instant project inquiries.
+                      A short guided inquiry — tell us what you need and we'll get back to you within hours.
                     </p>
                   </div>
                 </div>
                 <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
-                  <span>Open Chat</span>
+                  <span>Begin</span>
                   <ArrowUpRight size={14} />
                 </div>
-              </a>
+              </button>
 
               {/* Phone Card */}
               <a
@@ -179,6 +178,8 @@ export const ContactPage: React.FC = () => {
           </m.div>
         </div>
       </div>
+
+      <StartProjectModal open={isStartProjectOpen} onClose={() => setStartProjectOpen(false)} />
     </div>
   );
 };
