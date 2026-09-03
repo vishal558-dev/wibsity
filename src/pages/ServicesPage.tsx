@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { m } from 'motion/react';
 import {
   Check,
+  ChevronDown,
   Network,
   LayoutTemplate,
   MonitorSmartphone,
@@ -21,6 +22,13 @@ import { processData } from '../data/process';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { cn } from '../utils/cn';
+
+/** Bento composition for the 4-card Core Offerings grid at lg+: one wide
+ * card per row (2/1 then 1/2 on a 3-col grid). This is a deliberate visual
+ * rhythm, not a content-driven size — every service carries equal
+ * informational weight (see the accordion below), the grid is just uneven. */
+const bentoSpans = ['lg:col-span-2', 'lg:col-span-1', 'lg:col-span-1', 'lg:col-span-2'];
 
 /** One icon per process step (data/process.ts step codes), giving the
  * methodology timeline a visual anchor instead of a bare number. */
@@ -33,6 +41,7 @@ const processIcons: Record<string, LucideIcon> = {
 
 export const ServicesPage: React.FC = () => {
   const prefersReduced = useReducedMotion();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const iconMap = {
     Layout: Layout,
@@ -55,10 +64,19 @@ export const ServicesPage: React.FC = () => {
             description="We design and build clean, high-performing websites. No bloated packages or unnecessary complexity—just four core solutions engineered to give your business an unfair digital advantage."
           />
 
-          {/* Core Offerings Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {/* Core Offerings Grid — bento composition (see bentoSpans above).
+              Cards default to a compact summary (index, icon, scope badge,
+              title, tagline) and expand via a single-open accordion to
+              reveal description/target-profile/deliverables/CTA, following
+              the WAI-ARIA accordion pattern (heading wraps the trigger
+              button, not the other way around, so the button's content
+              model stays valid phrasing content). */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {servicesData.map((service, idx) => {
               const Icon = iconMap[service.iconName];
+              const isOpen = expandedId === service.id;
+              const contentId = `service-detail-${service.id}`;
+              const isWide = bentoSpans[idx] === 'lg:col-span-2';
 
               return (
                 <m.div
@@ -67,84 +85,113 @@ export const ServicesPage: React.FC = () => {
                   whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="border border-border-hairline bg-canvas-subtle p-5 sm:p-8 lg:p-10 flex flex-col justify-between group hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_20px_48px_-28px_rgba(75,80,254,0.6)] transition-all"
+                  className={cn(
+                    'border border-border-hairline bg-canvas-subtle p-5 sm:p-8 group hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_20px_48px_-28px_rgba(75,80,254,0.6)] transition-colors',
+                    bentoSpans[idx]
+                  )}
                 >
-                  <div>
-                    {/* Card Header */}
-                    <div className="pb-4 sm:pb-6 mb-5 sm:mb-6 border-b border-border-hairline">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs text-fg-faint font-semibold">
-                            {service.index}
-                          </span>
-                          <span className="text-border-hover text-xs">/</span>
-                          <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
-                            Capability
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                          <span className="hidden sm:inline font-sans text-xs text-fg-faint font-medium">
-                            {service.scopeType}
-                          </span>
-                          <Icon size={18} className="text-accent-light/70 group-hover:text-accent-light transition-colors shrink-0" />
-                        </div>
+                  {/* Compact header — always visible */}
+                  <div className="pb-4 sm:pb-6 mb-5 sm:mb-6 border-b border-border-hairline">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-fg-faint font-semibold">
+                          {service.index}
+                        </span>
+                        <span className="text-border-hover text-xs">/</span>
+                        <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider">
+                          Capability
+                        </span>
                       </div>
-                      <div className="sm:hidden mt-2 text-xs font-sans text-fg-faint font-medium">
-                        {service.scopeType}
+                      <div className="flex items-center gap-2.5">
+                        <span className="hidden sm:inline font-sans text-xs text-fg-faint font-medium">
+                          {service.scopeType}
+                        </span>
+                        <Icon size={18} className="text-accent-light/70 group-hover:text-accent-light transition-colors shrink-0" />
                       </div>
                     </div>
-
-                    {/* Title & Tagline */}
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight mb-2 font-sans">
-                      {service.title}
-                    </h2>
-                    <p className="text-sm font-medium text-fg-muted mb-3 font-sans">
-                      {service.tagline}
-                    </p>
-                    <p className="text-xs sm:text-sm text-fg-muted leading-relaxed mb-5 sm:mb-6 font-sans">
-                      {service.description}
-                    </p>
-
-                    {/* Target Audience */}
-                    <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 bg-canvas-surface border border-border-hairline border-l-2 border-l-accent/30">
-                      <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
-                        Target Profile
-                      </span>
-                      <p className="text-xs text-fg-muted leading-relaxed font-sans">
-                        {service.forWhom}
-                      </p>
-                    </div>
-
-                    {/* Deliverables */}
-                    <div className="mb-2">
-                      <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-2.5">
-                        What's Included
-                      </span>
-                      <ul className="space-y-2">
-                        {service.deliverables.map((item) => (
-                          <li key={item} className="flex items-start gap-2.5 text-xs text-fg-muted font-sans leading-relaxed">
-                            <Check size={13} className="text-accent-light shrink-0 mt-0.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="sm:hidden mt-2 text-xs font-sans text-fg-faint font-medium">
+                      {service.scopeType}
                     </div>
                   </div>
 
-                  {/* Footer Action — scope type already shown in the card
-                      header above; repeating it here just diluted the CTA. */}
-                  <div className="pt-5 sm:pt-6 border-t border-border-hairline flex sm:justify-end">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      href={`${whatsappUrl}?text=${encodeURIComponent(`Hi, I'd like to ask about ${service.title}.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      icon={<WhatsAppIcon size={14} />}
-                      className="w-full sm:w-auto justify-center text-xs"
+                  <h2 className="mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedId(isOpen ? null : service.id)}
+                      aria-expanded={isOpen}
+                      aria-controls={contentId}
+                      className="w-full flex items-start justify-between gap-4 text-left -my-2 py-2"
                     >
-                      Inquire on WhatsApp
-                    </Button>
+                      <span className="text-xl sm:text-2xl md:text-3xl font-bold text-fg tracking-tight font-sans">
+                        {service.title}
+                      </span>
+                      <ChevronDown
+                        size={18}
+                        className={cn('text-fg-muted shrink-0 mt-2 transition-transform', isOpen && 'rotate-180')}
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">{isOpen ? 'Hide details' : 'Show details'}</span>
+                    </button>
+                  </h2>
+                  <p className="text-sm font-medium text-fg-muted font-sans">
+                    {service.tagline}
+                  </p>
+
+                  {/* Expandable detail */}
+                  <div
+                    id={contentId}
+                    className={cn(
+                      'grid transition-[grid-template-rows] ease-in-out',
+                      prefersReduced ? 'duration-0' : 'duration-300',
+                      isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                    )}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="text-xs sm:text-sm text-fg-muted leading-relaxed mt-5 sm:mt-6 mb-5 sm:mb-6 font-sans">
+                        {service.description}
+                      </p>
+
+                      {/* Target Audience */}
+                      <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 bg-canvas-surface border border-border-hairline border-l-2 border-l-accent/30">
+                        <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
+                          Target Profile
+                        </span>
+                        <p className="text-xs text-fg-muted leading-relaxed font-sans">
+                          {service.forWhom}
+                        </p>
+                      </div>
+
+                      {/* Deliverables */}
+                      <div className="mb-2">
+                        <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-2.5">
+                          What's Included
+                        </span>
+                        <ul className={cn('space-y-2', isWide && 'sm:grid sm:grid-cols-2 sm:gap-x-6 sm:space-y-0')}>
+                          {service.deliverables.map((item) => (
+                            <li key={item} className="flex items-start gap-2.5 text-xs text-fg-muted font-sans leading-relaxed py-0.5">
+                              <Check size={13} className="text-accent-light shrink-0 mt-0.5" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Footer Action — scope type already shown in the card
+                          header above; repeating it here just diluted the CTA. */}
+                      <div className="pt-5 sm:pt-6 mt-2 border-t border-border-hairline flex sm:justify-end">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          href={`${whatsappUrl}?text=${encodeURIComponent(`Hi, I'd like to ask about ${service.title}.`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          icon={<WhatsAppIcon size={14} />}
+                          className="w-full sm:w-auto justify-center text-xs"
+                        >
+                          Inquire on WhatsApp
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </m.div>
               );

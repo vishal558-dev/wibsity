@@ -105,6 +105,60 @@ const processIcons: Record<string, LucideIcon> = {
   STEP_04: Rocket,
 };
 
+/** Compact abstract UI-mockup tiles for the hero's vertical marquee columns —
+ * generic wireframe compositions (browser chrome, mobile card, form, stat),
+ * not tied to any real project/client. Same primitive shapes and semantic
+ * color tokens as the previous device-illustration SVG, just smaller and
+ * duplicated for a scrolling column instead of a single static mockup. */
+const HeroTileBrowser: React.FC = () => (
+  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
+    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
+    <line x1="1" y1="18" x2="139" y2="18" stroke="var(--color-accent)" strokeWidth="1" opacity="0.6" />
+    <circle cx="10" cy="9.5" r="2" fill="var(--color-accent)" />
+    <circle cx="18" cy="9.5" r="2" fill="var(--color-accent)" />
+    <circle cx="26" cy="9.5" r="2" fill="var(--color-accent)" />
+    <rect x="12" y="30" width="70" height="6" rx="1" fill="var(--color-fg)" opacity="0.5" />
+    <rect x="12" y="42" width="48" height="5" rx="1" fill="var(--color-fg)" opacity="0.3" />
+    <rect x="12" y="58" width="34" height="12" rx="6" fill="var(--color-accent)" />
+    <rect x="12" y="80" width="116" height="16" fill="none" stroke="var(--color-border-hairline)" />
+  </svg>
+);
+
+const HeroTileMobile: React.FC = () => (
+  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
+    <rect x="42" y="1" width="56" height="102" rx="10" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="1.5" />
+    <rect x="58" y="10" width="24" height="3" rx="1.5" fill="var(--color-accent)" opacity="0.6" />
+    <circle cx="70" cy="24" r="5" fill="var(--color-accent-light)" />
+    <rect x="50" y="36" width="40" height="4" fill="var(--color-fg)" opacity="0.4" />
+    <rect x="50" y="46" width="28" height="4" fill="var(--color-fg)" opacity="0.25" />
+    <rect x="50" y="58" width="40" height="24" rx="3" fill="var(--color-accent)" opacity="0.15" stroke="var(--color-border-hairline)" />
+    <rect x="50" y="88" width="40" height="8" rx="4" fill="var(--color-accent-light)" />
+  </svg>
+);
+
+const HeroTileForm: React.FC = () => (
+  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
+    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
+    <rect x="16" y="18" width="108" height="5" rx="1" fill="var(--color-fg)" opacity="0.4" />
+    <rect x="16" y="34" width="108" height="16" rx="2" fill="none" stroke="var(--color-border-hairline)" />
+    <rect x="16" y="58" width="108" height="16" rx="2" fill="none" stroke="var(--color-border-hairline)" />
+    <rect x="16" y="82" width="46" height="14" rx="7" fill="var(--color-accent)" />
+  </svg>
+);
+
+const HeroTileStat: React.FC = () => (
+  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
+    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
+    <rect x="16" y="16" width="4" height="72" fill="var(--color-accent)" opacity="0.5" />
+    <rect x="30" y="24" width="46" height="20" rx="1" fill="var(--color-accent-light)" opacity="0.25" />
+    <rect x="30" y="52" width="70" height="6" rx="1" fill="var(--color-fg)" opacity="0.5" />
+    <rect x="30" y="64" width="54" height="5" rx="1" fill="var(--color-fg)" opacity="0.3" />
+    <rect x="30" y="78" width="30" height="10" rx="5" fill="var(--color-accent)" opacity="0.7" />
+  </svg>
+);
+
+const heroMockupTiles = [HeroTileBrowser, HeroTileMobile, HeroTileForm, HeroTileStat];
+
 const heroGridLines = [
   { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-[color:var(--color-grid-line)]' },
   { x1: '0', y1: '50%', x2: '100%', y2: '50%', color: 'text-accent/25' },
@@ -121,28 +175,6 @@ const wordVariants: Variants = {
 
 export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
-
-  // Mouse-follow 3D tilt for the hero device illustration — same useMotionValue/useSpring
-  // pattern as MagneticCTA above, applied as rotation instead of translation.
-  const heroDeviceRef = useRef<HTMLDivElement>(null);
-  const heroTiltX = useMotionValue(0);
-  const heroTiltY = useMotionValue(0);
-  const heroSpringTiltX = useSpring(heroTiltX, { stiffness: 200, damping: 20, mass: 0.4 });
-  const heroSpringTiltY = useSpring(heroTiltY, { stiffness: 200, damping: 20, mass: 0.4 });
-
-  const handleHeroDeviceMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!heroDeviceRef.current) return;
-    const rect = heroDeviceRef.current.getBoundingClientRect();
-    const offsetX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-    const offsetY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-    heroTiltY.set(offsetX * 8);
-    heroTiltX.set(offsetY * -8);
-  };
-
-  const handleHeroDeviceMouseLeave = () => {
-    heroTiltX.set(0);
-    heroTiltY.set(0);
-  };
 
   const valuePoints = [
     'Mobile Responsive',
@@ -287,82 +319,45 @@ export const HomePage: React.FC = () => {
             </m.div>
           </div>
 
-          {/* Desktop + mobile device illustration, desktop only — a generic,
-              self-contained browser/site mockup, no project-specific data. */}
+          {/* Vertical marquee, desktop only — two columns of small, generic
+              UI-mockup tiles (no project-specific data) scrolling opposite
+              directions. Purely decorative (aria-hidden), same seamless-loop
+              CSS technique as the horizontal capability ticker below, and
+              likewise frozen under prefers-reduced-motion via CSS alone. */}
           <div
-            ref={heroDeviceRef}
-            className="hidden lg:flex w-full max-w-xs shrink-0 items-center justify-center py-16"
-            style={{ perspective: 800 }}
-            onMouseMove={prefersReduced ? undefined : handleHeroDeviceMouseMove}
-            onMouseLeave={prefersReduced ? undefined : handleHeroDeviceMouseLeave}
+            className="hidden lg:flex w-full max-w-xs shrink-0 items-stretch justify-center gap-3 h-[26rem] py-4"
+            aria-hidden="true"
           >
-            <m.svg
-              viewBox="0 0 320 320"
-              className="w-full h-full"
-              aria-hidden="true"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-              style={{ rotateX: heroSpringTiltX, rotateY: heroSpringTiltY, transformPerspective: 800 }}
-            >
-              <defs>
-                <clipPath id="hero-mark-clip">
-                  <rect x="20" y="64" width="230" height="146" />
-                </clipPath>
-                <linearGradient id="hero-plate-wide" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="hero-plate-tall" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--color-accent-light)" stopOpacity="0.45" />
-                  <stop offset="100%" stopColor="var(--color-accent-light)" stopOpacity="0" />
-                </linearGradient>
-              </defs>
+            {[0, 1].map((col) => (
+              <div key={col} className="flex-1 marquee-fade-vertical overflow-hidden">
+                <div className={col === 0 ? 'flex flex-col gap-3 w-full marquee-track-vertical' : 'flex flex-col gap-3 w-full marquee-track-vertical-reverse'}>
+                  {[...heroMockupTiles, ...heroMockupTiles].map((Tile, i) => (
+                    <div
+                      key={i}
+                      className="border border-border-hairline bg-canvas-subtle p-1.5 shrink-0"
+                    >
+                      <Tile />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Desktop browser */}
-              <rect x="20" y="40" width="230" height="170" rx="8" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
-              <line x1="20" y1="64" x2="250" y2="64" stroke="var(--color-accent)" strokeWidth="1.5" />
-              <circle cx="34" cy="52" r="3" fill="var(--color-accent)" />
-              <circle cx="46" cy="52" r="3" fill="var(--color-accent)" />
-              <circle cx="58" cy="52" r="3" fill="var(--color-accent)" />
-              <rect x="76" y="48" width="100" height="8" rx="4" fill="none" stroke="var(--color-accent)" strokeWidth="1" opacity="0.5" />
-
-              <circle cx="32" cy="78" r="4" fill="var(--color-accent)" />
-              <rect x="180" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
-              <rect x="200" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
-              <rect x="220" y="76" width="14" height="4" fill="var(--color-fg)" opacity="0.3" />
-
-              <rect x="32" y="94" width="150" height="10" fill="var(--color-fg)" opacity="0.5" />
-              <rect x="32" y="110" width="110" height="7" fill="var(--color-fg)" opacity="0.3" />
-              <rect x="32" y="126" width="56" height="16" rx="8" fill="var(--color-accent)" />
-
-              <rect x="32" y="156" width="90" height="44" fill="url(#hero-plate-wide)" stroke="var(--color-border-hairline)" />
-              <rect x="132" y="156" width="90" height="44" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
-
-              <rect
-                x="20"
-                y="64"
-                width="230"
-                height="3"
-                fill="var(--color-accent-light)"
-                clipPath="url(#hero-mark-clip)"
-                opacity="0.7"
-                className={prefersReduced ? undefined : 'hero-scan-line'}
-              />
-
-              {/* Mobile phone — front/overlapping, drawn last so it paints above the desktop frame */}
-              <rect x="170" y="120" width="110" height="180" rx="18" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="2" />
-              <rect x="207" y="132" width="36" height="4" rx="2" fill="var(--color-accent)" opacity="0.5" />
-              <circle cx="190" cy="150" r="6" fill="var(--color-accent)" />
-              <rect x="202" y="145" width="50" height="5" fill="var(--color-fg)" opacity="0.5" />
-              <rect x="202" y="155" width="34" height="5" fill="var(--color-fg)" opacity="0.3" />
-              <rect x="182" y="168" width="88" height="54" rx="4" fill="url(#hero-plate-tall)" stroke="var(--color-border-hairline)" />
-              <rect x="182" y="230" width="88" height="6" fill="var(--color-fg)" opacity="0.5" />
-              <rect x="182" y="242" width="60" height="6" fill="var(--color-fg)" opacity="0.3" />
-              <rect x="182" y="254" width="88" height="18" rx="9" fill="var(--color-accent-light)" />
-              <circle cx="272" cy="254" r="4" fill="var(--color-accent-light)" className={prefersReduced ? undefined : 'animate-pulse'} />
-              <rect x="207" y="284" width="36" height="4" rx="2" fill="var(--color-fg)" opacity="0.3" />
-            </m.svg>
+        {/* Mobile/tablet fallback for the vertical marquee above — a single
+            horizontal row using the same ticker pattern as the capability
+            ticker below, since there's no room for two columns. */}
+        <div className="lg:hidden marquee-fade overflow-hidden mt-8 relative z-10" aria-hidden="true">
+          <div className="flex w-max gap-3 marquee-track">
+            {[...heroMockupTiles, ...heroMockupTiles].map((Tile, i) => (
+              <div
+                key={i}
+                className="w-28 border border-border-hairline bg-canvas-subtle p-1.5 shrink-0"
+              >
+                <Tile />
+              </div>
+            ))}
           </div>
         </div>
       </section>
