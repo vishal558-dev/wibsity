@@ -6,6 +6,11 @@
          localStorage key, same matchMedia query) — it can't import that
          hook directly because it must run before any JS bundle loads. -->
     <script src="/theme-bootstrap.js"></script>
+    <!-- Google Analytics (gtag.js). The dataLayer/config init lives in the
+         first-party public/gtag-init.js file, not an inline <script> block,
+         since the CSP's script-src disallows 'unsafe-inline'. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2TCETV3EDR"></script>
+    <script src="/gtag-init.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Decodes GitHub Pages-style SPA redirects when using that static-host fallback. -->
