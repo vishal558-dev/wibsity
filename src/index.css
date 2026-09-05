@@ -192,35 +192,6 @@
   -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
-/* Hero vertical marquee columns — same seamless-loop technique as
-   .marquee-track above (content rendered twice, translated by exactly
-   -50%), just on the Y axis. Two columns share one keyframe; the second
-   column reverses direction via animation-direction rather than a
-   duplicate keyframe. */
-@keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
-}
-
-.marquee-track-vertical {
-  animation: marquee-vertical 22s linear infinite;
-}
-
-.marquee-track-vertical-reverse {
-  animation: marquee-vertical 26s linear infinite reverse;
-}
-
-/* Fades the vertical marquee columns' contents at the top/bottom edge,
-   vertical counterpart to .marquee-fade. */
-.marquee-fade-vertical {
-  mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
-}
-
 /* Route-transition indicator shown in App.tsx's Suspense fallback while a
    lazy-loaded page chunk is still downloading. Indeterminate sweep — the bar
    itself is a fixed 30% width that slides across the full viewport width. */
@@ -240,9 +211,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .marquee-track-vertical,
-  .marquee-track-vertical-reverse {
+  .marquee-track {
     animation: none;
   }
 

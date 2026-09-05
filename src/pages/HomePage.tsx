@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
+import { m, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'motion/react';
 import { CheckCircle2, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
@@ -104,59 +104,154 @@ const processIcons: Record<string, LucideIcon> = {
   STEP_04: Rocket,
 };
 
-/** Compact abstract UI-mockup tiles for the hero's vertical marquee columns —
- * generic wireframe compositions (browser chrome, mobile card, form, stat),
- * not tied to any real project/client. Same primitive shapes and semantic
- * color tokens as the previous device-illustration SVG, just smaller and
- * duplicated for a scrolling column instead of a single static mockup. */
-const HeroTileBrowser: React.FC = () => (
-  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
-    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
-    <line x1="1" y1="18" x2="139" y2="18" stroke="var(--color-accent)" strokeWidth="1" opacity="0.6" />
-    <circle cx="10" cy="9.5" r="2" fill="var(--color-accent)" />
-    <circle cx="18" cy="9.5" r="2" fill="var(--color-accent)" />
-    <circle cx="26" cy="9.5" r="2" fill="var(--color-accent)" />
-    <rect x="12" y="30" width="70" height="6" rx="1" fill="var(--color-fg)" opacity="0.5" />
-    <rect x="12" y="42" width="48" height="5" rx="1" fill="var(--color-fg)" opacity="0.3" />
-    <rect x="12" y="58" width="34" height="12" rx="6" fill="var(--color-accent)" />
-    <rect x="12" y="80" width="116" height="16" fill="none" stroke="var(--color-border-hairline)" />
-  </svg>
-);
+/** The hero's signature 3D piece — a pre-rendered obsidian sculpture of the
+ * Wibsity "W", a continuous twisted-ribbon form (dark obsidian/glossy
+ * material, restrained blue-violet edge lighting) chosen specifically
+ * because it reads clearly as a "W" rather than resolving only after a
+ * delay — an earlier, more abstract/fractured candidate was tried and
+ * rejected for reading too slowly as the brand mark. It's a
+ * static AVIF (25KB — re-encoded from an original WebP at less than half the
+ * size with no visible quality loss), not a live 3D engine — no Three.js/
+ * React Three Fiber/Spline runtime, consistent with this codebase's whole
+ * mobile-performance posture (see the Animation section in CLAUDE.md). The
+ * only "3D-ness" comes from two restrained motion layers on top of the
+ * still render:
+ *  1. A spring-driven cursor tilt (rotateX/rotateY, capped at a few degrees)
+ *     plus a small paired x/y translation, both falling off with distance
+ *     from the object, so it reads as ambient presence-awareness rather than
+ *     a cursor-follow gimmick. Skipped under reduced-motion and on
+ *     coarse-pointer/touch devices — same touch check `useLenis.ts` uses,
+ *     since touch input has no hover state to drive this. The window-level
+ *     `mousemove` listener is rAF-batched (at most one rect read + one tilt
+ *     calculation per animation frame, not per raw event) and short-circuits
+ *     entirely whenever an `IntersectionObserver` reports the sculpture is
+ *     scrolled out of view, so moving the mouse anywhere else on the page —
+ *     including deep in later sections — costs nothing.
+ *  2. A scroll-linked translate/scale/opacity tied to the hero section's own
+ *     scroll progress (via `sectionRef`), so the object recedes as the hero
+ *     scrolls out of view instead of animating on its own timeline. */
+const HeroSculpture: React.FC<{ sectionRef: React.RefObject<HTMLElement | null> }> = ({ sectionRef }) => {
+  const prefersReduced = useReducedMotion();
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-const HeroTileMobile: React.FC = () => (
-  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
-    <rect x="42" y="1" width="56" height="102" rx="10" fill="var(--color-canvas-subtle)" stroke="var(--color-accent)" strokeWidth="1.5" />
-    <rect x="58" y="10" width="24" height="3" rx="1.5" fill="var(--color-accent)" opacity="0.6" />
-    <circle cx="70" cy="24" r="5" fill="var(--color-accent-light)" />
-    <rect x="50" y="36" width="40" height="4" fill="var(--color-fg)" opacity="0.4" />
-    <rect x="50" y="46" width="28" height="4" fill="var(--color-fg)" opacity="0.25" />
-    <rect x="50" y="58" width="40" height="24" rx="3" fill="var(--color-accent)" opacity="0.15" stroke="var(--color-border-hairline)" />
-    <rect x="50" y="88" width="40" height="8" rx="4" fill="var(--color-accent-light)" />
-  </svg>
-);
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springRotateX = useSpring(rotateX, { stiffness: 180, damping: 16, mass: 0.4 });
+  const springRotateY = useSpring(rotateY, { stiffness: 180, damping: 16, mass: 0.4 });
+  const springTiltX = useSpring(tiltX, { stiffness: 180, damping: 16, mass: 0.4 });
+  const springTiltY = useSpring(tiltY, { stiffness: 180, damping: 16, mass: 0.4 });
 
-const HeroTileForm: React.FC = () => (
-  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
-    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
-    <rect x="16" y="18" width="108" height="5" rx="1" fill="var(--color-fg)" opacity="0.4" />
-    <rect x="16" y="34" width="108" height="16" rx="2" fill="none" stroke="var(--color-border-hairline)" />
-    <rect x="16" y="58" width="108" height="16" rx="2" fill="none" stroke="var(--color-border-hairline)" />
-    <rect x="16" y="82" width="46" height="14" rx="7" fill="var(--color-accent)" />
-  </svg>
-);
+  // Tracks whether the sculpture is actually on screen, so the mousemove
+  // listener below can skip all its work once the visitor has scrolled past
+  // the hero — otherwise every mousemove on the entire page (even deep in
+  // the Services/About/Contact content) would keep paying for a layout read
+  // and some arithmetic for an object nobody can see.
+  const isVisibleRef = useRef(false);
 
-const HeroTileStat: React.FC = () => (
-  <svg viewBox="0 0 140 104" className="w-full h-auto block" aria-hidden="true">
-    <rect x="1" y="1" width="138" height="102" rx="4" fill="var(--color-canvas-subtle)" stroke="var(--color-border-hairline)" />
-    <rect x="16" y="16" width="4" height="72" fill="var(--color-accent)" opacity="0.5" />
-    <rect x="30" y="24" width="46" height="20" rx="1" fill="var(--color-accent-light)" opacity="0.25" />
-    <rect x="30" y="52" width="70" height="6" rx="1" fill="var(--color-fg)" opacity="0.5" />
-    <rect x="30" y="64" width="54" height="5" rx="1" fill="var(--color-fg)" opacity="0.3" />
-    <rect x="30" y="78" width="30" height="10" rx="5" fill="var(--color-accent)" opacity="0.7" />
-  </svg>
-);
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-const heroMockupTiles = [HeroTileBrowser, HeroTileMobile, HeroTileForm, HeroTileStat];
+  useEffect(() => {
+    if (prefersReduced) return;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (isCoarsePointer) return;
+
+    // rAF-batched so the (cheap but non-zero) rect read + math runs at most
+    // once per animation frame, not once per raw mousemove event — some
+    // browsers/mice fire mousemove well above 60Hz.
+    let rafId = 0;
+    let pendingEvent: MouseEvent | null = null;
+
+    const applyTilt = () => {
+      rafId = 0;
+      const e = pendingEvent;
+      const el = wrapperRef.current;
+      if (!e || !el) return;
+      const rect = el.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+      // Intensity falls off with distance so the tilt feels like the object
+      // is aware of the cursor nearby rather than tracking it from anywhere
+      // on screen — the radius is generous (roughly a hero-section's worth
+      // of width) so normal cursor movement near the hero actually reaches it.
+      const falloff = Math.max(0, 1 - Math.hypot(dx, dy) / 1100);
+      const normX = Math.max(-1, Math.min(1, dx / (rect.width / 2)));
+      const normY = Math.max(-1, Math.min(1, dy / (rect.height / 2)));
+      rotateY.set(normX * 3 * falloff);
+      rotateX.set(-normY * 3 * falloff);
+      tiltX.set(normX * 10 * falloff);
+      tiltY.set(normY * 10 * falloff);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isVisibleRef.current) return;
+      pendingEvent = e;
+      if (!rafId) rafId = requestAnimationFrame(applyTilt);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [prefersReduced, rotateX, rotateY, tiltX, tiltY]);
+
+  // 'center start' (not 'end start') as the end offset so the fade/zoom
+  // completes over roughly the first half of the hero's scroll distance —
+  // scrollYProgress clamps at 1 past that point, so the effect reads as a
+  // deliberate, fairly quick fade rather than a slow drift across the whole
+  // section's height.
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'center start'] });
+  const scrollY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
+  const scrollOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  if (prefersReduced) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <img
+          src="/hero-sculpture-w.avif"
+          alt=""
+          aria-hidden="true"
+          width={700}
+          height={468}
+          decoding="async"
+          className="max-h-full max-w-full w-auto object-contain"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <m.div
+      ref={wrapperRef}
+      style={{ y: scrollY, scale: scrollScale, opacity: scrollOpacity }}
+      className="w-full h-full flex items-center justify-center"
+    >
+      <div style={{ perspective: 1000 }}>
+        <m.img
+          src="/hero-sculpture-w.avif"
+          alt=""
+          aria-hidden="true"
+          width={700}
+          height={468}
+          decoding="async"
+          className="max-h-full max-w-full w-auto object-contain"
+          style={{ rotateX: springRotateX, rotateY: springRotateY, x: springTiltX, y: springTiltY }}
+        />
+      </div>
+    </m.div>
+  );
+};
 
 const heroGridLines = [
   { x1: '0', y1: '25%', x2: '100%', y2: '25%', color: 'text-[color:var(--color-grid-line)]' },
@@ -174,6 +269,7 @@ const wordVariants: Variants = {
 
 export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
 
   const valuePoints: { title: string; sub?: string }[] = [
     { title: 'Mobile Responsive' },
@@ -190,7 +286,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* 00 / Hero Monograph */}
-      <section className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-20 overflow-hidden border-b border-border-hairline bg-canvas">
+      <section ref={heroRef} className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-20 overflow-hidden border-b border-border-hairline bg-canvas">
         {/* Animated Background Architectural Grid */}
         <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
           <svg
@@ -334,46 +430,26 @@ export const HomePage: React.FC = () => {
             </m.div>
           </div>
 
-          {/* Vertical marquee, desktop only — two columns of small, generic
-              UI-mockup tiles (no project-specific data) scrolling opposite
-              directions. Purely decorative (aria-hidden), same seamless-loop
-              CSS technique as the horizontal capability ticker below, and
-              likewise frozen under prefers-reduced-motion via CSS alone. */}
-          <div
-            className="hidden lg:flex w-full max-w-xs shrink-0 items-stretch justify-center gap-3 h-[26rem] py-4"
-            aria-hidden="true"
-          >
-            {[0, 1].map((col) => (
-              <div key={col} className="flex-1 marquee-fade-vertical overflow-hidden">
-                <div className={col === 0 ? 'flex flex-col gap-3 w-full marquee-track-vertical' : 'flex flex-col gap-3 w-full marquee-track-vertical-reverse'}>
-                  {[...heroMockupTiles, ...heroMockupTiles].map((Tile, i) => (
-                    <div
-                      key={i}
-                      className="border border-border-hairline bg-canvas-subtle p-1.5 shrink-0"
-                    >
-                      <Tile />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          {/* Hero signature sculpture, desktop only — see HeroSculpture for
+              the full rationale. Purely decorative (aria-hidden inside). */}
+          <div className="hidden lg:flex w-full max-w-[31.2rem] shrink-0 items-center justify-center h-[39rem] py-4">
+            <HeroSculpture sectionRef={heroRef} />
           </div>
         </div>
 
-        {/* Mobile/tablet fallback for the vertical marquee above — a single
-            horizontal row using the same ticker pattern as the capability
-            ticker below, since there's no room for two columns. */}
-        <div className="lg:hidden marquee-fade overflow-hidden mt-8 relative z-10" aria-hidden="true">
-          <div className="flex w-max gap-3 marquee-track">
-            {[...heroMockupTiles, ...heroMockupTiles].map((Tile, i) => (
-              <div
-                key={i}
-                className="w-28 border border-border-hairline bg-canvas-subtle p-1.5 shrink-0"
-              >
-                <Tile />
-              </div>
-            ))}
-          </div>
+        {/* Mobile/tablet fallback for the sculpture above — a static,
+            smaller render with no tilt/scroll interaction. Touch devices
+            have no hover state to drive the cursor tilt anyway, and this
+            keeps mobile free of the scroll-linked transform's JS cost. */}
+        <div className="lg:hidden flex justify-center mt-8 relative z-10" aria-hidden="true">
+          <img
+            src="/hero-sculpture-w.avif"
+            alt=""
+            width={700}
+            height={468}
+            decoding="async"
+            className="h-[20.8rem] sm:h-[23.4rem] w-auto object-contain"
+          />
         </div>
       </section>
 
