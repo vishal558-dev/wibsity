@@ -176,11 +176,14 @@ const wordVariants: Variants = {
 export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
 
-  const valuePoints = [
-    'Mobile Responsive',
-    'SEO-Ready Structure',
-    'Fast Loading',
-    'Founder-Direct, No Account Managers',
+  const valuePoints: { title: string; sub?: string }[] = [
+    { title: 'Mobile Responsive' },
+    { title: 'Built for Google', sub: 'SEO-Ready Structure' },
+    { title: 'Fast Loading' },
+    {
+      title: 'Founder-Direct',
+      sub: 'No account managers. You work directly with the person building your site.',
+    },
   ];
 
   const [isStartProjectOpen, setStartProjectOpen] = useState(false);
@@ -276,10 +279,17 @@ export const HomePage: React.FC = () => {
               className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
             >
               {valuePoints.map((point) => (
-                <div key={point} className="flex items-start gap-2.5">
+                <div key={point.title} className="flex items-start gap-2.5">
                   <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
-                  <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
-                    {point}
+                  <span className="flex flex-col">
+                    <span className="text-xs font-sans text-fg-muted leading-tight font-medium">
+                      {point.title}
+                    </span>
+                    {point.sub && (
+                      <span className="text-[10px] font-sans text-fg-faint leading-tight mt-0.5">
+                        {point.sub}
+                      </span>
+                    )}
                   </span>
                 </div>
               ))}
