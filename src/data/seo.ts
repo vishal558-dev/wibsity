@@ -17,9 +17,9 @@ export interface RouteSEO {
 export const routeSEO: Record<string, RouteSEO> = {
   '/': {
     path: '/',
-    title: 'wibsity — Digital Design & Web Engineering Studio',
+    title: 'wibsity — Web Design Studio in India | Founder-Direct Sites',
     description:
-      'wibsity is a modern web design and digital engineering studio. We build clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands.',
+      'Founder-led web design studio in India. Fixed-scope pricing, 3–7+ day turnaround, and clean React/TypeScript websites — pay half only after launch.',
   },
   '/services': {
     path: '/services',

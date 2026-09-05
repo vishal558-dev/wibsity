@@ -21,7 +21,13 @@ function replaceMeta(html: string, selector: RegExp, value: string) {
 
 function createRouteHtml(html: string, seo: RouteSEO, noindex = false, jsonLd?: object) {
   const url = seo.path === '/' ? `${SITE_URL}/` : `${SITE_URL}${seo.path}`;
-  let routeHtml = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(seo.title)}</title>`);
+  // The homepage's FAQPage JSON-LD lives in its own script block (index.html,
+  // id="home-faq-jsonld") specifically so it can be stripped here — every other
+  // route inherits index.html's <head> verbatim otherwise, and those 3 FAQs
+  // only appear on "/". createRouteHtml is never called for seo.path === '/'
+  // (see generateStaticRouteHtmlPlugin's loop), so this always strips it.
+  let routeHtml = html.replace(/\s*<script id="home-faq-jsonld"[\s\S]*?<\/script>/, '');
+  routeHtml = routeHtml.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(seo.title)}</title>`);
 
   routeHtml = replaceMeta(routeHtml, /(<meta name="description" content=")[^"]*("\s*\/?>)/, seo.description);
   routeHtml = replaceMeta(routeHtml, /(<meta name="robots" content=")[^"]*("\s*\/?>)/, noindex

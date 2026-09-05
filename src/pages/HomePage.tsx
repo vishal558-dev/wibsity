@@ -181,6 +181,7 @@ export const HomePage: React.FC = () => {
     'Pay 50% After Completion',
     'SEO-Ready Structure',
     'Fast Loading',
+    'Founder-Direct, No Account Managers',
   ];
 
   const [isStartProjectOpen, setStartProjectOpen] = useState(false);
@@ -239,7 +240,7 @@ export const HomePage: React.FC = () => {
               <span className="text-accent">/</span>
               <span className="tracking-widest text-fg-muted">Studio Introduction</span>
               <span className="text-border-hover hidden sm:inline">•</span>
-              <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering</span>
+              <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering · India</span>
             </m.div>
 
             {/* Headline */}
