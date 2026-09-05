@@ -225,6 +225,25 @@ export const HomePage: React.FC = () => {
             viewport and washes out the whole top of the hero. */}
         <div className="accent-glow w-[18rem] h-[18rem] -top-24 right-[-6rem] opacity-20 sm:w-[36rem] sm:h-[36rem] sm:-top-40 sm:right-[-10rem] sm:opacity-30 z-0" aria-hidden="true" />
 
+        {/* Second glow, larger and centered behind the desktop hero visual
+            (the vertical mockup-tile marquee) so that column reads as the
+            focal point rather than floating on flat black. Desktop-only —
+            the mobile/tablet layout doesn't have a dedicated visual column
+            for it to sit behind. */}
+        <div className="accent-glow hidden lg:block w-[48rem] h-[48rem] top-1/2 -translate-y-1/2 right-[-16rem] opacity-15 z-0" aria-hidden="true" />
+
+        {/* Giant ghosted brand-mark watermark — a near-invisible "W" behind
+            the hero content, purely for visual anchor/depth. Kept out of the
+            accessibility tree and clipped by the section's own overflow-hidden. */}
+        <div
+          className="absolute inset-0 z-0 hidden sm:flex items-center justify-end pr-0 overflow-hidden pointer-events-none select-none"
+          aria-hidden="true"
+        >
+          <span className="font-sans font-black leading-none text-fg/[0.04] text-[26rem] lg:text-[34rem] tracking-tightest translate-x-1/4">
+            W
+          </span>
+        </div>
+
         {/* Accent boundary line at the base of the hero */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" aria-hidden="true" />
 
