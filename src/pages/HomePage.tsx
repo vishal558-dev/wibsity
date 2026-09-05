@@ -271,6 +271,25 @@ export const HomePage: React.FC = () => {
   const prefersReduced = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
 
+  // The hero sculpture is desktop (lg, 1024px+) only. Gated in JS rather than
+  // just CSS (`hidden lg:flex`) so the <img> element never exists in the DOM
+  // on mobile/tablet — a CSS-hidden <img> still triggers a network fetch,
+  // which would waste the 25KB AVIF download on viewports that never render
+  // it. Matches Tailwind's default `lg` breakpoint exactly. Initialized
+  // synchronously from matchMedia (this app is CSR-only, so `window` is
+  // always available at first render) to avoid a flash of the sculpture
+  // mounting on desktop after hydration.
+  const [isDesktopViewport, setIsDesktopViewport] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (e: MediaQueryListEvent) => setIsDesktopViewport(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
   const valuePoints: { title: string; sub?: string }[] = [
     { title: 'Mobile Responsive' },
     { title: 'Built for Google', sub: 'SEO-Ready Structure' },
@@ -431,26 +450,19 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Hero signature sculpture, desktop only — see HeroSculpture for
-              the full rationale. Purely decorative (aria-hidden inside). */}
-          <div className="hidden lg:flex w-full max-w-[31.2rem] shrink-0 items-center justify-center h-[39rem] py-4">
-            <HeroSculpture sectionRef={heroRef} />
-          </div>
+              the full rationale, and isDesktopViewport above for why this is
+              gated in JS rather than plain `hidden lg:flex`. Purely
+              decorative (aria-hidden inside). */}
+          {isDesktopViewport && (
+            <div className="flex w-full max-w-[31.2rem] shrink-0 items-center justify-center h-[39rem] py-4">
+              <HeroSculpture sectionRef={heroRef} />
+            </div>
+          )}
         </div>
 
-        {/* Mobile/tablet fallback for the sculpture above — a static,
-            smaller render with no tilt/scroll interaction. Touch devices
-            have no hover state to drive the cursor tilt anyway, and this
-            keeps mobile free of the scroll-linked transform's JS cost. */}
-        <div className="lg:hidden flex justify-center mt-8 relative z-10" aria-hidden="true">
-          <img
-            src="/hero-sculpture-w.avif"
-            alt=""
-            width={700}
-            height={468}
-            decoding="async"
-            className="h-[20.8rem] sm:h-[23.4rem] w-auto object-contain"
-          />
-        </div>
+        {/* No mobile/tablet fallback — the sculpture is desktop (lg+) only.
+            Below lg it's not rendered at all, not just non-interactive, so
+            phones/tablets never download hero-sculpture-w.avif. */}
       </section>
 
       {/* Capability Ticker — pure-CSS marquee, decorative */}
