@@ -178,7 +178,6 @@ export const HomePage: React.FC = () => {
 
   const valuePoints = [
     'Mobile Responsive',
-    'Pay 50% After Completion',
     'SEO-Ready Structure',
     'Fast Loading',
     'Founder-Direct, No Account Managers',
