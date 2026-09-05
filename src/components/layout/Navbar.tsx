@@ -123,18 +123,9 @@ export const Navbar: React.FC = () => {
             ))}
           </nav>
 
-          {/* Actions: Clean Call & WhatsApp Buttons */}
+          {/* Actions: WhatsApp Button */}
           <div className="hidden md:flex items-center gap-2.5">
             <ThemeToggle theme={theme} onToggle={toggleTheme} className="hidden md:flex" />
-            <Button
-              variant="outline"
-              size="sm"
-              href={CONTACT_INFO.phoneHref}
-              icon={<Phone size={13} />}
-              className="text-xs"
-            >
-              Call Us
-            </Button>
             <Button
               variant="primary"
               size="sm"
@@ -159,13 +150,6 @@ export const Navbar: React.FC = () => {
               aria-label="WhatsApp wibsity"
             >
               <WhatsAppIcon size={16} />
-            </a>
-            <a
-              href={CONTACT_INFO.phoneHref}
-              className="w-11 h-11 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
-              aria-label="Call wibsity"
-            >
-              <Phone size={16} />
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
