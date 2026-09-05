@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { m, useMotionValue, useSpring, type Variants } from 'motion/react';
-import { CheckCircle2, Phone, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { StartProjectModal } from '../components/common/StartProjectModal';
@@ -9,7 +9,6 @@ import { servicesData } from '../data/services';
 import { processData } from '../data/process';
 import { faqsData } from '../data/faqs';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { CONTACT_INFO } from '../data/contact';
 
 /** Subtle magnetic pull for a single, deliberate hero CTA. Hover-only enhancement; the wrapped element stays a fully clickable link/button on its own. */
 const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
@@ -313,17 +312,6 @@ export const HomePage: React.FC = () => {
                   Start a Project
                 </Button>
               </MagneticCTA>
-
-              <Button
-                variant="ghost"
-                size="lg"
-                href={CONTACT_INFO.phoneHref}
-                icon={<Phone size={16} />}
-                className="text-sm w-full sm:w-auto justify-center"
-              >
-                Call Us
-              </Button>
-
             </m.div>
           </div>
 
