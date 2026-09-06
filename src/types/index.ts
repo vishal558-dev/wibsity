@@ -8,6 +8,9 @@ export interface Service {
   deliverables: string[];
   scopeType: string;
   iconName: 'Layout' | 'Layers' | 'RefreshCw' | 'Sliders';
+  /** Root-relative path to a representative stock photo, used by HomePage's
+   * hover-driven service showcase (desktop) and tap-accordion (mobile). */
+  image: string;
 }
 
 export interface ProcessStep {

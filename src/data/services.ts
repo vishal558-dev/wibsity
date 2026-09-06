@@ -17,6 +17,7 @@ export const servicesData: Service[] = [
     ],
     scopeType: 'Standard & Multi-Page Scope',
     iconName: 'Layout',
+    image: '/services/business-websites.webp',
   },
   {
     id: 'landing-pages',
@@ -34,6 +35,7 @@ export const servicesData: Service[] = [
     ],
     scopeType: 'Focused Single-Page Scope',
     iconName: 'Layers',
+    image: '/services/landing-pages.webp',
   },
   {
     id: 'website-redesigns',
@@ -51,6 +53,7 @@ export const servicesData: Service[] = [
     ],
     scopeType: 'Full Modernization Scope',
     iconName: 'RefreshCw',
+    image: '/services/website-redesigns.webp',
   },
   {
     id: 'custom-experiences',
@@ -68,5 +71,6 @@ export const servicesData: Service[] = [
     ],
     scopeType: 'Tailored Interactive Scope',
     iconName: 'Sliders',
+    image: '/services/custom-experiences.webp',
   },
 ];
