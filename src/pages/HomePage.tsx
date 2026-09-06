@@ -621,6 +621,24 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Value-Reinforcement Ticker — second marquee band, reusing the exact
+          .marquee-track/.marquee-fade mechanism from the capability ticker
+          above. Content is the same claims already stated in the hero value
+          grid (not new copy), so it reinforces rather than invents. */}
+      <div className="marquee-fade border-b border-border-hairline bg-canvas overflow-hidden" aria-hidden="true">
+        <div className="flex w-max marquee-track py-3 sm:py-4">
+          {[...valuePoints, ...valuePoints].map((point, i) => (
+            <span
+              key={`${point.title}-${i}`}
+              className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 shrink-0 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-fg-muted whitespace-nowrap"
+            >
+              {point.title}
+              <span className="text-accent">/</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* 02 / Studio Manifesto Teaser */}
       <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
