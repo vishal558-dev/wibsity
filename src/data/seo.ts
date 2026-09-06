@@ -19,7 +19,7 @@ export const routeSEO: Record<string, RouteSEO> = {
     path: '/',
     title: 'Web Design Company in India | Founder-Direct — wibsity',
     description:
-      'No account managers, no outsourcing chains — work directly with the founder building your website. Fixed-scope web design & development, India-based.',
+      'Fixed-scope, India-based web design — work directly with the founder building your site. No account managers, no outsourcing chains.',
   },
   '/services': {
     path: '/services',

@@ -404,6 +404,15 @@ export const HomePage: React.FC = () => {
               </m.h1>
             )}
 
+            <m.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5 sm:mt-6 text-sm sm:text-base text-fg-muted max-w-xl"
+            >
+              An India-based studio — standard builds delivered in 3–5 days, fully fixed-scope.
+            </m.p>
+
             {/* Value Verification Grid */}
             <m.div
               initial={{ opacity: 0 }}
@@ -525,8 +534,11 @@ export const HomePage: React.FC = () => {
                   <h3 className="text-lg font-bold text-fg tracking-tight mb-2">
                     {service.title}
                   </h3>
-                  <p className="text-xs text-fg-muted leading-relaxed mb-6">
+                  <p className="text-xs text-fg-muted leading-relaxed mb-3">
                     {service.tagline}
+                  </p>
+                  <p className="text-[11px] text-fg-faint leading-relaxed mb-6">
+                    For {service.forWhom.replace(/\.$/, '').toLowerCase()}
                   </p>
                 </div>
 
@@ -554,10 +566,10 @@ export const HomePage: React.FC = () => {
                 <span className="tracking-widest text-fg-muted">Studio Manifesto</span>
               </div>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
-                No templates. No slow page builders. Just fast, modern code.
+                Built to load fast, stay maintainable, and never lock you in.
               </h2>
               <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                We handcraft bespoke React and TypeScript flagships instead of bloated page builders.
+                We hand-code every site in React and TypeScript instead of a page builder — so it loads faster, stays simple to extend as your business grows, and is never trapped inside a proprietary platform you don&apos;t control.
               </p>
 
               {/* Real code, not an invented example — see the comment on
