@@ -496,7 +496,7 @@ export const HomePage: React.FC = () => {
             <SectionHeading
               tag="CORE CAPABILITIES"
               title="Built for modern businesses & founders."
-              description="Four digital engineering offerings built to convert visitors."
+              description="Four ways to build a site — pick whichever matches what your business needs right now."
               className="mb-0"
             />
             <div className="mt-6 md:mt-0">
@@ -569,7 +569,7 @@ export const HomePage: React.FC = () => {
                 Built to load fast, stay maintainable, and never lock you in.
               </h2>
               <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                We hand-code every site in React and TypeScript instead of a page builder — so it loads faster, stays simple to extend as your business grows, and is never trapped inside a proprietary platform you don&apos;t control.
+                We hand-code every site in React and TypeScript — no page builder, no bloat. Pages load faster because there&apos;s no framework tax to pay. The codebase stays simple enough to extend two years from now. And none of it runs on a proprietary platform that holds your site hostage if you ever want to leave.
               </p>
 
               {/* Real code, not an invented example — see the comment on
@@ -610,7 +610,7 @@ export const HomePage: React.FC = () => {
                 Studio Philosophy
               </span>
               <p className="font-sans text-sm text-fg leading-relaxed">
-                &ldquo;A website is your business&apos;s most active commercial representative. It should exude caliber, load instantly on any mobile connection, and direct visitors straight to high-value conversations.&rdquo;
+                &ldquo;Your website is the one salesperson who never clocks off. It needs to load instantly, look like it belongs to a business worth trusting, and actually get the visitor to reach out — not just admire the layout.&rdquo;
               </p>
               <div className="pt-4 border-t border-border-hairline flex items-center justify-between">
                 <div>

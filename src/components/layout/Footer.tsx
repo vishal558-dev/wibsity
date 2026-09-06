@@ -47,7 +47,7 @@ export const Footer: React.FC = () => {
                 Ready to build a website that sets your business apart?
               </h2>
               <p className="mt-3 sm:mt-4 text-sm sm:text-lg text-fg-muted leading-relaxed">
-                We collaborate with businesses, founders, and modern brands who value clean design and fast performance. Connect directly via WhatsApp, phone, or view our contact hub.
+                We build for businesses and founders who want a site that's fast and looks right, not just a nice screenshot. Message us on WhatsApp, call, or check the contact page.
               </p>
 
               <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
