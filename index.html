@@ -1,18 +1,24 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
-    <!-- Sets data-theme before first paint to avoid a flash of the wrong theme.
-         Mirrors src/hooks/useTheme.ts's resolution logic exactly (same
-         localStorage key, same matchMedia query) — it can't import that
-         hook directly because it must run before any JS bundle loads. -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Declared here, ahead of theme-bootstrap.js, so the script can find
+         and correct this tag's value before first paint if the resolved
+         theme is light — it can't run any earlier than this since it needs
+         the tag to already exist in the DOM. -->
+    <meta name="theme-color" content="#08080a" />
+    <!-- Sets data-theme and corrects the theme-color meta above before
+         first paint to avoid a flash of the wrong theme. Mirrors
+         src/hooks/useTheme.ts's resolution logic exactly (same localStorage
+         key, same matchMedia query) — it can't import that hook directly
+         because it must run before any JS bundle loads. -->
     <script src="/theme-bootstrap.js"></script>
     <!-- Google Analytics (gtag.js). The dataLayer/config init lives in the
          first-party public/gtag-init.js file, not an inline <script> block,
          since the CSP's script-src disallows 'unsafe-inline'. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2TCETV3EDR"></script>
     <script src="/gtag-init.js"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Decodes GitHub Pages-style SPA redirects when using that static-host fallback. -->
     <script src="/spa-redirect.js"></script>
     <title>Web Design Company in India | Founder-Direct — wibsity</title>
@@ -20,7 +26,6 @@
     <meta name="keywords" content="web design studio, web engineering, modern web design, website development, React web design, high-converting landing pages, website redesign, fast websites, wibsity" />
     <meta name="author" content="wibsity" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#08080a" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://wibsity.in/" />

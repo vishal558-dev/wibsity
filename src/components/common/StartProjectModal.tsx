@@ -265,7 +265,7 @@ export const StartProjectModal: React.FC<StartProjectModalProps> = ({ open, onCl
                           onClick={() => selectBudget(opt)}
                           aria-pressed={answers.budget === opt}
                           className={cn(
-                            'px-4 py-2 text-xs font-medium border transition-colors',
+                            'min-h-11 px-4 py-2 text-xs font-medium border transition-colors',
                             answers.budget === opt
                               ? 'border-accent bg-accent/6 text-fg'
                               : 'border-border-hairline bg-canvas text-fg-muted hover:border-accent/50 hover:text-fg'

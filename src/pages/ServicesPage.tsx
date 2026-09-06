@@ -153,7 +153,7 @@ export const ServicesPage: React.FC = () => {
 
                       {/* Target Audience */}
                       <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 bg-canvas-surface border border-border-hairline border-l-2 border-l-accent/30">
-                        <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block mb-1">
+                        <span className="font-sans text-[11px] font-semibold text-fg-muted uppercase tracking-wider block mb-1">
                           Target Profile
                         </span>
                         <p className="text-xs text-fg-muted leading-relaxed font-sans">
@@ -186,7 +186,7 @@ export const ServicesPage: React.FC = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           icon={<WhatsAppIcon size={14} />}
-                          className="w-full sm:w-auto justify-center text-xs"
+                          className="w-full sm:w-auto min-h-11 justify-center text-xs"
                         >
                           Inquire on WhatsApp
                         </Button>
