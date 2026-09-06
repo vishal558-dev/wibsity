@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { m, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'motion/react';
-import { CheckCircle2, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
+import { AnimatePresence, m, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'motion/react';
+import { CheckCircle2, ChevronDown, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
+import { cn } from '../utils/cn';
 import { Button } from '../components/common/Button';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { StartProjectModal } from '../components/common/StartProjectModal';
@@ -45,6 +46,127 @@ const MagneticCTA: React.FC<{ children: React.ReactNode; className?: string }> =
     >
       {children}
     </m.div>
+  );
+};
+
+/** Replaces a static 4-card grid with a hover-driven vertical service list
+ * (desktop) and a tap-to-reveal single-open accordion (mobile/tablet,
+ * mirroring ServicesPage.tsx's existing bento-card accordion technique —
+ * same WAI-ARIA heading-wraps-button pattern, same CSS
+ * grid-template-rows: 0fr -> 1fr transition, not a JS height measurement).
+ * Desktop hovering/focusing a service title crossfades a shared image panel
+ * to that service's photo. */
+const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced }) => {
+  const [activeId, setActiveId] = useState<string>(servicesData[0].id);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const activeService = servicesData.find((service) => service.id === activeId) ?? servicesData[0];
+
+  return (
+    <>
+      {/* Desktop (lg+): hover/focus-driven list + swapping image panel */}
+      <div className="hidden lg:grid lg:grid-cols-12 lg:gap-12 lg:items-start">
+        <div className="lg:col-span-7 flex flex-col">
+          {servicesData.map((service) => {
+            const isActive = service.id === activeId;
+            return (
+              <button
+                key={service.id}
+                type="button"
+                onMouseEnter={() => setActiveId(service.id)}
+                onFocus={() => setActiveId(service.id)}
+                className={cn(
+                  'text-left border-t border-border-hairline py-6 transition-colors last:border-b',
+                  isActive ? 'text-fg' : 'text-fg-faint hover:text-fg-muted'
+                )}
+              >
+                <span className="flex items-baseline gap-4">
+                  <span className="font-mono text-xs text-fg-faint shrink-0">{service.index}</span>
+                  <span className="text-3xl xl:text-4xl font-extrabold tracking-tight">{service.title}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="lg:col-span-5 relative aspect-[4/5] overflow-hidden border border-border-hairline bg-canvas-elevated">
+          <AnimatePresence mode="wait">
+            <m.img
+              key={activeService.id}
+              src={activeService.image}
+              alt=""
+              aria-hidden="true"
+              width={800}
+              height={1000}
+              decoding="async"
+              initial={prefersReduced ? false : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={prefersReduced ? undefined : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+              transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
+              className="absolute inset-0 w-full h-full object-cover grayscale-[90%]"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-accent/10 mix-blend-overlay pointer-events-none" aria-hidden="true" />
+          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-canvas/90 to-transparent">
+            <p className="text-xs text-fg-muted leading-relaxed">{activeService.tagline}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile/tablet (below lg): single-open tap accordion */}
+      <div className="lg:hidden divide-y divide-border-hairline border-t border-b border-border-hairline">
+        {servicesData.map((service) => {
+          const isOpen = expandedId === service.id;
+          const contentId = `home-service-detail-${service.id}`;
+          return (
+            <div key={service.id} className="py-5">
+              <h3 className="mb-0">
+                <button
+                  type="button"
+                  onClick={() => setExpandedId(isOpen ? null : service.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={contentId}
+                  className="w-full flex items-center justify-between gap-4 text-left -my-2 py-2"
+                >
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-mono text-xs text-fg-faint">{service.index}</span>
+                    <span className="text-xl font-extrabold tracking-tight text-fg">{service.title}</span>
+                  </span>
+                  <ChevronDown
+                    size={18}
+                    className={cn('text-fg-muted shrink-0 transition-transform', isOpen && 'rotate-180')}
+                    aria-hidden="true"
+                  />
+                </button>
+              </h3>
+              <div
+                id={contentId}
+                className={cn(
+                  'grid transition-[grid-template-rows] ease-in-out',
+                  prefersReduced ? 'duration-0' : 'duration-300',
+                  isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                )}
+              >
+                <div className="overflow-hidden">
+                  <div className="pt-4 flex flex-col gap-4">
+                    <img
+                      src={service.image}
+                      alt=""
+                      aria-hidden="true"
+                      width={800}
+                      height={1000}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-48 object-cover grayscale-[90%] border border-border-hairline"
+                    />
+                    <p className="text-sm text-fg-muted leading-relaxed">{service.tagline}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 
@@ -495,48 +617,7 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {servicesData.map((service) => (
-              <div
-                key={service.id}
-                className="relative border border-border-hairline bg-canvas p-6 flex flex-col justify-between hover:border-accent/50 hover:shadow-[0_0_0_1px_rgba(75,80,254,0.08),0_16px_40px_-24px_rgba(75,80,254,0.6)] transition-all"
-              >
-                {/* Permanent accent rule — a small at-rest color touch so
-                    the card isn't purely grayscale until hover. */}
-                <span
-                  className="absolute top-0 left-0 right-0 h-[2px] bg-accent/40"
-                  aria-hidden="true"
-                />
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-xs text-fg-faint">
-                      {service.index}
-                    </span>
-                    <span className="text-[11px] font-sans font-medium text-accent-light uppercase tracking-wider">
-                      {service.scopeType.split(' ')[0]} Scope
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-fg tracking-tight mb-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs text-fg-muted leading-relaxed mb-3">
-                    {service.tagline}
-                  </p>
-                  <p className="text-[11px] text-fg-faint leading-relaxed mb-6">
-                    For {service.forWhom.replace(/\.$/, '').toLowerCase()}
-                  </p>
-                </div>
-
-                <Link
-                  to="/services"
-                  className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-fg-muted hover:text-accent-light transition-colors pt-4 -mb-2.5 pb-2.5 border-t border-border-hairline"
-                >
-                  <span>View Details</span>
-                  <ArrowRight size={12} />
-                </Link>
-              </div>
-            ))}
-          </div>
+          <ServiceShowcase prefersReduced={prefersReduced} />
         </div>
       </section>
 
