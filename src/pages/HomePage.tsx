@@ -191,20 +191,13 @@ const ScrollRevealWord: React.FC<{ word: string; progress: MotionValue<number>; 
  * word brightens from dim to full opacity as the paragraph's own scroll
  * progress moves through that word's slice of the range. This is the one
  * scroll-tied text effect on the homepage — deliberately not reused
- * elsewhere, per the "spend your boldness in one place" convention. */
+ * elsewhere, per the "spend your boldness in one place" convention.
+ * Only mounted when reduced motion is off — the caller conditionally
+ * renders either this component or a plain static paragraph. */
 const ScrollRevealParagraph: React.FC<{ text: string; className?: string }> = ({ text, className }) => {
-  const prefersReduced = useReducedMotion();
   const containerRef = useRef<HTMLParagraphElement>(null);
   const words = text.split(' ');
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start 0.85', 'start 0.35'] });
-
-  if (prefersReduced) {
-    return (
-      <p ref={containerRef} className={cn(className, 'text-fg')}>
-        {text}
-      </p>
-    );
-  }
 
   return (
     <p ref={containerRef} className={className}>
@@ -270,6 +263,8 @@ const processIcons: Record<string, LucideIcon> = {
   STEP_03: MonitorSmartphone,
   STEP_04: Rocket,
 };
+
+const manifestoText = "We hand-code every site in React and TypeScript — no page builder, no bloat. Pages load faster because there's no framework tax to pay. The codebase stays simple enough to extend two years from now. And none of it runs on a proprietary platform that holds your site hostage if you ever want to leave.";
 
 /** The hero's signature 3D piece — a pre-rendered obsidian sculpture of the
  * Wibsity "W", a continuous twisted-ribbon form (dark obsidian/glossy
@@ -692,10 +687,14 @@ export const HomePage: React.FC = () => {
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
                 Built to load fast, stay maintainable, and never lock you in.
               </h2>
-              <ScrollRevealParagraph
-                text="We hand-code every site in React and TypeScript — no page builder, no bloat. Pages load faster because there's no framework tax to pay. The codebase stays simple enough to extend two years from now. And none of it runs on a proprietary platform that holds your site hostage if you ever want to leave."
-                className="text-base sm:text-lg leading-relaxed"
-              />
+              {prefersReduced ? (
+                <p className="text-base sm:text-lg text-fg leading-relaxed">{manifestoText}</p>
+              ) : (
+                <ScrollRevealParagraph
+                  text={manifestoText}
+                  className="text-base sm:text-lg leading-relaxed"
+                />
+              )}
 
               {/* Real code, not an invented example — see the comment on
                   manifestoCodeLines above. Illustrates the headline instead
