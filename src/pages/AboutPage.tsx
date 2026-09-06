@@ -25,7 +25,6 @@ export const AboutPage: React.FC = () => {
         <div>
           <SectionHeading
             as="h1"
-            tag="STUDIO & PRINCIPLES"
             title="Practical engineering standards, not design fluff."
             description="In an era where every company is discovered online, your website is your most critical commercial asset. We focus on fundamentals that help your business build trust and grow."
           />
@@ -63,11 +62,6 @@ export const AboutPage: React.FC = () => {
         {/* 3 Core Principles — literal pillars */}
         <div>
           <div className="mb-10 sm:mb-12">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
-              <span className="font-mono text-fg-faint text-[11px]">3.1</span>
-              <span className="text-accent">/</span>
-              <span className="tracking-widest text-fg-muted">Core Foundations</span>
-            </div>
             <h2 className="text-2xl font-bold text-fg">
               The 3 Non-Negotiable Pillars
             </h2>
@@ -113,11 +107,6 @@ export const AboutPage: React.FC = () => {
         {/* FAQ Section */}
         <div>
           <div className="mb-10 sm:mb-12">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
-              <span className="font-mono text-fg-faint text-[11px]">3.2</span>
-              <span className="text-accent">/</span>
-              <span className="tracking-widest text-fg-muted">Transparent Guidance</span>
-            </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-fg">
               Frequently Asked Questions
             </h2>

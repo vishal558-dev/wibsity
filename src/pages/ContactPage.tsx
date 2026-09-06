@@ -18,7 +18,6 @@ export const ContactPage: React.FC = () => {
         <div>
           <SectionHeading
             as="h1"
-            tag="DIRECT INITIATION HUB"
             title="Start a conversation about your website."
             description="We collaborate with businesses, founders, and modern practices looking for clean design and fast performance. Reach out directly through your preferred channel."
           />
@@ -68,8 +67,8 @@ export const ContactPage: React.FC = () => {
                     <Rocket size={20} />
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
-                      FASTEST RESPONSE
+                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
+                      Fastest response
                     </span>
                     <h3 className="text-base font-bold text-fg">
                       Start a Project
@@ -79,7 +78,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Begin</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -95,8 +94,8 @@ export const ContactPage: React.FC = () => {
                     <Phone size={18} />
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
-                      VOICE CONSULTATION
+                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
+                      Voice consultation
                     </span>
                     <h3 className="text-base font-bold text-fg">
                       Call Us: {CONTACT_INFO.phoneDisplay}
@@ -106,7 +105,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Call Now</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -122,8 +121,8 @@ export const ContactPage: React.FC = () => {
                     <Mail size={18} />
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] text-fg-faint uppercase tracking-wider block">
-                      WRITTEN BRIEF
+                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
+                      Written brief
                     </span>
                     <h3 className="text-base font-bold text-fg font-mono text-xs sm:text-sm">
                       {CONTACT_INFO.email}
@@ -133,7 +132,7 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
+                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
                   <span>Send Email</span>
                   <ArrowUpRight size={14} />
                 </div>
@@ -149,8 +148,8 @@ export const ContactPage: React.FC = () => {
             className="lg:col-span-5 space-y-6"
           >
             <div className="border border-border-hairline border-l-2 border-l-accent/30 bg-canvas p-6 sm:p-8 space-y-6">
-              <span className="font-mono text-[11px] text-fg-faint uppercase tracking-wider block">
-                // WHAT TO EXPECT
+              <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block">
+                What to expect
               </span>
               <h2 className="text-xl font-bold text-fg">
                 No high-pressure sales. Straightforward technical collaboration.

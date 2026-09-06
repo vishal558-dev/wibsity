@@ -26,7 +26,6 @@ export const NotFoundPage: React.FC = () => {
         <SectionHeading
           as="h1"
           align="center"
-          tag="404 — PAGE NOT FOUND"
           title="This page wandered off-brief."
           description="The route you're looking for doesn't exist, or it's moved. Let's get you back on track."
           className="mb-8"

@@ -142,7 +142,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Legal and System Notice */}
-        <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-fg-faint">
+        <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-[11px] text-fg-faint">
           <div className="flex items-center gap-2.5">
             <img
               src={logoMarkSrc}
@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
             <span>© {currentYear} wibsity. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <span>WEB DESIGN & ENGINEERING STUDIO</span>
+            <span>Web design & engineering studio</span>
           </div>
         </div>
       </div>

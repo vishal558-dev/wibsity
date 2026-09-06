@@ -364,20 +364,6 @@ export const HomePage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full lg:flex lg:items-center lg:justify-between lg:gap-12">
           <div className="max-w-4xl">
-            {/* Clean Unboxed Eyebrow */}
-            <m.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-5 sm:mb-6 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
-            >
-              <span className="font-mono text-fg-faint text-[11px]">00</span>
-              <span className="text-accent">/</span>
-              <span className="tracking-widest text-fg-muted">Studio Introduction</span>
-              <span className="text-border-hover hidden sm:inline">•</span>
-              <span className="text-fg-subtle hidden sm:inline text-[11px]">Digital Design & Engineering · India</span>
-            </m.div>
-
             {/* Headline */}
             {prefersReduced ? (
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]">
@@ -494,7 +480,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              tag="CORE CAPABILITIES"
               title="Built for modern businesses & founders."
               description="Four ways to build a site — pick whichever matches what your business needs right now."
               className="mb-0"
@@ -544,7 +529,7 @@ export const HomePage: React.FC = () => {
 
                 <Link
                   to="/services"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-accent-light transition-colors pt-4 -mb-2.5 pb-2.5 border-t border-border-hairline"
+                  className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-fg-muted hover:text-accent-light transition-colors pt-4 -mb-2.5 pb-2.5 border-t border-border-hairline"
                 >
                   <span>View Details</span>
                   <ArrowRight size={12} />
@@ -560,11 +545,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
-              <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted">
-                <span className="font-mono text-fg-faint text-[11px]">02</span>
-                <span className="text-accent">/</span>
-                <span className="tracking-widest text-fg-muted">Studio Manifesto</span>
-              </div>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
                 Built to load fast, stay maintainable, and never lock you in.
               </h2>
@@ -619,7 +599,7 @@ export const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent-light hover:underline underline-offset-4 -my-3 py-3"
+                  className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-accent-light hover:underline underline-offset-4 -my-3 py-3"
                 >
                   Read Studio Principles <ArrowRight size={13} />
                 </Link>
@@ -634,7 +614,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              tag="HOW WE WORK"
               title="A structured 4-step workflow from kickoff to launch."
               description="Direct communication and predictable milestones — no black box."
               className="mb-0"
@@ -677,7 +656,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
             <SectionHeading
-              tag="COMMON QUESTIONS"
               title="What people ask before they message us."
               description="The three questions that come up in nearly every first conversation."
               className="mb-0"

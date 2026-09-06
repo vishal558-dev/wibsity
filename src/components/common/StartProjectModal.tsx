@@ -338,7 +338,7 @@ export const StartProjectModal: React.FC<StartProjectModalProps> = ({ open, onCl
               <button
                 type="button"
                 onClick={() => goTo(step - 1)}
-                className="inline-flex items-center gap-1.5 text-xs font-mono text-fg-muted hover:text-accent-light transition-colors mt-6 -ml-2 p-2"
+                className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-fg-muted hover:text-accent-light transition-colors mt-6 -ml-2 p-2"
               >
                 <ArrowLeft size={13} />
                 Back

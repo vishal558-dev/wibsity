@@ -4,7 +4,6 @@ import { cn } from '../../utils/cn';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 interface SectionHeadingProps {
-  tag: string;
   title: string;
   description?: string;
   align?: 'left' | 'center';
@@ -16,7 +15,6 @@ interface SectionHeadingProps {
 }
 
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
-  tag,
   title,
   description,
   align = 'left',
@@ -37,17 +35,6 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         className
       )}
     >
-      <m.div
-        initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-        whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-3.5 text-xs font-sans font-semibold uppercase tracking-wider text-fg-muted"
-      >
-        <span className="text-accent">/</span>
-        <span className="tracking-widest text-fg-muted">{tag}</span>
-      </m.div>
-
       <Heading
         initial={prefersReduced ? false : { opacity: 0, y: 16 }}
         whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
