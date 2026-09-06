@@ -142,8 +142,22 @@ export const AboutPage: React.FC = () => {
                       {faq.question}
                     </h3>
 
-                    <div className="p-1.5 sm:p-1 border border-accent/25 bg-canvas-surface text-accent-light group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5">
-                      {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+                    <div className="p-1.5 sm:p-1 border border-accent/25 bg-canvas-surface text-accent-light group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5 overflow-hidden">
+                      {/* Rotate+crossfade instead of an instant icon swap —
+                          same small acknowledgment-of-click fix applied to
+                          ThemeToggle and the Navbar hamburger. */}
+                      <AnimatePresence mode="wait" initial={false}>
+                        <m.span
+                          key={isOpen ? 'minus' : 'plus'}
+                          initial={prefersReduced ? false : { opacity: 0, rotate: -90, scale: 0.6 }}
+                          animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                          exit={prefersReduced ? undefined : { opacity: 0, rotate: 90, scale: 0.6 }}
+                          transition={{ duration: prefersReduced ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
+                          className="flex"
+                        >
+                          {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+                        </m.span>
+                      </AnimatePresence>
                     </div>
                   </button>
 

@@ -153,12 +153,26 @@ export const Navbar: React.FC = () => {
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors"
+              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors overflow-hidden"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls={MOBILE_MENU_ID}
             >
-              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+              {/* Rotate+crossfade instead of an instant icon swap — same
+                  small acknowledgment-of-click fix applied to ThemeToggle
+                  and AboutPage's FAQ Plus/Minus trigger. */}
+              <AnimatePresence mode="wait" initial={false}>
+                <m.span
+                  key={mobileMenuOpen ? 'close' : 'open'}
+                  initial={prefersReduced ? false : { opacity: 0, rotate: -90, scale: 0.6 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={prefersReduced ? undefined : { opacity: 0, rotate: 90, scale: 0.6 }}
+                  transition={{ duration: prefersReduced ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex"
+                >
+                  {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+                </m.span>
+              </AnimatePresence>
             </button>
           </div>
         </div>
