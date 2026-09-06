@@ -181,12 +181,14 @@ const ScrollRevealWord: React.FC<{ word: string; progress: MotionValue<number>; 
   start,
   end,
 }) => {
-  // Floor is 0.5, not a dimmer value: this reveal is scroll-*position*-linked,
+  // Floor is 0.6, not a dimmer value: this reveal is scroll-*position*-linked,
   // so a reader who stops scrolling mid-paragraph leaves tail words parked at
   // the floor indefinitely — it's a resting state, not a transient frame, and
   // must clear WCAG AA (4.5:1) on its own. 0.35 alpha of text-fg over
-  // --color-canvas composites to ~3.3:1; 0.5 clears AA in both themes.
-  const opacity = useTransform(progress, [start, end], [0.5, 1]);
+  // --color-canvas composites to ~3.3:1 in both themes; 0.5 clears dark
+  // (~5.1:1) but only reaches ~3.7:1 in light theme. 0.6 clears AA in both
+  // (~5.3:1 light, higher still in dark).
+  const opacity = useTransform(progress, [start, end], [0.6, 1]);
   return (
     <m.span style={{ opacity }} className="inline-block text-fg">
       {word}
