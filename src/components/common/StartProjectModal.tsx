@@ -309,8 +309,11 @@ export const StartProjectModal: React.FC<StartProjectModalProps> = ({ open, onCl
                     </fieldset>
 
                     {submitError && (
-                      <div className="flex items-start gap-2 border border-accent/40 bg-accent/6 p-3 text-xs text-fg-muted">
-                        <AlertCircle size={15} className="text-accent-light shrink-0 mt-0.5" aria-hidden="true" />
+                      <div
+                        role="alert"
+                        className="flex items-start gap-2 border border-[color:color-mix(in_srgb,var(--color-status-negative)_40%,transparent)] bg-[color:color-mix(in_srgb,var(--color-status-negative)_8%,transparent)] p-3 text-xs text-fg-muted"
+                      >
+                        <AlertCircle size={15} className="text-status-negative shrink-0 mt-0.5" aria-hidden="true" />
                         <span>{submitError}</span>
                       </div>
                     )}
