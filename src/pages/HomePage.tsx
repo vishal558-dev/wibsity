@@ -528,7 +528,7 @@ export const HomePage: React.FC = () => {
           <div className="max-w-4xl">
             {/* Headline */}
             {prefersReduced ? (
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tightest text-fg leading-[1.05]">
                 We design and build websites that help your business{' '}
                 <span className="text-accent-light">stand out.</span>
               </h1>
@@ -537,7 +537,7 @@ export const HomePage: React.FC = () => {
                 initial="hidden"
                 animate="visible"
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tightest text-fg leading-[1.08]"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tightest text-fg leading-[1.05]"
               >
                 {headlineLeadWords.map((word, i) => (
                   <React.Fragment key={i}>
@@ -684,7 +684,7 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-fg leading-tight">
                 Built to load fast, stay maintainable, and never lock you in.
               </h2>
               {prefersReduced ? (
