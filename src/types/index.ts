@@ -7,7 +7,7 @@ export interface Service {
   forWhom: string;
   deliverables: string[];
   scopeType: string;
-  iconName: 'Layout' | 'Layers' | 'RefreshCw' | 'Sliders';
+  iconName: 'Layout' | 'Layers' | 'RefreshCw' | 'Sliders' | 'ShoppingCart';
   /** Root-relative path to a representative stock photo, used by HomePage's
    * hover-driven service showcase (desktop) and tap-accordion (mobile). */
   image: string;

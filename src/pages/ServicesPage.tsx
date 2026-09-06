@@ -11,6 +11,7 @@ import {
   Layers,
   RefreshCw,
   Sliders,
+  ShoppingCart,
   Clock,
   Phone,
   type LucideIcon,
@@ -24,11 +25,12 @@ import { CONTACT_INFO } from '../data/contact';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { cn } from '../utils/cn';
 
-/** Bento composition for the 4-card Core Offerings grid at lg+: one wide
- * card per row (2/1 then 1/2 on a 3-col grid). This is a deliberate visual
+/** Bento composition for the 5-card Core Offerings grid at lg+: one wide
+ * card per row (2/1 then 1/2 on a 3-col grid), with the 5th (E-commerce
+ * Store) taking a full-width row of its own. This is a deliberate visual
  * rhythm, not a content-driven size — every service carries equal
  * informational weight (see the accordion below), the grid is just uneven. */
-const bentoSpans = ['lg:col-span-2', 'lg:col-span-1', 'lg:col-span-1', 'lg:col-span-2'];
+const bentoSpans = ['lg:col-span-2', 'lg:col-span-1', 'lg:col-span-1', 'lg:col-span-2', 'lg:col-span-3'];
 
 /** One icon per process step (data/process.ts step codes), giving the
  * methodology timeline a visual anchor instead of a bare number. */
@@ -48,6 +50,7 @@ export const ServicesPage: React.FC = () => {
     Layers: Layers,
     RefreshCw: RefreshCw,
     Sliders: Sliders,
+    ShoppingCart: ShoppingCart,
   };
 
   const whatsappUrl = CONTACT_INFO.whatsappUrl;
@@ -75,7 +78,7 @@ export const ServicesPage: React.FC = () => {
               const Icon = iconMap[service.iconName];
               const isOpen = expandedId === service.id;
               const contentId = `service-detail-${service.id}`;
-              const isWide = bentoSpans[idx] === 'lg:col-span-2';
+              const isWide = bentoSpans[idx] !== 'lg:col-span-1';
 
               return (
                 <m.div

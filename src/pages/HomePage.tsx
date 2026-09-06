@@ -64,8 +64,8 @@ const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced
   return (
     <>
       {/* Desktop (lg+): hover/focus-driven list + swapping image panel */}
-      <div className="hidden lg:grid lg:grid-cols-12 lg:gap-12 lg:items-start">
-        <div className="lg:col-span-7 flex flex-col">
+      <div className="hidden lg:grid lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-7 flex flex-col justify-between">
           {servicesData.map((service) => {
             const isActive = service.id === activeId;
             return (
@@ -75,13 +75,13 @@ const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced
                   onMouseEnter={() => setActiveId(service.id)}
                   onFocus={() => setActiveId(service.id)}
                   className={cn(
-                    'block py-6 transition-colors',
+                    'block py-7 transition-colors',
                     isActive ? 'text-fg' : 'text-fg-faint'
                   )}
                 >
                   <span className="flex items-baseline gap-4">
-                    <span className="font-mono text-xs text-fg-muted shrink-0">{service.index}</span>
-                    <span className="text-3xl xl:text-4xl font-extrabold tracking-tight">{service.title}</span>
+                    <span className="font-mono text-sm text-fg-muted shrink-0">{service.index}</span>
+                    <span className="text-4xl xl:text-5xl font-extrabold tracking-tight">{service.title}</span>
                   </span>
                 </Link>
               </h3>
@@ -482,7 +482,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* 00 / Hero Monograph */}
-      <section ref={heroRef} className="relative min-h-[85vh] flex flex-col justify-center pt-32 pb-20 overflow-hidden border-b border-border-hairline bg-canvas">
+      <section ref={heroRef} className="relative min-h-[85vh] flex flex-col justify-center pt-24 pb-12 overflow-hidden border-b border-border-hairline bg-canvas">
         {/* Animated Background Architectural Grid */}
         <div className="absolute inset-0 pointer-events-none opacity-40 z-0">
           <svg
@@ -543,7 +543,7 @@ export const HomePage: React.FC = () => {
           <div className="max-w-4xl">
             {/* Headline */}
             {prefersReduced ? (
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tightest text-fg leading-[1.08] xl:leading-[1.05]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tightest text-fg leading-[1.1]">
                 We design and build websites that help your business{' '}
                 <span className="text-accent-light">stand out.</span>
               </h1>
@@ -552,7 +552,7 @@ export const HomePage: React.FC = () => {
                 initial="hidden"
                 animate="visible"
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tightest text-fg leading-[1.08] xl:leading-[1.05]"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tightest text-fg leading-[1.1]"
               >
                 {headlineLeadWords.map((word, i) => (
                   <React.Fragment key={i}>
@@ -626,7 +626,7 @@ export const HomePage: React.FC = () => {
               gated in JS rather than plain `hidden lg:flex`. Purely
               decorative (aria-hidden inside). */}
           {isDesktopViewport && (
-            <div className="flex w-full max-w-[31.2rem] shrink-0 items-center justify-center h-[39rem] py-4">
+            <div className="flex w-full max-w-[26rem] shrink-0 items-center justify-center h-[28rem] py-2">
               <HeroSculpture sectionRef={heroRef} />
             </div>
           )}

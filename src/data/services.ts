@@ -73,4 +73,22 @@ export const servicesData: Service[] = [
     iconName: 'Sliders',
     image: '/services/custom-experiences.webp',
   },
+  {
+    id: 'ecommerce-store',
+    index: '05',
+    title: 'E-commerce Store',
+    tagline: 'Product catalogs, checkout flows, and payment integration built to convert browsers into buyers.',
+    description: 'Complete online store builds — product listings, cart and checkout, secure payment processing, and inventory-ready structure — for businesses ready to sell directly through their website.',
+    forWhom: 'Businesses selling products online.',
+    deliverables: [
+      'Product Catalog & Category Architecture',
+      'Cart, Checkout & Secure Payment Integration',
+      'Inventory-Ready Product Data Structure',
+      'Order Notification & Fulfillment Workflow',
+      'Mobile-Optimized Shopping Experience',
+    ],
+    scopeType: 'Full Storefront Scope',
+    iconName: 'ShoppingCart',
+    image: '/services/business-websites.webp',
+  },
 ];
