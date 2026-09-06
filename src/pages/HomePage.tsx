@@ -69,46 +69,48 @@ const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced
           {servicesData.map((service) => {
             const isActive = service.id === activeId;
             return (
-              <button
-                key={service.id}
-                type="button"
-                onMouseEnter={() => setActiveId(service.id)}
-                onFocus={() => setActiveId(service.id)}
-                className={cn(
-                  'text-left border-t border-border-hairline py-6 transition-colors last:border-b',
-                  isActive ? 'text-fg' : 'text-fg-faint hover:text-fg-muted'
-                )}
-              >
-                <span className="flex items-baseline gap-4">
-                  <span className="font-mono text-xs text-fg-faint shrink-0">{service.index}</span>
-                  <span className="text-3xl xl:text-4xl font-extrabold tracking-tight">{service.title}</span>
-                </span>
-              </button>
+              <h3 key={service.id} className="border-t border-border-hairline last:border-b">
+                <Link
+                  to="/services"
+                  onMouseEnter={() => setActiveId(service.id)}
+                  onFocus={() => setActiveId(service.id)}
+                  className={cn(
+                    'block py-6 transition-colors',
+                    isActive ? 'text-fg' : 'text-fg-faint'
+                  )}
+                >
+                  <span className="flex items-baseline gap-4">
+                    <span className="font-mono text-xs text-fg-muted shrink-0">{service.index}</span>
+                    <span className="text-3xl xl:text-4xl font-extrabold tracking-tight">{service.title}</span>
+                  </span>
+                </Link>
+              </h3>
             );
           })}
         </div>
 
-        <div className="lg:col-span-5 relative aspect-[4/5] overflow-hidden border border-border-hairline bg-canvas-elevated">
-          <AnimatePresence mode="wait">
-            <m.img
-              key={activeService.id}
-              src={activeService.image}
-              alt=""
-              aria-hidden="true"
-              width={800}
-              height={1000}
-              decoding="async"
-              initial={prefersReduced ? false : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              exit={prefersReduced ? undefined : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
-              transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
-              className="absolute inset-0 w-full h-full object-cover grayscale-[90%]"
-            />
-          </AnimatePresence>
-          <div className="absolute inset-0 bg-accent/10 mix-blend-overlay pointer-events-none" aria-hidden="true" />
-          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-canvas/90 to-transparent">
-            <p className="text-xs text-fg-muted leading-relaxed">{activeService.tagline}</p>
+        <div className="lg:col-span-5 flex flex-col gap-4">
+          <div className="relative aspect-[4/5] overflow-hidden border border-border-hairline bg-canvas-elevated">
+            <AnimatePresence mode="wait">
+              <m.img
+                key={activeService.id}
+                src={activeService.image}
+                alt=""
+                aria-hidden="true"
+                width={800}
+                height={1000}
+                loading="lazy"
+                decoding="async"
+                initial={prefersReduced ? false : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                exit={prefersReduced ? undefined : { opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+                transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
+                className="absolute inset-0 w-full h-full object-cover grayscale-[90%]"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-accent/10 mix-blend-overlay pointer-events-none" aria-hidden="true" />
           </div>
+          <p className="text-xs text-fg-muted leading-relaxed">{activeService.tagline}</p>
         </div>
       </div>
 
@@ -128,7 +130,7 @@ const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced
                   className="w-full flex items-center justify-between gap-4 text-left -my-2 py-2"
                 >
                   <span className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs text-fg-faint">{service.index}</span>
+                    <span className="font-mono text-xs text-fg-muted">{service.index}</span>
                     <span className="text-xl font-extrabold tracking-tight text-fg">{service.title}</span>
                   </span>
                   <ChevronDown
@@ -179,9 +181,14 @@ const ScrollRevealWord: React.FC<{ word: string; progress: MotionValue<number>; 
   start,
   end,
 }) => {
-  const opacity = useTransform(progress, [start, end], [0.35, 1]);
+  // Floor is 0.5, not a dimmer value: this reveal is scroll-*position*-linked,
+  // so a reader who stops scrolling mid-paragraph leaves tail words parked at
+  // the floor indefinitely — it's a resting state, not a transient frame, and
+  // must clear WCAG AA (4.5:1) on its own. 0.35 alpha of text-fg over
+  // --color-canvas composites to ~3.3:1; 0.5 clears AA in both themes.
+  const opacity = useTransform(progress, [start, end], [0.5, 1]);
   return (
-    <m.span style={{ opacity }} className="inline-block text-fg mr-[0.28em]">
+    <m.span style={{ opacity }} className="inline-block text-fg">
       {word}
     </m.span>
   );
@@ -201,8 +208,14 @@ const ScrollRevealParagraph: React.FC<{ text: string; className?: string }> = ({
 
   return (
     <p ref={containerRef} className={className}>
+      {/* A real trailing space character after each word span — not a CSS
+          margin — so selecting/copying the paragraph yields normal spaced
+          text and the accessible name isn't computed as one run-on token.
+          Same pattern as the hero headline's word stagger below. */}
       {words.map((word, i) => (
-        <ScrollRevealWord key={i} word={word} progress={scrollYProgress} start={i / words.length} end={(i + 1) / words.length} />
+        <React.Fragment key={i}>
+          <ScrollRevealWord word={word} progress={scrollYProgress} start={i / words.length} end={(i + 1) / words.length} />{' '}
+        </React.Fragment>
       ))}
     </p>
   );
@@ -528,7 +541,7 @@ export const HomePage: React.FC = () => {
           <div className="max-w-4xl">
             {/* Headline */}
             {prefersReduced ? (
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tightest text-fg leading-[1.05]">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tightest text-fg leading-[1.08] xl:leading-[1.05]">
                 We design and build websites that help your business{' '}
                 <span className="text-accent-light">stand out.</span>
               </h1>
@@ -537,7 +550,7 @@ export const HomePage: React.FC = () => {
                 initial="hidden"
                 animate="visible"
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } } }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tightest text-fg leading-[1.05]"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tightest text-fg leading-[1.08] xl:leading-[1.05]"
               >
                 {headlineLeadWords.map((word, i) => (
                   <React.Fragment key={i}>
@@ -667,7 +680,13 @@ export const HomePage: React.FC = () => {
           grid (not new copy), so it reinforces rather than invents. */}
       <div className="marquee-fade border-b border-border-hairline bg-canvas overflow-hidden" aria-hidden="true">
         <div className="flex w-max marquee-track py-3 sm:py-4">
-          {[...valuePoints, ...valuePoints].map((point, i) => (
+          {/* Six repeats, not two. `.marquee-track` translates by exactly -50%,
+              which only loops seamlessly if each half is wider than the
+              viewport — valuePoints' four short labels doubled fall well short
+              of that on a wide display (the capability ticker above gets away
+              with two because its items are full service titles). Six keeps
+              the -50% landing exactly between two identical 3x halves. */}
+          {[...valuePoints, ...valuePoints, ...valuePoints, ...valuePoints, ...valuePoints, ...valuePoints].map((point, i) => (
             <span
               key={`${point.title}-${i}`}
               className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 shrink-0 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-fg-muted whitespace-nowrap"
@@ -682,7 +701,7 @@ export const HomePage: React.FC = () => {
       {/* 02 / Studio Manifesto Teaser */}
       <section className="py-20 sm:py-24 border-b border-border-hairline bg-canvas">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-7 space-y-6">
               <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-fg leading-tight">
                 Built to load fast, stay maintainable, and never lock you in.
