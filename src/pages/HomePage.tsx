@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, m, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'motion/react';
+import { AnimatePresence, m, type MotionValue, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'motion/react';
 import { CheckCircle2, ChevronDown, ArrowRight, Code, Network, LayoutTemplate, MonitorSmartphone, Rocket, type LucideIcon } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { Button } from '../components/common/Button';
@@ -167,6 +167,51 @@ const ServiceShowcase: React.FC<{ prefersReduced: boolean }> = ({ prefersReduced
         })}
       </div>
     </>
+  );
+};
+
+/** One word of a ScrollRevealParagraph. Split into its own component so each
+ * word gets its own `useTransform` call — calling useTransform in a .map
+ * loop directly would violate the rules of hooks. */
+const ScrollRevealWord: React.FC<{ word: string; progress: MotionValue<number>; start: number; end: number }> = ({
+  word,
+  progress,
+  start,
+  end,
+}) => {
+  const opacity = useTransform(progress, [start, end], [0.35, 1]);
+  return (
+    <m.span style={{ opacity }} className="inline-block text-fg mr-[0.28em]">
+      {word}
+    </m.span>
+  );
+};
+
+/** Scroll-position-linked (not scroll-speed-linked) word-by-word reveal: each
+ * word brightens from dim to full opacity as the paragraph's own scroll
+ * progress moves through that word's slice of the range. This is the one
+ * scroll-tied text effect on the homepage — deliberately not reused
+ * elsewhere, per the "spend your boldness in one place" convention. */
+const ScrollRevealParagraph: React.FC<{ text: string; className?: string }> = ({ text, className }) => {
+  const prefersReduced = useReducedMotion();
+  const containerRef = useRef<HTMLParagraphElement>(null);
+  const words = text.split(' ');
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start 0.85', 'start 0.35'] });
+
+  if (prefersReduced) {
+    return (
+      <p ref={containerRef} className={cn(className, 'text-fg')}>
+        {text}
+      </p>
+    );
+  }
+
+  return (
+    <p ref={containerRef} className={className}>
+      {words.map((word, i) => (
+        <ScrollRevealWord key={i} word={word} progress={scrollYProgress} start={i / words.length} end={(i + 1) / words.length} />
+      ))}
+    </p>
   );
 };
 
@@ -647,9 +692,10 @@ export const HomePage: React.FC = () => {
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-fg leading-tight">
                 Built to load fast, stay maintainable, and never lock you in.
               </h2>
-              <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                We hand-code every site in React and TypeScript — no page builder, no bloat. Pages load faster because there&apos;s no framework tax to pay. The codebase stays simple enough to extend two years from now. And none of it runs on a proprietary platform that holds your site hostage if you ever want to leave.
-              </p>
+              <ScrollRevealParagraph
+                text="We hand-code every site in React and TypeScript — no page builder, no bloat. Pages load faster because there's no framework tax to pay. The codebase stays simple enough to extend two years from now. And none of it runs on a proprietary platform that holds your site hostage if you ever want to leave."
+                className="text-base sm:text-lg leading-relaxed"
+              />
 
               {/* Real code, not an invented example — see the comment on
                   manifestoCodeLines above. Illustrates the headline instead
@@ -685,6 +731,16 @@ export const HomePage: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 border border-border-hairline bg-canvas-subtle p-6 sm:p-8 space-y-6">
+              <img
+                src="/manifesto/workspace-accent.webp"
+                alt=""
+                aria-hidden="true"
+                width={1100}
+                height={480}
+                loading="lazy"
+                decoding="async"
+                className="h-32 sm:h-40 w-[calc(100%+3rem)] sm:w-[calc(100%+4rem)] object-cover grayscale-[90%] border border-border-hairline -mt-6 sm:-mt-8 -mx-6 sm:-mx-8 mb-2"
+              />
               <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
                 Studio Philosophy
               </span>
