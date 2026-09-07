@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
 import { PageSpecimen } from '../components/common/PageSpecimen';
-import { ConstructionGrid } from '../components/common/ConstructionGrid';
+import { CursorWindow } from '../components/common/CursorWindow';
 import { InquiryForm } from '../components/common/InquiryForm';
 import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
@@ -36,12 +36,46 @@ function SetHeadline({ text }: { text: string }) {
 }
 
 /**
+ * The hero's cursor-reveal `alt` layer (see `CursorWindow`): the same
+ * headline in its pre-set state — narrower, lighter, unweighted, as if
+ * looking at the file before the type was composed. That reading is *why*
+ * this is the cursor interaction rather than a fresh visual invented for it.
+ *
+ * The line break is hardcoded rather than left to wrap naturally. At 74%
+ * font-stretch the glyphs are narrower than the base headline's 100%, so the
+ * same text in the same `max-w-[13ch]` can wrap differently — and a
+ * misaligned line break here would break the illusion that this is the same
+ * line, just underneath, the moment someone actually looked closely.
+ */
+function DraftHeadline() {
+  return (
+    <p className="draft-type text-hero max-w-[13ch]" aria-hidden="true">
+      Every site starts
+      <br />
+      as an empty file.
+    </p>
+  );
+}
+
+/**
  * Writes the hero's scroll progress to a custom property so the headline can
- * compress as it leaves (see `.hero-type`).
+ * shrink and lift away as it leaves (see `.hero-type`).
  *
  * Deliberately narrow: one rAF-batched listener, one property, and an
  * IntersectionObserver gate so scrolling the rest of the page costs nothing.
  * It does not run at all under reduced motion — the type simply stays set.
+ *
+ * Two things make the result feel continuous rather than stepped, which an
+ * earlier version of this effect did not:
+ *
+ *  - `--hero-set` is written at full precision on every rAF tick. A previous
+ *    pass rounded it to twenty steps to limit how often `font-stretch`
+ *    re-shapes the line, which is real work — but the visible staircase that
+ *    produced was worse than the cost it was avoiding.
+ *  - `--hero-set` is registered via `@property` in index.css specifically so
+ *    the `transition` declared on `.hero-type` can act on it. Transitioning a
+ *    typed custom property turns this stream of discrete JS writes into one
+ *    continuously eased value — the actual fix, not the raw write frequency.
  */
 function useHeroSetProgress() {
   const ref = useRef<HTMLElement>(null);
@@ -54,20 +88,14 @@ function useHeroSetProgress() {
     let visible = true;
     let frame = 0;
 
-    let last = -1;
-
     const paint = () => {
       frame = 0;
       const height = el.offsetHeight || 1;
-      // 1 at the top of the hero, 0 once it has scrolled a full height away.
-      const progress = Math.min(Math.max(1 - window.scrollY / height, 0), 1);
-      // Quantised to twenty steps. This property drives `font-stretch`, which
-      // re-shapes the line and re-instances the variable font — real layout
-      // work, and not worth doing every frame for 0.75% of width per step.
-      const stepped = Math.round(progress * 20) / 20;
-      if (stepped === last) return;
-      last = stepped;
-      el.style.setProperty('--hero-set', String(stepped));
+      // 1 at the top of the hero, 0 by the time it has scrolled about half its
+      // own height away — deliberately faster than a 1:1 mapping to the full
+      // height, which read as sluggish against how little the page had moved.
+      const progress = Math.min(Math.max(1 - window.scrollY / (height * 0.52), 0), 1);
+      el.style.setProperty('--hero-set', progress.toFixed(4));
     };
 
     const onScroll = () => {
@@ -103,10 +131,10 @@ function useHeroSetProgress() {
  * a measured sequence, a disclosure list, a form.
  *
  * The motion is one idea used four times (see the MOTION block in index.css):
- * type sets itself on load, widens under the pointer, compresses as the hero
- * leaves, and section rules draw when they arrive. Nothing fades up on scroll —
- * that pattern is why the previous pass read as documentation with good
- * typography rather than as something made on purpose.
+ * type sets itself on load, widens under the pointer, shrinks and lifts away
+ * as the hero leaves, and section rules draw when they arrive. Nothing fades
+ * up on scroll — that pattern is why the previous pass read as documentation
+ * with good typography rather than as something made on purpose.
  */
 export const HomePage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<string | null>(faqsData[0].id);
@@ -117,18 +145,19 @@ export const HomePage: React.FC = () => {
     <>
       {/* ------------------------------------------------------------------
           Hero. One statement at display scale, one line of positioning, one
-          action — and, under the pointer, the construction the page is set on.
-          The specimen strip sits along the closing rule as the reward for the
-          first scroll rather than competing with the headline.
+          action — and, under the cursor, a window through to the headline's
+          own pre-set state (see CursorWindow / DraftHeadline). The specimen
+          strip sits along the closing rule as the reward for the first scroll
+          rather than competing with the headline.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden">
-        <ConstructionGrid />
-
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
           <div className="pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
-            <h1 className="hero-type text-hero max-w-[13ch] text-fg">
-              <SetHeadline text={HEADLINE} />
-            </h1>
+            <CursorWindow alt={<DraftHeadline />} windowWidth={190} windowHeight={110}>
+              <h1 className="hero-type text-hero max-w-[13ch] text-fg">
+                <SetHeadline text={HEADLINE} />
+              </h1>
+            </CursorWindow>
 
             <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
               <p className="enter enter-1 lg:col-span-7 text-2xl leading-[1.2] text-fg max-w-[26ch]">

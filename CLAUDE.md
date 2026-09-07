@@ -185,24 +185,89 @@ first pass read as documentation with good typography.
    while the line widens from 74% to 100%. Last word lands at ~1.05s.
 2. **Titles widen under the pointer** (`.widen`, 100% → 113%) — the service index, the FAQ
    questions, the wordmark. The interaction is the letterform, not a colour change.
-3. **The hero compresses as it scrolls away** (`--hero-set`, 100% → 85% width plus a small lift).
+3. **The hero shrinks and lifts away as it scrolls past** (`--hero-set`, 100% → 66% width, scale
+   1 → 0.86, lifting 3rem) — resolved by about half the hero's own height, not the full height.
 4. **Measure rules draw themselves** as their section arrives.
+
+**The hero's cursor interaction is `CursorWindow`** (`components/common/CursorWindow.tsx`), a
+reusable reveal primitive, not a hero-only effect. Built on `useCursorField` (`hooks/useCursorField.ts`),
+a generic pointer-tracking hook usable on any container. `CursorWindow` wraps a `children` (default)
+layer and an `alt` layer; the pointer becomes a soft-edged window that shows `alt` through `children`
+wherever it goes, framed by `CursorMarks`, a small reusable SVG viewfinder-bracket component sharing
+the icon set's stroke. On the homepage hero, `alt` is `DraftHeadline` — the same headline text in its
+pre-set state (74% width, weight 400) with a tick-marked baseline — so the reveal itself *is* the
+"cursor-driven typography," rather than a second effect layered on top to produce that reading. Drop
+`<CursorWindow>` around any other section that wants the same interaction language; nothing in it is
+hero-specific except the `alt` content it is currently given.
+
+This replaced a different cursor effect (`ConstructionGrid.tsx`, a pointer-revealed construction-grid
+overlay) that held this spot through the second pass and was removed outright on direct feedback —
+not disabled, deleted, including the component file — before this one was built. If a further redesign
+of the hero's cursor interaction is ever wanted, treat that as a real design decision again, not a
+line edit.
 
 Everything else is motion answering a user action: the disclosure, the form, the menu sheet, button
 and link hovers.
 
-**The gotcha that cost a build.** `.set-word` originally animated `font-stretch` itself, with
-`animation-fill-mode: both` — and a filled animation beats an inherited value, so once the headline
-had set, every word was pinned at 100% and the scroll compression never reached the glyphs. It
-*looked* correct because the h1 computed 85%; the spans holding the text never moved. Width now
-lives in one registered custom property (`@property --set-width`) that both motions feed into via
-`calc()` on `.hero-type`: the load animation drives `--set-width`, the scroll handler drives
-`--hero-set`, and neither can pin the other. **Never animate `font-stretch` from two places.**
+**Three gotchas specific to `CursorWindow`'s mask-reveal, on top of the `--hero-set` ones below —
+all found by literally looking closely at the rendered result, not from reasoning about the CSS:**
 
-`--hero-set` is written from a rAF-batched scroll handler that is IntersectionObserver-gated and
-**quantised to twenty steps** — the property drives `font-stretch`, which re-shapes the line and
-re-instances the variable font, and that is real layout work not worth doing 60 times a second for
-0.75% of width per step.
+- **Text is not an opaque rectangle.** Only the glyph ink is; the space around and between letters is
+  transparent by default. Without a real `background-color` on `.cursor-field__base` (the front,
+  "default" layer), `alt` bled through every gap in `children` permanently, everywhere — not just
+  inside the masked window — rendering as a constant double-exposure ghost regardless of cursor
+  position. The fix uses `background-color: var(--color-canvas)` rather than a hardcoded colour,
+  because `.field-ink` already remaps that exact token to the ink ground on itself, so the plate
+  follows whatever field the component is dropped into for free.
+- **The `alt` layer needs `overflow: hidden`.** Anything it renders outside `.cursor-field`'s own box
+  — a paragraph's default padding, or a glyph whose ink simply overshoots its nominal line box at an
+  font-stretch/weight combination the face was never tuned for — paints unmasked and permanently
+  visible, since the backing plate above only ever covers exactly that one box, not whatever spills
+  past it.
+- **`--cx`/`--cy` are written on `.cursor-field` (the hook's ref) but read on descendants**
+  (`.cursor-field__mask`, `.cursor-marks`) **— the exact `--hero-set` trap below, again.** They have
+  to declare `inherits: true`, not `inherits: false` copied from a neighbour that happens to write and
+  read on the same element.
+
+**Two gotchas this effect has already cost a build over — both about the same underlying trap.**
+`.set-word` originally animated `font-stretch` itself, with `animation-fill-mode: both` — and a
+filled animation beats an inherited value, so once the headline had set, every word was pinned at
+100% and the scroll effect never reached the glyphs. It *looked* correct because the h1's own
+computed value changed; the spans holding the text never moved. Width now lives in one registered
+custom property (`@property --set-width`) that both motions feed into via `calc()` on `.hero-type`:
+the load animation drives `--set-width`, the scroll handler drives `--hero-set`, and neither can pin
+the other. **Never animate `font-stretch` from two places.**
+
+The second: **a registered custom property's `inherits` flag has to match where it's written versus
+where it's read.** `--hero-set` is written by JS onto the `<section>` ref, but consumed by `.hero-type`
+on the `<h1>` beneath it — a different element, so it depends on inheritance. `--set-width` is written
+and read on the same element and correctly declares `inherits: false`; copying that pattern onto
+`--hero-set` silently broke the entire effect, because the child stopped seeing any value and just sat
+at its `initial-value` (1, i.e. never compressed) — with no error, since an out-of-range read on a
+typed property that has never inherited a value simply resolves to its declared initial value. **Check
+`inherits` against the actual write/read elements, not by copying a neighbouring `@property` block.**
+(`CursorWindow`'s `--cx`/`--cy` hit this same trap in the same session — see above.)
+
+**A fourth, unrelated to any of the above:** the headline's per-word wipe-in (`@keyframes set-word`)
+used to leave a small negative `clip-path` inset permanently applied at rest
+(`inset(-0.4em -0.2em -0.3em -0.08em)`), on the reasoning that a flush `inset(0)` might clip a tall
+ascender or the descender on "empty"'s y right at the box edge. In practice that permanent negative
+inset on a `will-change: clip-path` layer rendered a faint stray seam right above the first line, at
+rest, on every load — worse than the problem it was guarding against. Checked directly against this
+exact headline (all seven words, including "empty") with a flat `inset(0)` at rest: nothing clips, and
+the seam is gone. If `SetHeadline` is ever reused with different text, recheck this the same way rather
+than assuming the margin is unnecessary in general.
+
+`--hero-set` is written from a rAF-batched scroll handler that is IntersectionObserver-gated, at full
+precision, on every frame. An earlier version quantised it to twenty steps to limit how often
+`font-stretch` re-shapes the line — real work, since it re-instances the variable font — but the
+visible staircase that produced was reported as not smooth enough and was worse than the cost it
+avoided. **The fix for a JS-driven property reading as choppy is not to throttle the writes further;
+it's to register the property via `@property` and put a `transition` on the rule that consumes it.**
+A typed, transitioned custom property turns a stream of discrete `element.style.setProperty` calls
+into one continuously eased value — the transition retargets smoothly on every new write (the same
+interruptible-transition behaviour CSS transitions get for free elsewhere in this file), which reads
+as fluid at any write frequency. Reach for that before reaching for a lower write rate.
 
 The measure draw is a **native scroll-driven CSS animation** (`animation-timeline: view()`) inside
 `@supports`, not an IntersectionObserver. No JavaScript, no per-frame work, and no failure mode: a
@@ -212,21 +277,6 @@ technique on a text reveal would strand words mid-sentence when someone stops sc
 
 `.enter` and `.set-word` hold their `from` state during their delay, so a printed page would come
 out with an invisible hero — there is a `@media print` reset for exactly that.
-
-### The construction overlay
-The hero's cursor moment, and the page's one genuinely experimental element. Moving the pointer
-across the hero looks through the finished page at the file underneath: the column guides and
-baseline grid the type is set on, inside a soft circular mask that follows the cursor with a
-hairline crosshair at its centre. It exists because it says something true about the work.
-
-Two repeating gradients under a radial mask — no SVG asset, no canvas, no per-frame layout read.
-`--cx`/`--cy` are registered with `@property` (an unregistered custom property is a string and would
-jump rather than travel) and written from a rAF-batched `pointermove` handler on the hero element,
-straight to `element.style` rather than through React state.
-
-It performs **one automatic sweep on load**, once the headline has set, then hands the guides over
-to the cursor — otherwise the best thing on the page sits undiscovered until someone happens to move
-the mouse. It renders nothing at all for coarse pointers or under reduced motion.
 
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
