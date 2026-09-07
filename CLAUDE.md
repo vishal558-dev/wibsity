@@ -188,46 +188,39 @@ first pass read as documentation with good typography.
 3. **The hero shrinks and lifts away as it scrolls past** (`--hero-set`, 100% → 66% width, scale
    1 → 0.86, lifting 3rem) — resolved by about half the hero's own height, not the full height.
 4. **Measure rules draw themselves** as their section arrives.
+5. **The headline resets into a second statement, once, and back** (`.hero-swap`) — see below.
 
-**The hero's cursor interaction is `CursorWindow`** (`components/common/CursorWindow.tsx`), a
-reusable reveal primitive, not a hero-only effect. Built on `useCursorField` (`hooks/useCursorField.ts`),
-a generic pointer-tracking hook usable on any container. `CursorWindow` wraps a `children` (default)
-layer and an `alt` layer; the pointer becomes a soft-edged window that shows `alt` through `children`
-wherever it goes, framed by `CursorMarks`, a small reusable SVG viewfinder-bracket component sharing
-the icon set's stroke. On the homepage hero, `alt` is `DraftHeadline` — the same headline text in its
-pre-set state (74% width, weight 400) with a tick-marked baseline — so the reveal itself *is* the
-"cursor-driven typography," rather than a second effect layered on top to produce that reading. Drop
-`<CursorWindow>` around any other section that wants the same interaction language; nothing in it is
-hero-specific except the `alt` content it is currently given.
+**The hero headline briefly swaps to a second statement and back, once, automatically.**
+`.hero-swap` (index.css) stacks the primary `<h1>` (`.hero-swap__primary`, normal flow, sizes the box)
+and a second paragraph (`.hero-swap__alt`, `RevealHeadline` in HomePage.tsx, `position: absolute; inset: 0`
+over it) in one box. Once the primary line has finished setting (~1.05s) and held for a further beat, it
+wipes away — the same clip-path language `.set-word` opens with, run in reverse — while the alt line
+wipes in beneath it; both hold; then it reverses, and the primary line rests there permanently. It never
+loops: this plays once per page load, which is what keeps it a considered moment rather than the
+rotating-hero-text tic of a template site. Both animations run off one shared percentage timeline (0–36%
+primary shown / 36–44% crossfade / 44–76% alt shown / 76–84% crossfade / 84–100% primary shown, staying
+there) so they read as a single swap rather than two animations that happen to overlap.
 
-This replaced a different cursor effect (`ConstructionGrid.tsx`, a pointer-revealed construction-grid
-overlay) that held this spot through the second pass and was removed outright on direct feedback —
-not disabled, deleted, including the component file — before this one was built. If a further redesign
-of the hero's cursor interaction is ever wanted, treat that as a real design decision again, not a
-line edit.
+**`RevealHeadline` is a genuinely different second message, not a re-styled echo of the primary
+headline.** The primary line reads "Every site starts as an empty file."; `RevealHeadline` reads "Most
+fill it with a template." — same size and weight as the primary headline (`.reveal-type` matches
+`.hero-type`'s resting values exactly), because a fainter "draft" treatment undercuts the surprise. It
+stays `aria-hidden` and the primary line stays the one real, permanent `<h1>` — the swap is a visual
+moment layered on top of the actual content, not a second piece of content in its own right, which
+matters more now that it plays automatically for every visitor rather than only the ones who happened to
+hover.
+
+This is the third mechanism this spot has held, and the second time a cursor-driven version was replaced
+with something else entirely rather than tuned. It went: a pointer-revealed construction-grid overlay
+(`ConstructionGrid.tsx`) → a pointer-revealed window onto the same headline in a softer typographic state
+→ a pointer-revealed window onto a genuinely different message (`CursorWindow`, `CursorMarks`,
+`useCursorField.ts` — all since deleted, not disabled) → the current automatic swap, once direct
+feedback asked for it to run without a cursor. If a further redesign is ever wanted here, treat it as a
+real design decision again, not a line edit — this spot has never survived unchanged past a single round
+of feedback yet.
 
 Everything else is motion answering a user action: the disclosure, the form, the menu sheet, button
 and link hovers.
-
-**Three gotchas specific to `CursorWindow`'s mask-reveal, on top of the `--hero-set` ones below —
-all found by literally looking closely at the rendered result, not from reasoning about the CSS:**
-
-- **Text is not an opaque rectangle.** Only the glyph ink is; the space around and between letters is
-  transparent by default. Without a real `background-color` on `.cursor-field__base` (the front,
-  "default" layer), `alt` bled through every gap in `children` permanently, everywhere — not just
-  inside the masked window — rendering as a constant double-exposure ghost regardless of cursor
-  position. The fix uses `background-color: var(--color-canvas)` rather than a hardcoded colour,
-  because `.field-ink` already remaps that exact token to the ink ground on itself, so the plate
-  follows whatever field the component is dropped into for free.
-- **The `alt` layer needs `overflow: hidden`.** Anything it renders outside `.cursor-field`'s own box
-  — a paragraph's default padding, or a glyph whose ink simply overshoots its nominal line box at an
-  font-stretch/weight combination the face was never tuned for — paints unmasked and permanently
-  visible, since the backing plate above only ever covers exactly that one box, not whatever spills
-  past it.
-- **`--cx`/`--cy` are written on `.cursor-field` (the hook's ref) but read on descendants**
-  (`.cursor-field__mask`, `.cursor-marks`) **— the exact `--hero-set` trap below, again.** They have
-  to declare `inherits: true`, not `inherits: false` copied from a neighbour that happens to write and
-  read on the same element.
 
 **Two gotchas this effect has already cost a build over — both about the same underlying trap.**
 `.set-word` originally animated `font-stretch` itself, with `animation-fill-mode: both` — and a
@@ -246,7 +239,6 @@ and read on the same element and correctly declares `inherits: false`; copying t
 at its `initial-value` (1, i.e. never compressed) — with no error, since an out-of-range read on a
 typed property that has never inherited a value simply resolves to its declared initial value. **Check
 `inherits` against the actual write/read elements, not by copying a neighbouring `@property` block.**
-(`CursorWindow`'s `--cx`/`--cy` hit this same trap in the same session — see above.)
 
 **A fourth, unrelated to any of the above:** the headline's per-word wipe-in (`@keyframes set-word`)
 used to leave a small negative `clip-path` inset permanently applied at rest

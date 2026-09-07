@@ -92,11 +92,7 @@ wibsity/
     │   │   ├── Button.tsx
     │   │   ├── InquiryForm.tsx      # The primary conversion surface
     │   │   ├── PageSpecimen.tsx     # The page measuring itself
-    │   │   ├── CursorWindow.tsx     # Reusable cursor mask-reveal primitive
-    │   │   ├── CursorMarks.tsx      # Viewfinder-bracket SVG for CursorWindow
     │   │   └── ScrollToTop.tsx
-    ├── hooks/
-    │   └── useCursorField.ts        # Generic pointer-tracking hook
     │   └── layout/
     │       ├── Section.tsx          # Gutter, measure, rhythm, the inverted field
     │       ├── Navbar.tsx           # Ink masthead + full-height mobile sheet

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
 import { PageSpecimen } from '../components/common/PageSpecimen';
-import { CursorWindow } from '../components/common/CursorWindow';
 import { InquiryForm } from '../components/common/InquiryForm';
 import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
@@ -36,23 +35,35 @@ function SetHeadline({ text }: { text: string }) {
 }
 
 /**
- * The hero's cursor-reveal `alt` layer (see `CursorWindow`): the same
- * headline in its pre-set state — narrower, lighter, unweighted, as if
- * looking at the file before the type was composed. That reading is *why*
- * this is the cursor interaction rather than a fresh visual invented for it.
+ * The hero's second statement (see `.hero-swap` in index.css): a genuinely
+ * different message, not a re-styled echo of the primary headline. "Every
+ * site starts as an empty file." is the promise; this is the part most
+ * studios don't say out loud — the honest half of the same thought.
  *
- * The line break is hardcoded rather than left to wrap naturally. At 74%
- * font-stretch the glyphs are narrower than the base headline's 100%, so the
- * same text in the same `max-w-[13ch]` can wrap differently — and a
- * misaligned line break here would break the illusion that this is the same
- * line, just underneath, the moment someone actually looked closely.
+ * This used to be revealed by moving the cursor over the headline. It is now
+ * shown automatically, once, to every visitor: `.hero-swap` sets it in after
+ * a held beat on the primary line, holds it in turn, then swaps back and
+ * rests on the primary line permanently. Automatic means every visitor sees
+ * it rather than only the ones who happened to hover, which is also why this
+ * stays `aria-hidden` and the primary headline stays the one real, permanent
+ * `<h1>` — the swap is a visual moment layered on top of the actual content,
+ * not a second piece of content in its own right.
+ *
+ * Set at `.reveal-type`, which matches `.hero-type`'s resting weight, stretch
+ * and colour exactly — full strength, not a fainter "draft" treatment — so it
+ * lands as an equally real statement. The surprise lives entirely in the
+ * words.
+ *
+ * The line break is hardcoded, the same reasoning `SetHeadline` uses for the
+ * primary line: a headline-scale statement gets an art-directed break, not
+ * whatever the viewport happens to produce.
  */
-function DraftHeadline() {
+function RevealHeadline() {
   return (
-    <p className="draft-type text-hero max-w-[13ch]" aria-hidden="true">
-      Every site starts
+    <p className="reveal-type hero-swap__alt text-hero max-w-[13ch]" aria-hidden="true">
+      Most fill it
       <br />
-      as an empty file.
+      with a template.
     </p>
   );
 }
@@ -132,9 +143,11 @@ function useHeroSetProgress() {
  *
  * The motion is one idea used four times (see the MOTION block in index.css):
  * type sets itself on load, widens under the pointer, shrinks and lifts away
- * as the hero leaves, and section rules draw when they arrive. Nothing fades
- * up on scroll — that pattern is why the previous pass read as documentation
- * with good typography rather than as something made on purpose.
+ * as the hero leaves, and section rules draw when they arrive. The hero
+ * headline also, once, resets into a second statement and back — the same
+ * "type being set" wipe, just run twice more. Nothing fades up on scroll —
+ * that pattern is why the previous pass read as documentation with good
+ * typography rather than as something made on purpose.
  */
 export const HomePage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<string | null>(faqsData[0].id);
@@ -145,19 +158,22 @@ export const HomePage: React.FC = () => {
     <>
       {/* ------------------------------------------------------------------
           Hero. One statement at display scale, one line of positioning, one
-          action — and, under the cursor, a window through to the headline's
-          own pre-set state (see CursorWindow / DraftHeadline). The specimen
-          strip sits along the closing rule as the reward for the first scroll
-          rather than competing with the headline.
+          action — and, once settled, a brief automatic swap onto a second,
+          different statement and back (see .hero-swap / RevealHeadline). The
+          specimen strip sits along the closing rule as the reward for the
+          first scroll rather than competing with the headline.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
           <div className="pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
-            <CursorWindow alt={<DraftHeadline />} windowWidth={190} windowHeight={110}>
-              <h1 className="hero-type text-hero max-w-[13ch] text-fg">
-                <SetHeadline text={HEADLINE} />
-              </h1>
-            </CursorWindow>
+            <div className="hero-swap">
+              <div className="hero-swap__primary">
+                <h1 className="hero-type text-hero max-w-[13ch] text-fg">
+                  <SetHeadline text={HEADLINE} />
+                </h1>
+              </div>
+              <RevealHeadline />
+            </div>
 
             <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
               <p className="enter enter-1 lg:col-span-7 text-2xl leading-[1.2] text-fg max-w-[26ch]">

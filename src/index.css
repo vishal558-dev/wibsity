@@ -541,7 +541,7 @@
 }
 
 /* ===========================================================================
-   MOTION — one idea, applied four times
+   MOTION — one idea, applied five times
    ---------------------------------------------------------------------------
    Everything that moves on this site moves because type is being set. Archivo
    is loaded with its width axis (wdth 62..125, see index.html) and driven by
@@ -552,8 +552,9 @@
    2. `.widen`     — a title expands under the cursor or keyboard focus.
    3. `--hero-set` — the hero shrinks and lifts away as it scrolls past.
    4. `.measure[data-draw]` — a section rule draws when its section arrives.
+   5. `.hero-swap` — the headline resets into a second statement, once, and back.
 
-   Nothing else on the page animates on entry or on scroll. If a fifth thing
+   Nothing else on the page animates on entry or on scroll. If a sixth thing
    starts moving, it is probably decoration.
    ------------------------------------------------------------------------ */
 
@@ -766,140 +767,98 @@
 }
 
 /* ---------------------------------------------------------------------------
-   The cursor-field system — a reusable reveal primitive, not a hero-only
-   effect. `useCursorField` (the hook) tracks a fine pointer over any element
-   and writes `--cx`/`--cy`; `CursorWindow` (the component) is built on top of
-   it and is what the classes below style. Drop `<CursorWindow>` around any
-   section that wants this same interaction language later — nothing here is
-   specific to the hero except the `alt` content it is currently given.
+   The hero's second statement — a brief, automatic swap onto a different
+   message and back, rather than a cursor-driven reveal (what this spot held
+   before). `.hero-swap` stacks the primary headline and `RevealHeadline`
+   (HomePage.tsx) in the same box; once the primary line has finished setting,
+   it holds, wipes away to the second line, holds again, then wipes back and
+   rests on the primary line permanently. It never loops — this plays once per
+   page load, which is what keeps it a considered moment rather than the
+   rotating-hero-text tic of a template site.
 
-   The mechanism: `children` sit in front, fully opaque, and `alt` sits behind
-   them at the same footprint, permanently hidden — until `.cursor-field__mask`
-   cuts a soft window out of the front layer wherever the cursor is, letting
-   `alt` show through. On the homepage hero, `alt` is the same headline in its
-   pre-set state (see `DraftHeadline`, HomePage.tsx), so the reveal itself reads
-   as "cursor-driven typography" without a second, separate effect layered on
-   top to produce that reading.
+   The wipe reuses the exact clip-path language `.set-word` opens with (an
+   inset that clips the bottom away, plus a small downward rest-offset lifting
+   into place) rather than a generic fade or slide, so the swap reads as the
+   same "type being set" idea running twice more, not a different effect
+   bolted on beside it.
 
-   No glow, no particles, no blur-heavy vignette: the edge is a plain radial
-   gradient with a wide feather, and the only accent is the corner marks below,
-   which frame the window like a viewfinder rather than decorating it.
+   Both keyframes share one timeline so they read as a single crossfade, not
+   two independent animations that happen to overlap:
+     0–36%   primary shown (holds after its own entrance has finished)
+     36–44%  primary wipes out as alt wipes in (400ms, simultaneous)
+     44–76%  alt shown (holds)
+     76–84%  alt wipes out as primary wipes in (400ms, simultaneous)
+     84–100% primary shown, permanently — the animation ends here and, being
+              neither infinite nor forwards-less, simply stays.
    ------------------------------------------------------------------------ */
-.cursor-field {
+.hero-swap {
   position: relative;
 }
 
-.cursor-field__alt {
+.hero-swap__alt {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  /* `.cursor-field__base`'s opaque backing plate only ever covers exactly
-     `.cursor-field`'s own box. Anything `alt` renders outside that — a
-     paragraph's own padding, or a glyph whose ink simply overshoots its
-     nominal line box at an unusual font-stretch/weight combination the face
-     was never tuned for — paints unmasked and permanently visible, since
-     nothing is there to hide it. This clip is what makes "the plate covers
-     everything" actually true, rather than true for most of it. */
-  overflow: hidden;
 }
 
-.cursor-field__base {
-  position: relative;
-  z-index: 1;
-  /* Text is not an opaque rectangle — only the glyph ink is, and the space
-     around and between letters is transparent by default. Without a real
-     backing plate here, `alt` bleeds through every gap in `children` all the
-     time, everywhere, not just inside the masked window: the first version of
-     this rendered as a permanent double-exposure ghost across the whole
-     headline, mask or no mask. `--color-canvas` rather than a hardcoded colour
-     because `.field-ink` remaps that exact token to the ink ground on itself —
-     this plate follows whatever field it's dropped into for free. */
-  background-color: var(--color-canvas);
-}
-
-/* Written on `.cursor-field` (the hook's ref) by JS, read by descendants
-   (`.cursor-field__mask`, `.cursor-marks`) — hence `inherits: true`. This is
-   the exact trap `--hero-set` fell into further up this file: a registered
-   property copied as `inherits: false` from a neighbour that happens to write
-   and read on the same element silently breaks the whole effect, with no
-   error, because the descendant just sits at `initial-value` forever. */
-@property --cx {
-  syntax: "<length>";
-  inherits: true;
-  initial-value: -999px;
-}
-
-@property --cy {
-  syntax: "<length>";
-  inherits: true;
-  initial-value: -999px;
-}
-
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .cursor-field__mask {
-    /* Registered + transitioned rather than throttled in JS — see the
-       `--hero-set` note above for why that is the fix for a JS-driven custom
-       property reading as choppy, not a lower write frequency. */
-    transition: --cx 120ms cubic-bezier(0.22, 1, 0.36, 1), --cy 120ms cubic-bezier(0.22, 1, 0.36, 1);
-    -webkit-mask-image: radial-gradient(
-      var(--window-w, 170px) var(--window-h, 100px) at var(--cx) var(--cy),
-      transparent 38%,
-      #000 88%
-    );
-    mask-image: radial-gradient(
-      var(--window-w, 170px) var(--window-h, 100px) at var(--cx) var(--cy),
-      transparent 38%,
-      #000 88%
-    );
+@keyframes hero-swap-primary {
+  0%, 36% {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  44%, 76% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: translateY(0.15em);
+  }
+  84%, 100% {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.cursor-marks {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--color-accent);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(
-    calc(var(--cx) - var(--window-w, 170px) / 2),
-    calc(var(--cy) - var(--window-h, 100px) / 2)
-  );
-  transition: opacity 200ms ease, --cx 120ms cubic-bezier(0.22, 1, 0.36, 1), --cy 120ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-cursor="live"] .cursor-marks {
-  opacity: 1;
-}
-
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .cursor-marks {
-    display: none;
+@keyframes hero-swap-alt {
+  0%, 36% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: translateY(0.15em);
+  }
+  44%, 76% {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  84%, 100% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: translateY(0.15em);
   }
 }
 
-/* The hero's `alt` content: the same headline, pre-set — narrower, lighter,
-   unweighted, as if looking at the file before the type was composed. The
-   tick strip along its baseline is the same unit as `.measure`'s own ticks
-   (0.6875rem repeats), so the "this is a measurement" reading is consistent
-   with the rest of the page rather than a one-off texture. */
-.draft-type {
-  font-stretch: 74%;
-  font-weight: 400;
-  color: var(--color-fg-subtle);
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--color-accent) 0 1px,
-    transparent 1px 0.6875rem
-  );
-  /* A 100%-wide tile lets the repeating gradient's own 0.6875rem cycle render
-     as many ticks as the paragraph's current width allows, so it adapts to the
-     fluid hero type size instead of assuming a fixed measure. Height is short
-     — a tick mark, not a rule. */
-  background-size: 100% 0.4375rem;
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  padding-bottom: 0.5rem;
+.hero-swap__primary {
+  /* Delay roughly matches when the primary headline's own per-word entrance
+     has finished setting (~1.05s, see .set-word above) plus a short buffer —
+     the swap should not compete with the entrance, it should follow it. */
+  animation: hero-swap-primary 5000ms cubic-bezier(0.16, 0.9, 0.24, 1) 1200ms both;
+}
+
+.hero-swap__alt {
+  animation: hero-swap-alt 5000ms cubic-bezier(0.16, 0.9, 0.24, 1) 1200ms both;
+}
+
+/* `.hero-swap__alt`'s content: a genuinely different second message, not a
+   re-styled echo of the first. Matches `.hero-type`'s resting weight, stretch
+   and colour exactly — full strength, the same as the primary headline — so
+   what changes during the swap is only the words, which is the entire point
+   of the moment. (A softer, lighter treatment was tried first, for the
+   cursor-driven version of this, and rejected: it read as a fainter, lesser
+   version of the headline rather than an equally real second statement,
+   which undercut the surprise.) */
+.reveal-type {
+  font-weight: 550;
+  font-stretch: 100%;
+  color: var(--color-fg);
 }
 
 /* --- Nav links ------------------------------------------------------------
