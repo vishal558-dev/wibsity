@@ -49,6 +49,54 @@ function createRouteHtml(html: string, seo: RouteSEO, noindex = false, jsonLd?: 
   return routeHtml;
 }
 
+/**
+ * The homepage's FAQPage JSON-LD lives as literal markup in index.html — "/" is
+ * the one route the plugin below does not regenerate — and it has to state the
+ * same three questions the homepage actually renders (`faqsData.slice(0, 3)`).
+ *
+ * Keeping those in step used to be a note in CLAUDE.md asking a future editor
+ * to remember. This checks it instead: edit a FAQ without updating the markup
+ * and the build fails with the exact mismatch, rather than shipping structured
+ * data that describes content the page no longer shows.
+ */
+function assertHomeFaqJsonLdMatches(indexHtml: string) {
+  const block = indexHtml.match(/<script id="home-faq-jsonld"[^>]*>([\s\S]*?)<\/script>/);
+  if (!block) {
+    throw new Error('index.html is missing the home-faq-jsonld script block.');
+  }
+
+  const declared = JSON.parse(block[1]) as {
+    mainEntity: { name: string; acceptedAnswer: { text: string } }[];
+  };
+  const expected = faqsData.slice(0, 3);
+
+  if (declared.mainEntity.length !== expected.length) {
+    throw new Error(
+      `home-faq-jsonld lists ${declared.mainEntity.length} questions; the homepage renders ${expected.length}.`
+    );
+  }
+
+  expected.forEach((faq, i) => {
+    const entry = declared.mainEntity[i];
+    if (entry.name !== faq.question) {
+      throw new Error(
+        `home-faq-jsonld question ${i + 1} is out of sync with src/data/faqs.ts.
+` +
+          `  index.html:  ${entry.name}
+  faqs.ts:     ${faq.question}`
+      );
+    }
+    if (entry.acceptedAnswer.text !== faq.answer) {
+      throw new Error(
+        `home-faq-jsonld answer ${i + 1} is out of sync with src/data/faqs.ts.
+` +
+          `  index.html:  ${entry.acceptedAnswer.text}
+  faqs.ts:     ${faq.answer}`
+      );
+    }
+  });
+}
+
 function generateStaticRouteHtmlPlugin(): Plugin {
   return {
     name: 'generate-static-route-html',
@@ -58,6 +106,7 @@ function generateStaticRouteHtmlPlugin(): Plugin {
       if (!fs.existsSync(indexPath)) return;
 
       const indexHtml = fs.readFileSync(indexPath, 'utf8');
+      assertHomeFaqJsonLdMatches(indexHtml);
       const aboutFaqJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',

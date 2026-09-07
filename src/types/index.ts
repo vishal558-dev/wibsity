@@ -1,30 +1,43 @@
 export interface Service {
   id: string;
+  /** Position in the catalogue. A real fixed set, so the number carries
+   *  information rather than decorating the heading. */
   index: string;
   title: string;
-  tagline: string;
-  description: string;
+  /** One plain sentence: what the thing actually is. */
+  summary: string;
+  /** Who should be reading this entry. */
   forWhom: string;
-  deliverables: string[];
-  scopeType: string;
-  iconName: 'Layout' | 'Layers' | 'RefreshCw' | 'Sliders' | 'ShoppingCart';
-  /** Root-relative path to a representative stock photo, used by HomePage's
-   * hover-driven service showcase (desktop) and tap-accordion (mobile). */
-  image: string;
+  /** The problem it solves, stated as the client would state it. */
+  problem: string;
+  /** What is in the box. Kept short — five lines a person will read beats
+   *  fifteen they will skip. */
+  includes: string[];
+  /** Real delivery window, matching what faqs.ts tells people. */
+  timeline: string;
 }
 
 export interface ProcessStep {
   step: string;
-  code: string;
   name: string;
-  focus: string;
+  /** What the client does at this stage, as distinct from what we do. Every
+   *  step names both, because "what will this cost me in time" is the
+   *  unasked question behind every process section. */
+  yours: string;
   description: string;
-  deliverables: string[];
 }
 
 export interface FAQItem {
   id: string;
   question: string;
   answer: string;
-  category: 'Engagement' | 'Process' | 'Ownership' | 'Technical';
+}
+
+/** One row of the template-versus-built comparison on the homepage. Both
+ *  sides are structural facts about how the two things are made, not
+ *  performance claims — nothing here asserts a number we have not measured. */
+export interface ComparisonRow {
+  aspect: string;
+  template: string;
+  built: string;
 }

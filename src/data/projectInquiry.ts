@@ -1,12 +1,31 @@
 export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/myeyjlye';
 
-export const budgetOptions = ['Under ₹15,000', '₹20,000 – ₹50,000', '₹50,000+', 'Not sure yet'] as const;
-
+/**
+ * The enquiry form's options.
+ *
+ * The form was a four-step modal wizard that asked for a name and a phone
+ * number in steps one and two — before the visitor had said anything about the
+ * project, and therefore before they had any reason to hand over a phone
+ * number. It is now a single screen, on the page rather than behind a modal,
+ * and the order is inverted: the two low-commitment questions come first and
+ * contact details are asked last, once the person is already invested.
+ *
+ * `projectTypeOptions` deliberately mirrors `servicesData` plus an escape
+ * hatch. It used to be an independently maintained list that had drifted out
+ * of step with the catalogue; the ids match the service ids so an enquiry can
+ * be read against the service it came from.
+ */
 export const projectTypeOptions = [
-  { id: 'business-website', title: 'Business Website', tagline: 'A multi-page site that builds trust and captures inquiries.', iconName: 'Layout' },
-  { id: 'landing-page', title: 'Landing Page', tagline: 'A focused single page for a launch or campaign.', iconName: 'Layers' },
-  { id: 'website-redesign', title: 'Website Redesign', tagline: 'A modern overhaul of an existing website.', iconName: 'RefreshCw' },
-  { id: 'ecommerce-website', title: 'E-commerce Website', tagline: 'A storefront built to sell products online.', iconName: 'ShoppingCart' },
-  { id: 'custom-experience', title: 'Custom Experience', tagline: 'A tailored interactive tool, booking flow, or portal.', iconName: 'Sliders' },
-  { id: 'not-sure', title: 'Not sure yet', tagline: "Let's figure it out together.", iconName: 'HelpCircle' },
+  { id: 'business-website', label: 'Business website' },
+  { id: 'landing-page', label: 'Landing page' },
+  { id: 'redesign', label: 'Redesign' },
+  { id: 'online-store', label: 'Online store' },
+  { id: 'something-else', label: 'Something else' },
+] as const;
+
+export const budgetOptions = [
+  'Under ₹15,000',
+  '₹15,000 – ₹50,000',
+  '₹50,000+',
+  'Not sure yet',
 ] as const;

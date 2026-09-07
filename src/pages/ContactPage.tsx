@@ -1,184 +1,126 @@
-import React, { useState } from 'react';
-import { m } from 'motion/react';
-import { SectionHeading } from '../components/common/SectionHeading';
-import { Phone, Mail, CheckCircle2, ArrowUpRight, Rocket } from 'lucide-react';
-import { StartProjectModal } from '../components/common/StartProjectModal';
-import { CONTACT_INFO, engagementPoints } from '../data/contact';
-import { useReducedMotion } from '../hooks/useReducedMotion';
-import { cn } from '../utils/cn';
+import React from 'react';
+import { Section } from '../components/layout/Section';
+import { InquiryForm } from '../components/common/InquiryForm';
+import { IconWhatsApp, IconPhone, IconMail, IconArrowUpRight } from '../components/common/icons';
+import { CONTACT_INFO, whatHappensNext } from '../data/contact';
 
-export const ContactPage: React.FC = () => {
-  const prefersReduced = useReducedMotion();
-  const [isStartProjectOpen, setStartProjectOpen] = useState(false);
+/**
+ * The primary conversion page.
+ *
+ * The old version put three bordered channel cards first and hid the enquiry
+ * behind one of them, which made the secondary channels compete with the
+ * primary one. Here the form is the page — it opens on the ink field, above
+ * everything else — and the direct channels sit below it as alternatives for
+ * people who would rather not fill anything in.
+ */
+export const ContactPage: React.FC = () => (
+  <>
+    <Section ink className="pt-6" aria-labelledby="contact-heading">
+      <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <h1 id="contact-heading" className="text-3xl max-w-[14ch]">
+            Tell us what you need.
+          </h1>
+          <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[38ch]">
+            Four questions and two fields. No obligation at the end of it, and no sequence
+            of follow-up emails.
+          </p>
 
-  return (
-    <div className="pt-32 pb-24 bg-canvas min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        {/* Page Header */}
-        <div>
-          <SectionHeading
-            as="h1"
-            title="Start a conversation about your website."
-            description="We collaborate with businesses, founders, and modern practices looking for clean design and fast performance. Reach out directly through your preferred channel."
-          />
+          <ol className="mt-12">
+            {whatHappensNext.map((item) => (
+              <li key={item.step} className="border-t border-rule py-5 flex gap-5">
+                <span className="font-sans text-sm text-fg-subtle tnum shrink-0 pt-1">{item.step}</span>
+                <div>
+                  <h2 className="font-sans text-ui font-medium">{item.title}</h2>
+                  <p className="mt-1.5 text-fg-muted leading-relaxed">{item.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        {/* Contact Monolith Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Direct Channels Box (7 cols) */}
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-7 border border-border-hairline bg-canvas-subtle p-5 sm:p-10 lg:p-12 space-y-6 sm:space-y-8"
-          >
-            {/* Live Availability Status */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-border-hairline">
-              <div className="flex items-center gap-2">
-                <span className={cn('w-2 h-2 rounded-full bg-status-positive', !prefersReduced && 'animate-pulse')} />
-                <span className="font-sans text-xs text-fg uppercase tracking-wider font-semibold">
-                  Currently Accepting Projects
-                </span>
-              </div>
-              <span className="font-sans text-xs text-fg-muted font-medium">
-                Sprint Slots Open
-              </span>
-            </div>
-
-            <div className="space-y-3 sm:space-y-4">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight leading-tight">
-                Connect directly with the studio.
-              </h2>
-              <p className="text-sm sm:text-base text-fg-muted leading-relaxed">
-                Whether you have a specific brief ready, want to redesign an existing website, or want to discuss feasibility for a new concept, we respond within hours.
-              </p>
-            </div>
-
-            {/* Direct Action Cards */}
-            <div className="space-y-3 sm:space-y-4 pt-2">
-              {/* Start a Project Card */}
-              <button
-                type="button"
-                onClick={() => setStartProjectOpen(true)}
-                className="group w-full text-left border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
-              >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
-                    <Rocket size={20} />
-                  </div>
-                  <div>
-                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
-                      Fastest response
-                    </span>
-                    <h3 className="text-base font-bold text-fg">
-                      Start a Project
-                    </h3>
-                    <p className="text-xs text-fg-muted mt-0.5">
-                      A short guided inquiry — tell us what you need and we'll get back to you within hours.
-                    </p>
-                  </div>
-                </div>
-                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
-                  <span>Begin</span>
-                  <ArrowUpRight size={14} />
-                </div>
-              </button>
-
-              {/* Phone Card */}
-              <a
-                href={CONTACT_INFO.phoneHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
-              >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
-                    <Phone size={18} />
-                  </div>
-                  <div>
-                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
-                      Voice consultation
-                    </span>
-                    <h3 className="text-base font-bold text-fg">
-                      Call Us: {CONTACT_INFO.phoneDisplay}
-                    </h3>
-                    <p className="text-xs text-fg-muted mt-0.5">
-                      Discuss your scope and requirements over a direct phone call.
-                    </p>
-                  </div>
-                </div>
-                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
-                  <span>Call Now</span>
-                  <ArrowUpRight size={14} />
-                </div>
-              </a>
-
-              {/* Email Card */}
-              <a
-                href={CONTACT_INFO.emailHref}
-                className="group border border-border-hairline bg-canvas p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-accent/60 transition-colors"
-              >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 bg-canvas-surface border border-border-hairline text-accent-light group-hover:text-accent-light group-hover:border-accent/50 transition-colors shrink-0">
-                    <Mail size={18} />
-                  </div>
-                  <div>
-                    <span className="font-sans text-[10px] font-semibold text-fg-faint uppercase tracking-wider block">
-                      Written brief
-                    </span>
-                    <h3 className="text-base font-bold text-fg font-mono text-xs sm:text-sm">
-                      {CONTACT_INFO.email}
-                    </h3>
-                    <p className="text-xs text-fg-muted mt-0.5">
-                      Send your RFP, requirements document, or project summary.
-                    </p>
-                  </div>
-                </div>
-                <div className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-accent-light group-hover:translate-x-1 transition-transform shrink-0">
-                  <span>Send Email</span>
-                  <ArrowUpRight size={14} />
-                </div>
-              </a>
-            </div>
-          </m.div>
-
-          {/* Engagement Standards Box (5 cols) */}
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="lg:col-span-5 space-y-6"
-          >
-            <div className="border border-border-hairline border-l-2 border-l-accent/30 bg-canvas p-6 sm:p-8 space-y-6">
-              <span className="font-sans text-[11px] font-semibold text-fg-faint uppercase tracking-wider block">
-                What to expect
-              </span>
-              <h2 className="text-xl font-bold text-fg">
-                No high-pressure sales. Straightforward technical collaboration.
-              </h2>
-              <p className="text-xs sm:text-sm text-fg-muted leading-relaxed">
-                When you contact wibsity, you speak directly with the engineer responsible for your build. We review your requirements, recommend the most effective scope, and provide a clear timeline.
-              </p>
-
-              <div className="space-y-4 pt-4 border-t border-border-hairline">
-                {engagementPoints.map((pt) => (
-                  <div key={pt.title} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="text-accent-light shrink-0 mt-0.5" />
-                    <div>
-                      <h3 className="text-xs font-bold text-fg font-sans">
-                        {pt.title}
-                      </h3>
-                      <p className="text-[11px] text-fg-muted mt-0.5 leading-relaxed">
-                        {pt.desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </m.div>
+        <div className="lg:col-span-6 lg:col-start-7">
+          <InquiryForm />
         </div>
       </div>
+    </Section>
 
-      <StartProjectModal open={isStartProjectOpen} onClose={() => setStartProjectOpen(false)} />
-    </div>
-  );
-};
+    <Section aria-labelledby="direct-heading">
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-4">
+          <h2 id="direct-heading" className="text-2xl max-w-[16ch]">
+            Or skip the form entirely.
+          </h2>
+          <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
+            All three reach the same person. WhatsApp is usually fastest.
+          </p>
+        </div>
+
+        <ul className="lg:col-span-7 lg:col-start-6">
+          <li>
+            <a
+              href={CONTACT_INFO.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-6 border-t border-rule py-6 transition-colors hover:bg-canvas-sunken"
+            >
+              <span className="flex items-center gap-4">
+                <IconWhatsApp size={19} className="text-fg-subtle shrink-0" />
+                <span>
+                  <span className="block font-sans text-lg text-fg">WhatsApp</span>
+                  <span className="block mt-0.5 font-sans text-sm text-fg-muted tnum">
+                    {CONTACT_INFO.phoneDisplay}
+                  </span>
+                </span>
+              </span>
+              <IconArrowUpRight
+                size={17}
+                className="text-fg-subtle shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href={CONTACT_INFO.phoneHref}
+              className="group flex items-center justify-between gap-6 border-t border-rule py-6 transition-colors hover:bg-canvas-sunken"
+            >
+              <span className="flex items-center gap-4">
+                <IconPhone size={19} className="text-fg-subtle shrink-0" />
+                <span>
+                  <span className="block font-sans text-lg text-fg">Call</span>
+                  <span className="block mt-0.5 font-sans text-sm text-fg-muted tnum">
+                    {CONTACT_INFO.phoneDisplay}
+                  </span>
+                </span>
+              </span>
+              <IconArrowUpRight
+                size={17}
+                className="text-fg-subtle shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href={CONTACT_INFO.emailHref}
+              className="group flex items-center justify-between gap-6 border-y border-rule py-6 transition-colors hover:bg-canvas-sunken"
+            >
+              <span className="flex items-center gap-4">
+                <IconMail size={19} className="text-fg-subtle shrink-0" />
+                <span className="min-w-0">
+                  <span className="block font-sans text-lg text-fg">Email</span>
+                  <span className="block mt-0.5 font-sans text-sm text-fg-muted break-all">
+                    {CONTACT_INFO.email}
+                  </span>
+                </span>
+              </span>
+              <IconArrowUpRight
+                size={17}
+                className="text-fg-subtle shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </Section>
+  </>
+);

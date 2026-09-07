@@ -2,145 +2,391 @@
 
 Web design/dev studio marketing site. React 19 + Vite + TypeScript + Tailwind CSS v4 + react-router-dom.
 
+**This file was rewritten in the 2026 redesign.** Almost everything it used to describe — the dark
+canvas, the blue-violet accent, the marquees, the 3D hero sculpture, the Framer Motion scroll
+reveals, the modal form wizard, the stock photography, `SectionHeading`, `lucide-react`, `lenis` —
+no longer exists. If you are looking for why any of that went, `docs/DESIGN-DIRECTION.md` records
+the audit and the argument.
+
 ## Keep this file current
-**Always keep this file accurate with the current state of the codebase — every change that touches something this file describes updates the relevant section here as part of that same piece of work, not as a separate follow-up someone has to ask for.** This isn't limited to changes you'd personally judge "major" — if this doc would mislead a future session about a pattern, convention, file, or asset after your change, it needs updating, full stop. Before writing a claim here, verify it against the actual code (grep for it, don't just describe intent) — a wrong doc is worse than no doc. This file already reflects that discipline (see the Animation section's account of the LazyMotion regression, or the corrected favicon/OG-image paragraph) — keep extending it that way rather than letting new decisions go undocumented.
+**Always keep this file accurate with the current state of the codebase — every change that touches
+something this file describes updates the relevant section here as part of that same piece of work,
+not as a separate follow-up someone has to ask for.** This isn't limited to changes you'd personally
+judge "major": if this doc would mislead a future session about a pattern, convention, file, or
+asset after your change, it needs updating, full stop. Before writing a claim here, verify it
+against the actual code (grep for it, don't just describe intent) — a wrong doc is worse than no
+doc.
 
 ## Before committing or pushing
-**Always ask for explicit confirmation before running `git commit` or `git push` — for every change, in every session, regardless of what was approved earlier in the conversation — with exactly one exception: a commit/push where CLAUDE.md is the only file changed may go straight through without asking.** Any commit that touches code, data, assets, or config (even alongside a CLAUDE.md update) needs confirmation first: summarize what changed and wait to be told to commit/push. Don't treat a prior "commit and push it" as blanket permission for a later, different change in the same session.
+**Always ask for explicit confirmation before running `git commit` or `git push` — for every change,
+in every session, regardless of what was approved earlier in the conversation — with exactly one
+exception: a commit/push where CLAUDE.md is the only file changed may go straight through without
+asking.** Any commit that touches code, data, assets, or config (even alongside a CLAUDE.md update)
+needs confirmation first: summarize what changed and wait to be told to commit/push. Don't treat a
+prior "commit and push it" as blanket permission for a later, different change in the same session.
 
 ## Commands
 - `npm run dev` — dev server
 - `npm run build` — `tsc -b && vite build`
 - `npm run lint` — oxlint
 - `npm run preview` — preview production build
+- `node scripts/generate-brand-assets.mjs` — regenerate favicons, apple-touch-icon and the social
+  card. Not part of `npm run build`; run it by hand when the logo geometry, the hero headline or
+  `og:description` changes.
 
-## Architecture & Routing
-`main.tsx` → `App.tsx` (`BrowserRouter` + `AnimatePresence` page transitions) → `pages/*.tsx`, one per route:
-`/`, `/services`, `/about`, `/contact`, and a `*` 404 catch-all.
+## The idea the site is built on
+wibsity's differentiator is that a site is *built* rather than *assembled*. That is unprovable in
+prose and completely provable in the artifact, so the homepage's one bold moment is a **live
+specimen readout** (`components/common/PageSpecimen.tsx`): the page measures its own first paint,
+file count and element count in the visitor's browser and prints the result under the headline.
 
-Pages pull content from `data/*.ts` (typed via `types/index.ts`) and compose `components/{common,layout}`.
+Two consequences bind future work:
 
-## Where page UI actually lives
-**Page markup is inlined directly in `pages/*.tsx`, not in reusable section components.** There is no `components/sections/*` directory — a prior dead-code set (Hero, Principles, Portfolio, Services, Process, FAQ, CaseStudyDrawer) and the unused `Badge.tsx` were confirmed to have zero imports anywhere and deleted. To edit what's rendered on a page (hero copy, FAQ, services grid, etc.), edit the relevant `pages/*.tsx` file directly.
+1. **The site cannot carry a dependency it does not need.** `motion`, `lenis` and `lucide-react`
+   were all removed. The runtime is React, react-dom, react-router-dom, clsx, tailwind-merge and
+   `@vercel/analytics`. Adding a library to this project is a positioning decision, not just a
+   technical one.
+2. **No asserted performance numbers.** The readout is the only performance figure on the site and
+   it is measured, not claimed. A bytes-transferred reading was tried and deliberately dropped:
+   Resource Timing reports zero bytes both for cross-origin responses without
+   `Timing-Allow-Origin` and for cache hits, so it would silently flatter a repeat visit. Don't add
+   it back without solving that.
 
-`HomePage.tsx` has five numbered sections (`00` hero, `01` capabilities, `02` manifesto, `03` process teaser, `04` FAQ teaser), the last two pulling directly from `data/process.ts` and `data/faqs.ts` (first 3 FAQs). They exist so the homepage makes its case on its own instead of ending after the manifesto — before adding more homepage content, check whether it already duplicates something in one of these two sections or on `/services`/`/about`.
+## Architecture & routing
+`main.tsx` → `App.tsx` (`BrowserRouter`) → `pages/*.tsx`, one per route: `/`, `/services`, `/about`,
+`/contact`, and a `*` 404. `HomePage` is a static import; every other page is `React.lazy()`-loaded
+behind a `<Suspense>` whose fallback is `.route-bar`, a pure-CSS hairline sweep at the top of the
+viewport.
 
-**The `00` hero carries a one-line subhead directly under the `<h1>`** ("An India-based studio — standard builds delivered in 3–5 days, fully fixed-scope.", a plain `m.p` that fades in like the surrounding hero elements) — added from a homepage SEO audit's finding that the page's title/meta targeted "web design company in India" while the visible body copy never said "India" anywhere, and that the real "3–5 day turnaround" stat (already written in `faqs.ts`) was buried three sections down instead of near the primary CTA. This is deliberately separate from the `valuePoints` value grid right below it — that grid's "Fast Loading" entry is a protected owner override (see Content guardrails below) and was not touched.
+There are **no route transition animations**. Navigation is instant, which is both faster and the
+point.
 
-**The `01` section is now a `ServiceShowcase` component (local to `HomePage.tsx`) that adapts to viewport size:** Desktop (lg+) renders a hover/focus-driven vertical list of service titles on the left with a right-hand image panel that crossfades to match the hovered/focused item — **the list has 5 entries now** (a fifth, "E-commerce Store", was added after the initial 4-service redesign) **and the list column stretches to match the image column's full height via the grid's default `align-items: stretch` (no `lg:items-start` override) plus `flex flex-col justify-between` on the list wrapper**, so the titles distribute evenly across the image's height instead of leaving empty space beneath a shorter list — if the service count changes again, this same layout keeps working without retuning font sizes by hand; the active service's tagline sits as a plain paragraph *below* the image box, not overlaid on it. That's deliberate — the tagline used to be laid over the photo's bottom edge on a `from-canvas/90` gradient scrim, which is both an opacity modifier on a theme-swapped token (the Tailwind v4 gotcha documented under Light/dark theming below) and, even setting that aside, not enough contrast for `fg-muted` text over a mostly-dark photo in light theme. Below the image it just inherits the section's own background and is theme-safe for free — don't move it back onto the image. Each desktop list item is a `Link` to `/services` wrapped in an `<h3>` (matching the mobile accordion's heading semantics, so the document outline is the same at every breakpoint); the hover/focus handlers that drive the image panel live on the `Link` itself. It used to be a bare `<button>` with no click action at all, which left keyboard users tabbing through four inert controls. Mobile/tablet (below lg) renders a single-open tap accordion reusing the same WAI-ARIA heading-wraps-button pattern and CSS grid-template-rows transition as `ServicesPage.tsx`'s bento-card accordion, with the image and tagline revealed inside each expanded accordion. The `service.forWhom` field that previously rendered as a "For {forWhom, lowercased}" third line on the old cards is no longer shown in the compact view; if future iterations wish to surface this data, add it to the mobile accordion's expanded content in a follow-up.
+Nav labels are Services / Studio / Contact — "Studio" points at `/about`, whose path stays as it is
+for SEO continuity.
 
-**The homepage features two marquee tickers, both using the same `.marquee-track`/`.marquee-fade` CSS mechanism**: the original capability ticker (service names, repeated) renders immediately after the hero, and a second value-reinforcement ticker (repeating the hero's four `valuePoints` claims: "Mobile Responsive / Built for Google / Fast Loading / Founder-Direct") sits between the service showcase and the manifesto section as a section-divider rhythm device. Both respect `prefers-reduced-motion`. **The two tickers repeat their source arrays a different number of times, and this needs re-checking, not assuming**: `.marquee-track` translates by exactly `-50%`, which only loops seamlessly when each half is wider than the viewport. `valuePoints`' four short labels doubled fell well short of a wide display, so that ticker spreads **six** repeats (two identical 3× halves, so `-50%` still lands exactly on the seam). The original capability ticker (service titles, doubled — two repeats) was assumed adequate because the titles are longer strings, but nobody has actually measured its rendered half-width against a wide viewport — it may have the identical seam-gap problem and just hasn't been reported. If you touch that ticker, measure first rather than trusting the "longer text is fine" assumption. If you ever add or shorten items in either array, re-check that the doubled width still exceeds the widest viewport you care about.
+## Where page UI lives
+**Page markup is inlined directly in `pages/*.tsx`.** There is no `components/sections/*` directory
+and no `SectionHeading` component — the eyebrow-plus-heading-plus-paragraph block it encoded was one
+of the patterns the redesign set out to remove. Each section composes its own heading.
 
-**`Service` objects now carry an `image: string` field** (root-relative path to a `.webp` file under `public/services/`) — added for `HomePage.tsx`'s hover-driven service showcase (Task 2 of the Vesper-inspired homepage redesign). Any new consumer of `servicesData` gets this field for free, and any new service added to `data/services.ts` must include one. **These photos (and `public/manifesto/workspace-accent.webp`) are sourced from Unsplash under the Unsplash License** — free for commercial use, no attribution required — and downloaded pre-cropped straight from the `images.unsplash.com` CDN via its own query params (`?w=…&h=…&fit=crop&crop=entropy&fm=webp&q=70`), so no local image tooling is involved; services images are 800×1000, the manifesto accent is 1100×480. **Pick subject matter that doesn't contradict the studio's own positioning**: a review pass had to replace two of them because their visible content undercut the site's claims — one showed an Xcode/SwiftUI editor (iOS-native code, on a *web* studio's services section) and one showed Chrome DevTools with `bootstrap/4.0.0-beta.2` and Bootstrap class names legible at large size, directly against the manifesto's "hand-coded React/TypeScript, no page builder, no bloat." A third had to be replaced simply for being unusable: a near-black underexposed night shot that rendered as a solid bar once cropped and pushed through `grayscale-[90%]`. So: no large legible third-party framework/brand names, no non-web programming languages as the focal point, and check the exposure holds up at the actual crop in *both* themes before committing an asset.
+The one layout primitive is `components/layout/Section.tsx`. It owns exactly three things — the side
+gutter, the maximum measure (`78rem`), and the vertical rhythm — plus two options: `ink` (invert the
+band) and `rule` (draw the measure line at the top). Everything else about a section is composed
+freely inside it, deliberately, so the page does not turn into the same arrangement six times.
 
-**Process-step icons are a `Record<string, LucideIcon>` keyed by `step.code` (`STEP_01`…`STEP_04`), defined independently in both `HomePage.tsx` and `ServicesPage.tsx`.** This is deliberate duplication, not an oversight — it's four lines each, and both files already keep their own local icon lookups (`ServicesPage.tsx`'s `iconMap` for services does the same thing) rather than reaching for a shared module for something this small. If a third page ever needs the same mapping, that's the point to extract it.
+### Homepage composition
+Six sections, and **no two are built the same way** — that variety is load-bearing, not incidental:
 
-**`ServicesPage.tsx`'s "Core Offerings" grid is a bento layout, not a uniform grid** — `bentoSpans` (`['lg:col-span-2', 'lg:col-span-1', 'lg:col-span-1', 'lg:col-span-2']`) on a `lg:grid-cols-3` grid gives row 1 a wide Business Websites card + narrow Landing Pages card, and row 2 a narrow Redesigns card + wide Custom Experiences card. This is a deliberate visual rhythm, not a content-driven size difference — all four services carry equal informational weight. Each card defaults to a compact summary (index, icon, scope badge, title, tagline) and expands via a single-open accordion (`expandedId` state) to reveal the description, target-profile block, deliverables, and the WhatsApp CTA — clicking one card's title collapses any other open card. The trigger follows the WAI-ARIA accordion pattern (an `<h2>` wraps the `<button>`, not the reverse) so the button's content stays valid phrasing content while the heading semantics are preserved. The expand/collapse itself is a CSS `grid-template-rows: 0fr` → `1fr` transition on a wrapper (`overflow-hidden` inside), not a JS height measurement or a `motion` `layout` animation — consistent with this codebase's preference for CSS-driven structural transitions (`.marquee-track`, `.route-loading-bar`) over motion-timed ones; the transition duration drops to `duration-0` under `useReducedMotion()`. The wide cards' deliverables list becomes two columns on expand (`sm:grid-cols-2`) since they have the width to spare; narrow cards stay single-column.
+| # | Section | Shape |
+|---|---------|-------|
+| 1 | Hero | Display headline, then lead left / CTA right, closing on the specimen strip |
+| 2 | What we make | An index at display scale — the titles *are* the composition |
+| 3 | What you are choosing between | **Ink field.** Display heading, then a real `<table>` |
+| 4 | How it works | Full-width display heading, then a four-column measured sequence |
+| 5 | Worth asking | `bg-canvas-sunken`. Header row, then a full-width disclosure list |
+| 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
 
-**The Studio Manifesto section's code panel (`HomePage.tsx`, `manifestoCodeLines`) is a real, verbatim excerpt of this repo's own `Button.tsx`, not a fabricated example.** It's manually tokenized into `{ text, cls }` pairs and rendered as colored `<span>`s rather than pulled in through a syntax-highlighter package — a static 12-line snippet doesn't justify shipping a highlighting library to every visitor. If you ever change `Button.tsx`'s `ButtonProps` interface, keep this snippet in sync or it becomes a (small) case of the site showing code that no longer exists.
+The hero is the only place the type is allowed to be the whole composition
+(`--text-hero`, ~121px at 1440). It is deliberately **two lines, not three**: a third line pushes
+the specimen strip below the fold on a 14–15" laptop, and the strip is the payoff for the headline.
+The whole hero — headline, lead, CTA and strip — fits inside 780px of viewport height; check that
+again if any of its type or padding changes.
 
-**The section's heading/subhead copy (just above the code panel) was deliberately reframed from developer-facing process pride to client-facing business outcomes** — a homepage SEO audit flagged the original "No templates. No slow page builders. Just fast, modern code." as talking to developers, not the buyer persona evaluating vendors. It now reads "Built to load fast, stay maintainable, and never lock you in." with copy connecting hand-coded React/TypeScript to load speed, extensibility, and avoiding proprietary-platform lock-in. The code panel itself (and its real, verbatim `Button.tsx` excerpt) is unchanged — it's still the genuine differentiator, just now supporting an outcome-led pitch instead of a tooling-led one.
+Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
+large because a list of four small links was the most documentation-like block on the page; the
+process heading is set large because three sections opening with heading-left/thing-right in a row
+is the composition reading as a template, and "an hour of your time" is the strongest claim after
+the hero. Section 4 also inverts its own hierarchy on purpose — what the project costs the client in
+time is set larger than what we do.
 
-**The section's opening paragraph (the one beginning "We hand-code every site in React...") conditionally renders either a plain `<p>` or a `ScrollRevealParagraph` component (local to `HomePage.tsx`)** — the call site in the manifesto section checks `prefersReduced` and renders a static paragraph when reduced motion is on, or the scroll-reveal component when it's off. This ensures the scroll-tracking component is never mounted at all under `prefers-reduced-motion`, meaning zero scroll listener is attached (not just a visually-static early return within a mounted component). When motion is enabled, `ScrollRevealParagraph` pairs with `ScrollRevealWord` children to deliver a scroll-position-linked (not scroll-speed-linked) word-by-word brightness reveal as the paragraph scrolls into view. Each word brightens from 50% to 100% opacity as the page's scroll position moves the paragraph's own bounding box from 85% to 35% of the viewport height (via `useScroll` with offset `['start 0.85', 'start 0.35']`). Each word gets its own component instance and `useTransform` call to comply with React's rules of hooks (calling `useTransform` directly inside a `.map()` loop would be invalid). **Two details here are accessibility requirements, not styling preferences.** (1) The opacity floor is `0.6`, not a dimmer value: because the reveal is scroll-*position*-linked, a reader who stops scrolling mid-paragraph leaves the tail words parked at the floor indefinitely — that's a resting state, not a transient animation frame, so it has to clear WCAG AA (4.5:1) on its own in *both* themes. `0.35` composited `text-fg` over `--color-canvas` at only ~3.3:1 in either theme; an intermediate `0.5` fix cleared dark (~5.1:1) but still only reached ~3.7:1 in light theme — `0.6` is the value that actually clears AA in both (~5.3:1 light, higher in dark). Don't lower it below that without rechecking both themes' contrast math, not just dark's. (2) Words are separated by a **real trailing space character** after each span (`<ScrollRevealWord … />{' '}`, with the `key` on a wrapping `React.Fragment`), not by a CSS `mr-[Nem]` margin — a margin looks identical but makes selecting/copying the paragraph yield a run-together string and risks the accessible name computing as one token. This matches the hero headline's own word-stagger pattern in the same file. This is the one intentional scroll-tied text effect on the homepage — deliberately not reused elsewhere, per the "spend your boldness in one place" convention.
+The page **ends inside the form**. That is why `Footer` no longer carries a CTA band — pointing at a
+contact page from underneath a contact form was asking twice.
 
-**The right-hand "Studio Philosophy" panel now opens with a bled-to-the-edge stock photo accent** — an `<img>` rendering `public/manifesto/workspace-accent.webp` (a grayscale workspace photo, 1100×480px), positioned with negative margins (`-mx-6 sm:-mx-8` and `-mt-6 sm:-mt-8`) to pull it to the panel's edges; the `width` calc (`w-[calc(100%+3rem)] sm:w-[calc(100%+4rem)]`) compensates for the panel's `p-6 sm:p-8` padding so it reaches flush to the borders (3rem = 2×1.5rem, 4rem = 2×2rem for the combined left+right padding at each breakpoint). The image is marked `aria-hidden` and uses `grayscale-[90%]` to stay a background accent rather than stealing focus. The enclosing two-column grid is `items-start`, not `items-center` — the left column's large `<h2>` plus code panel and the right panel's photo made the two columns very different heights, and centering them left visible dead space above/below the shorter one on wide screens.
+Section 4's timeline was first built as a 2×2 grid of bordered cells and read as cards; it is now
+four columns each opening on their own `.measure` rule. If you find yourself reaching for a bordered
+box on this site, that is the pattern to reach for instead.
 
-**The hero's visual (`HomePage.tsx`, the `HeroSculpture` component next to the headline) is a single pre-rendered 3D sculpture of the Wibsity "W", `public/hero-sculpture-w.avif`, desktop-only (1024px+)** (25KB — re-encoded from an original WebP export at less than half the size with no visible quality loss; if this asset is ever regenerated, export to WebP first for editing/comparison, then re-encode the final crop to AVIF for production) — not a live WebGL/Three.js/React Three Fiber/Spline scene, and not the vertical mockup-tile marquee (`HeroTileBrowser`/etc.) that occupied this spot before it; that marquee, its four SVG tile components, and its `.marquee-track-vertical`/`.marquee-fade-vertical`/`@keyframes marquee-vertical` CSS were all removed outright when this replaced it. The asset is a transparent-background render of a continuous twisted-ribbon "W" form in dark obsidian/glossy-black material with restrained blue-violet edge lighting. An earlier, more abstract/fractured candidate (reading as a sculpture first and only resolving into a "W" after a beat) was tried and rejected as too slow to read as the brand mark — this version was chosen specifically because it's unambiguous at a glance (see this repo's session history for the full art-direction back-and-forth if the asset is ever revisited). It's a static image purely for performance — this codebase has never carried a 3D-engine dependency and the mobile-first-load priority throughout this file (LazyMotion, route-splitting, bundle-size gates) rules one out — so the only "3D-ness" comes from two motion layers on top of the still image: a spring-driven cursor tilt+translate (`rotateX`/`rotateY` plus a small paired `x`/`y`, capped at a few degrees/px, intensity falling off with distance from the object over a generous ~1100px radius so ordinary cursor movement near the hero actually reaches it, using the same `(pointer: coarse)` touch check `useLenis.ts` uses to skip itself on touch devices). The `window` `mousemove` listener behind this is itself perf-hardened two ways: it's rAF-batched (`requestAnimationFrame`, so at most one `getBoundingClientRect()` read + tilt calculation per frame, not per raw mousemove event — some mice/browsers fire well above 60Hz) and gated by an `IntersectionObserver` on the sculpture's own wrapper, so moving the mouse anywhere on the page while the hero is scrolled out of view (e.g. deep in Services/About/Contact content) costs nothing — the handler short-circuits on an `isVisibleRef` check before doing any work. And a scroll-linked translate/scale/opacity tied to the hero `<section>`'s own scroll progress via `useScroll`/`useTransform` (scale 1→0.45, opacity 1→0 — a deliberately pronounced, fully-fading zoom-out, not a subtle one). The `useScroll` offset is `['start start', 'center start']`, not `['start start', 'end start']` — mapping the full 0→1 transform range onto roughly the first half of the hero's scroll distance (scrollYProgress clamps at 1 past that point) so the fade/zoom completes noticeably faster while scrolling, rather than being spread thinly across the whole section and barely perceptible. Both motion layers are skipped under `useReducedMotion()`, which then renders a plain static `<img>` instead. **There is no mobile/tablet rendering of the sculpture at all** — `HomePage.tsx` gates the entire `<HeroSculpture>` block behind an `isDesktopViewport` boolean (`useState` initialized synchronously from `window.matchMedia('(min-width: 1024px)').matches`, kept in sync via that query's `change` listener — same pattern `useReducedMotion.ts` uses), rather than just hiding it with `hidden lg:flex`. This is deliberate: a CSS-hidden `<img>` still triggers a network fetch regardless of `display: none`, so a JS-gated conditional render is the only way to keep phones/tablets from downloading `hero-sculpture-w.avif` at all. The desktop visual column is sized `max-w-[26rem]`/`h-[28rem]` — scaled back down from a larger `max-w-[31.2rem]`/`h-[39rem]` (itself reached via two earlier size bumps from an original `max-w-xs`/`h-[26rem]`) once owner feedback flagged the hero as too tall to fit one 14–15" laptop viewport; see the headline-sizing note above. **The hero headline is capped at `lg:text-6xl` (no `xl` bump) and the section's vertical padding is `pt-24 pb-12`, both deliberately conservative** — an earlier pass pushed the headline to `lg:text-7xl xl:text-8xl` with `pt-32 pb-20` and a `h-[39rem]` sculpture, which owner feedback caught as too tall: the hero (headline through the "Start a Project" button) no longer fit in one view on a 14–15" laptop screen, only on larger monitors. Whenever this hero's type scale, padding, or the sculpture's `h-[28rem]` height changes again, check it against a realistic laptop viewport height (~800–950px), not just a large external display. The same classes appear twice in `HomePage.tsx` (the `prefersReduced` static `<h1>` and the animated `<m.h1>`) and must be kept identical. The manifesto section's `<h2>` heading was similarly bumped to `lg:text-6xl` (from `md:text-5xl` being its largest size), extending the same visual hierarchy reinforcement into the secondary headline — that one doesn't share the hero's `xl`-gating problem since it has no adjacent fixed-width column competing for space.
+## The design system (`src/index.css`)
+Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is
+commented at the level of *why*, not *what* — but the rules that matter most:
 
-`App.tsx` route-splits: `HomePage` is a static import (it's the landing route), every other page (`ServicesPage`, `AboutPage`, `ContactPage`, `NotFoundPage`) is `React.lazy()`-loaded behind a `<Suspense>` in `AnimatedRoutes`. This exists specifically to keep the initial `/` bundle small so the hero's entrance animation isn't competing with parsing/executing the rest of the site's JS on a slow mobile first-load — don't revert to eager imports for those pages without re-checking bundle size (`npm run build` warns if any chunk exceeds 500kB).
+**Nothing is a card.** No bordered boxes, no shadows, no gradients, no glows, no blur, no texture
+overlays, `border-radius: 0` everywhere. Rhythm comes from three grounds (`canvas`,
+`canvas-sunken`, and the inverted ink field) and from the measure rule.
 
-**That `<Suspense>`'s fallback renders a thin fixed-top accent-gradient bar (`.route-loading-bar`, `index.css`) while a lazy page chunk downloads**, instead of the plain blank canvas div it used to be. It's a pure CSS `@keyframes` sweep, not an `m`-driven component, deliberately — it has to start animating the instant a route changes, which can happen before the async-loaded `motionFeatures` chunk (see the Animation section) has resolved, so it can't depend on `LazyMotion` being ready. Reduced-motion gets a static full-width bar instead of the sweep, same pattern as `.marquee-track`.
+**`.measure` is the signature device** — a hairline marking a real section boundary with a short run
+of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
+than decorating the section, so it only appears where a boundary actually is. It is the thing you'd
+recognise without the logo.
 
-## Important shared components
-Actually used and consistent across pages — safe to extend:
-- `components/common/Button.tsx`, `SectionHeading.tsx`, `WhatsAppIcon.tsx`, `ScrollToTop.tsx`, `WhatsAppFab.tsx`, `Modal.tsx`, `StartProjectModal.tsx`
-- `components/layout/Navbar.tsx`, `Footer.tsx`
-- **`WhatsAppFab.tsx`** is a persistent floating WhatsApp button (`flex md:hidden`, `fixed` bottom-right, `z-30`) rendered once in `App.tsx` as a sibling of `Navbar`/`Footer`/`ScrollToTop`, on every route. It exists because the header's own WhatsApp button is `hidden md:flex` — below `md`, mobile visitors only had the header's small icon cluster, not a persistent one-tap CTA. It reuses `Button.tsx`'s primary-variant gradient/shadow classes verbatim (not a new visual pattern) and `CONTACT_INFO.whatsappUrl`. Deliberately icon-only, not a full-width sticky bar — that was an explicit choice, not an oversight, so don't "upgrade" it to a bar without checking first. It is **not** wired to the "Start a Project" flow below — WhatsApp stays the fast, low-friction channel everywhere except the Home hero and Contact page.
-- **`Modal.tsx`** is the site's first reusable dialog primitive (no Radix/headlessui dependency) — portals to `document.body` via `createPortal`, traps focus with Tab-cycling, restores focus to the trigger element on close, closes on backdrop click or Escape, and is `AnimatePresence`/`useReducedMotion()`-gated like everything else in the Animation section below. It has no built-in header/footer chrome; callers own their own layout inside `children`. **Gotcha that already bit this component once**: its focus-trap `useEffect` must depend on `[open]` only, never on the `onClose` callback itself — if a caller passes an inline (non-memoized) `onClose`, that reference changes on every parent re-render, and including it in the dependency array re-runs the effect on every keystroke inside the modal, which re-focuses the first focusable element and yanks focus away from whatever input the user is typing into. `Modal.tsx` avoids this by stashing the latest `onClose` in a ref (updated via its own small effect) and calling `onCloseRef.current()` from the Escape handler instead of closing over the prop directly.
-- **`StartProjectModal.tsx`** is the "Start a Project" conversational inquiry form rendered inside `Modal`. A 4-step flow — **name → phone → budget → project type** — driven by local `step`/`answers`/`phase` state (no external form library, no `<form>` element — steps are advanced via button `onClick`s and `AnimatePresence mode="wait"` transitions keyed by `step`). Steps 1 and 2 are single required text inputs (name, then phone — both required, since each is the only field on its step) with an explicit "Continue" button and Enter-to-advance wired via per-step `onKeyDown` handlers (`handleStep1KeyDown`/`handleStep2KeyDown`). Step 3 is a single-select budget chip group (`budgetOptions`, `src/data/projectInquiry.ts`) that auto-advances to step 4 on click, same pattern as the old step-1 project-type cards used to. **Step 4 (project type) is deliberately the one step that does not auto-advance/auto-submit on selection** — picking a card just sets `answers.projectType`, and a separate "Send inquiry" button (disabled until a type is picked) submits; this is intentional so the last action a user takes is an explicit, unambiguous "send", not an accidental tap-to-submit. `projectTypeOptions` (same data file) is a **standalone list, not derived from `servicesData`** — it includes an "E-commerce Website" option — now that `data/services.ts` has its own `ecommerce-store` entry ("E-commerce Store") the two happen to overlap in subject matter, but they're still independently maintained lists with no shared source, so don't assume this one tracks the Services page's offerings generally. Closing with any field non-empty routes through an inline `confirm-discard` phase (not a native `confirm()`) rather than closing immediately. Submits via `fetch` POST to `FORMSPREE_ENDPOINT` (`src/data/projectInquiry.ts`, `https://formspree.io/f/myeyjlye` — the real form), with `phase: 'submitting' | 'success'` and an inline retry-preserving error message on failure. Rendered from both `HomePage.tsx` (hero, replacing the old "Chat on WhatsApp" button) and `ContactPage.tsx` (replacing the old WhatsApp link-card), each page owning its own `isStartProjectOpen` state.
-- `utils/cn.ts` (clsx + tailwind-merge) — use this for all conditional/merged className logic
-- `hooks/useLenis.ts` (smooth scroll, exposes `window.__lenis` global consumed by `utils/scroll.ts`; dynamically `import('lenis')` inside the effect rather than a static top-level import, so the library isn't in the eager bundle — see the Animation section below) and `hooks/useReducedMotion.ts` (gates Lenis + motion; respect this when adding motion)
-- `SectionHeading.tsx` takes an `as?: 'h1' | 'h2'` prop (defaults to `'h2'`). **Every page's own top-of-page `SectionHeading` instance must pass `as="h1"`** — it's the page's only `<h1>` (see `ServicesPage.tsx`, `AboutPage.tsx`, `ContactPage.tsx` for the pattern; `HomePage.tsx` writes its own `<h1>` directly instead of using `SectionHeading` for the hero). Every other `SectionHeading` on a page should stay at the `h2` default so there's exactly one `h1` per route and no heading-level skip.
-- **`SectionHeading` no longer renders an eyebrow at all — the `tag` prop was removed entirely.** It used to render a `"/ TAG"` label above every heading (an earlier pass had already dropped a numeric `"01 / TAG"`-style prefix and the navbar's `"00"`–`"04"` numbers, leaving just the `"/ TAG"` text); a `/frontend-design` pass identified the eyebrow-label-above-every-heading pattern itself as one of the most common templated-AI-design tells and removed it site-wide, along with the hand-rolled (non-`SectionHeading`) eyebrow rows that duplicated the same pattern: `HomePage.tsx`'s hero ("00 / Studio Introduction") and manifesto teaser ("02 / Studio Manifesto"), and `AboutPage.tsx`'s "3.1 / Core Foundations" and "3.2 / Transparent Guidance" blocks. Headings now stand alone; every page's copy was checked to confirm no unique information (e.g. the hero eyebrow's "India" mention) was lost — it was already stated in the subhead directly below. This did **not** touch numbered step/process badges (`data/process.ts`, the Services methodology section) or the `service.index`/pillar-index catalog numbers (`data/services.ts`, `data/about.ts`) — those number real, fixed sets of content rather than decorating a page section, so they're deliberately out of scope. If you ever add a new page, do not reintroduce an eyebrow/tag row above its `SectionHeading` — the component has no prop for it anymore.
+**`.field-ink` remaps the whole semantic token set on itself**, not just two colours. `text-fg-muted`,
+`border-rule` and friends keep working inside it and land at the right contrast automatically. This
+matters more than it looks: the obvious way to dim text on an ink band is an opacity utility, but
+opacity composites against whatever is behind it, and this field is near-black in the light theme
+and paper in the dark one — a single `opacity-50` measures 4.6:1 in one theme and 3.15:1 in the
+other. **Do not use opacity utilities for text inside `.field-ink`.** Use the tokens.
 
-## Animation — LazyMotion, not bare `motion`
-**Every animated component imports `m` from `'motion/react'`, never `motion`.** `App.tsx` wraps the whole tree in `<LazyMotion features={loadMotionFeatures} strict>`, where `loadMotionFeatures` dynamically `import()`s `src/motionFeatures.ts` (which re-exports `domMax`). This exists purely for bundle size: Framer Motion's full animation engine is one of the largest contributors to the JS a page has to parse before first paint, and the site needs to load fast on a slow mobile connection. `strict` mode means a stray bare `<motion.div>` inside the tree throws at render time instead of silently working — that's intentional, it's the guardrail that catches anyone reverting to the old import by habit. `AnimatePresence` is still imported directly (it isn't part of the lazy-loaded feature set) and `useMotionValue`/`useSpring` (see `HomePage.tsx`'s `MagneticCTA`) are unaffected by any of this.
+`.field-ink` also sets `--color-accent` to its own foreground, which makes *the hue only appears on
+paper* a property of the system rather than a rule anyone has to remember.
 
-**Known gotcha — don't gate an `animate` prop behind a delayed state change.** Because the animation engine loads asynchronously, a component can render *before* it's ready. If something changes a motion component's `animate` prop (e.g. via a `useState` flipped inside a `useEffect`/`requestAnimationFrame`) before the engine finishes loading, the engine has no earlier prop value to diff against once it *does* load — the change is silently dropped and the element gets stuck at its `initial` state forever. This actually happened: `HomePage.tsx`'s hero headline used to gate its word-stagger behind a `headlineReady` state flipped via `requestAnimationFrame` (to guarantee the pre-animation frame painted first), and under LazyMotion this left the entire headline permanently invisible. Fixed by dropping the indirection — `initial="hidden"` / `animate="visible"` as static values, which LazyMotion resolves correctly whenever it finishes loading. If a future animation genuinely needs its `animate` target to change after mount, drive it from `whileInView` (IntersectionObserver-based, not timing-based) rather than a rAF/timeout-set state value.
+**The primary button is a field inversion**, never an accent fill — ink on paper in the light theme,
+paper on ink in the dark one, and it flips again inside `.field-ink`. This is why no CTA on the site
+glows or carries a gradient. The accent's five homes are: link underlines (`.link`), the focus ring,
+the specimen readout's figures, the availability dot, and the measure ticks.
 
-## Styling / design tokens
-**`src/index.css`'s `@theme` block is the authoritative Tailwind v4 token source** (colors, fonts, tracking) — it matches the actual fonts loaded in `index.html`.
+**Component classes live in `@layer components`, and they have to.** Unlayered CSS outranks every
+layered rule, so while `.btn` sat outside a layer it silently beat the utilities applied alongside
+it — `class="btn hidden sm:inline-flex"` stayed visible at every width because
+`.btn { display: inline-flex }` won against `.hidden`. The global reduced-motion reset at the bottom
+of the file deliberately stays *unlayered*: `!important` inside a layer has its precedence reversed,
+and that reset needs to beat everything.
 
-**Brand accent color**: extracted directly from the logo mark (`public/logo-mark.png`), not invented — `--color-accent` (`#4B50FE`), `--color-accent-light` (`#7C82FF`), `--color-accent-dark` (`#2432FC`), `--color-accent-fg` (`#F5F6FF`, for text on filled accent backgrounds). Used for `Button`'s `primary` variant (gradient `accent` → `accent-dark`, verified ≥5:1 contrast — do not fade toward `accent-light` in a button fill, that drops contrast below WCAG AA), interactive hover states/borders/glows, and the active nav indicator. Keep it restrained: it's a functional/interactive color, not a default decorative one — most of the page should stay the existing dark/neutral tokens (`canvas`, `canvas-subtle`, `canvas-surface`, `fg`, `fg-muted`, etc.), with accent reserved for the single primary action and brand touchpoints.
+### Colour tokens
+**The site is light only.** There is no theme toggle, no `:root[data-theme="dark"]` block, no
+`useTheme` hook, and `boot.js` no longer resolves a theme — it was removed so the monochrome
+foundation has to stand on its own, and so a colour direction can be layered onto these tokens
+deliberately rather than inherited from a second theme nobody was maintaining. If dark mode comes
+back it is a decision, not a restoration.
 
-**`font-mono` (`--font-mono`, JetBrains Mono/Space Mono) is reserved for actual code, data, or measurement — not a "technical-looking" costume for plain-English UI copy.** A `/frontend-design` pass found it applied to plain link/button text ("View Details", "Read Studio Principles", the Start-a-Project modal's "Back" link), Footer's copyright line, and — most on-the-nose — a Contact-page label literally formatted like a code comment (`// WHAT TO EXPECT`) for an ordinary marketing heading. All of these were switched to `font-sans`; genuine data (the email address in `ContactPage.tsx`, `data/process.ts`'s `STEP_01`-style step codes, the manifesto's real `Button.tsx` excerpt) keeps `font-mono`. If you're tempted to reach for `font-mono` on a new label, ask whether it's actually code/data/measurement first — if it's just a marketing phrase, use `font-sans`.
+Paper is `#edece6` (a cool limestone, deliberately not the warm cream that reads as a generic
+AI-design tell); ink is `#161a19`; the accent is petrol `#0e4b54`.
 
-**Accent is deliberately theme-invariant, which is why opacity modifiers on it are safe.** `--color-accent`/`-light`/`-dark`/`-fg` are not redefined in the `:root[data-theme="light"]` block (only `accent-light` gets a darker override, for text-legibility reasons — see below), so `bg-accent/6`, `border-accent/25`, `text-accent-light/80`, etc. compile to the same underlying hex in both themes. This is the one token family exempt from the `color-mix()` workaround described below for theme-swapped tokens — there's no "wrong baked value" risk when the color itself never changes. Two reusable at-rest (non-hover) accent patterns exist and should be reused rather than inventing new decoration language: a thin `bg-accent/NN` rule/bar (see `AboutPage.tsx`'s pillar-card top/bottom bars — `HomePage.tsx` used to carry an equivalent top-rule on its capability cards, but those cards were replaced by `ServiceShowcase` and the rule went with them), and the `.accent-glow` soft radial bloom (`index.css`, used behind the Home hero, the Home FAQ teaser, the Footer CTA band, and About's "Still have questions" strip) — both are opacity-tuned to stay a background presence, not a focal color. When adding accent to a previously-flat section, promoting an icon or one small text element from `fg-muted`/`fg` to `accent-light` is enough; don't add a second accent moment to the same card.
+Two tokens carry contrast maths in their comments and should not be nudged without redoing it:
+`--color-fg-subtle` (4.96:1 on canvas — an earlier `#6c7067` measured 4.09:1 and failed AA for the
+real text it carries) and `--color-rule-strong` (it draws input underlines and secondary-button
+borders, so it is a UI component boundary owing 3:1; the first value measured 2.07:1).
 
-**`.accent-glow` uses `mix-blend-mode: multiply` in light mode, normal (default) blending in dark mode — this is a deliberate theme split, not an oversight.** Plain alpha compositing is what makes it read as a glow against the dark canvas (a bright blue circle over near-black genuinely looks like a light source), but the identical math against a white canvas can only ever darken/tint it — at normal blend mode this read as a flat lavender smudge instead of depth, especially at the hero's larger opacity-20/30 sizes. `multiply` makes it behave like a soft color wash on light backgrounds instead, which is the effect that actually holds up there. If you add a new `.accent-glow` instance, check it in both themes — the two blend modes look meaningfully different, and "looks right in dark mode" is not evidence it looks right in light mode.
+### Typography
+Two families, from one host, in a deliberately inverted pairing: **Archivo** (grotesque) for
+headlines and all UI, **Newsreader** (serif) for body copy. A precise grotesque headline over warm
+serif paragraphs reads as *technical* and *considered* at once, which is the two things this studio
+sells, and it escapes the "big bold sans + small grey paragraph" default in one move.
 
-**Text set in `accent-light` needs full opacity to clear AA, decorative icons don't.** `text-accent-light` on the dark canvas is 6.19:1; at `/80` opacity it drops to 4.28:1, which fails the 4.5:1 text threshold (light theme's `/80` clears at 4.94:1, so this only bites on dark — always check both). A label like `HomePage.tsx`'s hero "stand out." emphasis span, or the process-teaser step numbers (`{step.step}`, e.g. "01" — not the `STEP_01`-style codes, those render on `ServicesPage.tsx` instead), is real text and needs full-strength `text-accent-light`. A purely decorative icon sitting beside its own label (the About FAQ footer's `HelpCircle`, a Services capability icon) only needs the 3:1 non-text ratio, so `/70`–`/80` is fine there — both clear 3:1 in both themes at those values.
+Headlines sit at **weight 550**, not 800/900. Large type is fine; shouted type is not. The scale is
+a perfect fourth over a 17px serif body, flattened at the top so display sizes stay usable on a
+laptop viewport, plus two display sizes used once each: `--text-hero` (the homepage headline) and
+`--text-index` (the service list). Both carry their own leading and tracking, because the defaults
+are far too loose at those sizes.
 
-**`--color-grid-line` (`HomePage.tsx`'s decorative hero background grid) is intentionally *not* the same distance from neutral gray in both themes.** It used to be — dark `#3f3f46` and light `#d4d4d8` were symmetric offsets from mid-gray — but at the grid lines' 0.4 stroke-opacity, that symmetric value was essentially invisible against a white canvas (near-white color deltas read far fainter than the same numeric delta near black; the dark version was plainly visible, the light version wasn't there at all). Light mode's value is now `#a1a1aa`, chosen for *visible* parity with dark mode rather than *numeric* parity. If you ever touch this token, verify by looking at the rendered grid in both themes, not by comparing hex distance from `--color-canvas`.
+**Archivo is requested with its WIDTH axis** — `Archivo:wdth,wght@62..125,400..600` in index.html.
+That is not cosmetic: three separate effects animate `font-stretch`, and dropping the axis from the
+font URL kills all three silently, leaving the motion looking broken rather than absent.
 
-**`--color-status-positive` (`#34d399`)**: the "Accepting Projects" pulsing dot in `Navbar.tsx` and `ContactPage.tsx` used to be a raw `bg-emerald-400` Tailwind class in both places — the one color in the codebase living outside the token system, with no theme override and never contrast-checked. Same hex, now a real token (`bg-status-positive`); no light-theme override needed since it's always a small filled dot, not text.
+JetBrains Mono went with the decorative code panel it existed for; **there is no monospace face on
+this site.** If you want one for "technical" flavour, that is the costume the redesign removed.
 
-**`--color-status-negative` (`#f87171` dark / `#b91c1c` light)**: added from an `/impeccable colorize` pass that found `StartProjectModal.tsx`'s submission-failure banner was styled with `border-accent`/`bg-accent`/`text-accent-light` — the same brand blue-violet used for selected chips and primary CTAs, which reads as a positive/brand moment rather than an error. Unlike `status-positive`, this token needs both a light-theme override (contrast-checked: ~7.5:1 dark, ~6.2:1 light against canvas) and, because it's used for real text/icon color rather than just a dot, careful application of the `color-mix()` workaround described below for any opacity-modified use (`border-[color:color-mix(in_srgb,var(--color-status-negative)_40%,transparent)]`, not `border-status-negative/40`) — the error banner is the one place this token is used and follows that pattern.
+## Motion
+**The motion system has exactly one idea: type being set.** Letterforms carry the animation —
+Archivo's width and weight axes — rather than boxes sliding around. It appears in four places and
+nowhere else. There are still **no fade-up-on-scroll entrance reveals**; that pattern is why the
+first pass read as documentation with good typography.
 
-**Light/dark theming**: the site supports both themes via a token-swap, not a component-level `dark:` variant — every component already only ever references semantic tokens (`bg-canvas`, `text-fg`, `border-border-hairline`, etc.), so `src/index.css`'s `:root[data-theme="light"] { ... }` block is the *only* place light-mode colors are defined. `data-theme` is set on `<html>` by the parser-blocking first-party `public/theme-bootstrap.js` loaded from `index.html` (before first paint, to avoid a flash of the wrong theme) and kept in sync by `hooks/useTheme.ts`, which defaults to `prefers-color-scheme` until the viewer clicks the `ThemeToggle` in `Navbar.tsx`, at which point the explicit choice is persisted to `localStorage` (`wibsity-theme`) and the site stops following OS changes. Keeping that bootstrap external also lets the production CSP disallow inline JavaScript. When adding a new component, use the existing semantic tokens and it will re-theme for free — don't reach for a Tailwind `dark:` variant, which this codebase doesn't use anywhere. One Tailwind v4 gotcha to know: an opacity-modifier utility on a theme-swapped token (e.g. `bg-canvas/90`) compiles to a color-mix() with the literal value baked in, not a live var() reference, so it won't re-theme — use an arbitrary-value class instead, e.g. `bg-[color:color-mix(in_srgb,var(--color-canvas)_90%,transparent)]` (see `Navbar.tsx`'s scrolled-header background for a real example).
+1. **The headline sets itself on load.** Words wipe up from their own baselines, staggered 48ms,
+   while the line widens from 74% to 100%. Last word lands at ~1.05s.
+2. **Titles widen under the pointer** (`.widen`, 100% → 113%) — the service index, the FAQ
+   questions, the wordmark. The interaction is the letterform, not a colour change.
+3. **The hero compresses as it scrolls away** (`--hero-set`, 100% → 85% width plus a small lift).
+4. **Measure rules draw themselves** as their section arrives.
 
-**`useTheme()` is called independently in both `Navbar.tsx` and `Footer.tsx`** (each needs its own `theme` value to pick a logo asset — see below), and each call keeps its own local React state with no Context tying them together. That means `setTheme` alone would only update the caller's own state, leaving sibling components stale until a full reload. The hook fixes this by having `setTheme` broadcast a `wibsity-theme-change` `CustomEvent` on `window`, which every mounted `useTheme()` instance listens for and re-syncs from — if you ever call `useTheme()` from a third component, this is already handled, no extra wiring needed.
+Everything else is motion answering a user action: the disclosure, the form, the menu sheet, button
+and link hovers.
 
-**Logo assets are theme-swapped, not CSS-recolored**: `public/logo.png` / `public/logo-mark.png` (dark-mode versions) and `public/logo-light.png` / `public/logo-mark-light.png` (light-mode versions) are separate raster files — `Navbar.tsx` and `Footer.tsx` each pick `theme === 'light' ? '...-light.png' : '...png'`. The light variants exist because the original PNGs encode the wordmark almost entirely via alpha over near-white RGB (fine on the dark canvas, invisible on white); the light versions were generated by recoloring only the non-blue pixels to dark ink while leaving alpha and the blue accent gradient untouched. If the logo art ever changes, both light and dark PNGs need regenerating together — there's no single source of truth to derive one from the other automatically.
+**The gotcha that cost a build.** `.set-word` originally animated `font-stretch` itself, with
+`animation-fill-mode: both` — and a filled animation beats an inherited value, so once the headline
+had set, every word was pinned at 100% and the scroll compression never reached the glyphs. It
+*looked* correct because the h1 computed 85%; the spans holding the text never moved. Width now
+lives in one registered custom property (`@property --set-width`) that both motions feed into via
+`calc()` on `.hero-type`: the load animation drives `--set-width`, the scroll handler drives
+`--hero-set`, and neither can pin the other. **Never animate `font-stretch` from two places.**
 
-**Logo files are sized at ~2x their largest CSS display height (standard retina density), not full-bleed source resolution.** They used to ship at their original 938×296 (`logo*.png`) / 334×243 (`logo-mark*.png`) export size — 10–17x oversampled for a wordmark that only ever renders at `h-7` (28px) max, or `h-3.5` (14px) for the mark. An intermediate 4x pass (355×112 / 77×56) still tripped PageSpeed Insights' "oversized image" audit at the Footer's smaller `h-6` (24px) usage, since a single file sized for the *largest* consumer (Navbar) is inherently oversized relative to a *smaller* one (Footer) sharing the same file. Settled on a plain 2x multiplier — 178×56 / 38×28, ~15KB combined for four files, down from the original ~164KB — which is standard retina practice and clears the audit for both consumers without maintaining separate per-component file variants. The `width`/`height` attributes on every `<img>` using these files (`Navbar.tsx`, `Footer.tsx`) were updated to match — if the logo art is ever regenerated, re-export at ~2x-of-largest-display-size and update those attributes together, rather than dropping in a full-resolution source file.
+`--hero-set` is written from a rAF-batched scroll handler that is IntersectionObserver-gated and
+**quantised to twenty steps** — the property drives `font-stretch`, which re-shapes the line and
+re-instances the variable font, and that is real layout work not worth doing 60 times a second for
+0.75% of width per step.
 
-**`public/favicon-dark.png`** (opaque `#08080a` backdrop, not transparent) is the canonical source for every small *square* brand icon that renders outside the app's own theme control — `favicon.ico`, `favicon-96x96.png`, `favicon-32x32.png`, `favicon-16x16.png`, `apple-touch-icon.png`, and the JSON-LD `logo`/`image` fields in `index.html` (Google's Knowledge Graph wants a square brand mark there, so leave those two pointed at it — don't redirect them to `og-image.png` below). These all need an opaque background because they render in contexts the site's `data-theme` can't reach (browser tab chrome, JSON-LD, Google search results) — a transparent near-white mark disappears there regardless of the site's own theme. The old `public/favicon.svg` and `public/favicon.png` were unreferenced leftovers and have been deleted; don't recreate them.
+The measure draw is a **native scroll-driven CSS animation** (`animation-timeline: view()`) inside
+`@supports`, not an IntersectionObserver. No JavaScript, no per-frame work, and no failure mode: a
+browser without support simply renders the rule already drawn. Scroll-*position* linking is right
+here specifically because a half-drawn hairline is a harmless intermediate state — the same
+technique on a text reveal would strand words mid-sentence when someone stops scrolling.
 
-**`public/og-image.png`** (1200×630, opaque dark canvas) is the social link-preview card — `og:image` and `twitter:image` in `index.html` point at it, with matching `og:image:width`/`og:image:height`. It's a composed PNG (brand tokens, the real hero headline, the actual `og:description` copy, the wordmark), not the site favicon — WhatsApp/LinkedIn/X crawlers were previously served a stretched 512×512 favicon in a 1.91:1 card slot. It was generated by rendering an HTML file styled to the brand's `@theme` tokens and screenshotting it headlessly at exactly 1200×630 (no new project dependency needed — a locally installed Chromium browser did the rendering). If the hero headline, brand colors, or `og:description` ever change meaningfully, regenerate this asset to match rather than letting it drift stale.
+`.enter` and `.set-word` hold their `from` state during their delay, so a printed page would come
+out with an invisible hero — there is a `@media print` reset for exactly that.
 
-**There is no `tailwind.config.js`** — it was confirmed vestigial (never referenced via `@config`, defined conflicting duplicate tokens) and deleted. `src/index.css`'s `@theme` block is the only place to add or change tokens.
+### The construction overlay
+The hero's cursor moment, and the page's one genuinely experimental element. Moving the pointer
+across the hero looks through the finished page at the file underneath: the column guides and
+baseline grid the type is set on, inside a soft circular mask that follows the cursor with a
+hairline crosshair at its centre. It exists because it says something true about the work.
 
-**There is no `src/App.css`** — it was unused leftover Vite template boilerplate, never imported, and was deleted.
+Two repeating gradients under a radial mask — no SVG asset, no canvas, no per-frame layout read.
+`--cx`/`--cy` are registered with `@property` (an unregistered custom property is a string and would
+jump rather than travel) and written from a rAF-batched `pointermove` handler on the hero element,
+straight to `element.style` rather than through React state.
 
-**A film-grain texture sits over the whole site** via a `body::before` pseudo-element in `src/index.css` — an inline `feTurbulence` SVG data URI (no image asset, no network request), `pointer-events: none`, `mix-blend-mode: overlay`, opacity `0.035`. It exists purely so the flat dark canvas doesn't read as an empty void; it's intentionally theme-invariant (no separate light-mode value) since `overlay` blend mode already adapts to whatever's underneath. If you ever need to disable it for a specific page, do it by overriding `opacity` on that page's own root element rather than touching the global rule.
+It performs **one automatic sweep on load**, once the headline has set, then hands the guides over
+to the cursor — otherwise the best thing on the page sits undiscovered until someone happens to move
+the mouse. It renders nothing at all for coarse pointers or under reduced motion.
 
-## Mobile performance conventions
-- **`hooks/useLenis.ts` skips initializing Lenis on coarse-pointer (touch) devices**, not just on `prefers-reduced-motion` — mobile already has native momentum scroll, so running Lenis there is CPU/battery cost with no UX benefit. This check runs once at mount (`window.matchMedia('(pointer: coarse)')`), not live — it doesn't need to be, since a device's pointer type doesn't change mid-session in practice. `utils/scroll.ts`'s helpers already fall back to native `window.scrollTo`/`scrollIntoView` whenever `window.__lenis` is absent, so nothing else needs to branch on this.
-- **New `<img>` tags should get explicit `width`/`height`** (the image's real intrinsic pixel dimensions, not the display size — CSS still controls display size) to avoid layout shift, plus `decoding="async"`. Below-the-fold images (anything not visible on initial load, e.g. footer content) should also get `loading="lazy"`.
-- **Third-party font stylesheets load via the preload+swap pattern** in `index.html` (`rel="preload" as="style"` with `data-font-preload`) and are activated by the first-party `public/font-styles.js` helper, with a `<noscript>` fallback. This keeps them off the critical rendering path on a slow connection without requiring an inline `onload` handler, so the CSP can disallow inline scripts. Follow the same pattern if another external stylesheet is ever added.
+## Icons and the logo
+`components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
+with flat caps and mitred joints, matched to Archivo's terminals. A library's rounded caps read as a
+different hand next to this typeface. WhatsApp is the one exception: it is a filled brand glyph at
+its official proportions, because redrawing a channel icon in your own hand makes it unrecognisable.
+
+`components/common/Logo.tsx` draws the identity in code — `currentColor` throughout, so there is
+nothing to theme-swap. **The four theme-swapped logo PNGs are gone.** The mark is a geometric
+lowercase "w" sitting on a rule that runs past the letter on both sides — the same measure device
+the site is built on, so the smallest piece of the brand carries its structural idea.
+
+**The mark's geometry lives in three places that must agree**: `Logo.tsx`, `public/favicon.svg`, and
+`scripts/generate-brand-assets.mjs`. Redraw it in all three and re-run the generator.
+
+### The asset generator
+`scripts/generate-brand-assets.mjs` drives the locally installed Chrome, so there is no image
+dependency in `package.json`. Two things in it are hard-won:
+
+- Icons are rasterised by **drawing the SVG into a canvas and reading the data URL back out of the
+  DOM**, not by `--screenshot`. Chrome's headless screenshot silently produces a blank frame for
+  window sizes in roughly the 96–180px band (48 and 64 are fine, so are 256 and up), which shipped
+  two empty icons the first time it ran.
+- `favicon.ico` is assembled by hand from the generated PNGs — the ICO container is a 6-byte header
+  plus one 16-byte directory entry per frame, and every browser in use accepts PNG-encoded frames.
+
+`public/og-image.png` (1200×630) carries the real headline and the real `og:description` in the
+site's own type and colours. Regenerate it when either changes.
+
+### Buttons, and two ways to break them
+The primary action's hover is a fill wiping across from the left — the site's one gesture again —
+over a **solid resting background**. Both of those words are load-bearing:
+
+- **Every `.btn` label needs its own element.** `.btn-primary::before` is the fill and paints
+  straight over a bare text node. The masthead CTA spent a build rendering as an empty white box
+  for exactly this reason. `Button.tsx` wraps children for you; hand-rolled `.btn` markup must too.
+- **The wipe paints over a resting background, never instead of one.** An earlier version made the
+  button transparent and let the ::before *be* the fill. It looked identical and quietly meant the
+  label had no real background behind it — invisible under forced colours, and a genuine 1:1
+  reading for any contrast checker, which is how the page's own audit caught it.
+
+## Conversion
+The primary goal is the **project enquiry form** (`components/common/InquiryForm.tsx`); WhatsApp is
+secondary.
+
+The form is **one screen, on the page**, not a four-step modal wizard. Three things about it are
+deliberate and should not be undone:
+
+1. **It is not behind a modal.** A form you have to open converts worse than one you can already
+   see, and the homepage ends in it. `Modal.tsx` and `StartProjectModal.tsx` were deleted.
+2. **The order is inverted.** Project type → budget → name → phone. The old flow asked for a name
+   and phone number in steps one and two, before the visitor had said anything about the project and
+   so before there was any reason to hand over a phone number. Low-commitment questions first;
+   contact details last, once somebody is invested. The phone field says why it is being asked.
+3. **Validation runs on submit, not on keystroke.** Being told a field is wrong while still typing it
+   is the most irritating thing a form can do. The first invalid field takes focus and its message is
+   wired through `aria-describedby`.
+
+Chips wrap a visually-hidden radio input, so a group keeps real radio semantics and arrow-key
+navigation. Their focus ring uses `:focus`, not `:focus-visible` — submitting with nothing chosen
+moves focus there programmatically, and a programmatic focus does not reliably match
+`:focus-visible`, which would leave the person who triggered the error with no visible indication of
+where it is.
+
+**WhatsApp is available beside every call to action** — hero, form, services, about, footer, the
+mobile menu, and as a first-class channel on `/contact` — but the persistent floating button was
+removed. A FAB overpowers the primary journey, which the brief for the redesign explicitly ruled
+out. If it is ever wanted back, that is a business call, not a bug fix.
+
+## Responsive
+Mobile is designed, not stacked. The menu is a **full-height sheet** with the routes at display
+size, not a desktop dropdown squeezed into a phone. The comparison table switches its table elements
+to block layout below `md` and repeats the column headings inside each cell — two 40%-wide columns
+of running prose on a phone is unreadable.
+
+**The theme toggle is `hidden md:inline-flex` in the header and moves into the mobile sheet**, so the
+primary CTA keeps the header slot on a phone. Both do not fit at 390px, and dropping the CTA there
+would leave mobile visitors with no visible way to start until they had scrolled most of the page.
+
+**Check above-the-fold work against a realistic laptop viewport (~800–950px tall), not just a large
+external display.** This has bitten the hero before.
 
 ## Accessibility conventions
-- **Interactive elements target a 44×44px minimum tap area**, even when the visible glyph/text is smaller. The header icon buttons and `ThemeToggle` are literally `w-11 h-11` (44px); text links that need to stay visually compact (footer nav, inline "View Details"-style links) instead use a negative-margin/padding pair — e.g. `-my-3.5 py-3.5` — to expand the *hit* area without changing the *visual* size. Grep for `-my-` / `-mb-` combined with a matching `py-`/`pb-` to find the existing examples before inventing a new pattern.
-- **`fg-subtle` and `fg-faint` in `src/index.css`'s `@theme` block (and the light-theme override) are tuned to just clear WCAG AA (4.5:1) against `--color-canvas` specifically** — they were previously zinc-500/zinc-600 and read at 2.6–4.1:1, which failed AA for real text (section indices, step codes, footer copy — none of it is decorative). If you ever adjust these tokens, re-check contrast against both `--color-canvas` values; don't just eyeball it, the failure isn't visually obvious at a glance on a dark canvas.
-- **That tuning does not carry over to `--color-canvas-surface` or `--color-canvas-elevated`** — both are more saturated departures from canvas (lighter in dark mode, darker in light mode), so `fg-subtle`/`fg-faint` land at only ~3.1–4.6:1 against them depending on theme, worse in light mode. `HomePage.tsx`'s manifesto code panel (`bg-canvas-elevated` body, `bg-canvas-surface` header) was the one place this bit in practice — its unioned-type tokens and header labels used `fg-subtle`/`fg-faint` and read at 3.1–3.8:1 in light mode. Fixed by using `fg-muted` there instead, which clears AA on every canvas tier in both themes (≥5.2:1). Same fix applied to `ServicesPage.tsx`'s small step-number badge (also `bg-canvas-elevated`). If you add real text on `canvas-surface`/`canvas-elevated`, use `fg-muted` or stronger — don't reach for `fg-subtle`/`fg-faint` there without rechecking contrast.
-- **`--color-canvas-subtle` fails the same way, and it's the easier one to miss** — it looks close enough to `canvas` that `fg-faint` gets used on it by habit, but it measures ~4.48:1 dark / ~4.21:1 light, i.e. *just* under AA in both themes. This bit `HomePage.tsx`'s `01` section: the old service cards each set `bg-canvas` on themselves, which is the only reason `fg-faint` was safe on their `service.index` labels; when those cards were replaced by `ServiceShowcase`, the labels ended up sitting directly on the section's own `bg-canvas-subtle` and quietly dropped below AA. Both `service.index` spans (desktop list and mobile accordion) are `text-fg-muted` now. **Treat `fg-faint` as safe on `bg-canvas` only for regular-size text** — if a change moves existing `fg-faint` text onto a different canvas tier, that's a contrast regression even though nothing about the text itself changed. Large text (≥24px, or ≥18.66px bold — the WCAG "large text" threshold, whose easier 3:1 ratio `fg-faint` clears even on `canvas-subtle`/`-surface`/`-elevated`) is the one exception: `HomePage.tsx`'s inactive service-list titles are `text-fg-faint` at `text-3xl`/`xl:text-4xl` font-extrabold sitting directly on `bg-canvas-subtle`, and that's compliant — don't flag it as the same bug as the `service.index` labels next to it, which are small text and were fixed to `fg-muted` for exactly this reason.
+Audited at 390px and 1280px, in both themes, with every disclosure open: **zero contrast failures,
+no heading-level skips, exactly one `<h1>` per route, no horizontal overflow.** Keep it that way —
+the site claims accessibility as a standard on `/about`, so a regression here is a false claim, not
+just a defect.
 
-## Deployment
-Vercel is the primary deployment target. `vercel.json` enables clean URLs, removes trailing slashes, redirects `www.wibsity.in` to the apex `wibsity.in`, and adds response-hardening headers (including a CSP that permits only the site, required font hosts, Vercel Analytics, Google Analytics, and — since the "Start a Project" form's `fetch` submission is a `connect-src`-governed request, not a native form POST — `https://formspree.io` in `connect-src`; if the Formspree endpoint is ever swapped for a different provider or a same-origin `/api` route, update `connect-src` accordingly).
-
-**Google Analytics (gtag.js, measurement ID `G-2TCETV3EDR`) is wired into `index.html`, not as the inline snippet GA's setup UI hands out.** The CSP's `script-src` deliberately has no `'unsafe-inline'`, so the `dataLayer`/`gtag('config', ...)` init that GA normally ships as an inline `<script>` block instead lives in a first-party `public/gtag-init.js` file — same pattern as `theme-bootstrap.js`/`font-styles.js`. `index.html` loads the external `https://www.googletagmanager.com/gtag/js?id=...` script tag plus `/gtag-init.js`, both near the top of `<head>`. `vercel.json`'s CSP has `https://www.googletagmanager.com` in `script-src` and `https://www.googletagmanager.com`/`https://www.google-analytics.com`/`https://*.google-analytics.com`/`https://*.analytics.google.com` in `connect-src` to allow the pageview beacons gtag.js sends after loading. If the GA property/measurement ID ever changes, update the ID in both `index.html`'s script tag and `public/gtag-init.js`. **There is deliberately no catch-all SPA rewrite:** the Vite `generate-static-route-html` plugin emits crawlable `services.html`, `about.html`, and `contact.html` documents with route-specific metadata, while Vercel clean URLs serves them at `/services`, `/about`, and `/contact`; its native `404.html` handling therefore returns a real HTTP 404 for unknown paths. The plugin also emits route-level FAQ JSON-LD for `/about`. `public/_redirects` maps these known routes to their generated HTML and leaves all other requests as a 404 for the Netlify fallback.
-
-**Vercel Web Analytics is wired up via `@vercel/analytics/react`'s `<Analytics />`, rendered once in `App.tsx`** (a sibling of `<BrowserRouter>`, inside the `LazyMotion` boundary) — this is the plain-React package, not `@vercel/analytics/next` (the site is Vite, not Next.js). It needs no route-level wiring since it isn't tied to react-router. Adds ~1kB gzipped to the main bundle; in dev it logs `[Vercel Web Analytics] Debug mode is enabled` and sends no requests — real pageview data only starts flowing once a deploy lands on Vercel, no dashboard-side setup required beyond that.
+- **Interactive elements target 44×44px.** Where an element must stay visually compact, expand the
+  hit area with a negative-margin/padding pair (`-my-2.5 py-2.5`) rather than changing its size.
+  Grep for `-my-` next to a matching `py-` for the existing examples.
+- `--color-fg-subtle` is safe on `canvas` and `canvas-sunken`. Inside `.field-ink`, use the remapped
+  tokens rather than opacity — see the design-system section.
+- A skip link sits first in `App.tsx` and targets `<main id="main">`.
 
 ## SEO metadata
+**Every route's `<title>` and description exist in two places that must stay in sync: `index.html`
+and `routeSEO` in `src/data/seo.ts`.** `vite.config.ts`'s `generate-static-route-html` plugin stamps
+out `services.html` / `about.html` / `contact.html` / `404.html` from `routeSEO`, but it **skips
+`/`** — so the homepage's tags are only whatever is hardcoded in `index.html`, and a homepage copy
+change has to be made in both, byte-identical.
 
-**Every route's `<title>` and meta description exist in two places that must stay in sync: `index.html` and `src/data/seo.ts`'s `routeSEO` map.** `vite.config.ts`'s `generate-static-route-html` plugin reads the built `dist/index.html` as a template and stamps out `services.html`/`about.html`/`contact.html`/`404.html` with each route's own metadata from `routeSEO` — but it explicitly skips `/`, so the homepage's tags are never regenerated from `routeSEO['/']`; they're whatever is hardcoded directly in `index.html`. `hooks/useSEO.ts` (wired in `App.tsx`) then applies `routeSEO`'s values to `document.title`/meta description client-side on every route change, including `/`. This means a homepage copy change (title, description) has to be made in **both** `index.html` and `routeSEO['/']`, kept byte-identical — if they drift, the page shows one title in raw HTML/social previews and silently swaps to a different one the instant React hydrates, which is both a bad look and a "which title does Google actually index" ambiguity. Canonical URL and the OG/Twitter title tags are derived from the same `routeSEO`/`index.html` pair per-route by `createRouteHtml` and `useSEO`, so they track title/description automatically — but `og:description`/`twitter:description` are deliberately **not** kept in sync with `routeSEO`'s description; they carry their own separately-tuned marketing copy (see `index.html`'s `og:description` vs `meta[name="description"]` on `/` — different strings, on purpose) and `createRouteHtml` does overwrite them from `seo.description` for the generated routes, so don't assume they're independent everywhere, only on `/`.
+The homepage's JSON-LD is hardcoded in `index.html` for the same reason. The shared `@graph` carries
+`WebSite` and `ProfessionalService`; the homepage's `FAQPage` node lives in a **separate** script
+block (`id="home-faq-jsonld"`) so `createRouteHtml` can strip it by id from every other generated
+route.
 
-**The homepage's JSON-LD (the `@graph` array in `index.html`'s `<head>`) is hardcoded static HTML, not generated from any TypeScript data file** — same reasoning as above: `/` is the one route the static-HTML plugin doesn't touch. The shared `@graph` script carries `WebSite` and `ProfessionalService` nodes only. The homepage's `FAQPage` node lives in a **separate** script block right after it, `<script id="home-faq-jsonld" type="application/ld+json">`, specifically so `createRouteHtml` (`vite.config.ts`) can strip it by that `id` when generating any route other than `/` — `index.html`'s whole `<head>` is otherwise inherited verbatim by every generated route, and without this split the homepage's 3-question FAQ schema leaked into `services.html`/`contact.html`/`404.html` (where those FAQs aren't shown at all) and duplicated alongside `/about`'s own, different, dynamically-generated `FAQPage` node. Its 3 questions are a manual, byte-for-byte copy of `faqsData[0]`–`faqsData[2]` (`src/data/faqs.ts`) — the same 3 FAQs `HomePage.tsx`'s `04 / FAQ Teaser` section renders via `faqsData.slice(0, 3)`. If those first 3 FAQ entries are ever edited or reordered, this JSON-LD block must be updated in the same change, or the structured data will describe content the page no longer visibly shows. `/about`'s FAQPage schema is different and unaffected by this — it's generated dynamically from the full `faqsData` array by both `useAboutFaqJsonLd()` (`App.tsx`, client-side) and `generateStaticRouteHtmlPlugin`'s `aboutFaqJsonLd` (`vite.config.ts`, build-time), so it never needs manual syncing.
+**That block's three questions are now checked at build time.** `assertHomeFaqJsonLdMatches` in
+`vite.config.ts` compares it against `faqsData.slice(0, 3)` and fails the build with the exact
+mismatch if they drift. This replaced a comment asking a future editor to remember, and it caught a
+real drift (a straight apostrophe against a curly one) the first time it ran. **Prose in
+`src/data/*.ts` uses curly apostrophes** — the files use single-quoted TS strings, so a straight one
+terminates them.
+
+`/about`'s FAQPage schema is generated from the full `faqsData` array in both `App.tsx` and the vite
+plugin, so it never needs manual syncing.
+
+## Deployment
+Vercel. `vercel.json` enables clean URLs, strips trailing slashes, redirects `www` to the apex, and
+sets response-hardening headers including a CSP with no `'unsafe-inline'` in `script-src` — which is
+why the head's setup code is a first-party file rather than an inline block. `connect-src` permits
+`https://formspree.io` for the enquiry form's `fetch`; update it if that endpoint ever changes.
+Fontshare was removed from the CSP along with the fonts.
+
+**`public/boot.js` is the only first-party script in the head, and it does three jobs**: resolve the
+theme before first paint, initialise the GA dataLayer, and promote the preloaded font stylesheet.
+They were four separate files (`theme-bootstrap.js`, `gtag-init.js`, `font-styles.js` and
+`spa-redirect.js`), split apart purely because of that CSP constraint — which was quietly costing
+four blocking requests. The fourth, a GitHub Pages deep-link shim, was deleted outright: this project
+has no Pages workflow and no CNAME, and it deploys to Vercel with a Netlify fallback. The theme
+section of `boot.js` mirrors `hooks/useTheme.ts` exactly and the two must be changed together.
+
+**There is deliberately no catch-all SPA rewrite** — the static-route plugin emits crawlable
+documents and Vercel's native `404.html` handling returns a real HTTP 404 for unknown paths.
+`public/_redirects` mirrors this for the Netlify fallback.
+
+Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.html` plus the init in
+`boot.js`; the ID lives in both and must change together. Vercel Web Analytics renders once in `App.tsx`.
 
 ## Content guardrails
-- **Never claim code/IP ownership transfer to the client.** The site does not promise "100% code ownership," "full IP ownership," or that the client receives Wibsity's underlying reusable code/components/tooling. This was deliberately removed from the hero, manifesto, About principles, Contact page, the ownership FAQ, and the process/handover step — don't reintroduce it.
-- **Domain ownership stays an explicit, positive claim** ("Domain Ownership", "Always Yours" etc.) — the client does own their domain; that's the one ownership claim the site makes.
-- **Never fabricate clients, testimonials, or metrics.** Value/trust claims must trace back to real existing copy (turnaround time, fixed-scope process, founder-direct contact, etc.), not invented numbers.
-- **No unverified performance numbers ("&lt; 500ms", "sub-second load").** The site used to claim a specific load-time target in the hero value grid, the hero engineering panel, an About pillar, an About ethos badge, a Services deliverable, and the case-study footer — none of it was ever measured against the shipped bundle, and a bundle-size audit later found it wasn't true. Every spot except the hero value grid (see below) still carries **"Accessible by Default" / "WCAG AA"** instead — a real, checkable claim now that the contrast/heading/tap-target work has actually been done (see Accessibility conventions below). If you ever want to reintroduce a numeric speed claim, it needs a real Lighthouse/bundle measurement behind it, not an aspirational number.
-- **Exception: the Home hero value grid (`HomePage.tsx`, `valuePoints`) carries "Fast Loading" again, by deliberate owner request** — a conscious, explicit override of the rule above, not an accident to "fix." It's a qualitative word, not a numeric claim, and it replaced "Accessible By Default" there (that claim still stands on `/about`'s ethos badges and `/services`'s landing-page deliverables, so it isn't lost site-wide). Don't quietly revert this spot back to "Accessible by Default" — if the owner wants a numeric figure added here later, that still needs real measurement data first. **Note the override now covers two locations, not one**: the homepage's second value-reinforcement marquee ticker renders `valuePoints` verbatim, so "Fast Loading" is repeated there too. That's reused text from the same array, not new copy — but it does mean the claim appears twice on `/`, and any future decision to retire it has to touch the array once and remove it from both.
+- **Never claim code/IP ownership transfer to the client.** Domain ownership is the one ownership
+  claim the site makes, and it is stated positively.
+- **Never fabricate clients, testimonials, awards, metrics, years, or project counts.** There are
+  none. `/about` is designed to earn trust without them — by being specific and checkable, and by
+  stating the size of the operation in its first sentence rather than hiding it.
+- **No unverified performance numbers.** The specimen readout is measured; everything else is
+  structural. `data/studio.ts`'s comparison rows are the easiest place on the site to accidentally
+  write a claim that cannot be backed up — every row there is a fact about how the two things are
+  made, and it must stay that way.
+- The old "Fast Loading" owner override in the hero value grid is moot: the value grid, the
+  marquees that repeated it, and the whole `valuePoints` array are gone. The hero now makes a
+  measured claim instead of a qualitative one.
 
 ## Conventions for editing
-- Reuse `Button`, `SectionHeading`, `cn()`, and the layout components rather than reinventing patterns already established in `pages/*.tsx`.
-- Add design tokens to `src/index.css` `@theme` (there's no `tailwind.config.js` anymore).
-- `motion` (`motion/react`) is the only animation library in the project — `animejs` was removed after its two hero-grid effects were reimplemented with `motion`. Don't reintroduce it for new animation; use the `m` components via the existing `LazyMotion` boundary instead of importing bare `motion.*` — see the Animation section above, including the gotcha about state-gated `animate` props.
-- Preserve the reduced-motion gating pattern when adding new animation.
-- **One filled `primary` Button per CTA cluster.** Every other action in the same group should be `ghost` or a plain text link — don't stack multiple bordered/filled buttons of similar visual weight next to each other (this was a deliberate fix; don't regress it).
-- **Not every section needs to be a bordered `bg-canvas-subtle` card.** Several pages leaned on the same hairline-border-plus-padded-box treatment for every distinct block (service cards, CTA banners, FAQ footers, contact channels), which reads as visually flat/repetitive at page scale. `Footer.tsx`'s CTA banner is now a full-bleed band (`w-full`, own `border-b`, content constrained to `max-w-7xl` *inside* it) rather than a boxed card sitting inside the page's own `max-w-7xl` gutter — that's the reference pattern for breaking a section out when it deserves to read as a real section break rather than another rectangle in the stack. Reach for it deliberately, not on every section.
-- **`Footer.tsx`'s CTA banner only renders on `/`** (`useLocation().pathname === '/'` gates it) — every subpage already ends its own content with a direct-action CTA right above the shared footer, so repeating "Ready to build a website..." there was one CTA too many. `Footer` is a route-aware component now, not a static one; keep that in mind before adding more footer content that should vary by page.
+- Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
+  rather than inventing new ones.
+- Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
+- **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
+  plain `.link`.
+- Before adding a section, ask what question it answers that no existing section does. The page went
+  from eight blocks to six in the redesign and should not drift back.
+- Before adding motion, ask what user action it is answering. If the answer is "the page loaded" or
+  "the user scrolled", the answer is no.

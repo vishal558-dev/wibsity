@@ -1,238 +1,164 @@
-import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { m, AnimatePresence } from 'motion/react';
-import { Menu, X, Phone } from 'lucide-react';
-import { WhatsAppIcon } from '../common/WhatsAppIcon';
-import { Button } from '../common/Button';
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { LogoMark } from '../common/Logo';
+import { IconMenu, IconClose, IconWhatsApp } from '../common/icons';
 import { CONTACT_INFO } from '../../data/contact';
-import { smoothScrollToTop } from '../../utils/scroll';
-import { useTheme } from '../../hooks/useTheme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { ThemeToggle } from '../common/ThemeToggle';
 import { cn } from '../../utils/cn';
 
-const MOBILE_MENU_ID = 'mobile-nav-drawer';
+const MENU_ID = 'site-menu';
 
+const navLinks = [
+  { label: 'Services', to: '/services' },
+  { label: 'Studio', to: '/about' },
+  { label: 'Contact', to: '/contact' },
+];
+
+/**
+ * A sticky ink nameplate over a paper page.
+ *
+ * It uses the site's own inverted field rather than a new treatment, and it is
+ * the single strongest identity move on the page — the brand sits in a solid
+ * band of ink that travels with you, and everything below it is document. No
+ * backdrop blur and no translucent colour-mix background: the previous
+ * header's glass effect was both a generic tell and a per-frame compositing
+ * cost on every scroll event.
+ *
+ * The theme toggle is gone. The site is light only now, so there was nothing
+ * for it to switch, and the slot it occupied went to the CTA — the only
+ * control up here with a job.
+ *
+ * Nav links get a rule that draws in from the left on hover, the same gesture
+ * the section measures and the service index use. The active route's rule is
+ * simply already drawn.
+ *
+ * Mobile is not a stacked version of this. The menu button opens a full-height
+ * sheet with the routes set at display size — a composition designed for a
+ * thumb rather than a desktop dropdown squeezed into a phone.
+ */
 export const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const prefersReduced = useReducedMotion();
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
-  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png';
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  // Close the sheet on navigation. Derived during render rather than from an
+  // effect: reading it from the location (instead of each link's onClick) means
+  // it also closes on a browser back gesture, and adjusting the state here
+  // avoids the extra committed render an effect would cause.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
+    window.addEventListener('keydown', onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileMenuOpen]);
-
-  const navLinks = [
-    { label: 'Home', to: '/', end: true },
-    { label: 'Services', to: '/services' },
-    { label: 'About', to: '/about' },
-    { label: 'Contact', to: '/contact' },
-  ];
-
-  const whatsappUrl = CONTACT_INFO.whatsappUrl;
-
-  const handleNavClick = () => {
-    smoothScrollToTop(0.9);
-  };
-
-  const handleMobileNavClick = () => {
-    setMobileMenuOpen(false);
-    smoothScrollToTop(0.9);
-  };
+  }, [open]);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-[color:color-mix(in_srgb,var(--color-canvas)_90%,transparent)] backdrop-blur-md border-b border-border-hairline py-2.5 sm:py-3.5'
-          : 'bg-transparent py-3 sm:py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Brand Logo */}
+    <header className="field-ink sticky top-0 z-40">
+      <div className="mx-auto w-full max-w-[78rem] px-gutter">
+        <div className="flex h-16 items-center justify-between gap-6">
           <Link
             to="/"
-            onClick={handleNavClick}
-            className="flex items-center gap-3 group"
-            aria-label="wibsity home"
+            className="group flex h-16 items-center gap-2.5 shrink-0"
+            aria-label="wibsity — home"
           >
-            <img
-              src={logoSrc}
-              alt="wibsity"
-              width={178}
-              height={56}
-              decoding="async"
-              className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
-            />
-            {/* Dot alone below sm — the "Accepting Projects" text is cut for
-                space, but the availability signal itself (what WhatsApp
-                visitors on mobile actually check for) still shows. */}
-            <span className="inline-flex items-center gap-2 text-xs font-sans font-medium text-fg-muted pl-1" title="Accepting Projects">
-              <span className={cn('w-1.5 h-1.5 rounded-full bg-status-positive shrink-0', !prefersReduced && 'animate-pulse')} aria-hidden="true" />
-              <span className="hidden sm:inline">Accepting Projects</span>
-              <span className="sm:hidden sr-only">Accepting Projects</span>
+            <LogoMark size={24} />
+            <span
+              className="widen font-sans text-lg font-semibold lowercase leading-none"
+              style={{ letterSpacing: '-0.045em' }}
+            >
+              wibsity
             </span>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+          <nav className="hidden md:flex items-center gap-9" aria-label="Main">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
-                end={link.end}
-                onClick={handleNavClick}
                 className={({ isActive }) =>
-                  `text-xs font-sans tracking-wide transition-all flex items-center gap-1.5 py-1 relative ${
-                    isActive
-                      ? 'text-fg font-semibold'
-                      : 'text-fg-muted hover:text-fg font-medium'
-                  }`
+                  cn(
+                    'nav-link relative font-sans text-ui py-5 transition-colors',
+                    isActive ? 'text-fg is-active' : 'text-fg-muted hover:text-fg'
+                  )
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    <span>{link.label}</span>
-                    {isActive && (
-                      <m.span
-                        layoutId="activeNavIndicator"
-                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gradient-to-r from-accent to-accent-light"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </>
-                )}
+                {link.label}
               </NavLink>
             ))}
           </nav>
 
-          {/* Actions: WhatsApp Button */}
-          <div className="hidden md:flex items-center gap-2.5">
-            <ThemeToggle theme={theme} onToggle={toggleTheme} className="hidden md:flex" />
-            <Button
-              variant="primary"
-              size="sm"
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              icon={<WhatsAppIcon size={13} />}
-              className="text-xs"
-            >
-              WhatsApp
-            </Button>
-          </div>
+          <div className="flex items-center gap-2">
+            {/* The label needs its own element: `.btn-primary::before` is the
+                hover fill and paints over bare text nodes, which is exactly how
+                this button spent one build rendering as an empty white box. */}
+            <Link to="/contact" className="btn btn-primary btn-sm">
+              <span>Start a project</span>
+            </Link>
 
-          {/* Mobile Quick Action Icons */}
-          <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 shrink-0 border border-border-hairline bg-canvas-surface text-fg hover:border-fg transition-colors flex items-center justify-center"
-              aria-label="WhatsApp wibsity"
-            >
-              <WhatsAppIcon size={16} />
-            </a>
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-11 h-11 shrink-0 text-fg-muted hover:text-fg border border-border-hairline bg-canvas-surface flex items-center justify-center cursor-pointer transition-colors overflow-hidden"
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={mobileMenuOpen}
-              aria-controls={MOBILE_MENU_ID}
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="md:hidden w-11 h-11 -mr-3 inline-flex items-center justify-center text-fg"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls={MENU_ID}
             >
-              {/* Rotate+crossfade instead of an instant icon swap — same
-                  small acknowledgment-of-click fix applied to ThemeToggle
-                  and AboutPage's FAQ Plus/Minus trigger. */}
-              <AnimatePresence mode="wait" initial={false}>
-                <m.span
-                  key={mobileMenuOpen ? 'close' : 'open'}
-                  initial={prefersReduced ? false : { opacity: 0, rotate: -90, scale: 0.6 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={prefersReduced ? undefined : { opacity: 0, rotate: 90, scale: 0.6 }}
-                  transition={{ duration: prefersReduced ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex"
-                >
-                  {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
-                </m.span>
-              </AnimatePresence>
+              {open ? <IconClose /> : <IconMenu />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <m.div
-            id={MOBILE_MENU_ID}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden bg-canvas-surface border-b border-border-hairline px-4 pt-4 pb-6 overflow-hidden"
-          >
-            <nav className="flex flex-col space-y-3">
+      {/* Full-height sheet, not a dropdown. Rendered inside the header so it
+          inherits the sticky context and needs no portal. */}
+      {open && (
+        <div
+          id={MENU_ID}
+          className="field-ink md:hidden fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto"
+        >
+          <div className="mx-auto w-full max-w-[78rem] px-gutter py-10 flex flex-col h-full">
+            <nav className="flex flex-col" aria-label="Main">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
-                  end={link.end}
-                  onClick={handleMobileNavClick}
                   className={({ isActive }) =>
-                    `flex items-center justify-between py-2 border-b border-border-hairline text-sm font-sans ${
-                      isActive ? 'text-fg font-semibold' : 'text-fg-muted hover:text-fg'
-                    }`
+                    cn(
+                      'measure font-sans text-2xl py-6 tracking-tight',
+                      isActive ? 'text-fg' : 'text-fg-muted'
+                    )
                   }
                 >
-                  <span>{link.label}</span>
+                  {link.label}
                 </NavLink>
               ))}
-              
-              {/* Clean Call & WhatsApp Buttons in Mobile Drawer */}
-              <div className="pt-3 space-y-2">
-                <Button
-                  variant="primary"
-                  size="md"
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full justify-center"
-                  icon={<WhatsAppIcon size={16} />}
-                >
-                  Chat on WhatsApp
-                </Button>
-                <Button
-                  variant="outline"
-                  size="md"
-                  href={CONTACT_INFO.phoneHref}
-                  className="w-full justify-center text-xs"
-                  icon={<Phone size={15} />}
-                >
-                  Call Us
-                </Button>
-              </div>
             </nav>
-          </m.div>
-        )}
-      </AnimatePresence>
+
+            <div className="mt-auto pt-10">
+              <a
+                href={CONTACT_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary w-full"
+              >
+                <IconWhatsApp size={17} />
+                <span>Message on WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

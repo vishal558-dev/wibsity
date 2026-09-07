@@ -7,17 +7,27 @@ export const CONTACT_INFO = {
   emailHref: 'mailto:wibsityofficial@gmail.com',
 };
 
-export const engagementPoints = [
+/**
+ * What happens after someone sends the form. This is the answer to the
+ * question a person is actually asking when they hesitate over a submit
+ * button — "what am I signing up for" — so it is stated next to the form
+ * rather than buried in a FAQ, and it is a sequence, which is why it is
+ * numbered.
+ */
+export const whatHappensNext = [
   {
-    title: 'Direct Founder Dialogue',
-    desc: 'You speak directly with the web engineer and designer building your site, never an account manager.',
+    step: '01',
+    title: 'A reply, usually the same day',
+    body: 'From the person who would build the site, not an intake form or a sales rep.',
   },
   {
-    title: 'Transparent Fixed Scope',
-    desc: 'Clear scope boundaries, deliverable checklists, and fixed pricing agreed upon before project start.',
+    step: '02',
+    title: 'One conversation',
+    body: 'Half an hour on a call or WhatsApp about the business and what the site has to do.',
   },
   {
-    title: 'Domain Ownership',
-    desc: 'Your domain is registered in your name and always yours — no lock-in.',
+    step: '03',
+    title: 'A written scope and a fixed price',
+    body: 'What is included, what it costs and the date it goes live. No obligation to accept it.',
   },
 ];

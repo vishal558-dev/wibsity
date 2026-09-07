@@ -1,94 +1,101 @@
 import type { Service } from '../types';
 
+/**
+ * Four services, down from five.
+ *
+ * "Custom Web Experiences & Features" was removed as a standalone entry: it
+ * described capability rather than a thing a person decides to buy, and next
+ * to four concrete offers it read as filler. Nothing left the offering — bespoke
+ * features are now stated as something layered onto any of these four, which is
+ * how they were actually sold anyway (see `customWork` below, rendered under
+ * the catalogue on /services and referenced from the homepage).
+ *
+ * The old entries also carried `scopeType`, `iconName`, `image` and a
+ * five-to-six-line `deliverables` list each. The icons went with lucide; the
+ * stock photography went with the redesign; the deliverables were trimmed to
+ * the five lines a buyer actually reads.
+ */
 export const servicesData: Service[] = [
   {
-    id: 'business-websites',
+    id: 'business-website',
     index: '01',
-    title: 'Business Websites',
-    tagline: 'Authoritative multi-page digital flagships built to build trust and capture inquiries.',
-    description: 'Comprehensive digital presences tailored for modern practices, consultancies, architectural studios, and commercial businesses. Structured with clear information architecture, high-grade typography, and deliberate conversion pathways.',
-    forWhom: 'Established companies & professional firms.',
-    deliverables: [
-      'Custom Multi-Page Architectural Design (Home, Services, About, Insights, Contact)',
-      'Responsive Mobile-First Frontend Engineering',
-      'Content Management System (CMS) Integration for Easy Updates',
-      'Technical SEO Structure & Semantic Metadata',
-      'Contact & Intake Lead Routing Integration',
+    title: 'Business website',
+    summary:
+      'The main site for a business: a handful of pages covering what you do, who you are, and how to reach you.',
+    forWhom: 'Established businesses, clinics, firms and consultancies.',
+    problem:
+      'People look you up before they call you. If what they find is thin, dated, or awkward on a phone, you lose the enquiry before you knew it existed.',
+    includes: [
+      'Home, services, about and contact pages, structured around what you want people to do',
+      'Written and laid out for phones first, because that is where most of your visitors are',
+      'Enquiry form routed straight to your inbox or WhatsApp',
+      'Search-engine groundwork: titles, descriptions, sitemap, structured data',
+      'An editable setup if you want to change your own copy later',
     ],
-    scopeType: 'Standard & Multi-Page Scope',
-    iconName: 'Layout',
-    image: '/services/business-websites.webp',
+    timeline: '3–5 working days',
   },
   {
-    id: 'landing-pages',
+    id: 'landing-page',
     index: '02',
-    title: 'High-Converting Landing Pages',
-    tagline: 'Focused single-page digital assets engineered to turn targeted traffic into qualified leads.',
-    description: 'Precision-engineered landing pages built for product releases, focused service campaigns, and marketing initiatives. Designed around clear visual hierarchy, direct value communication, and frictionless action triggers.',
-    forWhom: 'Founders launching a new service or campaign.',
-    deliverables: [
-      'Conversion-Optimized Section Architecture & Wireframing',
-      'Compelling Visual Hierarchy & Interactive Product Previews',
-      'Fast-Loading, Fully Accessible Page Build (WCAG AA)',
-      'Direct CRM / Form Webhook Integrations',
-      'A/B Testing Structure Readiness',
+    title: 'Landing page',
+    summary:
+      'One page with one job: turn the traffic you are already paying for into enquiries.',
+    forWhom: 'Anyone running ads, a launch, or a single focused offer.',
+    problem:
+      'Sending paid traffic to a general homepage wastes most of it. A visitor who arrived for one specific thing should land on that one specific thing.',
+    includes: [
+      'A single page built around one offer and one action',
+      'Copy structure and hierarchy worked out with you before anything is designed',
+      'Form or WhatsApp handoff, whichever converts better for your audience',
+      'Built light so it opens fast on mobile data',
+      'Ready to point a campaign at on day one',
     ],
-    scopeType: 'Focused Single-Page Scope',
-    iconName: 'Layers',
-    image: '/services/landing-pages.webp',
+    timeline: '2–4 working days',
   },
   {
-    id: 'website-redesigns',
+    id: 'redesign',
     index: '03',
-    title: 'Website Redesigns & Modernization',
-    tagline: 'Complete architectural and visual overhaul of existing websites that have fallen behind.',
-    description: 'We audit your existing web presence, eliminate clutter and technical debt, and transform slow, outdated layouts into sharp, modern, high-performing digital assets that reflect where your business is today.',
-    forWhom: 'Brands with an outdated or sluggish website.',
-    deliverables: [
-      'Comprehensive UX & Conversion Audit of Current Site',
-      'Modern Visual Identity & Design System Upgrade',
-      'Complete Codebase Modernization (Speed & Mobile Performance)',
-      'Zero-Loss URL Structure & SEO Migration',
-      'Streamlined Navigation & Content Refactoring',
+    title: 'Redesign',
+    summary:
+      'Replacing a site that has aged badly, runs slowly, or no longer matches the business behind it.',
+    forWhom: 'Businesses with a site they have stopped sending people to.',
+    problem:
+      'Most old sites are not broken, they are just embarrassing — heavy, cluttered, and clearly built years ago. That reads to a customer as neglect.',
+    includes: [
+      'A read of what is on the current site and what is worth keeping',
+      'A rebuild from scratch rather than a new skin on the old system',
+      'Existing page addresses preserved so you keep your search rankings',
+      'Content carried over and edited down, not just pasted across',
+      'A clean handover of the new site and the domain',
     ],
-    scopeType: 'Full Modernization Scope',
-    iconName: 'RefreshCw',
-    image: '/services/website-redesigns.webp',
+    timeline: '4–7 working days',
   },
   {
-    id: 'custom-experiences',
+    id: 'online-store',
     index: '04',
-    title: 'Custom Web Experiences & Features',
-    tagline: 'Tailored interactive tools, booking workflows, and client intake portals.',
-    description: 'When standard templates fall short, we build custom interactive web features that elevate your user experience—from interactive service configurators to seamless appointment flows and custom member portals.',
-    forWhom: 'Businesses with specialized workflow needs.',
-    deliverables: [
-      'Custom Interactive UI Logic & State Machines',
-      'Online Scheduling & Booking Engine Integration',
-      'Interactive Product/Service Visualizers & Calculators',
-      'Third-Party API & Webhook Data Pipelines',
-      'Secure Client Intake & Document Upload Flows',
+    title: 'Online store',
+    summary:
+      'A storefront that takes orders and payments, sized to the catalogue you actually have.',
+    forWhom: 'Businesses selling products directly rather than through a marketplace.',
+    problem:
+      'Marketplaces take a cut and own the customer. Selling from your own site means the relationship, the margin and the data stay with you.',
+    includes: [
+      'Product listings and categories set up around how you sell',
+      'Cart, checkout and a payment gateway wired end to end',
+      'Order notifications that reach you where you actually work',
+      'A product structure you can add to without a developer',
+      'Checkout tested on the phones your customers use',
     ],
-    scopeType: 'Tailored Interactive Scope',
-    iconName: 'Sliders',
-    image: '/services/custom-experiences.webp',
-  },
-  {
-    id: 'ecommerce-store',
-    index: '05',
-    title: 'E-commerce Store',
-    tagline: 'Product catalogs, checkout flows, and payment integration built to convert browsers into buyers.',
-    description: 'Complete online store builds — product listings, cart and checkout, secure payment processing, and inventory-ready structure — for businesses ready to sell directly through their website.',
-    forWhom: 'Businesses selling products online.',
-    deliverables: [
-      'Product Catalog & Category Architecture',
-      'Cart, Checkout & Secure Payment Integration',
-      'Inventory-Ready Product Data Structure',
-      'Order Notification & Fulfillment Workflow',
-      'Mobile-Optimized Shopping Experience',
-    ],
-    scopeType: 'Full Storefront Scope',
-    iconName: 'ShoppingCart',
-    image: '/services/business-websites.webp',
+    timeline: '5–10 working days',
   },
 ];
+
+/**
+ * The former fifth service, restated as an add-on. Kept as data rather than
+ * inline copy so /services and the homepage stay in step.
+ */
+export const customWork = {
+  title: 'Something that is not on this list',
+  body:
+    'Booking flows, calculators, client portals, intake forms that branch, a dashboard behind a login. These get built onto whichever of the four above is the right base, rather than sold as a separate product. If you can describe what should happen, it can usually be built.',
+};

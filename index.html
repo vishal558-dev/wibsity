@@ -1,96 +1,101 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Declared here, ahead of theme-bootstrap.js, so the script can find
-         and correct this tag's value before first paint if the resolved
-         theme is light — it can't run any earlier than this since it needs
-         the tag to already exist in the DOM. -->
-    <meta name="theme-color" content="#08080a" />
-    <!-- Sets data-theme and corrects the theme-color meta above before
-         first paint to avoid a flash of the wrong theme. Mirrors
-         src/hooks/useTheme.ts's resolution logic exactly (same localStorage
-         key, same matchMedia query) — it can't import that hook directly
-         because it must run before any JS bundle loads. -->
-    <script src="/theme-bootstrap.js"></script>
-    <!-- Google Analytics (gtag.js). The dataLayer/config init lives in the
-         first-party public/gtag-init.js file, not an inline <script> block,
-         since the CSP's script-src disallows 'unsafe-inline'. -->
+    <!-- The site is light only — there is no theme toggle and no dark
+         override — so this is a constant. -->
+    <meta name="theme-color" content="#edece6" />
+    <!-- One first-party file doing the three things that must happen in the
+         head: resolve the theme before first paint (so there is no flash of
+         the wrong one), initialise Google Analytics, and promote the
+         preloaded font stylesheet once it arrives. They are in a file rather
+         than an inline block because the production CSP has no
+         'unsafe-inline' in script-src — and in ONE file because that used to
+         cost four blocking requests. -->
+    <script src="/boot.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2TCETV3EDR"></script>
-    <script src="/gtag-init.js"></script>
-    <!-- Decodes GitHub Pages-style SPA redirects when using that static-host fallback. -->
-    <script src="/spa-redirect.js"></script>
-    <title>Web Design Company in India | Founder-Direct — wibsity</title>
-    <meta name="description" content="Fixed-scope, India-based web design — work directly with the founder building your site. No account managers, no outsourcing chains." />
-    <meta name="keywords" content="web design studio, web engineering, modern web design, website development, React web design, high-converting landing pages, website redesign, fast websites, wibsity" />
+
+    <!-- KEEP IN SYNC with routeSEO['/'] in src/data/seo.ts. The static-route
+         plugin regenerates every other route's tags from that file but skips
+         "/", so these two are the homepage's only source of truth and they
+         must match byte for byte. -->
+    <title>wibsity — custom websites, built from scratch | India</title>
+    <meta
+      name="description"
+      content="A one-person web studio in India building custom websites by hand — no page builder, no bought theme. Fixed price agreed before we start, live in about a week."
+    />
     <meta name="author" content="wibsity" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-    <!-- Canonical URL -->
     <link rel="canonical" href="https://wibsity.in/" />
-    
+
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://wibsity.in/" />
     <meta property="og:site_name" content="wibsity" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:title" content="Web Design Company in India | Founder-Direct — wibsity" />
-    <meta property="og:description" content="Clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands. Direct founder collaboration and a clear, fixed-scope process." />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="wibsity — custom websites, built from scratch | India" />
+    <meta
+      property="og:description"
+      content="Every site starts as an empty file. A one-person studio in India, fixed price agreed before anything starts, live in about a week."
+    />
     <meta property="og:image" content="https://wibsity.in/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="wibsity — Web Design Studio in India | Founder-Direct Sites" />
-    
+    <meta property="og:image:alt" content="wibsity — every site starts as an empty file" />
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://wibsity.in/" />
-    <meta name="twitter:title" content="Web Design Company in India | Founder-Direct — wibsity" />
-    <meta name="twitter:description" content="Clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands." />
+    <meta name="twitter:title" content="wibsity — custom websites, built from scratch | India" />
+    <meta
+      name="twitter:description"
+      content="Every site starts as an empty file. A one-person studio in India, fixed price agreed before anything starts, live in about a week."
+    />
     <meta name="twitter:image" content="https://wibsity.in/og-image.png" />
-    
-    <!-- Favicons & App Icons.
-         favicon.ico bundles 16/32/48/96px frames; the explicit 96x96 <link>
-         is also here because Google's favicon guidelines specifically want
-         a linked (not just ICO-embedded) icon at >=48px, recommending 96px
-         for retina — see CLAUDE.md's favicon note. -->
+
+    <!-- Favicons & app icons. All generated from the same logo mark that
+         components/common/Logo.tsx draws; see scripts/generate-brand-assets.mjs.
+         They need an opaque background because they render in contexts the
+         site's data-theme cannot reach — tab chrome, search results, JSON-LD. -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Fontshare: General Sans & Satoshi (Premium Modern Grotesks)
-         Google Fonts: JetBrains Mono for supporting technical metadata
-         Loaded via the preload+swap pattern so these third-party stylesheets
-         don't block the initial paint on a slow mobile connection — the
-         browser fetches them in parallel with everything else, then swaps
-         them in as regular stylesheets once ready. The <noscript> fallback
-         covers the no-JS case. font-display=swap in each URL still governs
-         in-page text visibility while each font family itself loads. -->
-    <link rel="preconnect" href="https://api.fontshare.com" />
+    <!-- Two families, one host. Archivo is requested with its WIDTH axis
+         (wdth 62..125) as well as weight, because the site animates letterform
+         width — the headline sets itself on load, section titles widen on
+         hover, and the hero compresses as it scrolls away. Dropping the axis
+         silently kills all three. Archivo carries headlines and UI, Newsreader
+         carries body copy; the site's third face (JetBrains Mono) went with
+         the decorative code panel it existed for, and Fontshare went with
+         General Sans and Satoshi — one fewer origin to connect to.
+
+         Loaded with the preload+swap pattern so it does not block first paint
+         on a slow connection; boot.js promotes it once it arrives, and the
+         <noscript> covers the no-JS case. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       rel="preload"
       as="style"
-      href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
       data-font-preload
     />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      data-font-preload
-    />
-    <script src="/font-styles.js"></script>
     <noscript>
-      <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
+        rel="stylesheet"
+      />
     </noscript>
 
-    <!-- JSON-LD Structured Data Schema -->
+    <!-- Structured data. WebSite + ProfessionalService only; the homepage's
+         FAQPage node is a separate block below so the static-route plugin can
+         strip it by id when generating the other routes. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -100,80 +105,65 @@
           "@id": "https://wibsity.in/#website",
           "url": "https://wibsity.in/",
           "name": "wibsity",
-          "description": "Digital Design & Web Engineering Studio",
-          "publisher": {
-            "@id": "https://wibsity.in/#organization"
-          },
-          "inLanguage": "en-US"
+          "description": "A one-person web studio in India building custom websites by hand.",
+          "publisher": { "@id": "https://wibsity.in/#organization" },
+          "inLanguage": "en-IN"
         },
         {
           "@type": "ProfessionalService",
           "@id": "https://wibsity.in/#organization",
           "name": "wibsity",
           "url": "https://wibsity.in/",
-          "logo": "https://wibsity.in/favicon-dark.png",
-          "image": "https://wibsity.in/favicon-dark.png",
-          "description": "wibsity is a modern web design and digital engineering studio building clean, fast, high-impact websites for businesses, founders, modern practices, and growing brands.",
+          "logo": "https://wibsity.in/logo-mark-512.png",
+          "image": "https://wibsity.in/logo-mark-512.png",
+          "description": "wibsity is a one-person web studio in India. Every site is written by hand from an empty file — no page builder, no bought theme — at a fixed price agreed before the project starts.",
           "telephone": "+918448948791",
           "email": "wibsityofficial@gmail.com",
           "priceRange": "$$",
-          "areaServed": {
-            "@type": "Country",
-            "name": "India"
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "IN"
-          },
+          "areaServed": { "@type": "Country", "name": "India" },
+          "address": { "@type": "PostalAddress", "addressCountry": "IN" },
           "openingHoursSpecification": [
             {
               "@type": "OpeningHoursSpecification",
-              "dayOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday"
-              ],
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
               "opens": "09:00",
               "closes": "20:00"
             }
           ],
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": "Web Design & Engineering Services",
+            "name": "Web design and development services",
             "itemListElement": [
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Business Websites",
-                  "description": "Authoritative multi-page digital flagships built to build trust and capture inquiries."
+                  "name": "Business website",
+                  "description": "The main site for a business: a handful of pages covering what you do, who you are, and how to reach you."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "High-Converting Landing Pages",
-                  "description": "Focused single-page digital assets engineered to turn targeted traffic into qualified leads."
+                  "name": "Landing page",
+                  "description": "One page with one job: turn the traffic you are already paying for into enquiries."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Website Redesigns & Modernization",
-                  "description": "Complete architectural and visual overhaul of existing websites that have fallen behind."
+                  "name": "Redesign",
+                  "description": "Replacing a site that has aged badly, runs slowly, or no longer matches the business behind it."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Custom Web Experiences & Features",
-                  "description": "Tailored interactive tools, booking workflows, and client intake portals."
+                  "name": "Online store",
+                  "description": "A storefront that takes orders and payments, sized to the catalogue you actually have."
                 }
               }
             ]
@@ -182,6 +172,10 @@
       ]
     }
     </script>
+    <!-- The three questions the homepage actually shows, copied by hand from
+         faqsData[0..2] in src/data/faqs.ts. Editing or reordering those three
+         means editing this block in the same change. Kept in its own script so
+         vite.config.ts can strip it by id from every other generated route. -->
     <script id="home-faq-jsonld" type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -190,33 +184,33 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How do you price projects and what is the typical engagement structure?",
+          "name": "Why not just use a template or a website builder?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We provide clear, fixed-scope proposals with no hidden fees. After an initial discovery conversation, you receive a detailed proposal outlining the exact scope, timeline, and investment."
+            "text": "For some businesses that is genuinely the right answer, and we will say so on the call rather than sell you something larger. What you give up is control. A template arrives carrying code for every feature its author imagined, most of which your site will never use, and every change afterwards happens inside somebody else’s rules. A built site contains what your site needs and nothing else, and it can be changed by editing it."
           }
         },
         {
           "@type": "Question",
-          "name": "What is the typical turnaround timeline for a project?",
+          "name": "How does pricing work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Typically 3–5 days for standard sites and 5–7+ days for advanced, customized builds. We work in focused sprints with direct founder communication, and every timeline is confirmed in writing before the project begins."
+            "text": "Fixed price, agreed in writing before anything starts. After one conversation you get a written scope, a number and a date. If you later want something outside that scope, it is quoted separately rather than absorbed into a bill you see at the end. There are no retainers and no hourly billing."
           }
         },
         {
           "@type": "Question",
-          "name": "Do I own my domain once the project is completed?",
+          "name": "How long does it take?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Your domain is registered in your name and is yours to keep, transfer, or manage independently — no lock-in, ever."
+            "text": "Three to five working days for a standard business site, longer for stores and anything with custom functionality. The dates are confirmed in writing before the project starts. What usually slows a project down is waiting on content, so we tell you exactly what we need from you at the start."
           }
         }
       ]
     }
     </script>
   </head>
-  <body class="bg-canvas text-fg antialiased selection:bg-fg selection:text-canvas overflow-x-hidden min-h-screen">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

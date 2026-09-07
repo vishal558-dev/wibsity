@@ -1,172 +1,90 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Phone, Mail } from 'lucide-react';
-import { WhatsAppIcon } from '../common/WhatsAppIcon';
-import { Button } from '../common/Button';
+import { Link } from 'react-router-dom';
+import { LogoMark } from '../common/Logo';
+import { IconWhatsApp, IconArrowUpRight } from '../common/icons';
 import { CONTACT_INFO } from '../../data/contact';
-import { smoothScrollToTop } from '../../utils/scroll';
-import { useTheme } from '../../hooks/useTheme';
 
+/**
+ * A quiet colophon, not a second call to action.
+ *
+ * The old footer carried a full CTA band on the homepage plus a 18vw ghosted
+ * "wibsity" wordmark at 6% opacity across the bottom of every page. Both are
+ * gone: the homepage now ends *in* the enquiry form, so repeating the pitch
+ * underneath it was asking twice, and giant decorative background typography
+ * was on the list of things this redesign set out to remove.
+ *
+ * What is left is the information a footer is for — where to go, how to reach
+ * a person, and who made this.
+ */
 export const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
-  const whatsappUrl = CONTACT_INFO.whatsappUrl;
-  const { theme } = useTheme();
-  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png';
-  const logoMarkSrc = theme === 'light' ? '/logo-mark-light.png' : '/logo-mark.png';
-  // CTA banner is homepage-only — every subpage (services/about/contact)
-  // already ends with its own SectionHeading + direct-action content right
-  // above this shared footer, so repeating the same pitch again here read
-  // as one CTA too many.
-  const { pathname } = useLocation();
-  const isHome = pathname === '/';
-
-  const handleLinkClick = () => {
-    smoothScrollToTop(0.9);
-  };
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border-hairline bg-canvas relative overflow-hidden">
-      {/* Upper CTA Banner — homepage only (see isHome above). Full-bleed
-          band rather than another boxed card, so it reads as a real section
-          break instead of one more bordered rectangle in the stack. */}
-      {isHome && (
-        <div className="w-full border-b border-border-hairline bg-canvas-subtle relative overflow-hidden">
-          <div className="accent-glow w-96 h-96 -top-32 -right-24 opacity-50" aria-hidden="true" />
-
-          <div className="absolute top-0 right-0 p-4 font-sans text-[10px] text-fg-faint uppercase tracking-wider hidden sm:flex items-center gap-1.5 font-semibold">
-            <span className="w-1.5 h-1.5 bg-accent inline-block" />
-            DIRECT INTAKE
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28 relative">
-            <div className="max-w-3xl">
-              <span className="font-sans text-xs font-semibold text-accent-light uppercase tracking-wider block mb-3">
-                Project Inquiry
+    <footer className="border-t border-rule">
+      <div className="mx-auto w-full max-w-[78rem] px-gutter py-14 sm:py-16">
+        <div className="grid gap-10 sm:gap-12 md:grid-cols-[1fr_auto] md:items-start">
+          <div className="max-w-sm">
+            <Link to="/" className="inline-flex items-center gap-2.5 -my-2.5 py-2.5" aria-label="wibsity — home">
+              <LogoMark size={22} />
+              <span
+                className="font-sans text-base font-semibold lowercase leading-none"
+                style={{ letterSpacing: '-0.045em' }}
+              >
+                wibsity
               </span>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-fg leading-tight">
-                Ready to build a website that sets your business apart?
-              </h2>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-lg text-fg-muted leading-relaxed">
-                We build for businesses and founders who want a site that's fast and looks right, not just a nice screenshot. Message us on WhatsApp, call, or check the contact page.
-              </p>
-
-              <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon={<WhatsAppIcon size={18} />}
-                  className="w-full sm:w-auto justify-center"
-                >
-                  Chat on WhatsApp
-                </Button>
-                <Link
-                  to="/contact"
-                  onClick={handleLinkClick}
-                  className="font-sans text-xs font-semibold text-fg-muted hover:text-fg underline underline-offset-4 transition-colors -my-3.5 py-3.5"
-                >
-                  or view contact details
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Footer Links Row */}
-        {/* No border-t here — the <footer> element's own top border (or,
-            on the homepage, the CTA banner's border-b just above) already
-            divides this from what comes before it; a second hairline this
-            close below read as a redundant double rule. */}
-        <div className="mt-12 sm:mt-16 flex flex-col md:flex-row md:items-start justify-between gap-8 pt-8 sm:pt-12">
-          <div className="space-y-3 max-w-xs">
-            <Link to="/" onClick={handleLinkClick} className="inline-block" aria-label="wibsity home">
-              <img
-                src={logoSrc}
-                alt="wibsity"
-                width={178}
-                height={56}
-                loading="lazy"
-                decoding="async"
-                className="h-5 sm:h-6 w-auto object-contain"
-              />
             </Link>
-            <p className="font-sans text-xs text-fg-muted leading-relaxed">
-              Digital design and web engineering studio for modern brands and growing practices.
+            <p className="mt-4 text-ui font-sans text-fg-muted leading-relaxed">
+              A one-person web studio in India. Custom sites, built from an empty file,
+              at a fixed price agreed before anything starts.
             </p>
           </div>
 
-          <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-1 font-sans text-xs text-fg-muted">
-            <Link to="/" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
-              Home
-            </Link>
-            <Link to="/services" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
-              Services
-            </Link>
-            <Link to="/about" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
-              Studio & FAQ
-            </Link>
-            <Link to="/contact" onClick={handleLinkClick} className="hover:text-fg transition-colors -my-3.5 py-3.5">
-              Contact
-            </Link>
-          </nav>
+          <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:gap-x-20">
+            <nav aria-label="Footer" className="flex flex-col gap-3.5">
+              <Link to="/services" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
+                Services
+              </Link>
+              <Link to="/about" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
+                Studio
+              </Link>
+              <Link to="/contact" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
+                Contact
+              </Link>
+            </nav>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-1 font-sans text-xs text-fg-muted">
-            <a
-              href={CONTACT_INFO.phoneHref}
-              className="flex items-center gap-2 hover:text-fg transition-colors -my-3.5 py-3.5"
-            >
-              <Phone size={13} className="text-fg-faint" />
-              <span>Call</span>
-            </a>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-fg transition-colors -my-3.5 py-3.5"
-            >
-              <WhatsAppIcon size={13} className="text-fg-faint" />
-              <span>WhatsApp</span>
-            </a>
-            <a
-              href={CONTACT_INFO.emailHref}
-              className="flex items-center gap-2 hover:text-fg transition-colors font-mono -my-3.5 py-3.5"
-            >
-              <Mail size={13} className="text-fg-faint" />
-              <span>{CONTACT_INFO.email}</span>
-            </a>
+            <div className="flex flex-col gap-3.5">
+              <a
+                href={CONTACT_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-ui text-fg-muted hover:text-fg transition-colors inline-flex items-center gap-2 w-fit -my-2.5 py-2.5"
+              >
+                <IconWhatsApp size={15} />
+                <span>WhatsApp</span>
+                <IconArrowUpRight size={13} className="text-fg-subtle" />
+              </a>
+              <a
+                href={CONTACT_INFO.phoneHref}
+                className="font-sans text-ui text-fg-muted hover:text-fg transition-colors tnum w-fit -my-2.5 py-2.5"
+              >
+                {CONTACT_INFO.phoneDisplay}
+              </a>
+              <a
+                href={CONTACT_INFO.emailHref}
+                className="font-sans text-ui text-fg-muted hover:text-fg transition-colors break-all w-fit -my-2.5 py-2.5"
+              >
+                {CONTACT_INFO.email}
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Legal and System Notice */}
-        <div className="mt-16 pt-8 border-t border-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-[11px] text-fg-faint">
-          <div className="flex items-center gap-2.5">
-            <img
-              src={logoMarkSrc}
-              alt=""
-              aria-hidden="true"
-              width={38}
-              height={28}
-              loading="lazy"
-              decoding="async"
-              className="h-3.5 w-auto object-contain opacity-75"
-            />
-            <span>© {currentYear} wibsity. All rights reserved.</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <span>Web design & engineering studio</span>
-          </div>
+        <div className="measure mt-14 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <p className="font-sans text-xs text-fg-subtle tnum">© {year} wibsity</p>
+          <p className="font-sans text-xs text-fg-subtle">
+            Designed and built in-house, which is rather the point.
+          </p>
         </div>
-      </div>
-
-      {/* Typographic Wordmark at bottom */}
-      <div className="w-full select-none pointer-events-none overflow-hidden flex justify-center py-4 opacity-[0.06] border-t border-border-hairline">
-        <span className="font-sans font-black text-[18vw] leading-none tracking-tighter text-fg lowercase">
-          wibsity
-        </span>
       </div>
     </footer>
   );

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/pages/HomePage.tsx"
+        ],
+        "createdAt": "2026-09-06T12:59:37.803Z",
+        "reason": "false positive: line is a code comment mentioning <img> in prose, not an actual tag; both real <img> elements in this file have valid src values (verified during /impeccable audit)"
+      }
+    ]
+  }
+}

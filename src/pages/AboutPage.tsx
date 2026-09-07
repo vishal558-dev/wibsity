@@ -1,206 +1,150 @@
 import React, { useState } from 'react';
-import { m, AnimatePresence } from 'motion/react';
-import { SectionHeading } from '../components/common/SectionHeading';
+import { Link } from 'react-router-dom';
+import { Section } from '../components/layout/Section';
+import { IconArrowRight, IconPlus, IconMinus, IconWhatsApp } from '../components/common/icons';
+import { standardsData, studioFacts } from '../data/studio';
 import { faqsData } from '../data/faqs';
-import { principlesData } from '../data/about';
-import { Plus, Minus, HelpCircle, Phone, Code, Sparkles, Accessibility, ShieldCheck } from 'lucide-react';
-import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { CONTACT_INFO } from '../data/contact';
-import { useReducedMotion } from '../hooks/useReducedMotion';
 
+/**
+ * The studio page.
+ *
+ * The old version led with "Practical engineering standards, not design fluff"
+ * over a textured panel about "high-contrast Swiss typography" and "The 3
+ * Non-Negotiable Pillars" — enterprise-agency register on a one-person studio,
+ * which reads as cover rather than confidence. This page does the opposite: it
+ * states the size of the operation first, in the first sentence, and treats it
+ * as the argument rather than the caveat.
+ *
+ * Nothing here is invented. There are no clients, testimonials, awards, years
+ * or project counts on this page because there are none to report; the trust
+ * has to come from being specific and checkable instead, which is what the
+ * facts list and the standards are for.
+ */
 export const AboutPage: React.FC = () => {
-  const prefersReduced = useReducedMotion();
-  const [activeFaqId, setActiveFaqId] = useState<string | null>(faqsData[0].id);
-
-  const toggleFaq = (id: string) => {
-    setActiveFaqId(activeFaqId === id ? null : id);
-  };
-
-  const whatsappUrl = CONTACT_INFO.whatsappUrl;
+  const [openFaq, setOpenFaq] = useState<string | null>(faqsData[0].id);
 
   return (
-    <div className="pt-32 pb-24 bg-canvas min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-24">
-        {/* Page Header */}
-        <div>
-          <SectionHeading
-            as="h1"
-            title="Practical engineering standards, not design fluff."
-            description="In an era where every company is discovered online, your website is your most critical commercial asset. We focus on fundamentals that help your business build trust and grow."
-          />
+    <>
+      <Section className="pt-6" tight>
+        <h1 className="text-3xl max-w-[16ch]">A studio of one.</h1>
+        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <p className="lg:col-span-6 text-lg leading-[1.55] text-fg">
+            wibsity is one person who designs and builds the site, answers the phone, and
+            is still there six months later when you want something changed. There is no
+            account manager between you and the work, because there is nobody to be one.
+          </p>
+          <p className="lg:col-span-5 lg:col-start-8 text-fg-muted leading-relaxed">
+            That is a genuine trade. You get the person doing the work, undivided, at a
+            price a studio with a floor of staff could not quote. What you do not get is a
+            team to absorb a bad week — so the calendar is kept short on purpose, and a
+            date that cannot be met is refused rather than quietly moved.
+          </p>
+        </div>
 
-          {/* Studio Manifesto Monograph */}
-          <div className="panel-texture border border-border-hairline bg-canvas-subtle p-6 sm:p-10 lg:p-16 relative overflow-hidden">
-            <div className="max-w-3xl space-y-6">
-              <span className="font-sans text-xs font-semibold text-fg-muted uppercase tracking-wider block">
-                The wibsity Ethos
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-fg tracking-tight leading-tight">
-                Built to replace bloated agencies and sluggish page builders.
-              </h2>
-              <p className="text-base sm:text-lg text-fg-muted leading-relaxed">
-                Most agencies trap businesses in bloated WordPress plugins, proprietary lock-ins, or slow drag-and-drop systems. We take an engineering-first approach: custom React and TypeScript architectures, high-contrast Swiss typography, and direct founder-level execution.
-              </p>
-              <div className="pt-4 flex flex-wrap items-center gap-4 sm:gap-6 font-sans text-xs text-fg-subtle">
-                <span className="flex items-center gap-2">
-                  <Sparkles size={14} className="text-accent-light" /> Swiss Editorial Aesthetic
-                </span>
-                <span className="flex items-center gap-2">
-                  <Accessibility size={14} className="text-accent-light" /> WCAG AA Accessible
-                </span>
-                <span className="flex items-center gap-2">
-                  <Code size={14} className="text-accent-light" /> No Page Builders
-                </span>
-                <span className="flex items-center gap-2">
-                  <ShieldCheck size={14} className="text-accent-light" /> Domain Ownership Included
-                </span>
-              </div>
+        <dl className="measure mt-16 pt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {studioFacts.map((fact) => (
+            <div key={fact.label}>
+              <dt className="font-sans text-sm text-fg-subtle">{fact.label}</dt>
+              <dd className="mt-2 font-sans text-lg text-fg">{fact.value}</dd>
             </div>
-          </div>
+          ))}
+        </dl>
+      </Section>
+
+      <Section ink aria-labelledby="standards-heading">
+        <h2 id="standards-heading" className="text-2xl max-w-[20ch]">
+          Three things every site gets, whatever it costs.
+        </h2>
+
+        <div className="mt-14">
+          {standardsData.map((standard) => (
+            <div
+              key={standard.id}
+              className="measure grid gap-4 lg:grid-cols-12 lg:gap-16 py-9 last:pb-0"
+            >
+              <h3 className="lg:col-span-4 font-sans text-xl">{standard.title}</h3>
+              <p className="lg:col-span-7 lg:col-start-6 text-lg leading-relaxed text-fg-muted max-w-[58ch]">
+                {standard.body}
+              </p>
+            </div>
+          ))}
         </div>
+      </Section>
 
-        {/* 3 Core Principles — literal pillars */}
-        <div>
-          <div className="mb-10 sm:mb-12">
-            <h2 className="text-2xl font-bold text-fg">
-              The 3 Non-Negotiable Pillars
+      <Section rule aria-labelledby="faq-heading">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
+            <h2 id="faq-heading" className="text-2xl max-w-[16ch]">
+              Questions worth asking before you hire anyone.
             </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-b border-border-hairline divide-y sm:divide-y-0 sm:divide-x divide-border-hairline">
-            {principlesData.map((p, idx) => {
-              const Icon = p.icon;
-              return (
-                <m.div
-                  key={p.index}
-                  initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-                  whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group relative flex flex-col items-center text-center px-6 sm:px-8 py-12 sm:py-14 bg-canvas-subtle hover:bg-canvas-surface transition-colors"
-                >
-                  {/* Capital */}
-                  <span
-                    className="absolute top-0 left-1/2 -translate-x-1/2 h-[3px] w-12 bg-accent/50 group-hover:bg-accent transition-colors"
-                    aria-hidden="true"
-                  />
-
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-border-hairline bg-canvas text-fg-muted group-hover:text-accent-light group-hover:border-accent/50 transition-colors">
-                    <Icon size={22} />
-                  </div>
-
-                  <span className="font-mono text-xs text-fg-faint mb-3">{p.index}</span>
-                  <h3 className="text-lg font-bold text-fg tracking-tight mb-3">{p.title}</h3>
-                  <p className="text-sm text-fg-muted leading-relaxed max-w-[15rem]">{p.desc}</p>
-
-                  {/* Base */}
-                  <span
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-12 bg-accent/50 group-hover:bg-accent transition-colors"
-                    aria-hidden="true"
-                  />
-                </m.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div>
-          <div className="mb-10 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-fg">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-sm text-fg-muted mt-2 max-w-xl">
-              Clear answers to scoping, turnaround expectations, domain ownership, and technical standards.
+            <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
+              Not just us. These are the ones that decide whether a website project goes
+              well, and the answers below are ours.
             </p>
           </div>
 
-          {/* Accordion */}
-          <div className="border-t border-border-hairline divide-y divide-border-hairline max-w-4xl mx-auto">
+          <div className="lg:col-span-7 lg:col-start-6">
             {faqsData.map((faq) => {
-              const isOpen = activeFaqId === faq.id;
+              const isOpen = openFaq === faq.id;
               return (
-                <div key={faq.id} className="py-5 sm:py-6 transition-colors">
-                  <button
-                    onClick={() => toggleFaq(faq.id)}
-                    className="w-full flex items-start justify-between text-left gap-4 group cursor-pointer py-1"
-                    aria-expanded={isOpen}
-                    aria-controls={`${faq.id}-panel`}
-                  >
-                    <h3 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-light transition-colors font-sans pr-2 leading-snug flex-1">
-                      {faq.question}
-                    </h3>
-
-                    <div className="p-1.5 sm:p-1 border border-accent/25 bg-canvas-surface text-accent-light group-hover:text-accent-fg group-hover:bg-accent group-hover:border-accent-dark shrink-0 transition-colors mt-0.5 overflow-hidden">
-                      {/* Rotate+crossfade instead of an instant icon swap —
-                          same small acknowledgment-of-click fix applied to
-                          ThemeToggle and the Navbar hamburger. */}
-                      <AnimatePresence mode="wait" initial={false}>
-                        <m.span
-                          key={isOpen ? 'minus' : 'plus'}
-                          initial={prefersReduced ? false : { opacity: 0, rotate: -90, scale: 0.6 }}
-                          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                          exit={prefersReduced ? undefined : { opacity: 0, rotate: 90, scale: 0.6 }}
-                          transition={{ duration: prefersReduced ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
-                          className="flex"
-                        >
-                          {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-                        </m.span>
-                      </AnimatePresence>
+                <div key={faq.id} className="border-t border-rule last:border-b">
+                  <h3>
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : faq.id)}
+                      aria-expanded={isOpen}
+                      aria-controls={`${faq.id}-panel`}
+                      className="w-full flex items-start justify-between gap-6 py-6 text-left font-sans text-lg text-fg cursor-pointer"
+                    >
+                      <span>{faq.question}</span>
+                      <span className="shrink-0 mt-1 text-fg-subtle">
+                        {isOpen ? <IconMinus size={18} /> : <IconPlus size={18} />}
+                      </span>
+                    </button>
+                  </h3>
+                  <div id={`${faq.id}-panel`} className="disclosure" data-open={isOpen}>
+                    <div>
+                      <p className="pb-7 pr-6 text-fg-muted leading-relaxed max-w-[62ch]">
+                        {faq.answer}
+                      </p>
                     </div>
-                  </button>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <m.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div id={`${faq.id}-panel`} className="mt-3.5 pr-2 sm:pr-8 text-sm sm:text-base text-fg-muted leading-relaxed font-sans">
-                          <p>{faq.answer}</p>
-                        </div>
-                      </m.div>
-                    )}
-                  </AnimatePresence>
+                  </div>
                 </div>
               );
             })}
           </div>
+        </div>
+      </Section>
 
-          {/* Still have questions — same soft brand-glow treatment as Home's
-              FAQ teaser and the Footer CTA band; this strip was otherwise the
-              one fully neutral block left on the page. */}
-          <div className="relative overflow-hidden mt-10 sm:mt-12 p-5 sm:p-6 border border-border-hairline bg-canvas-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl mx-auto">
-            <div className="accent-glow w-72 h-72 -bottom-32 -right-16 opacity-15 z-0" aria-hidden="true" />
-            <div className="relative z-10 flex items-center gap-3">
-              <HelpCircle size={20} className="text-accent-light/80 shrink-0" />
-              <span className="font-sans text-xs text-fg-muted font-medium">
-                Have a specific question not addressed above?
-              </span>
-            </div>
-            <div className="relative z-10 flex items-center gap-4 text-xs font-sans">
+      <Section rule aria-labelledby="about-cta">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
+          <h2 id="about-cta" className="lg:col-span-6 text-2xl max-w-[20ch]">
+            Still have a question that is not here?
+          </h2>
+          <div className="lg:col-span-5 lg:col-start-8">
+            <p className="text-fg-muted leading-relaxed max-w-[42ch]">
+              Ask it directly. You will get a straight answer, including when the answer
+              is that we are not the right fit.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Link to="/contact" className="btn btn-primary">
+                <span>Get in touch</span>
+                <IconArrowRight size={17} />
+              </Link>
               <a
-                href={whatsappUrl}
+                href={CONTACT_INFO.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-fg hover:text-fg-muted transition-colors flex items-center gap-1.5"
+                className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
               >
-                <WhatsAppIcon size={13} /> WhatsApp
-              </a>
-              <span className="text-border-hover">|</span>
-              <a
-                href={CONTACT_INFO.phoneHref}
-                className="font-semibold text-fg hover:text-fg-muted transition-colors flex items-center gap-1.5"
-              >
-                <Phone size={13} /> Call Us
+                <IconWhatsApp size={15} />
+                <span>or message on WhatsApp</span>
               </a>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Section>
+    </>
   );
 };
