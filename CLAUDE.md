@@ -91,8 +91,8 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 | 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
 | 2 | What we make | An index at display scale — the titles *are* the composition |
 | 3 | What you are choosing between | **Ink field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
-| 4 | How it works | Full-width display heading, then a connected rail of four steps |
-| 5 | Worth asking | `bg-canvas-sunken`. Header row, then a full-width disclosure list |
+| 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
+| 5 | Worth asking | No field — stays on paper. The list's own top rule carries the heading and the link; rows run full width |
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
 
 The hero is the only place the type is allowed to be the whole composition
@@ -121,9 +121,12 @@ as the table's block-layout fallback did before it.
 
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the
-process heading is set large because three sections opening with heading-left/thing-right in a row
-is the composition reading as a template, and "an hour of your time" is the strongest claim after
-the hero.
+process heading is set large because "an hour of your time" is the strongest claim after the hero.
+Section 4's opening is now inverted from the other heading-led sections — a small paragraph sits
+left (`lg:col-span-4`), the display `<h2>` sits right and right-aligned
+(`lg:col-span-7 lg:col-start-6 lg:text-right`) — specifically so it no longer opens the same way as
+section 2 or section 3; three sections in a row all leading with heading-left was itself reading as
+the composition being a template.
 
 The page **ends inside the form**. That is why `Footer` no longer carries a CTA band — pointing at a
 contact page from underneath a contact form was asking twice.
@@ -139,6 +142,18 @@ this section's previous "hierarchy inverted on purpose" device — what the proj
 in time set larger than what we do — and it no longer exists in that form; the number badge and step
 name now carry the section's visual weight instead. Below `lg`, where the steps stack in one column,
 a rotated arrow icon between steps carries the same flow idea in a shape that reads vertically.
+
+Section 4 also carries `field="sunken"` as of the grounds-table mapping — the first section on the
+page to use one of the three placeholder grounds for real. `.field-sunken` is still an empty rule in
+`src/index.css` (see above), so this is wiring ahead of Phase 2 rather than a visible colour change
+yet.
+
+Section 5's heading used to be a separate block above the disclosure list, sitting on
+`bg-canvas-sunken`. It has been rebuilt so there is no separate heading block and no field/tint at
+all — it stays on the page's own paper: the heading and the "All nine questions" link now sit inside
+the same wrapper as the list, above a `border-b border-rule-strong` that reads as the list's own
+opening rule, and the rows below it run full width (`max-w-[68ch]` on the list was removed; the
+per-answer paragraph's measure widened from `max-w-[62ch]` to `max-w-[72ch]` to use the extra width).
 
 ## The design system (`src/index.css`)
 Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is

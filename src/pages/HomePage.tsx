@@ -321,19 +321,23 @@ export const HomePage: React.FC = () => {
           in time is set larger than what we do, because that is the part worth
           reading and the part nobody else states.
           ------------------------------------------------------------------ */}
-      <Section rule aria-labelledby="process-heading">
-        {/* Set at display scale and full width rather than as another
-            heading-left / paragraph-right row: three sections in a row opening
-            the same way is the composition reading as a template, and this
-            claim — an hour of your time — is the strongest thing on the page
-            after the hero. */}
-        <h2 id="process-heading" className="reveal text-3xl max-w-[24ch]">
-          About a week. And about an hour of your time.
-        </h2>
-        <p className="mt-8 ml-auto text-fg-muted leading-relaxed max-w-[38ch] lg:text-right">
-          The parts that need you are short and specific. The rest happens without you
-          having to chase it.
-        </p>
+      <Section rule field="sunken" aria-labelledby="process-heading">
+        {/* Inverted from a heading-left / paragraph-right row: the small
+            paragraph sits left, the display heading sits right and
+            right-aligned, so this section no longer opens the same way as
+            "What we make" or "What you are choosing between". */}
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-start">
+          <p className="lg:col-span-4 text-fg-muted leading-relaxed max-w-[38ch]">
+            The parts that need you are short and specific. The rest happens without you
+            having to chase it.
+          </p>
+          <h2
+            id="process-heading"
+            className="reveal text-3xl lg:col-span-7 lg:col-start-6 lg:text-right"
+          >
+            About a week. And about an hour of your time.
+          </h2>
+        </div>
 
         {/* A connected sequence rather than four separate cards: a shared
             rail at lg carries a marker that travels the row as the section
@@ -376,13 +380,16 @@ export const HomePage: React.FC = () => {
           which turns an FAQ into a trust device, and puts objection handling
           directly above the ask.
           ------------------------------------------------------------------ */}
-      <Section rule className="bg-canvas-sunken" aria-labelledby="questions-heading">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
+      <Section rule aria-labelledby="questions-heading">
+        {/* No separate heading block: the list's own top rule carries the
+            heading and the link, and the rows run full width beneath it —
+            this stays on paper, unlike the process section above it. */}
+        <div className="flex flex-col gap-4 border-b border-rule-strong pb-6 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
           <div>
-            <h2 id="questions-heading" className="reveal text-2xl max-w-[22ch]">
+            <h2 id="questions-heading" className="reveal text-2xl">
               Worth asking whoever you hire.
             </h2>
-            <p className="mt-5 text-fg-muted leading-relaxed max-w-[46ch]">
+            <p className="mt-3 text-fg-muted leading-relaxed max-w-[46ch]">
               Including us. Here are the three that matter most, answered plainly.
             </p>
           </div>
@@ -392,7 +399,7 @@ export const HomePage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="mt-14 max-w-[68ch]">
+        <div>
           {homeFaqs.map((faq) => {
             const isOpen = openFaq === faq.id;
             return (
@@ -415,7 +422,7 @@ export const HomePage: React.FC = () => {
                 </h3>
                 <div id={`${faq.id}-panel`} className="disclosure" data-open={isOpen}>
                   <div>
-                    <p className="pb-7 pr-10 text-fg-muted leading-relaxed max-w-[62ch]">
+                    <p className="pb-7 pr-10 text-fg-muted leading-relaxed max-w-[72ch]">
                       {faq.answer}
                     </p>
                   </div>
