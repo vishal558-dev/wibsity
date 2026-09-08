@@ -1,8 +1,5 @@
 export interface Service {
   id: string;
-  /** Position in the catalogue. A real fixed set, so the number carries
-   *  information rather than decorating the heading. */
-  index: string;
   title: string;
   /** One plain sentence: what the thing actually is. */
   summary: string;
@@ -15,6 +12,9 @@ export interface Service {
   includes: string[];
   /** Real delivery window, matching what faqs.ts tells people. */
   timeline: string;
+  /** Compact delivery figure for the homepage index — "3–5 days". The long
+   *  form stays in `timeline` for /services. */
+  timelineShort: string;
 }
 
 export interface ProcessStep {

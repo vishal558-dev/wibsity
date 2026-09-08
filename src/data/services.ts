@@ -14,11 +14,15 @@ import type { Service } from '../types';
  * five-to-six-line `deliverables` list each. The icons went with lucide; the
  * stock photography went with the redesign; the deliverables were trimmed to
  * the five lines a buyer actually reads.
+ *
+ * Entries no longer carry `index`: the four services are a menu, not a
+ * sequence, and numbering a non-sequence encodes nothing. `timelineShort`
+ * (a compact delivery figure) replaced it on the homepage index instead —
+ * the one number in this data that is actually useful to read at a glance.
  */
 export const servicesData: Service[] = [
   {
     id: 'business-website',
-    index: '01',
     title: 'Business website',
     summary:
       'The main site for a business: a handful of pages covering what you do, who you are, and how to reach you.',
@@ -33,10 +37,10 @@ export const servicesData: Service[] = [
       'An editable setup if you want to change your own copy later',
     ],
     timeline: '3–5 working days',
+    timelineShort: '3–5 days',
   },
   {
     id: 'landing-page',
-    index: '02',
     title: 'Landing page',
     summary:
       'One page with one job: turn the traffic you are already paying for into enquiries.',
@@ -51,10 +55,10 @@ export const servicesData: Service[] = [
       'Ready to point a campaign at on day one',
     ],
     timeline: '2–4 working days',
+    timelineShort: '2–4 days',
   },
   {
     id: 'redesign',
-    index: '03',
     title: 'Redesign',
     summary:
       'Replacing a site that has aged badly, runs slowly, or no longer matches the business behind it.',
@@ -69,10 +73,10 @@ export const servicesData: Service[] = [
       'A clean handover of the new site and the domain',
     ],
     timeline: '4–7 working days',
+    timelineShort: '4–7 days',
   },
   {
     id: 'online-store',
-    index: '04',
     title: 'Online store',
     summary:
       'A storefront that takes orders and payments, sized to the catalogue you actually have.',
@@ -87,6 +91,7 @@ export const servicesData: Service[] = [
       'Checkout tested on the phones your customers use',
     ],
     timeline: '5–10 working days',
+    timelineShort: '5–10 days',
   },
 ];
 

@@ -212,50 +212,53 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ------------------------------------------------------------------
-          What we make. An index set at display size, not a list of small text —
-          the titles are the composition, and each row's rule draws under the
-          pointer while its letterforms widen.
+          What we make. The heading holds as a sticky margin rail while the
+          list scrolls past beside it, set at display size — the titles are
+          the composition, and each row's rule draws under the pointer while
+          its letterforms widen. No numbering: four services are a menu, not
+          a sequence, so the one figure worth showing per row is delivery
+          time, not position in a list.
           ------------------------------------------------------------------ */}
       <Section aria-labelledby="build-heading">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-12">
-          <h2 id="build-heading" className="reveal text-2xl max-w-[16ch]">
-            Four things you can hire us for.
-          </h2>
-          <Link to="/services" className="btn btn-secondary btn-sm shrink-0">
-            <span>See what each includes</span>
-            <IconArrowRight size={15} />
-          </Link>
-        </div>
-
-        <ul className="mt-14 sm:mt-20">
-          {servicesData.map((service) => (
-            <li key={service.id} className="last:border-b last:border-rule">
-              <Link
-                to="/services"
-                className="index-row spotlight group py-7 sm:py-9"
-                onMouseMove={trackSpotlight}
-              >
-                {/* The row's own content sits in a positioned child so the
-                    spotlight tint (an absolutely positioned pseudo-element,
-                    see .spotlight in index.css) paints behind it. */}
-                <div className="flex items-start gap-6 sm:gap-10">
-                  <span className="font-sans text-sm text-fg-subtle tnum shrink-0 pt-2 sm:pt-4">
-                    {service.index}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="widen text-index text-fg">{service.title}</h3>
-                    <p className="mt-3 text-fg-muted leading-relaxed max-w-[52ch]">
-                      {service.summary}
-                    </p>
-                  </div>
-                  <span className="index-marker text-fg-subtle shrink-0 pt-2 sm:pt-4">
-                    <IconArrowRight size={20} />
-                  </span>
-                </div>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-3">
+            <div className="lg:sticky lg:top-28">
+              <h2 id="build-heading" className="reveal text-2xl">
+                Four things you can hire us for.
+              </h2>
+              <Link to="/services" className="btn btn-secondary btn-sm mt-7">
+                <span>See what each includes</span>
               </Link>
-            </li>
-          ))}
-        </ul>
+            </div>
+          </div>
+
+          <ul className="lg:col-span-8 lg:col-start-5">
+            {servicesData.map((service) => (
+              <li key={service.id} className="border-t border-rule last:border-b">
+                <Link
+                  to="/services"
+                  className="index-row spotlight group py-7 sm:py-9"
+                  onMouseMove={trackSpotlight}
+                >
+                  {/* The row's own content sits in a positioned child so the
+                      spotlight tint (an absolutely positioned pseudo-element,
+                      see .spotlight in index.css) paints behind it. */}
+                  <div className="flex items-start gap-6 sm:gap-10">
+                    <span className="font-sans text-sm text-accent tnum shrink-0 pt-2 sm:pt-4">
+                      {service.timelineShort}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="widen text-index text-fg">{service.title}</h3>
+                      <p className="mt-3 text-fg-muted leading-relaxed max-w-[52ch]">
+                        {service.summary}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       {/* ------------------------------------------------------------------

@@ -32,8 +32,7 @@ export const ServicesPage: React.FC = () => (
       <Section key={service.id} rule id={service.id} aria-labelledby={`${service.id}-title`}>
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-            <span className="font-sans text-sm text-fg-subtle tnum">{service.index}</span>
-            <h2 id={`${service.id}-title`} className="reveal mt-3 text-2xl">
+            <h2 id={`${service.id}-title`} className="reveal text-2xl">
               {service.title}
             </h2>
             <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">{service.summary}</p>
