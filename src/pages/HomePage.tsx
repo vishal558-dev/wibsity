@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
 import { PageSpecimen } from '../components/common/PageSpecimen';
 import { InquiryForm } from '../components/common/InquiryForm';
-import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
+import { IconArrowRight, IconCheck, IconClose, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
 import { faqsData } from '../data/faqs';
-import { comparisonRows } from '../data/studio';
+import { comparisonRows, comparisonGlance } from '../data/studio';
 import { whatHappensNext, CONTACT_INFO } from '../data/contact';
+import { trackSpotlight } from '../utils/spotlight';
 
 const HEADLINE = 'Every site starts as an empty file.';
 
@@ -192,7 +193,7 @@ export const HomePage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
                   >
-                    <IconWhatsApp size={15} />
+                    <IconWhatsApp size={15} className="whatsapp-icon" />
                     <span>or WhatsApp</span>
                   </a>
                 </div>
@@ -219,7 +220,7 @@ export const HomePage: React.FC = () => {
           ------------------------------------------------------------------ */}
       <Section aria-labelledby="build-heading">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-12">
-          <h2 id="build-heading" className="text-2xl max-w-[16ch]">
+          <h2 id="build-heading" className="reveal text-2xl max-w-[16ch]">
             Four things you can hire us for.
           </h2>
           <Link to="/services" className="btn btn-secondary btn-sm shrink-0">
@@ -231,7 +232,14 @@ export const HomePage: React.FC = () => {
         <ul className="mt-14 sm:mt-20">
           {servicesData.map((service) => (
             <li key={service.id} className="last:border-b last:border-rule">
-              <Link to="/services" className="index-row group py-7 sm:py-9">
+              <Link
+                to="/services"
+                className="index-row spotlight group py-7 sm:py-9"
+                onMouseMove={trackSpotlight}
+              >
+                {/* The row's own content sits in a positioned child so the
+                    spotlight tint (an absolutely positioned pseudo-element,
+                    see .spotlight in index.css) paints behind it. */}
                 <div className="flex items-start gap-6 sm:gap-10">
                   <span className="font-sans text-sm text-fg-subtle tnum shrink-0 pt-2 sm:pt-4">
                     {service.index}
@@ -258,7 +266,7 @@ export const HomePage: React.FC = () => {
           statement — no glow, no gradient, no accent needed.
           ------------------------------------------------------------------ */}
       <Section ink aria-labelledby="choice-heading">
-        <h2 id="choice-heading" className="text-3xl max-w-[20ch]">
+        <h2 id="choice-heading" className="reveal text-3xl max-w-[20ch]">
           What you are actually choosing between.
         </h2>
         <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[46ch]">
@@ -270,7 +278,13 @@ export const HomePage: React.FC = () => {
             switch to block layout and the column headings are repeated inside
             each cell — two 40%-wide columns of running prose on a phone is
             unreadable, and dropping to one column per row keeps the comparison
-            legible without giving up the semantics. */}
+            legible without giving up the semantics.
+
+            The two columns are sized and weighted for real hierarchy rather
+            than reading as equal alternatives: "A template" stays small and
+            muted throughout, "Built for you" is set a size up and at full
+            weight — the table should read left-to-right as quiet-then-loud,
+            not as a balanced spec sheet. */}
         <table className="mt-16 w-full text-left border-collapse block md:table">
           <caption className="sr-only">
             A template-based website compared with one built from scratch
@@ -282,11 +296,14 @@ export const HomePage: React.FC = () => {
               </th>
               <th
                 scope="col"
-                className="py-4 pr-8 font-sans text-ui font-medium text-fg-subtle align-bottom w-[39%]"
+                className="py-4 pr-8 font-sans text-sm font-medium text-fg-subtle align-bottom w-[39%]"
               >
                 A template
               </th>
-              <th scope="col" className="py-4 font-sans text-ui font-medium align-bottom w-[39%]">
+              <th
+                scope="col"
+                className="py-4 font-sans text-lg font-medium text-fg align-bottom w-[39%]"
+              >
                 Built for you
               </th>
             </tr>
@@ -303,11 +320,11 @@ export const HomePage: React.FC = () => {
                 >
                   {row.aspect}
                 </th>
-                <td className="block md:table-cell pt-3 md:py-6 md:pr-8 text-fg-muted leading-relaxed">
+                <td className="block md:table-cell pt-3 md:py-6 md:pr-8 text-sm text-fg-muted leading-relaxed">
                   <span className="md:hidden font-sans text-sm text-fg-subtle">Template: </span>
                   {row.template}
                 </td>
-                <td className="block md:table-cell pt-2 pb-5 md:py-6 leading-relaxed">
+                <td className="block md:table-cell pt-2 pb-5 md:py-6 text-lg text-fg leading-relaxed">
                   <span className="md:hidden font-sans text-sm text-fg-subtle">Built: </span>
                   {row.built}
                 </td>
@@ -315,6 +332,39 @@ export const HomePage: React.FC = () => {
             ))}
           </tbody>
         </table>
+
+        {/* The glance panel — a bordered ✕/✓ strip, the one deliberate
+            exception to "nothing is a card" on the site. The table above
+            makes the argument in full sentences; this compresses the same
+            argument to four paired terms for a reader who wants the shape of
+            it before the prose. See .glance in index.css for why a border and
+            radius are acceptable here specifically. */}
+        <div className="glance spotlight mt-10" onMouseMove={trackSpotlight}>
+          <div className="glance-row grid grid-cols-2">
+            <div className="glance-cell px-5 py-3">
+              <span className="font-sans text-xs font-medium uppercase tracking-wide text-fg-subtle">
+                Template
+              </span>
+            </div>
+            <div className="glance-cell px-5 py-3">
+              <span className="font-sans text-xs font-medium uppercase tracking-wide text-fg">
+                wibsity
+              </span>
+            </div>
+          </div>
+          {comparisonGlance.map((item) => (
+            <div key={item.template} className="glance-row grid grid-cols-2 border-t border-rule">
+              <div className="glance-cell flex items-center gap-2.5 px-5 py-3.5">
+                <IconClose size={14} className="text-fg-subtle shrink-0" />
+                <span className="text-sm text-fg-muted">{item.template}</span>
+              </div>
+              <div className="glance-cell flex items-center gap-2.5 px-5 py-3.5">
+                <IconCheck size={14} className="text-accent shrink-0" />
+                <span className="text-sm text-fg">{item.built}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </Section>
 
       {/* ------------------------------------------------------------------
@@ -329,7 +379,7 @@ export const HomePage: React.FC = () => {
             the same way is the composition reading as a template, and this
             claim — an hour of your time — is the strongest thing on the page
             after the hero. */}
-        <h2 id="process-heading" className="text-3xl max-w-[24ch]">
+        <h2 id="process-heading" className="reveal text-3xl max-w-[24ch]">
           About a week. And about an hour of your time.
         </h2>
         <p className="mt-8 ml-auto text-fg-muted leading-relaxed max-w-[38ch] lg:text-right">
@@ -337,18 +387,40 @@ export const HomePage: React.FC = () => {
           having to chase it.
         </p>
 
-        <ol className="mt-16 grid gap-y-14 gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
-          {processData.map((step) => (
-            <li key={step.step} className="measure pt-6" data-draw>
-              <div className="flex items-baseline gap-3 font-sans text-sm text-fg-subtle">
-                <span className="tnum">{step.step}</span>
-                <h3 className="font-normal text-fg-subtle">{step.name}</h3>
-              </div>
-              <p className="mt-4 font-sans text-xl leading-tight text-fg">{step.yours}</p>
-              <p className="mt-4 text-fg-muted leading-relaxed">{step.description}</p>
-            </li>
-          ))}
-        </ol>
+        {/* A connected sequence rather than four separate cards: a shared
+            rail at lg carries a marker that travels the row as the section
+            scrolls through view (see .process-rail in index.css, built on
+            the same scroll-driven-animation primitive as the measure rule's
+            own draw-in), and each step still opens on its own measure rule —
+            main line plus station, not either instead of the other. Below
+            lg, where the steps stack in one column instead of a row, an
+            arrow between each one carries the same "this leads to that"
+            idea in a shape that reads vertically. */}
+        <div className="mt-16">
+          <div className="process-rail hidden lg:block" data-draw />
+
+          <ol className="mt-0 lg:mt-9 flex flex-col gap-y-10 lg:flex-row lg:items-start lg:gap-y-0 lg:gap-x-10">
+            {processData.map((step, i) => (
+              <React.Fragment key={step.step}>
+                <li className="measure pt-6 lg:flex-1" data-draw>
+                  <div className="flex items-center gap-3">
+                    <span className="tnum flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-rule-strong font-sans text-sm text-fg-subtle">
+                      {step.step}
+                    </span>
+                    <h3 className="font-sans text-lg font-medium text-fg">{step.name}</h3>
+                  </div>
+                  <span className="badge mt-4">{step.yours}</span>
+                  <p className="mt-4 text-fg-muted leading-relaxed">{step.description}</p>
+                </li>
+                {i < processData.length - 1 && (
+                  <li aria-hidden="true" className="pl-4 text-fg-subtle lg:hidden">
+                    <IconArrowRight size={18} className="rotate-90" />
+                  </li>
+                )}
+              </React.Fragment>
+            ))}
+          </ol>
+        </div>
       </Section>
 
       {/* ------------------------------------------------------------------
@@ -359,7 +431,7 @@ export const HomePage: React.FC = () => {
       <Section rule className="bg-canvas-sunken" aria-labelledby="questions-heading">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
           <div>
-            <h2 id="questions-heading" className="text-2xl max-w-[22ch]">
+            <h2 id="questions-heading" className="reveal text-2xl max-w-[22ch]">
               Worth asking whoever you hire.
             </h2>
             <p className="mt-5 text-fg-muted leading-relaxed max-w-[46ch]">
@@ -376,7 +448,11 @@ export const HomePage: React.FC = () => {
           {homeFaqs.map((faq) => {
             const isOpen = openFaq === faq.id;
             return (
-              <div key={faq.id} className="border-t border-rule last:border-b">
+              <div
+                key={faq.id}
+                className="faq-row border-t border-rule last:border-b"
+                data-open={isOpen}
+              >
                 <h3>
                   <button
                     type="button"
@@ -409,7 +485,7 @@ export const HomePage: React.FC = () => {
       <Section ink id="start" aria-labelledby="start-heading">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <h2 id="start-heading" className="text-3xl max-w-[12ch]">
+            <h2 id="start-heading" className="reveal text-3xl max-w-[12ch]">
               Tell us what you need.
             </h2>
             <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[34ch]">

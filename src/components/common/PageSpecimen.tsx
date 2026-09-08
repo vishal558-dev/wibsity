@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * The homepage's one bold moment: the page measures itself, in the visitor's
@@ -57,6 +57,68 @@ function measure(trustPaint: boolean): Reading[] {
   ];
 }
 
+/**
+ * Ticks a reading's displayed value up from zero the first time it arrives —
+ * the number itself is still the one `measure()` reported, this only spreads
+ * its reveal over a beat instead of snapping it in. Only the placeholder →
+ * first-real-value transition animates; a later correction from the paint
+ * observer just replaces the text outright, since the value has already been
+ * shown once by then.
+ */
+function useCountUp(value: string): string {
+  const [display, setDisplay] = useState(value);
+  const prevRef = useRef(value);
+
+  useEffect(() => {
+    const prev = prevRef.current;
+    prevRef.current = value;
+    if (value === prev) return;
+
+    const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prev !== '—' || !match || reduceMotion) {
+      setDisplay(value);
+      return;
+    }
+
+    const target = parseFloat(match[1]);
+    const decimals = match[1].includes('.') ? match[1].split('.')[1].length : 0;
+    const suffix = match[2];
+    const duration = 700;
+    const start = performance.now();
+    let frame = 0;
+
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      if (t < 1) {
+        setDisplay(`${(target * eased).toFixed(decimals)}${suffix}`);
+        frame = requestAnimationFrame(tick);
+      } else {
+        setDisplay(value);
+      }
+    };
+    frame = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(frame);
+  }, [value]);
+
+  return display;
+}
+
+function Figure({ reading }: { reading: Reading }) {
+  const display = useCountUp(reading.value);
+  return (
+    <div className="flex items-baseline gap-2.5">
+      <dt className="font-sans text-sm text-fg-subtle">{reading.label}</dt>
+      <dd className="font-sans text-xl font-medium tracking-tight tnum text-accent">{display}</dd>
+    </div>
+  );
+}
+
 export const PageSpecimen: React.FC = () => {
   const [readings, setReadings] = useState<Reading[]>(PLACEHOLDER);
 
@@ -108,12 +170,7 @@ export const PageSpecimen: React.FC = () => {
   return (
     <dl className="flex flex-wrap items-baseline gap-x-10 gap-y-3 sm:gap-x-14">
       {readings.map((reading) => (
-        <div key={reading.label} className="flex items-baseline gap-2.5">
-          <dt className="font-sans text-sm text-fg-subtle">{reading.label}</dt>
-          <dd className="font-sans text-xl font-medium tracking-tight tnum text-accent">
-            {reading.value}
-          </dd>
-        </div>
+        <Figure key={reading.label} reading={reading} />
       ))}
     </dl>
   );

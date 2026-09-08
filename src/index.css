@@ -1095,6 +1095,276 @@
   }
 }
 
+/* ===========================================================================
+   2026 micro-interaction addendum
+   ---------------------------------------------------------------------------
+   Everything below is a deliberate, requested exception to the "one motion
+   idea" rule above and to "nothing is a card" — added on direct instruction
+   after the trade-off was raised explicitly, not drifted into. Each still
+   answers a real action (a hover, a scroll, a route change) rather than
+   "the page loaded", still respects prefers-reduced-motion, and still uses
+   the site's own tokens rather than inventing a second palette.
+   ------------------------------------------------------------------------ */
+
+/* --- The glance panel (comparison section) --------------------------------
+   A bordered ✕/✓ strip under the comparison table. The table carries the
+   structural argument in prose; this is the one place on the site a bordered
+   box is intentional, because a table of short paired terms is exactly what
+   a scannable strip is for. Kept plain — a single hairline border and a
+   small radius, no shadow, no gradient — and it inherits `.field-ink`'s
+   remapped tokens for free since it sits inside the same inverted section. */
+.glance {
+  border: 1px solid var(--color-rule-strong);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.glance-cell + .glance-cell {
+  border-left: 1px solid var(--color-rule);
+}
+
+/* --- Process step badges ---------------------------------------------------
+   The client-time commitment ("30 min", "Nothing") as a small pill rather
+   than a line of prose — full radius here specifically, to read as a tag
+   rather than an echo of `.chip`'s form controls. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-rule);
+  border-radius: 999px;
+}
+
+/* --- The process rail -------------------------------------------------------
+   A horizontal line under the four-column process sequence, with a marker
+   that travels its length as the section scrolls through view. Built on the
+   exact same primitive as the measure rule's own draw-in above — a native
+   scroll-driven animation, no JavaScript, no per-frame work — just aimed at
+   the whole section's scroll range instead of its first 20%, and carrying a
+   dot instead of ticks. Where the browser lacks `animation-timeline`, the
+   line simply renders static and the marker sits at rest, exactly like the
+   measure rule's own fallback. */
+.process-rail {
+  position: relative;
+  height: 2px;
+  background-color: var(--color-rule);
+}
+
+.process-rail::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  transform: translate(-50%, -50%);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .process-rail::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--color-accent);
+      transform-origin: left;
+      transform: scaleX(0);
+      animation: draw-rule linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 90%;
+    }
+
+    .process-rail::after {
+      animation: travel-marker linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 90%;
+    }
+  }
+}
+
+@keyframes travel-marker {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+/* --- Spotlight: rows that respond to the cursor ----------------------------
+   A soft radial tint that tracks the pointer within a row on hover — the
+   service index and the glance panel. `--mx`/`--my` are written on
+   `mousemove` (see `trackSpotlight` in utils/spotlight.ts) as percentages of
+   the row's own box, so the gradient recentres under the cursor rather than
+   sitting fixed. No blur filter: the softness comes from the gradient's own
+   falloff, which keeps this off the system's "no blur" list in spirit. */
+.spotlight {
+  position: relative;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--color-accent) 12%, transparent),
+    transparent 70%
+  );
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 1;
+}
+
+/* --- Button lift ------------------------------------------------------------
+   A one-pixel rise on hover, on top of the existing fill-wipe and arrow-slide.
+   Pressing still overrides it with the existing press-scale below. */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* --- Route change fade -----------------------------------------------------
+   A fast, deliberately small fade+rise on the page content when the route
+   changes (see the keyed wrapper in App.tsx). Kept under 200ms so it reads as
+   a transition, not a wait — the site's pitch is that navigation is instant,
+   and a slow crossfade would work against that. */
+@keyframes route-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.route-fade {
+  animation: route-fade-in 180ms ease both;
+}
+
+/* --- Heading reveal ---------------------------------------------------------
+   A light fade+rise as a section heading enters view, on the same
+   scroll-driven-animation primitive as the measure rule — not
+   IntersectionObserver, and not applied to running body copy, only to the
+   one heading per section. Browsers without `animation-timeline` render the
+   heading at rest, exactly as before this was added. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Cursor glow ------------------------------------------------------------
+   A soft accent-tinted circle trailing the pointer, mouse-only. This exact
+   idea (a cursor-following element over the hero) was built and deliberately
+   removed three times in the 2026 redesign — see CursorWindow/CursorMarks/
+   useCursorField in the design-direction history — each time because it
+   competed with the content it sat over. This version is sitewide but very
+   low-opacity, sits behind interactive elements (`pointer-events: none`), and
+   uses a native `transform` transition rather than a registered custom
+   property, since it is written directly and not read by a descendant. */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 260px;
+  margin-left: -130px;
+  margin-top: -130px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-accent) 10%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 30;
+  transition: transform 260ms cubic-bezier(0.16, 0.9, 0.24, 1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* --- FAQ open-row accent bar ------------------------------------------------
+   A left accent bar that grows in behind the open question, on top of the
+   existing grid-rows disclosure transition. The extra padding is offset by an
+   equal negative margin so the row's text does not shift when the bar
+   appears — only the bar itself moves. */
+.faq-row {
+  position: relative;
+  padding-left: 0.875rem;
+  margin-left: -0.875rem;
+}
+
+.faq-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background-color: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 280ms cubic-bezier(0.16, 0.9, 0.24, 1);
+}
+
+.faq-row[data-open="true"]::before {
+  transform: scaleY(1);
+}
+
+/* --- WhatsApp icon wiggle ---------------------------------------------------
+   A tiny wave on hover, applied to every WhatsApp icon on the site via one
+   shared class rather than a bespoke animation per call-to-action. */
+@keyframes whatsapp-wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(11deg);
+  }
+  75% {
+    transform: rotate(-6deg);
+  }
+}
+
+a:hover .whatsapp-icon,
+button:hover .whatsapp-icon {
+  animation: whatsapp-wiggle 420ms ease;
+}
 
 }
 

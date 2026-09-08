@@ -130,7 +130,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           rel="noopener noreferrer"
           className="btn btn-secondary mt-8"
         >
-          <IconWhatsApp size={17} />
+          <IconWhatsApp size={17} className="whatsapp-icon" />
           <span>Continue on WhatsApp</span>
         </a>
       </div>
@@ -301,7 +301,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           rel="noopener noreferrer"
           className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
         >
-          <IconWhatsApp size={15} />
+          <IconWhatsApp size={15} className="whatsapp-icon" />
           <span>or message on WhatsApp</span>
         </a>
       </div>

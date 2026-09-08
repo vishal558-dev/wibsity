@@ -33,7 +33,7 @@ export const ServicesPage: React.FC = () => (
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
             <span className="font-sans text-sm text-fg-subtle tnum">{service.index}</span>
-            <h2 id={`${service.id}-title`} className="mt-3 text-2xl">
+            <h2 id={`${service.id}-title`} className="reveal mt-3 text-2xl">
               {service.title}
             </h2>
             <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">{service.summary}</p>
@@ -68,7 +68,7 @@ export const ServicesPage: React.FC = () => (
 
     <Section ink aria-labelledby="custom-heading">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-        <h2 id="custom-heading" className="lg:col-span-5 text-2xl">
+        <h2 id="custom-heading" className="reveal lg:col-span-5 text-2xl">
           {customWork.title}
         </h2>
         <div className="lg:col-span-6 lg:col-start-7">
@@ -83,7 +83,7 @@ export const ServicesPage: React.FC = () => (
 
     <Section rule aria-labelledby="services-cta">
       <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
-        <h2 id="services-cta" className="lg:col-span-6 text-2xl max-w-[20ch]">
+        <h2 id="services-cta" className="reveal lg:col-span-6 text-2xl max-w-[20ch]">
           Not sure which of these you need?
         </h2>
         <div className="lg:col-span-5 lg:col-start-8">
@@ -102,7 +102,7 @@ export const ServicesPage: React.FC = () => (
               rel="noopener noreferrer"
               className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
             >
-              <IconWhatsApp size={15} />
+              <IconWhatsApp size={15} className="whatsapp-icon" />
               <span>or message on WhatsApp</span>
             </a>
           </div>

@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 className="font-sans text-ui text-fg-muted hover:text-fg transition-colors inline-flex items-center gap-2 w-fit -my-2.5 py-2.5"
               >
-                <IconWhatsApp size={15} />
+                <IconWhatsApp size={15} className="whatsapp-icon" />
                 <span>WhatsApp</span>
                 <IconArrowUpRight size={13} className="text-fg-subtle" />
               </a>

@@ -58,8 +58,10 @@ Two consequences bind future work:
 behind a `<Suspense>` whose fallback is `.route-bar`, a pure-CSS hairline sweep at the top of the
 viewport.
 
-There are **no route transition animations**. Navigation is instant, which is both faster and the
-point.
+Route changes fade in over `.route-fade` (a keyed wrapper around `<Routes>` in `App.tsx`) — a
+deliberately fast (180ms) transition rather than the "no route transition animations" rule this file
+stated before the 2026.1 micro-interaction pass. It stays fast on purpose: the site's pitch is that
+navigation is instant, and a slower crossfade would work against that.
 
 Nav labels are Services / Studio / Contact — "Studio" points at `/about`, whose path stays as it is
 for SEO continuity.
@@ -81,8 +83,8 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 |---|---------|-------|
 | 1 | Hero | Display headline, then lead left / CTA right, closing on the specimen strip |
 | 2 | What we make | An index at display scale — the titles *are* the composition |
-| 3 | What you are choosing between | **Ink field.** Display heading, then a real `<table>` |
-| 4 | How it works | Full-width display heading, then a four-column measured sequence |
+| 3 | What you are choosing between | **Ink field.** Display heading, a real `<table>`, then the glance panel |
+| 4 | How it works | Full-width display heading, then a connected rail of four steps |
 | 5 | Worth asking | `bg-canvas-sunken`. Header row, then a full-width disclosure list |
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
 
@@ -96,23 +98,35 @@ Sections 2 and 4 both carry display-scale type, for different reasons. The servi
 large because a list of four small links was the most documentation-like block on the page; the
 process heading is set large because three sections opening with heading-left/thing-right in a row
 is the composition reading as a template, and "an hour of your time" is the strongest claim after
-the hero. Section 4 also inverts its own hierarchy on purpose — what the project costs the client in
-time is set larger than what we do.
+the hero.
 
 The page **ends inside the form**. That is why `Footer` no longer carries a CTA band — pointing at a
 contact page from underneath a contact form was asking twice.
 
-Section 4's timeline was first built as a 2×2 grid of bordered cells and read as cards; it is now
-four columns each opening on their own `.measure` rule. If you find yourself reaching for a bordered
-box on this site, that is the pattern to reach for instead.
+Section 4's timeline was first built as a 2×2 grid of bordered cells and read as cards, then
+rebuilt as four columns each opening on its own `.measure` rule with no border beyond that. It has
+since been rebuilt again, on direct instruction, into a connected sequence: a shared `.process-rail`
+line at `lg` (a native scroll-driven animation on the same primitive as the measure rule's own
+draw-in, carrying a marker that travels the row as the section scrolls through view), a numbered
+circle badge per step, and the client-time commitment (`step.yours`) shown as a small pill
+(`.badge`) rather than as the large standalone line it used to be. That large-`yours` treatment was
+this section's previous "hierarchy inverted on purpose" device — what the project costs the client
+in time set larger than what we do — and it no longer exists in that form; the number badge and step
+name now carry the section's visual weight instead. Below `lg`, where the steps stack in one column,
+a rotated arrow icon between steps carries the same flow idea in a shape that reads vertically.
 
 ## The design system (`src/index.css`)
 Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
-**Nothing is a card.** No bordered boxes, no shadows, no gradients, no glows, no blur, no texture
-overlays, `border-radius: 0` everywhere. Rhythm comes from three grounds (`canvas`,
-`canvas-sunken`, and the inverted ink field) and from the measure rule.
+**Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients, no
+glows, no blur, no texture overlays, `border-radius: 0` everywhere else. Rhythm comes from three
+grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule. The
+exception is `.glance` — the ✕/✓ strip under the homepage comparison table (`.glance`/`.glance-row`/
+`.glance-cell` in index.css) — added on direct instruction after this rule was raised explicitly. It
+gets a hairline border and a 10px radius because a table of short paired terms compressed into a
+scannable strip is exactly what a bordered panel is for; nowhere else on the site should reach for
+one on the strength of this precedent.
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -176,10 +190,12 @@ JetBrains Mono went with the decorative code panel it existed for; **there is no
 this site.** If you want one for "technical" flavour, that is the costume the redesign removed.
 
 ## Motion
-**The motion system has exactly one idea: type being set.** Letterforms carry the animation —
-Archivo's width and weight axes — rather than boxes sliding around. It appears in four places and
-nowhere else. There are still **no fade-up-on-scroll entrance reveals**; that pattern is why the
-first pass read as documentation with good typography.
+**The original motion system had exactly one idea: type being set.** Letterforms carried the
+animation — Archivo's width and weight axes — rather than boxes sliding around, in four places and
+nowhere else, with no fade-up-on-scroll entrance reveals — that pattern is why the first pass read as
+documentation with good typography. A 2026.1 pass added a second, explicitly approved layer of
+sitewide micro-interaction on top of that (see "The 2026.1 micro-interaction addendum" below); the
+five mechanisms below are the original set and are still the ones "type being set" describes.
 
 1. **The headline sets itself on load.** Words wipe up from their own baselines, staggered 48ms,
    while the line widens from 74% to 100%. Last word lands at ~1.05s.
@@ -270,6 +286,37 @@ technique on a text reveal would strand words mid-sentence when someone stops sc
 `.enter` and `.set-word` hold their `from` state during their delay, so a printed page would come
 out with an invisible hero — there is a `@media print` reset for exactly that.
 
+### The 2026.1 micro-interaction addendum
+Added on direct instruction, after the trade-off against "one motion idea" and "nothing is a card"
+was raised explicitly and overridden on purpose — this is not drift. Each item still answers a real
+action (a hover, a scroll, a route change) rather than "the page loaded", still respects
+`prefers-reduced-motion`, and still reads from the system's own tokens. All of it lives in the "2026
+micro-interaction addendum" block at the bottom of index.css's `@layer components`.
+
+- **`.btn:hover` lifts one pixel** on top of the existing fill-wipe and arrow-slide.
+- **`.spotlight`** tracks the pointer within a row (the service index, the glance panel) and tints a
+  small radius under it via `--mx`/`--my`, written on `mousemove` by `trackSpotlight` in
+  `utils/spotlight.ts`. No blur filter — the softness is the gradient's own falloff.
+- **`PageSpecimen`'s readings count up** from zero the one time each first resolves from its
+  placeholder (`useCountUp` in `PageSpecimen.tsx`) — the number itself is still exactly what
+  `measure()` reported; this only spreads its reveal over ~700ms instead of snapping it in.
+- **Route changes fade** via `.route-fade` — see Architecture & routing above.
+- **`.reveal`** fades and lifts a section heading in as it enters view, on the same scroll-driven-
+  animation primitive as the measure rule (`animation-timeline: view()`, no IntersectionObserver).
+  Applied to one heading per section, never to running body copy.
+- **`.cursor-glow`** (`components/common/CursorGlow.tsx`) trails the pointer sitewide with a soft,
+  low-opacity accent tint. This exact idea — a cursor-following element — was built and deliberately
+  removed three times earlier in the redesign (`ConstructionGrid`, `CursorWindow`/`CursorMarks`,
+  `useCursorField` — see the hero-swap history further up). This is a considered fourth attempt: it
+  is mouse-only (`pointer: coarse` and `prefers-reduced-motion: reduce` both disable it),
+  `pointer-events: none`, and sits at `z-index: 30`, under the header's 40. If it starts competing
+  with content the way its predecessors did, that is a real design decision to revisit, not a tuning
+  pass.
+- **`.faq-row`** grows a left accent bar in behind the open question, on top of the existing
+  grid-rows disclosure transition (both the homepage and `/about` FAQ implementations).
+- **`.whatsapp-icon`** wiggles on hover, applied to every WhatsApp icon on the site via one shared
+  class and rule (`a:hover .whatsapp-icon`) rather than a bespoke animation per call-to-action.
+
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
 with flat caps and mitred joints, matched to Archivo's terminals. A library's rounded caps read as a
@@ -310,6 +357,9 @@ over a **solid resting background**. Both of those words are load-bearing:
   label had no real background behind it — invisible under forced colours, and a genuine 1:1
   reading for any contrast checker, which is how the page's own audit caught it.
 
+A one-pixel `translateY` lift on hover (`.btn:hover` in the 2026.1 addendum, see Motion above) sits
+on top of both of the above and does not change either constraint.
+
 ## Conversion
 The primary goal is the **project enquiry form** (`components/common/InquiryForm.tsx`); WhatsApp is
 secondary.
@@ -336,7 +386,9 @@ where it is.
 **WhatsApp is available beside every call to action** — hero, form, services, about, footer, the
 mobile menu, and as a first-class channel on `/contact` — but the persistent floating button was
 removed. A FAB overpowers the primary journey, which the brief for the redesign explicitly ruled
-out. If it is ever wanted back, that is a business call, not a bug fix.
+out. If it is ever wanted back, that is a business call, not a bug fix. Every WhatsApp icon on the
+site carries `.whatsapp-icon` and wiggles on hover — see the 2026.1 micro-interaction addendum under
+Motion.
 
 ## Responsive
 Mobile is designed, not stacked. The menu is a **full-height sheet** with the routes at display
@@ -415,16 +467,19 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   none. `/about` is designed to earn trust without them — by being specific and checkable, and by
   stating the size of the operation in its first sentence rather than hiding it.
 - **No unverified performance numbers.** The specimen readout is measured; everything else is
-  structural. `data/studio.ts`'s comparison rows are the easiest place on the site to accidentally
-  write a claim that cannot be backed up — every row there is a fact about how the two things are
-  made, and it must stay that way.
+  structural. `data/studio.ts`'s `comparisonRows` and `comparisonGlance` (the homepage glance panel)
+  are the easiest place on the site to accidentally write a claim that cannot be backed up — every
+  entry in both is a fact about how the two things are made, and it must stay that way.
 - The old "Fast Loading" owner override in the hero value grid is moot: the value grid, the
   marquees that repeated it, and the whole `valuePoints` array are gone. The hero now makes a
   measured claim instead of a qualitative one.
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
-  rather than inventing new ones.
+  rather than inventing new ones. The 2026.1 addendum added `.badge`, `.glance`, `.spotlight`,
+  `.process-rail`, `.reveal`, `.route-fade`, `.faq-row`, `.cursor-glow` and `.whatsapp-icon` to that
+  set — reuse those for anything in the same family (a pill, a bordered strip, a cursor-tracked tint,
+  a scroll-driven reveal) rather than writing a sixth variant of one.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
   plain `.link`.

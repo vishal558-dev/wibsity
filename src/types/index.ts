@@ -41,3 +41,11 @@ export interface ComparisonRow {
   template: string;
   built: string;
 }
+
+/** One paired term in the comparison section's glance panel — the same
+ *  structural-fact standard as `ComparisonRow`, just compressed to a phrase
+ *  rather than a sentence. */
+export interface ComparisonGlanceItem {
+  template: string;
+  built: string;
+}

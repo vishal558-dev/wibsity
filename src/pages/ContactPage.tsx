@@ -48,7 +48,7 @@ export const ContactPage: React.FC = () => (
     <Section aria-labelledby="direct-heading">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
-          <h2 id="direct-heading" className="text-2xl max-w-[16ch]">
+          <h2 id="direct-heading" className="reveal text-2xl max-w-[16ch]">
             Or skip the form entirely.
           </h2>
           <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
@@ -65,7 +65,7 @@ export const ContactPage: React.FC = () => (
               className="group flex items-center justify-between gap-6 border-t border-rule py-6 transition-colors hover:bg-canvas-sunken"
             >
               <span className="flex items-center gap-4">
-                <IconWhatsApp size={19} className="text-fg-subtle shrink-0" />
+                <IconWhatsApp size={19} className="whatsapp-icon text-fg-subtle shrink-0" />
                 <span>
                   <span className="block font-sans text-lg text-fg">WhatsApp</span>
                   <span className="block mt-0.5 font-sans text-sm text-fg-muted tnum">

@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { CursorGlow } from './components/common/CursorGlow';
 import { HomePage } from './pages/HomePage';
 import { useSEO } from './hooks/useSEO';
 import { routeSEO, NOT_FOUND_SEO } from './data/seo';
@@ -85,13 +86,19 @@ function AppRoutes() {
         </div>
       }
     >
-      <Routes location={location}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      {/* Keyed on the path so each route mount gets the same brief fade+rise
+          (see `.route-fade` in index.css) — fast enough to read as a
+          transition rather than a wait, deliberately, since the site's own
+          pitch is that navigation is instant. */}
+      <div key={location.pathname} className="route-fade">
+        <Routes location={location}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
     </Suspense>
   );
 }
@@ -112,6 +119,7 @@ export function App() {
           <AppRoutes />
         </main>
         <Footer />
+        <CursorGlow />
       </div>
       <Analytics />
     </BrowserRouter>

@@ -53,7 +53,7 @@ export const AboutPage: React.FC = () => {
       </Section>
 
       <Section ink aria-labelledby="standards-heading">
-        <h2 id="standards-heading" className="text-2xl max-w-[20ch]">
+        <h2 id="standards-heading" className="reveal text-2xl max-w-[20ch]">
           Three things every site gets, whatever it costs.
         </h2>
 
@@ -75,7 +75,7 @@ export const AboutPage: React.FC = () => {
       <Section rule aria-labelledby="faq-heading">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-            <h2 id="faq-heading" className="text-2xl max-w-[16ch]">
+            <h2 id="faq-heading" className="reveal text-2xl max-w-[16ch]">
               Questions worth asking before you hire anyone.
             </h2>
             <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
@@ -88,7 +88,11 @@ export const AboutPage: React.FC = () => {
             {faqsData.map((faq) => {
               const isOpen = openFaq === faq.id;
               return (
-                <div key={faq.id} className="border-t border-rule last:border-b">
+                <div
+                  key={faq.id}
+                  className="faq-row border-t border-rule last:border-b"
+                  data-open={isOpen}
+                >
                   <h3>
                     <button
                       type="button"
@@ -119,7 +123,7 @@ export const AboutPage: React.FC = () => {
 
       <Section rule aria-labelledby="about-cta">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
-          <h2 id="about-cta" className="lg:col-span-6 text-2xl max-w-[20ch]">
+          <h2 id="about-cta" className="reveal lg:col-span-6 text-2xl max-w-[20ch]">
             Still have a question that is not here?
           </h2>
           <div className="lg:col-span-5 lg:col-start-8">
@@ -138,7 +142,7 @@ export const AboutPage: React.FC = () => {
                 rel="noopener noreferrer"
                 className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
               >
-                <IconWhatsApp size={15} />
+                <IconWhatsApp size={15} className="whatsapp-icon" />
                 <span>or message on WhatsApp</span>
               </a>
             </div>

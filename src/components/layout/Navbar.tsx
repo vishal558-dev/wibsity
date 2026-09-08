@@ -152,7 +152,7 @@ export const Navbar: React.FC = () => {
                 rel="noopener noreferrer"
                 className="btn btn-secondary w-full"
               >
-                <IconWhatsApp size={17} />
+                <IconWhatsApp size={17} className="whatsapp-icon" />
                 <span>Message on WhatsApp</span>
               </a>
             </div>
