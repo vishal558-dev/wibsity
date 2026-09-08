@@ -234,7 +234,7 @@ export const HomePage: React.FC = () => {
 
           <ul className="lg:col-span-8 lg:col-start-5">
             {servicesData.map((service) => (
-              <li key={service.id} className="border-t border-rule last:border-b">
+              <li key={service.id} className="last:border-b">
                 <Link
                   to="/services"
                   className="index-row spotlight group py-7 sm:py-9"
@@ -245,6 +245,7 @@ export const HomePage: React.FC = () => {
                       see .spotlight in index.css) paints behind it. */}
                   <div className="flex items-start gap-6 sm:gap-10">
                     <span className="font-sans text-sm text-accent tnum shrink-0 pt-2 sm:pt-4">
+                      <span className="sr-only">Delivery: </span>
                       {service.timelineShort}
                     </span>
                     <div className="min-w-0 flex-1">

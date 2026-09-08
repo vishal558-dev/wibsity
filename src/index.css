@@ -1045,9 +1045,8 @@
    The service index — the page's second typographic moment.
 
    Rows of display-size titles rather than a list of small text. The row's rule
-   thickens and draws from the left, the title widens, and the marker slides.
-   Everything the row says stays visible at rest: hover adds emphasis, never
-   information.
+   thickens and draws from the left, and the title widens. Everything the row
+   says stays visible at rest: hover adds emphasis, never information.
    ------------------------------------------------------------------------ */
 .index-row {
   position: relative;
@@ -1071,15 +1070,6 @@
 .index-row:hover::after,
 .index-row:focus-visible::after {
   transform: scaleX(1);
-}
-
-.index-marker {
-  transition: transform 420ms cubic-bezier(0.16, 0.9, 0.24, 1);
-}
-
-.index-row:hover .index-marker,
-.index-row:focus-visible .index-marker {
-  transform: translateX(0.4rem);
 }
 
 /* Submit-in-progress indicator (icons.tsx, IconSpinner). */
