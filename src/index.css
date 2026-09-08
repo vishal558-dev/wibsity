@@ -125,6 +125,18 @@
 @layer base {
   :root {
     color-scheme: light;
+
+    /* A stable alias for the page's own canvas-sunken, immune to being
+       redefined by `.field-sunken`. CSS custom properties cannot reference
+       "the value this property would have had before this rule's own
+       override" — `var(--color-canvas-sunken)` inside a rule that also
+       redefines `--color-canvas-sunken` always resolves to that same rule's
+       own (new) value, even through an intermediate custom property, which
+       makes the redefinition self-referential and invalid at computed-value
+       time. This alias is declared once here, never touched by any field
+       class, so `.field-sunken` has a genuine "outer" value to derive its own
+       further-sunken step from. */
+    --canvas-sunken-ambient: var(--color-canvas-sunken);
   }
 
   html {
@@ -249,11 +261,12 @@
 
    That matters more than it looks. The obvious way to write dimmed text on an
    ink band is an opacity utility, but opacity composites against whatever is
-   behind it, and this field is near-black in the light theme and paper in the
-   dark one. A single `opacity-50` therefore measures 4.6:1 in one theme and
-   3.15:1 in the other, which is a contrast failure nobody would ever see while
-   working in light mode. The mixes below are computed against the field's own
-   ground, so they hold in both.
+   behind it, and this field is not always painted directly on the page's own
+   canvas — a raised or sunken sub-elevation inside it is a different ground
+   again. The mixes below are computed against the field's own ground, so they
+   hold wherever the field is used, and are re-derived (not carried over)
+   whenever `--color-ink` itself moves — see `npm run check:contrast`'s "ink
+   …" rows for the current measured ratios.
 
    The accent is deliberately absent here: it resolves to the field's own
    foreground, which makes "the hue only appears on paper" a property of the
@@ -267,21 +280,29 @@
   --color-canvas-sunken: color-mix(in srgb, var(--color-ink-fg) 4%, var(--color-ink));
 
   --color-fg: var(--color-ink-fg);
-  /* 9.4:1 light / 8.1:1 dark against this field. */
+  /* Re-derived against the current ink (#191917): 9.30:1. */
   --color-fg-muted: color-mix(in srgb, var(--color-ink-fg) 78%, var(--color-ink));
-  /* 6.7:1 light / 5.2:1 dark. */
+  /* 6.66:1. */
   --color-fg-subtle: color-mix(in srgb, var(--color-ink-fg) 64%, var(--color-ink));
 
   --color-rule: color-mix(in srgb, var(--color-ink-fg) 22%, var(--color-ink));
+  /* 3.93:1 — this one owes 3:1, not 4.5:1 (a UI boundary, not text). */
   --color-rule-strong: color-mix(in srgb, var(--color-ink-fg) 45%, var(--color-ink));
 
   --color-accent: var(--color-ink-fg);
+  /* Oxide cannot read reliably against ink at its paper-tuned value (an
+     earlier #9c4b24 draft measured 2.89:1 here) — remap it the same way
+     .field-petrol does below, so a placement inside either dark field cannot
+     pick an unreadable oxide by accident. 7.55:1 measured. */
+  --color-accent-warm: var(--color-accent-warm-on-dark);
 }
 
 /* The measure's ticks are the one thing that should stay quieter than the
    field's foreground, so they are set explicitly rather than inheriting the
-   remapped accent above. */
-.field-ink .measure::before {
+   remapped accent above. Field-agnostic (only ink/ink-fg, never a field's own
+   ground), so `.field-petrol` gets the identical treatment. */
+.field-ink .measure::before,
+.field-petrol .measure::before {
   background-image:
     linear-gradient(
       color-mix(in srgb, var(--color-ink-fg) 70%, transparent),
@@ -294,21 +315,81 @@
     );
 }
 
-.field-ink ::selection {
+.field-ink ::selection,
+.field-petrol ::selection {
   background-color: var(--color-ink-fg);
   color: var(--color-ink);
 }
 
-.field-ink :focus-visible {
+.field-ink :focus-visible,
+.field-petrol :focus-visible {
   outline-color: var(--color-ink-fg);
 }
 
-/* Filled in by Phase 2. Present now so Phase 1's markup compiles and the
-   page renders on the existing palette while composition is judged. */
-.field-petrol,
-.field-sunken,
+/* The petrol field. Same idea as `.field-ink` — the complete token set is
+   remapped on itself, not just background/foreground — but petrol is a real
+   hue rather than a neutral, so two things differ from the ink field:
+
+   1. `--color-accent` cannot be petrol on petrol (no contrast), so it
+      substitutes the lightened `--color-accent-on-dark` instead of collapsing
+      to the field's own foreground the way `.field-ink` does. The hue stays
+      visible here rather than disappearing, which is a deliberate asymmetry
+      between the two dark fields, not an oversight.
+   2. `--color-accent-warm` still collapses to `--color-accent-warm-on-dark`,
+      exactly as in `.field-ink` — the same unreadable-oxide risk applies. */
+.field-petrol {
+  background-color: var(--color-petrol-field);
+  color: var(--color-ink-fg);
+
+  --color-canvas: var(--color-petrol-field);
+  --color-canvas-raised: color-mix(in srgb, var(--color-ink-fg) 8%, var(--color-petrol-field));
+  --color-canvas-sunken: color-mix(in srgb, var(--color-ink) 22%, var(--color-petrol-field));
+
+  --color-fg: var(--color-ink-fg);
+  /* 6.48:1 (npm run check:contrast, "petrol fg-muted on petrol"). */
+  --color-fg-muted: color-mix(in srgb, var(--color-ink-fg) 78%, var(--color-petrol-field));
+  /* 4.89:1 (npm run check:contrast, "petrol fg-subtle on petrol"). */
+  --color-fg-subtle: color-mix(in srgb, var(--color-ink-fg) 64%, var(--color-petrol-field));
+
+  --color-rule: color-mix(in srgb, var(--color-ink-fg) 22%, var(--color-petrol-field));
+  /* 3.21:1 — owes 3:1, not 4.5:1 (a UI boundary, not text). */
+  --color-rule-strong: color-mix(in srgb, var(--color-ink-fg) 45%, var(--color-petrol-field));
+
+  /* Petrol cannot be its own accent. 5.17:1 (npm run check:contrast,
+     "accent-on-dark on petrol"). */
+  --color-accent: var(--color-accent-on-dark);
+  /* 4.94:1 (npm run check:contrast, "accent-warm-on-dark on petrol"). */
+  --color-accent-warm: var(--color-accent-warm-on-dark);
+}
+
+/* Tonal steps on the same paper, not inversions. `.field-sunken` and
+   `.field-raised` deliberately do NOT remap foregrounds the way `.field-ink`
+   and `.field-petrol` do — `--color-fg`, `-muted` and `-subtle` stay at their
+   paper values, because these are a shade of the same ground, not a field
+   someone reads as "dark". */
+.field-sunken {
+  /* Reads `--canvas-sunken-ambient` (declared once on `:root`, see above),
+     not `--color-canvas-sunken` directly: this rule also redefines
+     `--color-canvas-sunken` below, and a custom property's `var()` reference
+     always resolves to *this element's own* cascaded value of that property
+     — even through an intermediate property — so any chain that ultimately
+     names `--color-canvas-sunken` here is self-referential and invalid at
+     computed-value time. An earlier attempt routed through a locally-scoped
+     `--field-sunken-base: var(--color-canvas-sunken)` instead of the `:root`
+     alias and still cycled for exactly this reason: the intermediate
+     property doesn't break the loop, it just adds a hop to it. Confirmed by
+     testing `.field-sunken` directly in the browser — the cyclic version
+     silently rendered a transparent background. */
+  background-color: var(--canvas-sunken-ambient);
+  --color-canvas: var(--canvas-sunken-ambient);
+  --color-canvas-raised: var(--color-canvas);
+  --color-canvas-sunken: color-mix(in srgb, var(--color-ink) 8%, var(--canvas-sunken-ambient));
+}
+
 .field-raised {
-  /* intentionally empty until the field system lands */
+  background-color: var(--color-canvas-raised);
+  --color-canvas: var(--color-canvas-raised);
+  --color-canvas-sunken: var(--color-canvas);
 }
 
 /* ---------------------------------------------------------------------------
@@ -332,6 +413,13 @@
 .field-ink .link {
   text-decoration-color: color-mix(in srgb, var(--color-ink-fg) 60%, transparent);
 }
+
+/* No `.field-petrol .link` override, unlike `.field-ink` above: inside the
+   ink field the accent collapses to the field's own foreground, so the
+   underline needs dimming to read as a mark rather than a duplicate of the
+   text; inside the petrol field `--color-accent` is `--color-accent-on-dark`
+   — already a distinct, legible hue against petrol at full strength — so the
+   base `.link` rule already does the right thing. */
 
 /* ---------------------------------------------------------------------------
    Buttons. The primary action is a field inversion — ink on paper in the light
@@ -389,7 +477,10 @@
   background-color: var(--color-canvas-raised);
 }
 
-.field-ink .btn-primary {
+/* The primary CTA is always a full flip to paper/ink, in every dark field —
+   field-agnostic, so `.field-petrol` gets the identical treatment. */
+.field-ink .btn-primary,
+.field-petrol .btn-primary {
   background-color: var(--color-ink-fg);
   color: var(--color-ink);
   border-color: var(--color-ink-fg);
@@ -399,12 +490,14 @@
   color: var(--color-ink-fg);
 }
 
-.field-ink .btn-secondary {
+.field-ink .btn-secondary,
+.field-petrol .btn-secondary {
   color: var(--color-ink-fg);
   border-color: color-mix(in srgb, var(--color-ink-fg) 40%, transparent);
 }
 
-.field-ink .btn-secondary:hover {
+.field-ink .btn-secondary:hover,
+.field-petrol .btn-secondary:hover {
   border-color: var(--color-ink-fg);
   background-color: color-mix(in srgb, var(--color-ink-fg) 8%, transparent);
 }
@@ -420,7 +513,8 @@
   color: var(--color-ink-fg);
 }
 
-.field-ink .btn-primary:disabled:hover {
+.field-ink .btn-primary:disabled:hover,
+.field-petrol .btn-primary:disabled:hover {
   background-color: var(--color-ink-fg);
   border-color: var(--color-ink-fg);
   color: var(--color-ink);
@@ -478,16 +572,19 @@
   border-bottom-color: var(--color-negative);
 }
 
-.field-ink .control {
+.field-ink .control,
+.field-petrol .control {
   color: var(--color-ink-fg);
   border-bottom-color: color-mix(in srgb, var(--color-ink-fg) 35%, transparent);
 }
 
-.field-ink .control::placeholder {
+.field-ink .control::placeholder,
+.field-petrol .control::placeholder {
   color: color-mix(in srgb, var(--color-ink-fg) 55%, transparent);
 }
 
-.field-ink .control:focus {
+.field-ink .control:focus,
+.field-petrol .control:focus {
   border-bottom-color: var(--color-ink-fg);
 }
 
@@ -537,24 +634,29 @@
   outline-offset: 3px;
 }
 
-.field-ink .chip {
+.field-ink .chip,
+.field-petrol .chip {
   color: color-mix(in srgb, var(--color-ink-fg) 72%, transparent);
   border-color: color-mix(in srgb, var(--color-ink-fg) 28%, transparent);
 }
 
-.field-ink .chip:hover {
+.field-ink .chip:hover,
+.field-petrol .chip:hover {
   color: var(--color-ink-fg);
   border-color: color-mix(in srgb, var(--color-ink-fg) 60%, transparent);
 }
 
 .field-ink .chip[aria-pressed="true"],
-.field-ink .chip:has(input:checked) {
+.field-ink .chip:has(input:checked),
+.field-petrol .chip[aria-pressed="true"],
+.field-petrol .chip:has(input:checked) {
   background-color: var(--color-ink-fg);
   border-color: var(--color-ink-fg);
   color: var(--color-ink);
 }
 
-.field-ink .chip:has(input:focus) {
+.field-ink .chip:has(input:focus),
+.field-petrol .chip:has(input:focus) {
   outline-color: var(--color-ink-fg);
 }
 
@@ -774,7 +876,8 @@
       animation-range: entry 5% cover 22%;
     }
 
-    .field-ink .measure[data-draw]::after {
+    .field-ink .measure[data-draw]::after,
+    .field-petrol .measure[data-draw]::after {
       background-color: color-mix(in srgb, var(--color-ink-fg) 22%, transparent);
     }
 
@@ -1025,10 +1128,11 @@
   transform: scaleX(1);
 }
 
-/* On the ink field the button is already paper, so the wipe is ink and the
+/* On a dark field the button is already paper, so the wipe is ink and the
    label flips to paper behind it — the same gesture, inverted, which is what
-   the whole field does. */
-.field-ink .btn-primary::before {
+   the whole field does. Field-agnostic, so `.field-petrol` shares it. */
+.field-ink .btn-primary::before,
+.field-petrol .btn-primary::before {
   background-color: var(--color-ink);
 }
 
@@ -1036,6 +1140,17 @@
   color: var(--color-ink-fg);
   border-color: var(--color-ink-fg);
 }
+
+/* No `.field-petrol .btn-primary:hover` border-color override, unlike
+   `.field-ink` above. `.field-ink` pins the hover border to `--color-ink-fg`
+   explicitly because its own `--color-accent` already equals that value — the
+   override is belt-and-braces, not a different colour. Inside `.field-petrol`,
+   `--color-accent` is `--color-accent-on-dark` (a real, legible hue against
+   petrol — see the field's own definition above), so leaving the base
+   `.btn-primary:hover { border-color: var(--color-accent); }` rule
+   unoverridden gives the hover state a petrol-tinted border, the same way a
+   plain-paper button's hover border goes accent-coloured. That is the correct
+   "same treatment" here: reusing the mechanism, not the literal colour. */
 
 .btn-primary:disabled::before {
   transform: scaleX(0);
