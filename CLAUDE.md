@@ -30,6 +30,9 @@ prior "commit and push it" as blanket permission for a later, different change i
 - `npm run build` — `tsc -b && vite build`
 - `npm run lint` — oxlint
 - `npm run preview` — preview production build
+- `npm run check:contrast` — `node scripts/check-contrast.mjs`; a self-contained WCAG contrast
+  checker (zero imports) that pins a floor for every foreground/background pair the design spec
+  cares about. Not part of `npm run build`; run it by hand after any token-colour change.
 - `node scripts/generate-brand-assets.mjs` — regenerate favicons, apple-touch-icon and the social
   card. Not part of `npm run build`; run it by hand when the logo geometry, the hero headline or
   `og:description` changes.
@@ -72,9 +75,13 @@ and no `SectionHeading` component — the eyebrow-plus-heading-plus-paragraph bl
 of the patterns the redesign set out to remove. Each section composes its own heading.
 
 The one layout primitive is `components/layout/Section.tsx`. It owns exactly three things — the side
-gutter, the maximum measure (`78rem`), and the vertical rhythm — plus two options: `ink` (invert the
-band) and `rule` (draw the measure line at the top). Everything else about a section is composed
-freely inside it, deliberately, so the page does not turn into the same arrangement six times.
+gutter, the maximum measure (`78rem`), and the vertical rhythm — plus two options: `field`
+(`'ink' | 'petrol' | 'sunken' | 'raised'`, inverting the band to one of four grounds — only `ink` is
+styled today, `petrol`/`sunken`/`raised` are empty placeholders reserved for a later phase) and
+`rule` (draw the measure line at the top). Every rendered `<section>` also carries a `data-field`
+attribute mirroring the prop (`"paper"` when it is absent). Everything else about a section is
+composed freely inside it, deliberately, so the page does not turn into the same arrangement six
+times.
 
 ### Homepage composition
 Six sections, and **no two are built the same way** — that variety is load-bearing, not incidental:

@@ -265,7 +265,7 @@ export const HomePage: React.FC = () => {
           On the inverted field, which is what marks it as the page's strongest
           statement — no glow, no gradient, no accent needed.
           ------------------------------------------------------------------ */}
-      <Section ink aria-labelledby="choice-heading">
+      <Section field="ink" aria-labelledby="choice-heading">
         <h2 id="choice-heading" className="reveal text-3xl max-w-[20ch]">
           What you are actually choosing between.
         </h2>
@@ -482,7 +482,7 @@ export const HomePage: React.FC = () => {
           The close. The page ends inside the form rather than pointing at a
           contact page — which is why the footer carries no CTA band.
           ------------------------------------------------------------------ */}
-      <Section ink id="start" aria-labelledby="start-heading">
+      <Section field="ink" id="start" aria-labelledby="start-heading">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <h2 id="start-heading" className="reveal text-3xl max-w-[12ch]">

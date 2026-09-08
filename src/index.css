@@ -273,6 +273,14 @@
   outline-color: var(--color-ink-fg);
 }
 
+/* Filled in by Phase 2. Present now so Phase 1's markup compiles and the
+   page renders on the existing palette while composition is judged. */
+.field-petrol,
+.field-sunken,
+.field-raised {
+  /* intentionally empty until the field system lands */
+}
+
 /* ---------------------------------------------------------------------------
    Links. The accent lives in the underline, not in the text colour — so a
    paragraph keeps its full contrast and the hue still marks what is clickable.

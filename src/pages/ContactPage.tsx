@@ -15,7 +15,7 @@ import { CONTACT_INFO, whatHappensNext } from '../data/contact';
  */
 export const ContactPage: React.FC = () => (
   <>
-    <Section ink className="pt-6" aria-labelledby="contact-heading">
+    <Section field="ink" className="pt-6" aria-labelledby="contact-heading">
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <h1 id="contact-heading" className="text-3xl max-w-[14ch]">

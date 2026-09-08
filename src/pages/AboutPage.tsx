@@ -52,7 +52,7 @@ export const AboutPage: React.FC = () => {
         </dl>
       </Section>
 
-      <Section ink aria-labelledby="standards-heading">
+      <Section field="ink" aria-labelledby="standards-heading">
         <h2 id="standards-heading" className="reveal text-2xl max-w-[20ch]">
           Three things every site gets, whatever it costs.
         </h2>

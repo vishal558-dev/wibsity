@@ -66,7 +66,7 @@ export const ServicesPage: React.FC = () => (
       </Section>
     ))}
 
-    <Section ink aria-labelledby="custom-heading">
+    <Section field="ink" aria-labelledby="custom-heading">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <h2 id="custom-heading" className="reveal lg:col-span-5 text-2xl">
           {customWork.title}

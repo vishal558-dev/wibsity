@@ -24,8 +24,8 @@ import { cn } from '../../utils/cn';
 export interface SectionProps {
   children: React.ReactNode;
   id?: string;
-  /** Inverts the whole band to the ink field. Full-bleed. */
-  ink?: boolean;
+  /** The band's ground. Absent means the page's own paper. Full-bleed. */
+  field?: 'ink' | 'petrol' | 'sunken' | 'raised';
   /** Draws the measure rule at the top of the section. */
   rule?: boolean;
   /** Trims the vertical rhythm for sections that sit tight to their neighbour. */
@@ -37,13 +37,18 @@ export interface SectionProps {
 export const Section: React.FC<SectionProps> = ({
   children,
   id,
-  ink = false,
+  field,
   rule = false,
   tight = false,
   className,
   ...props
 }) => (
-  <section id={id} className={cn(ink && 'field-ink', className)} {...props}>
+  <section
+    id={id}
+    data-field={field ?? 'paper'}
+    className={cn(field && `field-${field}`, className)}
+    {...props}
+  >
     <div className="mx-auto w-full max-w-[78rem] px-gutter">
       <div
         className={cn(rule && 'measure', tight ? 'py-16 sm:py-20' : 'py-section')}
