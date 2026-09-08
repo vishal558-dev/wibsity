@@ -185,10 +185,9 @@ export const PageSpecimen: React.FC = () => {
   // Set inside a raised panel (.specimen-panel in index.css) rather than as a
   // strip along the hero's closing rule — the readout is a live instrument
   // reading, genuinely a different material from the page, which is what
-  // earns it one of the system's two deliberate exceptions to "nothing is a
-  // card" (the other is .glance on the comparison section). Rows read label
-  // then figure, separated by hairlines, like a spec sheet rather than three
-  // stat tiles.
+  // earns it one of the system's deliberate exceptions to "nothing is a
+  // card". Rows read label then figure, separated by hairlines, like a spec
+  // sheet rather than three stat tiles.
   return (
     <div className="specimen-panel">
       <p className="font-sans text-xs text-fg-subtle">This page, measured in your browser</p>

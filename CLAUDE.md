@@ -90,7 +90,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 |---|---------|-------|
 | 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
 | 2 | What we make | An index at display scale — the titles *are* the composition |
-| 3 | What you are choosing between | **Ink field.** Display heading, a real `<table>`, then the glance panel |
+| 3 | What you are choosing between | **Ink field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | Full-width display heading, then a connected rail of four steps |
 | 5 | Worth asking | `bg-canvas-sunken`. Header row, then a full-width disclosure list |
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
@@ -106,6 +106,18 @@ together in the left six columns, and `PageSpecimen` — rendering its own `.spe
 takes the right five. It used to sit as a full-width strip along the hero's closing rule, read only
 once someone scrolled past the fold; putting the live reading beside the headline's own claim,
 visible without scrolling, is the point of the arrangement, not an incidental layout choice.
+
+Section 3's comparison used to be a real `<table>` with a bordered `.glance` strip repeating the
+same argument underneath it — two devices making one argument, density without hierarchy. It has
+been rebuilt as a genuine two-column opposition (`.compare-row`, `.compare-cell-template`,
+`.compare-cell-built` in index.css) where **depth carries the hierarchy** instead of a border: the
+template column is recessed, the built column is raised. This pass gives those classes structure
+only — `field="ink"` stays on the section and the columns render at a neutral tone until a later
+task hands them their elevation via `.field-petrol`. The opening block is inverted from the other
+heading-led sections: the lead sits top-right, the `<h2>` sits below-left. Dropping the `<table>`
+means each aspect is now an `<h3>`, associated with its two treatments by DOM order rather than
+`scope="row"`; below `md` the rows stack with the template treatment first and visually muted, same
+as the table's block-layout fallback did before it.
 
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the
@@ -132,18 +144,17 @@ a rotated arrow icon between steps carries the same flow idea in a shape that re
 Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
-**Nothing is a card, with two deliberate exceptions.** No bordered boxes, no shadows, no gradients,
+**Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients,
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere else. Rhythm comes from three
-grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule. Both
-exceptions were added on direct instruction after this rule was raised explicitly, and neither
-licenses a third: `.glance` — the ✕/✓ strip under the homepage comparison table
-(`.glance`/`.glance-row`/`.glance-cell` in index.css) — gets a hairline border and a 10px radius,
-because a table of short paired terms compressed into a scannable strip is exactly what a bordered
-panel is for. `.specimen-panel` — the surround for the hero's `PageSpecimen` readout — gets a tonal
-step (`--color-canvas-raised`) and a hairline border but keeps `border-radius: 0`, because a live
-instrument reading is a different material from the page rather than a grouped strip of terms; the
-radius is what still marks `.glance` as the more card-like of the two. Nowhere else on the site
-should reach for either on the strength of these precedents.
+grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule.
+`.specimen-panel` — the surround for the hero's `PageSpecimen` readout — gets a tonal step
+(`--color-canvas-raised`) and a hairline border but keeps `border-radius: 0`, because a live
+instrument reading is a different material from the page rather than a grouped strip of terms. It
+was added on direct instruction after this rule was raised explicitly, and does not license a
+second: nowhere else on the site should reach for a border on the strength of this precedent. (The
+homepage comparison table used to carry a second exception, `.glance` — a bordered ✕/✓ strip with a
+10px radius — but it was cut in favour of a two-column opposition where depth, not a border, carries
+the hierarchy; see "What you are choosing between" in Homepage composition above.)
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -313,9 +324,9 @@ action (a hover, a scroll, a route change) rather than "the page loaded", still 
 micro-interaction addendum" block at the bottom of index.css's `@layer components`.
 
 - **`.btn:hover` lifts one pixel** on top of the existing fill-wipe and arrow-slide.
-- **`.spotlight`** tracks the pointer within a row (the service index, the glance panel) and tints a
-  small radius under it via `--mx`/`--my`, written on `mousemove` by `trackSpotlight` in
-  `utils/spotlight.ts`. No blur filter — the softness is the gradient's own falloff.
+- **`.spotlight`** tracks the pointer within a row (the service index) and tints a small radius
+  under it via `--mx`/`--my`, written on `mousemove` by `trackSpotlight` in `utils/spotlight.ts`.
+  No blur filter — the softness is the gradient's own falloff.
 - **`PageSpecimen`'s readings count up** from zero the one time each first resolves from its
   placeholder (`useCountUp` in `PageSpecimen.tsx`) — the number itself is still exactly what
   `measure()` reported; this only spreads its reveal over ~700ms instead of snapping it in.
@@ -492,19 +503,20 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   none. `/about` is designed to earn trust without them — by being specific and checkable, and by
   stating the size of the operation in its first sentence rather than hiding it.
 - **No unverified performance numbers.** The specimen readout is measured; everything else is
-  structural. `data/studio.ts`'s `comparisonRows` and `comparisonGlance` (the homepage glance panel)
-  are the easiest place on the site to accidentally write a claim that cannot be backed up — every
-  entry in both is a fact about how the two things are made, and it must stay that way.
+  structural. `data/studio.ts`'s `comparisonRows` (the homepage comparison) is the easiest place on
+  the site to accidentally write a claim that cannot be backed up — every entry is a fact about how
+  the two things are made, and it must stay that way.
 - The old "Fast Loading" owner override in the hero value grid is moot: the value grid, the
   marquees that repeated it, and the whole `valuePoints` array are gone. The hero now makes a
   measured claim instead of a qualitative one.
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
-  rather than inventing new ones. The 2026.1 addendum added `.badge`, `.glance`, `.spotlight`,
-  `.process-rail`, `.reveal`, `.route-fade`, `.faq-row` and `.whatsapp-icon` to that set — reuse
-  those for anything in the same family (a pill, a bordered strip, a scroll-driven reveal) rather
-  than writing a sixth variant of one. Do not add a cursor-tracked tint back — see "A sitewide
+  rather than inventing new ones. The 2026.1 addendum added `.badge`, `.spotlight`, `.process-rail`,
+  `.reveal`, `.route-fade`, `.faq-row` and `.whatsapp-icon` to that set; the comparison rebuild added
+  `.compare-row` / `.compare-cell-template` / `.compare-cell-built`. Reuse those for anything in the
+  same family (a pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth
+  variant of one. Do not add a cursor-tracked tint back — see "A sitewide
   cursor-following tint" under Motion above.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a

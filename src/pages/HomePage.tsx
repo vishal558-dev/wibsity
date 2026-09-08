@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
 import { PageSpecimen } from '../components/common/PageSpecimen';
 import { InquiryForm } from '../components/common/InquiryForm';
-import { IconArrowRight, IconCheck, IconClose, IconWhatsApp } from '../components/common/icons';
+import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
 import { faqsData } from '../data/faqs';
-import { comparisonRows, comparisonGlance } from '../data/studio';
+import { comparisonRows } from '../data/studio';
 import { whatHappensNext, CONTACT_INFO } from '../data/contact';
 import { trackSpotlight } from '../utils/spotlight';
 
@@ -262,106 +262,52 @@ export const HomePage: React.FC = () => {
       </Section>
 
       {/* ------------------------------------------------------------------
-          The anti-template argument, as a comparison rather than a manifesto.
-          On the inverted field, which is what marks it as the page's strongest
-          statement — no glow, no gradient, no accent needed.
+          The anti-template argument, as a two-column opposition rather than
+          a manifesto or a spreadsheet. On the inverted field, which is what
+          marks it as the page's strongest statement — no glow, no gradient,
+          no accent needed. Depth carries the hierarchy: the template column
+          is recessed, the built column is raised (tones land in Phase 2
+          Task 10 via .field-petrol; this pass gives the section structure).
           ------------------------------------------------------------------ */}
       <Section field="ink" aria-labelledby="choice-heading">
-        <h2 id="choice-heading" className="reveal text-3xl max-w-[20ch]">
-          What you are actually choosing between.
-        </h2>
-        <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[46ch]">
-          Not design taste. The difference is structural, and you feel it a year later
-          rather than on launch day.
-        </p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
+          <p className="lg:col-span-4 lg:col-start-9 lg:row-start-1 text-lg leading-relaxed text-fg-muted">
+            Not design taste. The difference is structural, and you feel it a year later
+            rather than on launch day.
+          </p>
+          <h2 id="choice-heading" className="reveal text-3xl max-w-[20ch] lg:col-span-6 lg:row-start-2">
+            What you are actually choosing between.
+          </h2>
+        </div>
 
-        {/* Genuinely tabular data, so it is a table. Below md the table elements
-            switch to block layout and the column headings are repeated inside
-            each cell — two 40%-wide columns of running prose on a phone is
-            unreadable, and dropping to one column per row keeps the comparison
-            legible without giving up the semantics.
-
-            The two columns are sized and weighted for real hierarchy rather
-            than reading as equal alternatives: "A template" stays small and
-            muted throughout, "Built for you" is set a size up and at full
-            weight — the table should read left-to-right as quiet-then-loud,
-            not as a balanced spec sheet. */}
-        <table className="mt-16 w-full text-left border-collapse block md:table">
-          <caption className="sr-only">
-            A template-based website compared with one built from scratch
-          </caption>
-          <thead className="hidden md:table-header-group">
-            <tr className="border-b border-rule-strong">
-              <th scope="col" className="sr-only">
-                Aspect
-              </th>
-              <th
-                scope="col"
-                className="py-4 pr-8 font-sans text-sm font-medium text-fg-subtle align-bottom w-[39%]"
-              >
-                A template
-              </th>
-              <th
-                scope="col"
-                className="py-4 font-sans text-lg font-medium text-fg align-bottom w-[39%]"
-              >
-                Built for you
-              </th>
-            </tr>
-          </thead>
-          <tbody className="block md:table-row-group">
-            {comparisonRows.map((row) => (
-              <tr
-                key={row.aspect}
-                className="block md:table-row border-t border-rule md:border-t-0 md:border-b md:border-rule align-top pt-7 pb-2 md:py-0"
-              >
-                <th
-                  scope="row"
-                  className="block md:table-cell md:py-6 md:pr-8 text-left font-sans text-sm font-normal text-fg-subtle md:w-[22%]"
-                >
-                  {row.aspect}
-                </th>
-                <td className="block md:table-cell pt-3 md:py-6 md:pr-8 text-sm text-fg-muted leading-relaxed">
-                  <span className="md:hidden font-sans text-sm text-fg-subtle">Template: </span>
-                  {row.template}
-                </td>
-                <td className="block md:table-cell pt-2 pb-5 md:py-6 text-lg text-fg leading-relaxed">
-                  <span className="md:hidden font-sans text-sm text-fg-subtle">Built: </span>
-                  {row.built}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* The glance panel — a bordered ✕/✓ strip, the one deliberate
-            exception to "nothing is a card" on the site. The table above
-            makes the argument in full sentences; this compresses the same
-            argument to four paired terms for a reader who wants the shape of
-            it before the prose. See .glance in index.css for why a border and
-            radius are acceptable here specifically. */}
-        <div className="glance spotlight mt-10" onMouseMove={trackSpotlight}>
-          <div className="glance-row grid grid-cols-2">
-            <div className="glance-cell px-5 py-3">
-              <span className="font-sans text-xs font-medium uppercase tracking-wide text-fg-subtle">
-                Template
-              </span>
+        {/* This drops <table> semantics: the content is a comparison rather
+            than data anyone reads across axes, and the heading-per-aspect
+            structure below keeps it navigable. The first row is a decorative,
+            aria-hidden column-label echo of the real per-aspect headings that
+            follow, so a screen reader isn't told "A template" / "Built for
+            you" twice. Below md each aspect stacks with the template
+            treatment first and visually muted. */}
+        <div className="mt-16">
+          <div className="compare-row" aria-hidden="true">
+            <div className="hidden md:block px-6 py-4" />
+            <div className="compare-cell-template py-4">
+              <span className="font-sans text-sm text-fg-subtle">A template</span>
             </div>
-            <div className="glance-cell px-5 py-3">
-              <span className="font-sans text-xs font-medium uppercase tracking-wide text-fg">
-                wibsity
-              </span>
+            <div className="compare-cell-built py-4">
+              <span className="font-sans text-lg font-medium text-fg">Built for you</span>
             </div>
           </div>
-          {comparisonGlance.map((item) => (
-            <div key={item.template} className="glance-row grid grid-cols-2 border-t border-rule">
-              <div className="glance-cell flex items-center gap-2.5 px-5 py-3.5">
-                <IconClose size={14} className="text-fg-subtle shrink-0" />
-                <span className="text-sm text-fg-muted">{item.template}</span>
+
+          {comparisonRows.map((row) => (
+            <div key={row.aspect} className="compare-row">
+              <h3 className="px-6 pt-6 pb-2 md:py-6 font-sans text-sm font-normal text-fg-subtle">
+                {row.aspect}
+              </h3>
+              <div className="compare-cell-template">
+                <p className="text-sm text-fg-muted leading-relaxed">{row.template}</p>
               </div>
-              <div className="glance-cell flex items-center gap-2.5 px-5 py-3.5">
-                <IconCheck size={14} className="text-accent shrink-0" />
-                <span className="text-sm text-fg">{item.built}</span>
+              <div className="compare-cell-built">
+                <p className="text-lg text-fg leading-relaxed">{row.built}</p>
               </div>
             </div>
           ))}

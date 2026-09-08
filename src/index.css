@@ -1130,21 +1130,24 @@
    the site's own tokens rather than inventing a second palette.
    ------------------------------------------------------------------------ */
 
-/* --- The glance panel (comparison section) --------------------------------
-   A bordered ✕/✓ strip under the comparison table. The table carries the
-   structural argument in prose; this is the one place on the site a bordered
-   box is intentional, because a table of short paired terms is exactly what
-   a scannable strip is for. Kept plain — a single hairline border and a
-   small radius, no shadow, no gradient — and it inherits `.field-ink`'s
-   remapped tokens for free since it sits inside the same inverted section. */
-.glance {
-  border: 1px solid var(--color-rule-strong);
-  border-radius: 10px;
-  overflow: hidden;
+/* The comparison's two-column opposition. Depth carries the hierarchy: the
+   option you are not choosing is recessed, the one you are is raised. Tones
+   are supplied by .field-petrol in Phase 2; the structure is neutral here. */
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--color-rule);
 }
 
-.glance-cell + .glance-cell {
-  border-left: 1px solid var(--color-rule);
+@media (min-width: 48rem) {
+  .compare-row {
+    grid-template-columns: 2fr 5fr 5fr;
+  }
+}
+
+.compare-cell-template,
+.compare-cell-built {
+  padding: 1.5rem 1.5rem;
 }
 
 /* --- Process step badges ---------------------------------------------------
@@ -1222,7 +1225,7 @@
 
 /* --- Spotlight: rows that respond to the cursor ----------------------------
    A soft radial tint that tracks the pointer within a row on hover — the
-   service index and the glance panel. `--mx`/`--my` are written on
+   service index. `--mx`/`--my` are written on
    `mousemove` (see `trackSpotlight` in utils/spotlight.ts) as percentages of
    the row's own box, so the gradient recentres under the cursor rather than
    sitting fixed. No blur filter: the softness comes from the gradient's own

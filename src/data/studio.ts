@@ -1,4 +1,4 @@
-import type { ComparisonGlanceItem, ComparisonRow } from '../types';
+import type { ComparisonRow } from '../types';
 
 /**
  * The anti-template argument, as a comparison rather than a manifesto.
@@ -36,16 +36,6 @@ export const comparisonRows: ComparisonRow[] = [
     template: 'Support tickets, or whoever configured it for you.',
     built: 'The person who wrote it.',
   },
-];
-
-/** The comparison section's glance panel — four of the rows above, compressed
- *  to a paired phrase, for a reader who wants the shape of the argument
- *  before the sentences. */
-export const comparisonGlance: ComparisonGlanceItem[] = [
-  { template: 'Generic structure', built: 'Custom structure' },
-  { template: 'A theme', built: 'A blank canvas' },
-  { template: 'A stack of plugins', built: 'Only what is needed' },
-  { template: 'A page builder', built: 'Readable code' },
 ];
 
 /**
