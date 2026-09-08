@@ -26,38 +26,52 @@
    ========================================================================== */
 
 @theme {
-  /* --- Light is the default theme. Limestone paper, deliberately cool/green-
-     grey rather than the warm cream that reads as a generic AI-design tell. */
-  --color-canvas: #edece6;
+  /* Warm bone. Warmed from the previous cool limestone #edece6, while staying
+     clear of the #f4f1ea cream that reads as a generic AI-design tell.
+     Relative luminance 0.812 against the old 0.820 — close enough that every
+     pair is re-measured rather than assumed (npm run check:contrast). */
+  --color-canvas: #efeae0;
   /* Raised = lighter than canvas (paper lifted toward white): inputs, the one
      panel that needs to separate from its band. Sunken = a slightly deeper
      paper for alternating bands. */
-  --color-canvas-raised: #f6f5f1;
-  --color-canvas-sunken: #e3e2da;
-  /* The inverted field. Whole sections flip to this; it is also the primary
-     button's fill in light mode. */
-  --color-ink: #161a19;
-  --color-ink-fg: #edece6;
+  --color-canvas-raised: #f8f4ed;
+  --color-canvas-sunken: #e4ddd0;
+  /* Warm near-black, replacing the cool #161a19, so ink sits with warm paper.
+     The inverted field: whole sections flip to this, and it is also the
+     primary button's fill in light mode. */
+  --color-ink: #191917;
+  --color-ink-fg: #efeae0;
 
-  --color-fg: #161a19;
-  --color-fg-muted: #52564f;
-  /* 4.96:1 on canvas. The first value tried, #6c7067, measured 4.09:1 —
-     under AA for the real text this carries (service audiences, the
-     specimen labels, footer copy). */
-  --color-fg-subtle: #5f635b;
+  /* The one chromatic full-bleed ground, used by .field-petrol and nothing
+     else — every other surface on the site is paper or ink. */
+  --color-petrol-field: #0c3f49;
 
-  --color-rule: #cdcbc0;
+  --color-fg: #1a1815;
+  --color-fg-muted: #54504a;
+  /* Measured ratio lives in npm run check:contrast, not in this comment — a
+     number written here goes stale the next time the paper moves. */
+  --color-fg-subtle: #605b52;
+
+  --color-rule: #d2cbbd;
   /* rule-strong draws input underlines and secondary-button borders, so it
      is a UI component boundary and owes 3:1, not the decorative hairline's
-     nothing. #a5a294 measured 2.07:1. This is 3.48:1. */
-  --color-rule-strong: #7d7a6c;
+     nothing. See npm run check:contrast for the measured ratio. */
+  --color-rule-strong: #7c7568;
 
-  /* Petrol. The only hue in the system. Never a button fill — see the note on
-     .btn-primary below for why the primary action is an inverted field
-     instead. Used for: link underlines, the focus ring, the measured values in
-     the hero readout, the availability dot, and the measure-rule ticks. */
+  /* Two accents, with a semantic split that is what keeps the second one from
+     becoming decoration:
+       petrol (--color-accent)      — what the studio makes and measures
+       oxide  (--color-accent-warm) — what the visitor gives or does
+     Neither is ever a button fill; the primary action stays a field
+     inversion. The "-on-dark" pair are the same two hues lightened for use
+     on the ink and petrol fields, where the paper-tuned values fail
+     contrast. Used for: link underlines, the focus ring, the measured
+     values in the hero readout, the availability dot, the measure-rule
+     ticks, and (oxide) the enquiry form's numerals and the process badges. */
   --color-accent: #0e4b54;
-  --color-accent-fg: #f6f5f1;
+  --color-accent-warm: #8f4420;
+  --color-accent-on-dark: #7fb7be;
+  --color-accent-warm-on-dark: #e09a6b;
 
   --color-negative: #97281f;
 
@@ -148,7 +162,7 @@
 
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-accent-fg);
+    color: var(--color-ink-fg);
   }
 
   :focus-visible {
@@ -361,7 +375,7 @@
   /* Background stays put — `.btn-primary::before` is the hover fill and wipes
      across it. See the button-feel block further down. */
   border-color: var(--color-accent);
-  color: var(--color-accent-fg);
+  color: var(--color-ink-fg);
 }
 
 .btn-secondary {
