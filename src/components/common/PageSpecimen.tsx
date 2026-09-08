@@ -27,8 +27,15 @@ import React, { useEffect, useRef, useState } from 'react';
  * visit — and a flattering half-measurement is exactly what this component
  * exists to avoid. Do not add it back without solving that.
  *
- * The labels render before the values do, so the plate reserves its own space
- * and measuring costs no layout shift.
+ * The placeholder rows are derived from the same trust predicate `measure()`
+ * uses (below), evaluated once at mount: if first paint is already known to
+ * be untrustworthy — the document was not `visible` when this component
+ * mounted — the plate starts with two placeholder rows instead of three, so
+ * the initial and final row counts agree and the bordered panel never
+ * resizes. One case still slips through by design: visible at mount, hidden
+ * before the paint entry arrives. That narrow window is accepted — every fix
+ * for it reintroduces the dead space this scheme exists to avoid. See
+ * `initialReadings` below.
  */
 
 interface Reading {
@@ -36,11 +43,22 @@ interface Reading {
   value: string;
 }
 
-const PLACEHOLDER: Reading[] = [
+const PLACEHOLDER_WITH_PAINT: Reading[] = [
   { label: 'First paint', value: '—' },
   { label: 'Files loaded', value: '—' },
   { label: 'Page elements', value: '—' },
 ];
+
+const PLACEHOLDER_NO_PAINT: Reading[] = PLACEHOLDER_WITH_PAINT.slice(1);
+
+// Mirrors measure()'s own trust predicate so the placeholder row count
+// matches whatever measure() will ultimately render. Read once, synchronously,
+// at mount — see the class comment above for the one case this doesn't cover.
+function initialReadings(): Reading[] {
+  const paintIsHonest =
+    typeof document !== 'undefined' && document.visibilityState === 'visible';
+  return paintIsHonest ? PLACEHOLDER_WITH_PAINT : PLACEHOLDER_NO_PAINT;
+}
 
 function measure(trustPaint: boolean): Reading[] {
   const paint = performance
@@ -120,7 +138,7 @@ function Figure({ reading }: { reading: Reading }) {
 }
 
 export const PageSpecimen: React.FC = () => {
-  const [readings, setReadings] = useState<Reading[]>(PLACEHOLDER);
+  const [readings, setReadings] = useState<Reading[]>(initialReadings);
 
   useEffect(() => {
     if (typeof performance === 'undefined' || !performance.getEntriesByType) return;
