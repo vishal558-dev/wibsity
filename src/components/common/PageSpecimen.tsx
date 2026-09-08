@@ -112,9 +112,9 @@ function useCountUp(value: string): string {
 function Figure({ reading }: { reading: Reading }) {
   const display = useCountUp(reading.value);
   return (
-    <div className="flex items-baseline gap-2.5">
-      <dt className="font-sans text-sm text-fg-subtle">{reading.label}</dt>
-      <dd className="font-sans text-xl font-medium tracking-tight tnum text-accent">{display}</dd>
+    <div className="flex items-baseline justify-between gap-6 border-t border-rule py-3">
+      <dt className="font-sans text-sm text-fg-muted">{reading.label}</dt>
+      <dd className="font-sans text-figure tnum text-accent">{display}</dd>
     </div>
   );
 }
@@ -164,14 +164,22 @@ export const PageSpecimen: React.FC = () => {
     };
   }, []);
 
-  // Set as a strip along the hero's closing rule rather than three stat tiles.
-  // Tiles are the default treatment for any number on any site; this should
-  // read like the spec line stamped along a ruler.
+  // Set inside a raised panel (.specimen-panel in index.css) rather than as a
+  // strip along the hero's closing rule — the readout is a live instrument
+  // reading, genuinely a different material from the page, which is what
+  // earns it one of the system's two deliberate exceptions to "nothing is a
+  // card" (the other is .glance on the comparison section). Rows read label
+  // then figure, separated by hairlines, like a spec sheet rather than three
+  // stat tiles.
   return (
-    <dl className="flex flex-wrap items-baseline gap-x-10 gap-y-3 sm:gap-x-14">
-      {readings.map((reading) => (
-        <Figure key={reading.label} reading={reading} />
-      ))}
-    </dl>
+    <div className="specimen-panel">
+      <p className="font-sans text-xs text-fg-subtle">This page, measured in your browser</p>
+      <dl className="mt-5 flex flex-col">
+        {readings.map((reading) => (
+          <Figure key={reading.label} reading={reading} />
+        ))}
+      </dl>
+      <p className="mt-4 font-sans text-xs text-fg-subtle">Not a claim — a reading.</p>
+    </div>
   );
 };

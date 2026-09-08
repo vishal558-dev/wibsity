@@ -88,7 +88,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 | # | Section | Shape |
 |---|---------|-------|
-| 1 | Hero | Display headline, then lead left / CTA right, closing on the specimen strip |
+| 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
 | 2 | What we make | An index at display scale — the titles *are* the composition |
 | 3 | What you are choosing between | **Ink field.** Display heading, a real `<table>`, then the glance panel |
 | 4 | How it works | Full-width display heading, then a connected rail of four steps |
@@ -97,9 +97,15 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 The hero is the only place the type is allowed to be the whole composition
 (`--text-hero`, ~121px at 1440). It is deliberately **two lines, not three**: a third line pushes
-the specimen strip below the fold on a 14–15" laptop, and the strip is the payoff for the headline.
-The whole hero — headline, lead, CTA and strip — fits inside 780px of viewport height; check that
+the specimen panel below the fold on a 14–15" laptop, and the panel is the payoff for the headline.
+The whole hero — headline, lead, CTA and panel — fits inside 780px of viewport height; check that
 again if any of its type or padding changes.
+
+The hero's second row is a 12-column split: the lead paragraph and the CTA cluster now stack
+together in the left six columns, and `PageSpecimen` — rendering its own `.specimen-panel` chrome —
+takes the right five. It used to sit as a full-width strip along the hero's closing rule, read only
+once someone scrolled past the fold; putting the live reading beside the headline's own claim,
+visible without scrolling, is the point of the arrangement, not an incidental layout choice.
 
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the
@@ -126,14 +132,18 @@ a rotated arrow icon between steps carries the same flow idea in a shape that re
 Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
-**Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients, no
-glows, no blur, no texture overlays, `border-radius: 0` everywhere else. Rhythm comes from three
-grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule. The
-exception is `.glance` — the ✕/✓ strip under the homepage comparison table (`.glance`/`.glance-row`/
-`.glance-cell` in index.css) — added on direct instruction after this rule was raised explicitly. It
-gets a hairline border and a 10px radius because a table of short paired terms compressed into a
-scannable strip is exactly what a bordered panel is for; nowhere else on the site should reach for
-one on the strength of this precedent.
+**Nothing is a card, with two deliberate exceptions.** No bordered boxes, no shadows, no gradients,
+no glows, no blur, no texture overlays, `border-radius: 0` everywhere else. Rhythm comes from three
+grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule. Both
+exceptions were added on direct instruction after this rule was raised explicitly, and neither
+licenses a third: `.glance` — the ✕/✓ strip under the homepage comparison table
+(`.glance`/`.glance-row`/`.glance-cell` in index.css) — gets a hairline border and a 10px radius,
+because a table of short paired terms compressed into a scannable strip is exactly what a bordered
+panel is for. `.specimen-panel` — the surround for the hero's `PageSpecimen` readout — gets a tonal
+step (`--color-canvas-raised`) and a hairline border but keeps `border-radius: 0`, because a live
+instrument reading is a different material from the page rather than a grouped strip of terms; the
+radius is what still marks `.glance` as the more card-like of the two. Nowhere else on the site
+should reach for either on the strength of these precedents.
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -187,7 +197,9 @@ Headlines sit at **weight 550**, not 800/900. Large type is fine; shouted type i
 a perfect fourth over a 17px serif body, flattened at the top so display sizes stay usable on a
 laptop viewport, plus two display sizes used once each: `--text-hero` (the homepage headline) and
 `--text-index` (the service list). Both carry their own leading and tracking, because the defaults
-are far too loose at those sizes.
+are far too loose at those sizes. `--text-figure` sits one rung below `--text-2xl` for the hero
+specimen's readings — prominent without competing with a section heading, and used repeatedly (once
+per reading row) rather than once, which is what keeps it out of the "used once" pair above.
 
 **Archivo is requested with its WIDTH axis** — `Archivo:wdth,wght@62..125,400..600` in index.html.
 That is not cosmetic: three separate effects animate `font-stretch`, and dropping the axis from the

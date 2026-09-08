@@ -96,6 +96,12 @@
   --text-index--line-height: 1.02;
   --text-index--letter-spacing: -0.035em;
 
+  /* The specimen readings. Sits below --text-2xl at every viewport, so the
+     readout is prominent without competing with a section heading. */
+  --text-figure: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  --text-figure--line-height: 1;
+  --text-figure--letter-spacing: -0.02em;
+
   /* Vertical rhythm between sections, and the page's side gutter. Both are
      single sources of truth — do not hand-tune py-* per section. */
   --spacing-section: clamp(4.5rem, 9vw, 8rem);
@@ -209,6 +215,16 @@
   background-size: 1px 100%, 100% 45%;
   background-repeat: no-repeat, repeat-x;
   background-position: left top, left top;
+}
+
+/* The specimen readout's surround. The one raised surface in the hero, and
+   the only place on the page where a panel is justified: the readout is a
+   live instrument reading, genuinely a different material from the page.
+   Radius stays 0 — the tonal step and the hairline are the whole treatment. */
+.specimen-panel {
+  background-color: var(--color-canvas-raised);
+  border: 1px solid var(--color-rule);
+  padding: 1.5rem 1.75rem;
 }
 
 /* The inverted field.

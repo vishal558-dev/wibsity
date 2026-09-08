@@ -161,8 +161,9 @@ export const HomePage: React.FC = () => {
           Hero. One statement at display scale, one line of positioning, one
           action — and, once settled, a brief automatic swap onto a second,
           different statement and back (see .hero-swap / RevealHeadline). The
-          specimen strip sits along the closing rule as the reward for the
-          first scroll rather than competing with the headline.
+          specimen panel sits beside the lead and CTA rather than below them,
+          so the live reading is visible without scrolling; a closing measure
+          rule marks the real boundary into the next section.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
@@ -176,16 +177,14 @@ export const HomePage: React.FC = () => {
               <RevealHeadline />
             </div>
 
-            <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
-              <p className="enter enter-1 lg:col-span-7 text-2xl leading-[1.2] text-fg max-w-[26ch]">
-                Hand-built websites for businesses that care how they look.
-              </p>
-
-              <div className="enter enter-2 lg:col-span-4 lg:col-start-9">
-                <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+            <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:gap-16">
+              <div className="enter enter-1 lg:col-span-6">
+                <p className="text-2xl leading-[1.2] text-fg max-w-[26ch]">
+                  Hand-built websites for businesses that care how they look.
+                </p>
+                <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
                   <Link to="/contact" className="btn btn-primary">
                     <span>Start a project</span>
-                    <IconArrowRight size={17} />
                   </Link>
                   <a
                     href={CONTACT_INFO.whatsappUrl}
@@ -197,19 +196,18 @@ export const HomePage: React.FC = () => {
                     <span>or WhatsApp</span>
                   </a>
                 </div>
-                <p className="mt-5 font-sans text-sm text-fg-muted">
+                <p className="mt-6 font-sans text-sm text-fg-muted">
                   A one-person studio in India. Accepting new projects.
                 </p>
+              </div>
+
+              <div className="enter enter-2 lg:col-span-5 lg:col-start-8">
+                <PageSpecimen />
               </div>
             </div>
           </div>
 
-          <div className="enter enter-3 measure pt-6 pb-14 sm:pb-20 flex flex-col gap-5 lg:flex-row lg:items-baseline lg:justify-between lg:gap-12">
-            <PageSpecimen />
-            <p className="font-sans text-sm text-fg-subtle lg:text-right max-w-[34ch]">
-              This page, measured in your browser just now. Not a claim — a reading.
-            </p>
-          </div>
+          <div className="measure pb-4" />
         </div>
       </section>
 
