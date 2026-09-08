@@ -264,13 +264,16 @@ export const HomePage: React.FC = () => {
 
       {/* ------------------------------------------------------------------
           The anti-template argument, as a two-column opposition rather than
-          a manifesto or a spreadsheet. On the inverted field, which is what
-          marks it as the page's strongest statement — no glow, no gradient,
-          no accent needed. Depth carries the hierarchy: the template column
-          is recessed, the built column is raised (tones land in Phase 2
-          Task 10 via .field-petrol; this pass gives the section structure).
+          a manifesto or a spreadsheet. On the petrol field — the page's one
+          chromatic climax — no glow, no gradient, no accent needed. Depth
+          carries the hierarchy: the template column is recessed
+          (.compare-cell-template), the built column is raised
+          (.compare-cell-built). Padding is more generous than its neighbours
+          on purpose, so the colour reads as a considered plate with air
+          rather than a banner; the heading stays at text-3xl and never rises
+          toward hero scale.
           ------------------------------------------------------------------ */}
-      <Section field="ink" aria-labelledby="choice-heading">
+      <Section field="petrol" className="py-2" aria-labelledby="choice-heading">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
           <p className="lg:col-span-4 lg:col-start-9 lg:row-start-1 text-lg leading-relaxed text-fg-muted">
             Not design taste. The difference is structural, and you feel it a year later
@@ -291,20 +294,20 @@ export const HomePage: React.FC = () => {
             itself, the header would only duplicate what a screen reader
             already hears. Below md each aspect stacks with the template
             treatment first and visually muted. */}
-        <div className="mt-16">
+        <div className="mt-10">
           <div className="compare-row" aria-hidden="true">
-            <div className="hidden md:block px-6 py-4" />
-            <div className="compare-cell-template py-4">
+            <div className="hidden md:block px-6 py-2" />
+            <div className="compare-cell-template py-2">
               <span className="font-sans text-sm text-fg-subtle">A template</span>
             </div>
-            <div className="compare-cell-built py-4">
+            <div className="compare-cell-built py-2">
               <span className="font-sans text-lg font-medium text-fg">Built for you</span>
             </div>
           </div>
 
           {comparisonRows.map((row) => (
             <div key={row.aspect} className="compare-row">
-              <h3 className="px-6 pt-6 pb-2 md:py-6 font-sans text-sm font-normal text-fg-subtle">
+              <h3 className="px-6 pt-4 pb-2 md:py-4 font-sans text-sm font-normal text-fg-subtle">
                 {row.aspect}
               </h3>
               <div className="compare-cell-template">

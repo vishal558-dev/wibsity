@@ -526,14 +526,18 @@
    ------------------------------------------------------------------------ */
 .control {
   width: 100%;
-  background-color: transparent;
+  /* Recessed, on top of its existing underline — the clearest genuinely-inset
+     thing on the site. 2px radius: enough to read as touchable, not enough
+     to read as a card. */
+  background-color: var(--color-canvas-sunken);
   color: var(--color-fg);
   font-family: var(--font-sans);
   font-size: var(--text-ui);
-  padding: 0.75rem 0 0.6875rem;
+  padding: 0.75rem 0.75rem 0.6875rem;
   border: 0;
   border-bottom: 1px solid var(--color-rule-strong);
-  transition: border-color 140ms ease;
+  border-radius: 2px;
+  transition: border-color 140ms ease, background-color 140ms ease;
 }
 
 .control::placeholder {
@@ -606,6 +610,7 @@
   color: var(--color-fg-muted);
   background-color: transparent;
   border: 1px solid var(--color-rule);
+  border-radius: 2px;
   cursor: pointer;
   transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
 }
@@ -1181,6 +1186,14 @@
   position: relative;
   display: block;
   border-top: 1px solid var(--color-rule);
+  transition: background-color 140ms ease;
+}
+
+/* One elevation step down on hover — ground, not shadow, marking the row as
+   the thing under the pointer the same way .faq-row's open state marks the
+   thing that is active. */
+.index-row:hover {
+  background-color: var(--color-canvas-sunken);
 }
 
 .index-row::after {
@@ -1250,8 +1263,9 @@
    ------------------------------------------------------------------------ */
 
 /* The comparison's two-column opposition. Depth carries the hierarchy: the
-   option you are not choosing is recessed, the one you are is raised. Tones
-   are supplied by .field-petrol in Phase 2; the structure is neutral here. */
+   option you are not choosing is recessed, the one you are is raised — each
+   exactly one elevation step from the section's own .field-petrol ground, so
+   the tones are derived from the field rather than hardcoded. */
 .compare-row {
   display: grid;
   grid-template-columns: 1fr;
@@ -1266,7 +1280,16 @@
 
 .compare-cell-template,
 .compare-cell-built {
-  padding: 1.5rem 1.5rem;
+  padding: 1.125rem 1.5rem;
+}
+
+.compare-cell-template {
+  background-color: var(--color-canvas-sunken);
+  color: var(--color-fg-muted);
+}
+
+.compare-cell-built {
+  background-color: var(--color-canvas-raised);
 }
 
 /* --- Process step badges ---------------------------------------------------
@@ -1435,6 +1458,14 @@
   position: relative;
   padding-left: 0.875rem;
   margin-left: -0.875rem;
+  transition: background-color 140ms ease;
+}
+
+/* An open row is pressed in — the elevation says "active" without a colour
+   change or an icon swap doing the work alone. It keeps its petrol left bar
+   (.faq-row::before below) on top of the recessed ground. */
+.faq-row[data-open="true"] {
+  background-color: var(--color-canvas-sunken);
 }
 
 .faq-row::before {
