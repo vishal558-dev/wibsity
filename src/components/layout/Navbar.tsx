@@ -23,8 +23,8 @@ const navLinks = [
  * viewport to a 1px band there.
  *
  * Re-runs on route change (keyed on `pathname`) since sections differ per
- * page. No visual change lands from this attribute yet — Phase 2 Task 11
- * styles the states; this pass only has to track correctly.
+ * page. `header[data-over='petrol']` and `header[data-over='ink']` in
+ * index.css style the states this hook tracks.
  */
 function useGroundBehindHeader(pathname: string, headerHeight = 64) {
   const [ground, setGround] = useState('paper');

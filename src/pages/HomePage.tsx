@@ -196,7 +196,11 @@ export const HomePage: React.FC = () => {
                     <span>or WhatsApp</span>
                   </a>
                 </div>
-                <p className="mt-6 font-sans text-sm text-fg-muted">
+                <p className="mt-6 inline-flex items-center gap-2 font-sans text-sm text-fg-muted">
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent-warm"
+                    aria-hidden="true"
+                  />
                   A one-person studio in India. Accepting new projects.
                 </p>
               </div>
@@ -463,7 +467,7 @@ export const HomePage: React.FC = () => {
             <ol className="mt-12">
               {whatHappensNext.map((item) => (
                 <li key={item.step} className="border-t border-rule py-5 flex gap-5">
-                  <span className="font-sans text-sm text-fg-subtle tnum shrink-0 pt-1">
+                  <span className="font-sans text-sm text-accent-warm tnum shrink-0 pt-1">
                     {item.step}
                   </span>
                   <div>

@@ -1007,6 +1007,29 @@
   color: var(--color-fg);
 }
 
+/* --- Header ground states ---------------------------------------------------
+   The header keeps its ink treatment (`.field-ink` on the element itself, see
+   Navbar.tsx) as the page's persistent anchor — that never changes. These two
+   states exist so it never sits as a black bar on an identical black band:
+   `data-over` (written by Navbar's useGroundBehindHeader) says which field is
+   currently behind the sticky header, and when that field shares the header's
+   own ink tone (or is petrol, close enough to read as one dark mass without a
+   seam) the header adopts that exact ground and grows a hairline instead,
+   which is what keeps the boundary legible. Over paper or a paper tonal step
+   the header stays plain ink — the two grounds already contrast on their own. */
+header[data-over='petrol'] {
+  background-color: var(--color-petrol-field);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ink-fg) 22%, var(--color-petrol-field));
+}
+
+header[data-over='ink'] {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ink-fg) 22%, var(--color-ink));
+}
+
+header {
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
 /* --- Nav links ------------------------------------------------------------
    The same gesture as everything else: a rule drawing in from the left. The
    active route's rule is simply already drawn, so hover and state share one
@@ -1295,14 +1318,18 @@
 /* --- Process step badges ---------------------------------------------------
    The client-time commitment ("30 min", "Nothing") as a small pill rather
    than a line of prose — full radius here specifically, to read as a tag
-   rather than an echo of `.chip`'s form controls. */
+   rather than an echo of `.chip`'s form controls. `.badge` is used only here,
+   so oxide (what the visitor gives — their time) is set directly on the
+   class rather than as a one-off utility; if a second `.badge` placement is
+   ever added elsewhere, that one earns its own colour instead of inheriting
+   this one. 5.16:1 (npm run check:contrast, "accent-warm on canvas-sunken"). */
 .badge {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.75rem;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
-  color: var(--color-fg-muted);
+  color: var(--color-accent-warm);
   border: 1px solid var(--color-rule);
   border-radius: 999px;
 }
