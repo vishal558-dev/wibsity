@@ -1304,41 +1304,6 @@
   }
 }
 
-/* --- Cursor glow ------------------------------------------------------------
-   A soft accent-tinted circle trailing the pointer, mouse-only. This exact
-   idea (a cursor-following element over the hero) was built and deliberately
-   removed three times in the 2026 redesign — see CursorWindow/CursorMarks/
-   useCursorField in the design-direction history — each time because it
-   competed with the content it sat over. This version is sitewide but very
-   low-opacity, sits behind interactive elements (`pointer-events: none`), and
-   uses a native `transform` transition rather than a registered custom
-   property, since it is written directly and not read by a descendant. */
-.cursor-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 260px;
-  margin-left: -130px;
-  margin-top: -130px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-accent) 10%, transparent) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 30;
-  transition: transform 260ms cubic-bezier(0.16, 0.9, 0.24, 1);
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce), (pointer: coarse) {
-  .cursor-glow {
-    display: none;
-  }
-}
-
 /* --- FAQ open-row accent bar ------------------------------------------------
    A left accent bar that grows in behind the open question, on top of the
    existing grid-rows disclosure transition. The extra padding is offset by an

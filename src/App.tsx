@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTop } from './components/common/ScrollToTop';
-import { CursorGlow } from './components/common/CursorGlow';
 import { HomePage } from './pages/HomePage';
 import { useSEO } from './hooks/useSEO';
 import { routeSEO, NOT_FOUND_SEO } from './data/seo';
@@ -119,7 +118,6 @@ export function App() {
           <AppRoutes />
         </main>
         <Footer />
-        <CursorGlow />
       </div>
       <Analytics />
     </BrowserRouter>

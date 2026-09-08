@@ -323,18 +323,24 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
 - **`.reveal`** fades and lifts a section heading in as it enters view, on the same scroll-driven-
   animation primitive as the measure rule (`animation-timeline: view()`, no IntersectionObserver).
   Applied to one heading per section, never to running body copy.
-- **`.cursor-glow`** (`components/common/CursorGlow.tsx`) trails the pointer sitewide with a soft,
-  low-opacity accent tint. This exact idea — a cursor-following element — was built and deliberately
-  removed three times earlier in the redesign (`ConstructionGrid`, `CursorWindow`/`CursorMarks`,
-  `useCursorField` — see the hero-swap history further up). This is a considered fourth attempt: it
-  is mouse-only (`pointer: coarse` and `prefers-reduced-motion: reduce` both disable it),
-  `pointer-events: none`, and sits at `z-index: 30`, under the header's 40. If it starts competing
-  with content the way its predecessors did, that is a real design decision to revisit, not a tuning
-  pass.
 - **`.faq-row`** grows a left accent bar in behind the open question, on top of the existing
   grid-rows disclosure transition (both the homepage and `/about` FAQ implementations).
 - **`.whatsapp-icon`** wiggles on hover, applied to every WhatsApp icon on the site via one shared
   class and rule (`a:hover .whatsapp-icon`) rather than a bespoke animation per call-to-action.
+
+**A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
+*fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,
+`CursorWindow`/`CursorMarks`, and `useCursorField` (see the hero-swap history further up) — and,
+like the three before it, it was removed rather than tuned. All four shared the same failure mode:
+a pointer-tracked effect only exists while someone is moving the mouse over it, so the page's own
+screenshot — the state a visitor lands on, shares, or is judged by first — never shows the thing
+that was built, and the effect answers "the pointer moved somewhere on the page" rather than any
+specific action on any specific control. That is a decoration, not an interaction, by this site's
+own definition of the difference. A pointer-tracking effect is now considered **settled against**
+on this site rather than an open question — it fails both of the site's own tests (must read as a
+considered design at a single static screenshot; motion must answer a user action, not "the page is
+being looked at") on every attempt, not just this one. Do not re-propose the idea without treating
+that as the thing to argue against, not rediscover.
 
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
@@ -496,9 +502,10 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
   rather than inventing new ones. The 2026.1 addendum added `.badge`, `.glance`, `.spotlight`,
-  `.process-rail`, `.reveal`, `.route-fade`, `.faq-row`, `.cursor-glow` and `.whatsapp-icon` to that
-  set — reuse those for anything in the same family (a pill, a bordered strip, a cursor-tracked tint,
-  a scroll-driven reveal) rather than writing a sixth variant of one.
+  `.process-rail`, `.reveal`, `.route-fade`, `.faq-row` and `.whatsapp-icon` to that set — reuse
+  those for anything in the same family (a pill, a bordered strip, a scroll-driven reveal) rather
+  than writing a sixth variant of one. Do not add a cursor-tracked tint back — see "A sitewide
+  cursor-following tint" under Motion above.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
   plain `.link`.
