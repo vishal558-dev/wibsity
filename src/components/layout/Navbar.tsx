@@ -14,6 +14,51 @@ const navLinks = [
 ];
 
 /**
+ * Tracks which section ground is behind the header, so the bar can adopt that
+ * field and grow a hairline instead of dissolving into an identical dark band.
+ *
+ * Deliberately narrow, in the same shape as the hero's scroll handler: one
+ * observer, one attribute, no per-frame work. The detection line is the
+ * header's own bottom edge, expressed as a rootMargin that collapses the
+ * viewport to a 1px band there.
+ *
+ * Re-runs on route change (keyed on `pathname`) since sections differ per
+ * page. No visual change lands from this attribute yet — Phase 2 Task 11
+ * styles the states; this pass only has to track correctly.
+ */
+function useGroundBehindHeader(pathname: string, headerHeight = 64) {
+  const [ground, setGround] = useState('paper');
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[data-field]');
+    if (!sections.length) return;
+
+    // Clamped rather than a bare subtraction: a viewport shorter than the
+    // header (or not yet laid out — some embedded/automation contexts report
+    // `innerHeight` as 0 on the very first tick) would otherwise produce a
+    // negative-of-negative bottom margin, which the API rejects outright and
+    // throws from inside the effect, taking the whole tree down with it.
+    const bottomMargin = Math.max(window.innerHeight - headerHeight, 0);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setGround(entry.target.getAttribute('data-field') ?? 'paper');
+          }
+        }
+      },
+      { rootMargin: `-${headerHeight - 1}px 0px -${bottomMargin}px 0px` }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, [pathname, headerHeight]);
+
+  return ground;
+}
+
+/**
  * A sticky ink nameplate over a paper page.
  *
  * It uses the site's own inverted field rather than a new treatment, and it is
@@ -38,6 +83,7 @@ const navLinks = [
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const ground = useGroundBehindHeader(pathname);
 
   // Close the sheet on navigation. Derived during render rather than from an
   // effect: reading it from the location (instead of each link's onClick) means
@@ -64,7 +110,7 @@ export const Navbar: React.FC = () => {
   }, [open]);
 
   return (
-    <header className="field-ink sticky top-0 z-40">
+    <header className="field-ink sticky top-0 z-40" data-over={ground}>
       <div className="mx-auto w-full max-w-[78rem] px-gutter">
         <div className="flex h-16 items-center justify-between gap-6">
           <Link

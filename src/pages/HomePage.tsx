@@ -165,7 +165,7 @@ export const HomePage: React.FC = () => {
           so the live reading is visible without scrolling; a closing measure
           rule marks the real boundary into the next section.
           ------------------------------------------------------------------ */}
-      <section ref={heroRef} className="relative overflow-hidden">
+      <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
           <div className="pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
             <div className="hero-swap">
@@ -283,10 +283,13 @@ export const HomePage: React.FC = () => {
 
         {/* This drops <table> semantics: the content is a comparison rather
             than data anyone reads across axes, and the heading-per-aspect
-            structure below keeps it navigable. The first row is a decorative,
-            aria-hidden column-label echo of the real per-aspect headings that
-            follow, so a screen reader isn't told "A template" / "Built for
-            you" twice. Below md each aspect stacks with the template
+            structure below keeps it navigable. Each cell carries its own
+            sr-only "As a template: " / "Built for you: " label, so the
+            template/built distinction is announced on every row rather than
+            relying on visual column position. The header row below is purely
+            decorative and stays aria-hidden — since every cell now labels
+            itself, the header would only duplicate what a screen reader
+            already hears. Below md each aspect stacks with the template
             treatment first and visually muted. */}
         <div className="mt-16">
           <div className="compare-row" aria-hidden="true">
@@ -305,10 +308,16 @@ export const HomePage: React.FC = () => {
                 {row.aspect}
               </h3>
               <div className="compare-cell-template">
-                <p className="text-sm text-fg-muted leading-relaxed">{row.template}</p>
+                <p className="text-sm text-fg-muted leading-relaxed">
+                  <span className="sr-only">As a template: </span>
+                  {row.template}
+                </p>
               </div>
               <div className="compare-cell-built">
-                <p className="text-lg text-fg leading-relaxed">{row.built}</p>
+                <p className="text-lg text-fg leading-relaxed">
+                  <span className="sr-only">Built for you: </span>
+                  {row.built}
+                </p>
               </div>
             </div>
           ))}
