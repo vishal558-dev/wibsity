@@ -153,6 +153,11 @@ and section 6 already use for their own step lists than to a badge. Below `lg`, 
 in one column,
 a rotated arrow icon between steps carries the same flow idea in a shape that reads vertically.
 
+At `lg` the four steps also stagger in as the section scrolls into view, timed to the same
+`.process-rail` marker rather than firing on their own independent scroll visibility — the site's
+one deliberate exception extending `.reveal`'s single-heading rule to a list of items. See "The
+2026.1 micro-interaction addendum" below for why this one was judged narrow enough to allow.
+
 Section 4 also carries `field="sunken"` as of the grounds-table mapping — a real, visible tonal step
 down from paper (`.field-sunken`'s `background-color` reads a `:root`-level `--canvas-sunken-ambient`
 alias rather than `--color-canvas-sunken` directly, since the latter would be self-referential inside
@@ -403,6 +408,19 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
 - **`.chip:hover` lifts one pixel**, the same `translateY(-1px)` `.btn:hover` uses, so the project-type
   and budget chips in the enquiry form answer a hover with the same physical response as the button
   beside them.
+- **`.btn-content`** fades+lifts (reusing `route-fade-in`) each time the enquiry form's submit
+  button's label/icon content is keyed by `InquiryForm.tsx`'s `Phase`, so `Send enquiry → Sending →
+  Sent` reads as a state change rather than a text swap — answers the submit click itself, not a
+  timer or a scroll.
+- **`.process-step-0` through `.process-step-3`** are the one deliberate exception extending
+  `.reveal`'s single-heading rule to a list of items: the four "How it works" steps stagger in at
+  `lg` and up, sharing a named view-timeline (`.process-track`'s `view-timeline-name:
+  --process-scroll` in index.css) with the existing `.process-rail` marker rather than each
+  animating on its own independent scroll visibility — chosen specifically because it ties to a
+  scroll mechanism the site already treats as legitimate, not because "the user scrolled" is
+  reason enough on its own. **Do not generalise this to the site's other static lists** (service
+  index rows, FAQ rows, checklists, comparison rows, contact channels) without raising that
+  trade-off again, explicitly, the way this one was.
 
 **A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
 *fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,
@@ -477,6 +495,13 @@ deliberate and should not be undone:
 3. **Validation runs on submit, not on keystroke.** Being told a field is wrong while still typing it
    is the most irritating thing a form can do. The first invalid field takes focus and its message is
    wired through `aria-describedby`.
+
+The submit button itself steps through three states on a successful submit — `Send enquiry` →
+`Sending` → `Sent` — via `InquiryForm.tsx`'s `Phase` state machine, which holds a `confirming`
+phase for ~600ms after the fetch resolves so `Sent` actually gets seen before the confirmation
+panel replaces the form; without that hold, phase would jump straight from `submitting` to the
+panel and the third state would never render. See `.btn-content` in the 2026.1 micro-interaction
+addendum (Motion, above).
 
 Chips wrap a visually-hidden radio input, so a group keeps real radio semantics and arrow-key
 navigation. Their focus ring uses `:focus`, not `:focus-visible` — submitting with nothing chosen
@@ -585,11 +610,13 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
   rather than inventing new ones. The 2026.1 addendum added `.badge`, `.spotlight`, `.process-rail`,
-  `.reveal`, `.route-fade`, `.faq-row` and `.whatsapp-icon` to that set; the comparison rebuild added
-  `.compare-row` / `.compare-cell-template` / `.compare-cell-built`. Reuse those for anything in the
-  same family (a pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth
-  variant of one. Do not add a cursor-tracked tint back — see "A sitewide
-  cursor-following tint" under Motion above.
+  `.reveal`, `.route-fade`, `.faq-row`, `.whatsapp-icon`, `.btn-content`, `.process-track` and
+  `.process-step-N` to that set; the comparison rebuild added `.compare-row` /
+  `.compare-cell-template` / `.compare-cell-built`. Reuse those for anything in the same family (a
+  pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one.
+  Do not add a cursor-tracked tint back — see "A sitewide cursor-following tint" under Motion above,
+  and do not extend `.process-step-N`'s stagger to another list without raising that trade-off
+  explicitly — see the addendum bullet above.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
   plain `.link`.

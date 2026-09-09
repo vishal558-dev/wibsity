@@ -363,14 +363,24 @@ export const HomePage: React.FC = () => {
             main line plus station, not either instead of the other. Below
             lg, where the steps stack in one column instead of a row, an
             arrow between each one carries the same "this leads to that"
-            idea in a shape that reads vertically. */}
-        <div className="mt-16">
+            idea in a shape that reads vertically.
+
+            At lg the four steps also stagger in — a deliberate, narrow
+            exception to the site's "no fade-up-on-scroll entrance reveals"
+            rule (see CLAUDE.md), justified specifically because it is timed
+            to this same rail marker rather than firing on generic scroll
+            visibility: `.process-track` names a shared view-timeline
+            (`--process-scroll`) that both the rail and each `.process-step-N`
+            read from, so a step lifts in as the marker reaches it. Scoped to
+            lg and up only, since that is the one place the rail itself
+            exists. */}
+        <div className="mt-16 process-track">
           <div className="process-rail hidden lg:block" data-draw />
 
           <ol className="mt-0 lg:mt-9 flex flex-col gap-y-10 lg:flex-row lg:items-start lg:gap-y-0 lg:gap-x-10">
             {processData.map((step, i) => (
               <React.Fragment key={step.step}>
-                <li className="measure pt-6 lg:flex-1" data-draw>
+                <li className={`measure pt-6 lg:flex-1 process-step-${i}`} data-draw>
                   <div className="flex items-center gap-3">
                     <span className="tnum shrink-0 font-sans text-lg text-accent">
                       {step.step}
