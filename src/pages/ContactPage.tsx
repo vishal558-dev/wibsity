@@ -29,7 +29,7 @@ export const ContactPage: React.FC = () => (
           <ol className="mt-12">
             {whatHappensNext.map((item) => (
               <li key={item.step} className="border-t border-rule py-5 flex gap-5">
-                <span className="font-sans text-sm text-fg-subtle tnum shrink-0 pt-1">{item.step}</span>
+                <span className="font-sans text-sm text-accent-warm tnum shrink-0 pt-1">{item.step}</span>
                 <div>
                   <h2 className="font-sans text-ui font-medium">{item.title}</h2>
                   <p className="mt-1.5 text-fg-muted leading-relaxed">{item.body}</p>
