@@ -333,9 +333,12 @@ export const HomePage: React.FC = () => {
 
       {/* ------------------------------------------------------------------
           Process. A genuine sequence, which is the only reason it is numbered.
-          The hierarchy is inverted on purpose: what the project costs the client
-          in time is set larger than what we do, because that is the part worth
-          reading and the part nobody else states.
+          What the project costs the client in time is still the part worth
+          reading and the part nobody else states, but it is now carried by an
+          oxide `.badge` pill per step rather than by the large standalone line
+          this comment used to describe. Oxide is the accent for what the
+          visitor gives; the section's own ground is `sunken`, one step down,
+          because this is the machinery underneath.
           ------------------------------------------------------------------ */}
       <Section rule field="sunken" aria-labelledby="process-heading">
         {/* Inverted from a heading-left / paragraph-right row: the small
