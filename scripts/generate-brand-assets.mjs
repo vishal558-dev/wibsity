@@ -40,8 +40,41 @@ if (!chrome) {
   process.exit(1);
 }
 
-const INK = '#161a19';
-const PAPER = '#edece6';
+/**
+ * Paper and ink are read out of src/index.css's `@theme` block rather than
+ * hardcoded here — a hardcoded copy verifies what the author intended, not
+ * what actually ships, and that gap is exactly how a stale palette survives
+ * a review. Same approach as scripts/check-contrast.mjs. Fails loudly if
+ * either token is missing rather than falling back to a default.
+ */
+function readThemeColor(name) {
+  const cssPath = path.join(ROOT, 'src', 'index.css');
+  const css = fs.readFileSync(cssPath, 'utf8');
+  const themeStart = css.indexOf('@theme');
+  if (themeStart === -1) throw new Error(`Could not find an @theme block in ${cssPath}.`);
+  const braceStart = css.indexOf('{', themeStart);
+  let depth = 0;
+  let braceEnd = -1;
+  for (let i = braceStart; i < css.length; i++) {
+    if (css[i] === '{') depth++;
+    else if (css[i] === '}') {
+      depth--;
+      if (depth === 0) {
+        braceEnd = i;
+        break;
+      }
+    }
+  }
+  if (braceEnd === -1) throw new Error(`@theme block in ${cssPath} is never closed.`);
+  const themeBlock = css.slice(braceStart + 1, braceEnd);
+  const match = themeBlock.match(new RegExp(`--color-${name}:\\s*(#[0-9a-fA-F]{6})\\s*;`));
+  if (!match) throw new Error(`Could not find --color-${name} in the @theme block of ${cssPath}.`);
+  return match[1];
+}
+
+const INK = readThemeColor('ink');
+const PAPER = readThemeColor('canvas');
+console.log(`Read from src/index.css — ink: ${INK}, paper: ${PAPER}`);
 
 /** The mark's geometry — paper strokes on an ink ground, in a 32-unit square. */
 const MARK_BODY =
