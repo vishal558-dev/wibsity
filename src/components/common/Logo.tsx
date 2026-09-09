@@ -20,22 +20,33 @@ import React from 'react';
  * Because the source mark is wide (roughly 1.76:1, not the old square glyph),
  * `LogoMark` sizes by height only and lets width follow the image's own
  * aspect ratio, rather than forcing it into a square box.
+ *
+ * The asset is white-on-transparent, which only reads on a dark ground. The
+ * header and the mobile nav sheet are both `field-ink`, so that's the
+ * default (`tone="ink"`). The footer isn't inverted — it sits on plain
+ * paper — where a white mark is nearly invisible; `tone="paper"` CSS-inverts
+ * it to a dark mark instead of shipping a second image file. `invert()`
+ * only touches color channels, so the transparent background survives it.
  */
 
 export interface LogoMarkProps {
   /** Rendered height in px; width follows the mark's own aspect ratio. */
   size?: number;
+  /** Which ground the mark sits on. `ink` (default) for a dark field, like
+   *  the header; `paper` inverts the white source to a dark mark for a
+   *  plain light ground, like the footer. */
+  tone?: 'ink' | 'paper';
   className?: string;
 }
 
-export const LogoMark: React.FC<LogoMarkProps> = ({ size = 28, className }) => (
+export const LogoMark: React.FC<LogoMarkProps> = ({ size = 28, tone = 'ink', className }) => (
   <img
     src="/logo-mark.png"
     alt=""
     aria-hidden="true"
     height={size}
     className={className}
-    style={{ height: size, width: 'auto' }}
+    style={{ height: size, width: 'auto', filter: tone === 'paper' ? 'invert(1)' : undefined }}
   />
 );
 

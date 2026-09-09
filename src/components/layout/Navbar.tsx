@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { LogoMark } from '../common/Logo';
 import { IconMenu, IconClose, IconWhatsApp } from '../common/icons';
@@ -84,6 +84,8 @@ export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const ground = useGroundBehindHeader(pathname);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
   // Close the sheet on navigation. Derived during render rather than from an
   // effect: reading it from the location (instead of each link's onClick) means
@@ -97,6 +99,21 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     if (!open) return;
+
+    // `main`/`footer` (not the header the sheet lives in) go `inert` so Tab
+    // can't reach the page underneath a sheet that visually covers it —
+    // without this, a keyboard user could tab past the overlay into content
+    // that's hidden behind it. The toggle button itself stays reachable,
+    // since it's how the sheet closes.
+    const buried = document.querySelectorAll<HTMLElement>('#main, footer');
+    buried.forEach((el) => el.setAttribute('inert', ''));
+    firstLinkRef.current?.focus();
+    // Captured now, not read from the ref in cleanup: the button is a
+    // stable, always-rendered element, but the lint rule (correctly, in
+    // general) can't know that a ref's `.current` won't have changed by the
+    // time cleanup runs.
+    const toggleEl = toggleRef.current;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
     };
@@ -106,6 +123,10 @@ export const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = previousOverflow;
+      buried.forEach((el) => el.removeAttribute('inert'));
+      // Closing via Escape or a route change would otherwise drop focus to
+      // <body>; return it to the control that owns this sheet.
+      toggleEl?.focus();
     };
   }, [open]);
 
@@ -127,14 +148,14 @@ export const Navbar: React.FC = () => {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-9" aria-label="Main">
+          <nav className="hidden md:flex items-stretch gap-9" aria-label="Main">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
                   cn(
-                    'nav-link relative font-sans text-ui py-5 transition-colors',
+                    'nav-link relative flex h-16 items-center font-sans text-ui transition-colors',
                     isActive ? 'text-fg is-active' : 'text-fg-muted hover:text-fg'
                   )
                 }
@@ -153,6 +174,7 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <button
+              ref={toggleRef}
               type="button"
               onClick={() => setOpen((v) => !v)}
               className="md:hidden w-11 h-11 -mr-3 inline-flex items-center justify-center text-fg"
@@ -175,9 +197,10 @@ export const Navbar: React.FC = () => {
         >
           <div className="mx-auto w-full max-w-[78rem] px-gutter py-10 flex flex-col h-full">
             <nav className="flex flex-col" aria-label="Main">
-              {navLinks.map((link) => (
+              {navLinks.map((link, i) => (
                 <NavLink
                   key={link.to}
+                  ref={i === 0 ? firstLinkRef : undefined}
                   to={link.to}
                   className={({ isActive }) =>
                     cn(

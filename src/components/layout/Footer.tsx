@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
         <div className="grid gap-10 sm:gap-12 md:grid-cols-[1fr_auto] md:items-start">
           <div className="max-w-sm">
             <Link to="/" className="inline-flex items-center gap-3 -my-2.5 py-2.5" aria-label="wibsity — home">
-              <LogoMark size={26} />
+              <LogoMark size={26} tone="paper" />
               <span
                 className="font-sans text-xl font-semibold lowercase leading-none"
                 style={{ letterSpacing: '-0.045em' }}
