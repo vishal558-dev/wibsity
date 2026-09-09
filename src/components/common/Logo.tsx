@@ -1,49 +1,34 @@
 import React from 'react';
 
 /**
- * The wibsity identity, drawn in code rather than shipped as raster art.
+ * The wibsity identity: a photoreal 3D chrome ribbon mark, supplied as a
+ * finished brand board (not vector geometry) and cropped into raster assets
+ * — see CLAUDE.md's "Icons and the logo" section for where each crop lives
+ * and why there is no SVG source for this mark, unlike the code-drawn
+ * geometric mark it replaced.
  *
- * The previous logo was four PNGs — logo.png / logo-light.png plus a mark in
- * each theme — swapped by `useTheme()` in both Navbar and Footer. Everything
- * here is `currentColor` instead, so there is nothing to swap, nothing to
- * re-export when a colour changes, no oversized-image audit to fail, and the
- * mark stays sharp at every size including 2560px-wide displays.
- *
- * The mark is a geometric lowercase "w" sitting on a rule that runs past the
- * letter on both sides. That rule is the same measure device the whole site is
- * built on (see `.measure` in index.css), so the smallest piece of the brand
- * carries its structural idea. It is drawn with flat caps and mitred joints to
- * match Archivo's mechanical terminals, and it survives being reduced to a
- * 16px monochrome favicon, which is what it was designed against.
+ * `public/logo-mark.png` is the white-square / dark-mark crop, matching the
+ * dark ink ground the header and footer both sit on (the previous code-drawn
+ * mark rendered the same composition — light square, dark cutout — via
+ * `currentColor`; this is that same visual slot, now a raster image).
  */
 
 export interface LogoMarkProps {
-  /** Rendered size in px. The geometry is a 32-unit square. */
+  /** Rendered size in px (square). */
   size?: number;
   className?: string;
 }
 
 export const LogoMark: React.FC<LogoMarkProps> = ({ size = 28, className }) => (
-  <svg
+  <img
+    src="/logo-mark.png"
+    alt=""
+    aria-hidden="true"
     width={size}
     height={size}
-    viewBox="0 0 32 32"
-    fill="none"
     className={className}
-    aria-hidden="true"
-    focusable="false"
-  >
-    <rect width="32" height="32" fill="currentColor" />
-    <path
-      d="M6 8.5 L10.4 21 L16 12.5 L21.6 21 L26 8.5"
-      stroke="var(--color-canvas)"
-      strokeWidth="2.9"
-      strokeLinecap="butt"
-      strokeLinejoin="miter"
-      fill="none"
-    />
-    <path d="M4 25.4 H28" stroke="var(--color-canvas)" strokeWidth="2" />
-  </svg>
+    style={{ width: size, height: size, objectFit: 'contain' }}
+  />
 );
 
 export interface WordmarkProps {

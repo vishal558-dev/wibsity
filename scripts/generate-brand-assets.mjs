@@ -1,14 +1,18 @@
 /**
+ * STALE as of the 2026.2 rebrand for everything except `og-image.png` below.
+ * `LogoMark` (src/components/common/Logo.tsx) no longer draws a code geometry
+ * mark — the brand is now a supplied photoreal 3D render, cropped by hand
+ * into public/logo-mark.png, logo-mark-512.png, favicon.ico and the
+ * favicon/apple-touch-icon PNGs (see CLAUDE.md's "Icons and the logo"
+ * section). The favicon/icon rasterisation logic below still targets the old
+ * hardcoded SVG "w" and produces assets nothing in the site references.
+ * Don't run it expecting current output; the og-image step is unaffected.
+ *
  * Regenerates every raster brand asset from a single source of truth.
  *
  * Run with `node scripts/generate-brand-assets.mjs`. It is deliberately not
  * wired into `npm run build` — these assets change roughly never, and a build
  * step that shells out to a browser is a bad trade for that.
- *
- * The mark's geometry lives in three places that must agree: this file,
- * public/favicon.svg, and the `LogoMark` component in
- * src/components/common/Logo.tsx. If the logo is ever redrawn, change all
- * three and re-run this.
  *
  * Rasterising is done by the locally installed Chrome in headless mode, so
  * there is no image-processing dependency in package.json. The .ico is

@@ -517,17 +517,42 @@ with flat caps and mitred joints, matched to Archivo's terminals. A library's ro
 different hand next to this typeface. WhatsApp is the one exception: it is a filled brand glyph at
 its official proportions, because redrawing a channel icon in your own hand makes it unrecognisable.
 
-`components/common/Logo.tsx` draws the identity in code — `currentColor` throughout, so there is
-nothing to theme-swap. **The four theme-swapped logo PNGs are gone.** The mark is a geometric
-lowercase "w" sitting on a rule that runs past the letter on both sides — the same measure device
-the site is built on, so the smallest piece of the brand carries its structural idea.
+**As of the 2026.2 rebrand, `components/common/Logo.tsx` no longer draws the identity in code.**
+The geometric code-drawn "w" (a `currentColor` SVG, theme-swap-free) is gone, replaced on direct
+instruction by a supplied photoreal 3D chrome ribbon mark — a finished brand board, not vector
+geometry, so there is nothing left to redraw in code. `LogoMark` now renders an `<img
+src="/logo-mark.png">`; the prop API (`size`) is unchanged, so `Navbar.tsx` and `Footer.tsx` needed
+no changes. This is a real material shift, not just an asset swap: the rest of the site is flat,
+gradient-free and 3D-free by design (see "Nothing is a card" and the "no unnecessary dependency"
+rule up top), and a photoreal chrome render is the opposite of that on purpose, per direct
+instruction — it does not license 3D or gradient treatments anywhere else on the site.
 
-**The mark's geometry lives in three places that must agree**: `Logo.tsx`, `public/favicon.svg`, and
-`scripts/generate-brand-assets.mjs`. Redraw it in all three and re-run the generator.
+**Every logo asset is a raster crop from that one supplied board image, not a redrawable source.**
+There is no vector master and no regeneration script for the mark itself:
+- `public/logo-mark.png` — the white-rounded-square / dark-mark crop, used by `LogoMark` (header,
+  footer) — matches the dark ink ground the navbar/footer sit on, the same visual slot the old
+  `currentColor` mark rendered into.
+- `public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `favicon-96x96.png`,
+  `apple-touch-icon.png` — all cropped/resized from the board's dark-rounded-square icon variant.
+- `public/logo-mark-512.png` — cropped from the board's higher-resolution "3D render" panel (the
+  mark + sphere alone, no square container), used for the JSON-LD `logo`/`image` URLs in
+  `index.html`.
+- **There is no `favicon.svg` any more** — an svg favicon can't be built from a raster source, and
+  serving a stale vector "w" next to a raster one would have browsers that prefer SVG favicons
+  showing the *old* mark. The `<link rel="icon" type="image/svg+xml">` tag was removed from
+  `index.html` along with the file.
+
+If the mark is ever redrawn or a new board is supplied, re-crop all of the above from it by hand
+(or write a fresh script) — `scripts/generate-brand-assets.mjs` is **stale** for the mark itself: it
+still drives headless Chrome to rasterise a hardcoded SVG copy of the old geometric "w", which
+nothing on the site references any more. Its `og-image.png` step (below) is unaffected and still
+valid.
 
 ### The asset generator
 `scripts/generate-brand-assets.mjs` drives the locally installed Chrome, so there is no image
-dependency in `package.json`. Two things in it are hard-won:
+dependency in `package.json`. It is now **partially stale** — see the note above; its favicon/mark
+rasterisation targets a logo that no longer exists in code. Two things in it are still hard-won and
+still apply to any future Chrome-rasterisation step (e.g. a redrawn og-image):
 
 - Icons are rasterised by **drawing the SVG into a canvas and reading the data URL back out of the
   DOM**, not by `--screenshot`. Chrome's headless screenshot silently produces a blank frame for
@@ -535,6 +560,8 @@ dependency in `package.json`. Two things in it are hard-won:
   two empty icons the first time it ran.
 - `favicon.ico` is assembled by hand from the generated PNGs — the ICO container is a 6-byte header
   plus one 16-byte directory entry per frame, and every browser in use accepts PNG-encoded frames.
+  (The current `favicon.ico` was instead built with Pillow's native multi-size ICO writer, since its
+  source is already a raster crop — see above.)
 
 `public/og-image.png` (1200×630) carries the real headline and the real `og:description` in the
 site's own type and colours. Regenerate it when either changes.
