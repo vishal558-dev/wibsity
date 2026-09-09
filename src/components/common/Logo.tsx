@@ -7,14 +7,23 @@ import React from 'react';
  * and why there is no SVG source for this mark, unlike the code-drawn
  * geometric mark it replaced.
  *
- * `public/logo-mark.png` is the white-square / dark-mark crop, matching the
- * dark ink ground the header and footer both sit on (the previous code-drawn
- * mark rendered the same composition — light square, dark cutout — via
- * `currentColor`; this is that same visual slot, now a raster image).
+ * `public/logo-mark.png` is a flat white silhouette crop of the mark alone,
+ * alpha-keyed to a transparent background — not the board's rounded-square
+ * app-icon composition. That square-icon crop was tried first and dropped:
+ * its soft ambient shadow (baked into the supplied render for the "icon on a
+ * device" look) survived the crop as a visible grey halo once placed on the
+ * site's own flat dark ink ground, and its chrome gradient turned to mush at
+ * the ~24px size the header/footer actually render it at. The flat
+ * silhouette has neither problem — no shadow to leak, and a single-tone
+ * shape stays crisp at small sizes where a gradient doesn't.
+ *
+ * Because the source mark is wide (roughly 1.76:1, not the old square glyph),
+ * `LogoMark` sizes by height only and lets width follow the image's own
+ * aspect ratio, rather than forcing it into a square box.
  */
 
 export interface LogoMarkProps {
-  /** Rendered size in px (square). */
+  /** Rendered height in px; width follows the mark's own aspect ratio. */
   size?: number;
   className?: string;
 }
@@ -24,10 +33,9 @@ export const LogoMark: React.FC<LogoMarkProps> = ({ size = 28, className }) => (
     src="/logo-mark.png"
     alt=""
     aria-hidden="true"
-    width={size}
     height={size}
     className={className}
-    style={{ width: size, height: size, objectFit: 'contain' }}
+    style={{ height: size, width: 'auto' }}
   />
 );
 

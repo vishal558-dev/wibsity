@@ -529,9 +529,14 @@ instruction — it does not license 3D or gradient treatments anywhere else on t
 
 **Every logo asset is a raster crop from that one supplied board image, not a redrawable source.**
 There is no vector master and no regeneration script for the mark itself:
-- `public/logo-mark.png` — the white-rounded-square / dark-mark crop, used by `LogoMark` (header,
-  footer) — matches the dark ink ground the navbar/footer sit on, the same visual slot the old
-  `currentColor` mark rendered into.
+- `public/logo-mark.png` — a flat white silhouette of the mark alone, alpha-keyed to a transparent
+  background, used by `LogoMark` (header, footer). **Not** the board's rounded-square app-icon
+  composition: that version was tried first and dropped because its baked-in ambient shadow (part
+  of the board's "icon on a device" rendering) showed as a visible grey halo once placed on the
+  site's own flat dark ink ground, and its chrome gradient lost definition at the ~24px size the
+  header/footer actually use — a flat single-tone shape reads clean at that size where a gradient
+  doesn't. `LogoMark` sizes by height only, letting width follow the mark's real (non-square,
+  ~1.76:1) aspect ratio.
 - `public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `favicon-96x96.png`,
   `apple-touch-icon.png` — all cropped/resized from the board's dark-rounded-square icon variant.
 - `public/logo-mark-512.png` — cropped from the board's higher-resolution "3D render" panel (the
