@@ -25,7 +25,7 @@ export const routeSEO: Record<string, RouteSEO> = {
     path: '/',
     title: 'wibsity — custom websites, built from scratch | India',
     description:
-      'A one-person web studio in India building custom websites by hand — no page builder, no bought theme. Fixed price agreed before we start, live in about a week.',
+      'A web studio in India building custom websites by hand — no page builder, no bought theme. Fixed price agreed before we start, live in about a week.',
   },
   '/services': {
     path: '/services',
@@ -37,7 +37,7 @@ export const routeSEO: Record<string, RouteSEO> = {
     path: '/about',
     title: 'The studio, and the questions worth asking | wibsity',
     description:
-      'wibsity is one person who designs and builds the site and answers the phone. What every project gets, plus straight answers on pricing, timelines, ownership and changes.',
+      'wibsity designs and builds the site and answers the phone. What every project gets, plus straight answers on pricing, timelines, ownership and changes.',
   },
   '/contact': {
     path: '/contact',

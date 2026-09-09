@@ -11,10 +11,10 @@ import { CONTACT_INFO } from '../data/contact';
  *
  * The old version led with "Practical engineering standards, not design fluff"
  * over a textured panel about "high-contrast Swiss typography" and "The 3
- * Non-Negotiable Pillars" — enterprise-agency register on a one-person studio,
- * which reads as cover rather than confidence. This page does the opposite: it
- * states the size of the operation first, in the first sentence, and treats it
- * as the argument rather than the caveat.
+ * Non-Negotiable Pillars" — enterprise-agency register that reads as cover
+ * rather than confidence. This page does the opposite: it opens on what the
+ * client actually gets — direct access to whoever builds the site, no account
+ * manager in between — rather than a claim about scale.
  *
  * Nothing here is invented. There are no clients, testimonials, awards, years
  * or project counts on this page because there are none to report; the trust
@@ -27,12 +27,12 @@ export const AboutPage: React.FC = () => {
   return (
     <>
       <Section className="pt-6" tight>
-        <h1 className="text-3xl max-w-[16ch]">A studio of one.</h1>
+        <h1 className="text-3xl max-w-[16ch]">Hand-built, not handed off.</h1>
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-16">
           <p className="lg:col-span-6 text-lg leading-[1.55] text-fg">
-            wibsity is one person who designs and builds the site, answers the phone, and
-            is still there six months later when you want something changed. There is no
-            account manager between you and the work, because there is nobody to be one.
+            wibsity designs and builds the site, answers the phone, and is still there six
+            months later when you want something changed. There is no account manager
+            between you and the work.
           </p>
           <p className="lg:col-span-5 lg:col-start-8 text-fg-muted leading-relaxed">
             That is a genuine trade. You get the person doing the work, undivided, at a

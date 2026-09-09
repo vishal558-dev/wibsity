@@ -196,13 +196,6 @@ export const HomePage: React.FC = () => {
                     <span>or WhatsApp</span>
                   </a>
                 </div>
-                <p className="mt-6 inline-flex items-center gap-2 font-sans text-sm text-fg-muted">
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent-warm"
-                    aria-hidden="true"
-                  />
-                  A one-person studio in India. Accepting new projects.
-                </p>
               </div>
 
               <div className="enter enter-2 lg:col-span-5 lg:col-start-8">
@@ -296,10 +289,14 @@ export const HomePage: React.FC = () => {
             relying on visual column position. The header row below is purely
             decorative and stays aria-hidden — since every cell now labels
             itself, the header would only duplicate what a screen reader
-            already hears. Below md each aspect stacks with the template
-            treatment first and visually muted. */}
+            already hears. It is also hidden entirely below md: stacked, it
+            sat directly above the first row's own aspect label, making the
+            same template/built distinction twice before any real content
+            appeared. It only earns its place once the columns are wide
+            enough to read as a caption over them. Below md each aspect
+            stacks with the template treatment first and visually muted. */}
         <div className="mt-10">
-          <div className="compare-row" aria-hidden="true">
+          <div className="hidden md:grid compare-row" aria-hidden="true">
             <div className="hidden md:block px-6 py-2" />
             <div className="compare-cell-template py-2">
               <span className="font-sans text-sm text-fg-subtle">A template</span>
@@ -375,7 +372,7 @@ export const HomePage: React.FC = () => {
               <React.Fragment key={step.step}>
                 <li className="measure pt-6 lg:flex-1" data-draw>
                   <div className="flex items-center gap-3">
-                    <span className="tnum flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-rule-strong font-sans text-sm text-fg-subtle">
+                    <span className="tnum shrink-0 font-sans text-lg text-accent">
                       {step.step}
                     </span>
                     <h3 className="font-sans text-lg font-medium text-fg">{step.name}</h3>

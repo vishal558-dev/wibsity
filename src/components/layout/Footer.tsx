@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="mt-4 text-lg font-sans text-fg leading-relaxed">
-              A one-person web studio in India. Custom sites, built from an empty file,
+              A web studio in India. Custom sites, built from an empty file,
               at a fixed price agreed before anything starts.
             </p>
           </div>

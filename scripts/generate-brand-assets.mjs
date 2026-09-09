@@ -216,7 +216,7 @@ console.log('og-image.png');
   </div>
   <div>
     <h1>Every site starts as an empty file.</h1>
-    <p>A one-person studio in India. Fixed price agreed before anything starts, live in about a week.</p>
+    <p>A web studio in India. Fixed price agreed before anything starts, live in about a week.</p>
   </div>
   <div class="rule"><span>wibsity.in</span><span>Custom websites, built from scratch</span></div>
 </body></html>`;

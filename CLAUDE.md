@@ -139,12 +139,18 @@ Section 4's timeline was first built as a 2×2 grid of bordered cells and read a
 rebuilt as four columns each opening on its own `.measure` rule with no border beyond that. It has
 since been rebuilt again, on direct instruction, into a connected sequence: a shared `.process-rail`
 line at `lg` (a native scroll-driven animation on the same primitive as the measure rule's own
-draw-in, carrying a marker that travels the row as the section scrolls through view), a numbered
-circle badge per step, and the client-time commitment (`step.yours`) shown as a small pill
+draw-in, carrying a marker that travels the row as the section scrolls through view), a plain
+accent-coloured step numeral, and the client-time commitment (`step.yours`) shown as a small pill
 (`.badge`) rather than as the large standalone line it used to be. That large-`yours` treatment was
 this section's previous "hierarchy inverted on purpose" device — what the project costs the client
-in time set larger than what we do — and it no longer exists in that form; the number badge and step
-name now carry the section's visual weight instead. Below `lg`, where the steps stack in one column,
+in time set larger than what we do — and it no longer exists in that form; the step numeral and step
+name now carry the section's visual weight instead. The numeral was briefly a bordered circle
+(`rounded-full border`) — dropped because it was an undocumented, unregistered break from the
+system's own `border-radius: 0` rule, and because a border on `--color-fg-subtle` was quieter than
+a device meant to carry visual weight has any business being. It is now `text-accent` (petrol, tying
+it to the rail it sits beside) with no shape around it at all — closer to the plain numerals `/contact`
+and section 6 already use for their own step lists than to a badge. Below `lg`, where the steps stack
+in one column,
 a rotated arrow icon between steps carries the same flow idea in a shape that reads vertically.
 
 Section 4 also carries `field="sunken"` as of the grounds-table mapping — a real, visible tonal step
@@ -165,7 +171,9 @@ commented at the level of *why*, not *what* — but the rules that matter most:
 
 **Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients,
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
-(2px — enough to read as touchable, not enough to read as a card). Rhythm comes from three elevations
+(2px — enough to read as touchable, not enough to read as a card) and `.badge` (999px — a tag-shaped
+pill, used only for the process steps' client-time commitment, so it reads as a label rather than a
+touchable control). Rhythm comes from three elevations
 (`--color-canvas-raised`, `--color-canvas`, `--color-canvas-sunken`) expressed as ground tone alone —
 never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
 `.field-raised`) and the measure rule. An element may move at most one elevation step from its parent
@@ -209,11 +217,11 @@ a gradient.
 **Two accents, with a semantic split that is what keeps the second one from becoming decoration:**
 petrol (`--color-accent`) marks what the studio makes and measures — link underlines (`.link`), the
 focus ring, the specimen readout's figures, the service index's delivery figures, the "built for you"
-side of the comparison, and the measure ticks. Oxide (`--color-accent-warm`) marks what the visitor
-gives or does, in exactly four placements: the process steps' client-time badges, the availability
-dot, and the "what happens next" numerals on both the homepage and `/contact`. Neither is ever a
-button fill; the primary action stays a field inversion. Grep `accent-warm` before adding a fifth
-placement — it is not meant to spread.
+side of the comparison, the measure ticks, and the process section's step numerals. Oxide
+(`--color-accent-warm`) marks what the visitor gives or does, in exactly three placements: the
+process steps' client-time badges, and the "what happens next" numerals on both the homepage and
+`/contact`. Neither is ever a button fill; the primary action stays a field inversion. Grep
+`accent-warm` before adding a fourth placement — it is not meant to spread.
 
 **Component classes live in `@layer components`, and they have to.** Unlayered CSS outranks every
 layered rule, so while `.btn` sat outside a layer it silently beat the utilities applied alongside
@@ -558,7 +566,14 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   claim the site makes, and it is stated positively.
 - **Never fabricate clients, testimonials, awards, metrics, years, or project counts.** There are
   none. `/about` is designed to earn trust without them — by being specific and checkable, and by
-  stating the size of the operation in its first sentence rather than hiding it.
+  opening on what the client actually gets (direct access to whoever builds the site, no account
+  manager in between) rather than a headcount claim.
+- **Team size is not stated anywhere on the site.** The hero used to close on "A one-person studio in
+  India. Accepting new projects."; `/about` opened "A studio of one." and named the headcount as the
+  reason there is no account manager. Both were removed on direct instruction and replaced with the
+  same underlying claims — direct access, no account manager, still there later — stated without a
+  number attached. Don't reintroduce a headcount figure (a specific number, "solo", "one-person",
+  etc.) into hero, footer, `/about`, or any meta/SEO/JSON-LD string without asking first.
 - **No unverified performance numbers.** The specimen readout is measured; everything else is
   structural. `data/studio.ts`'s `comparisonRows` (the homepage comparison) is the easiest place on
   the site to accidentally write a claim that cannot be backed up — every entry is a fact about how

@@ -70,7 +70,7 @@ export const standardsData = [
  *  because there are none to report. */
 export const studioFacts = [
   { label: 'Based in', value: 'India, working remotely' },
-  { label: 'Team size', value: 'One. You talk to the builder' },
+  { label: 'Who you talk to', value: 'The person who builds it' },
   { label: 'Typical delivery', value: '3–5 working days' },
   { label: 'Pricing', value: 'Fixed, agreed before we start' },
 ];
