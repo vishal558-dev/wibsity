@@ -48,9 +48,13 @@ file count and element count in the visitor's browser and prints the result unde
 Two consequences bind future work:
 
 1. **The site cannot carry a dependency it does not need.** `motion`, `lenis` and `lucide-react`
-   were all removed. The runtime is React, react-dom, react-router-dom, clsx, tailwind-merge and
-   `@vercel/analytics`. Adding a library to this project is a positioning decision, not just a
-   technical one.
+   were all removed. The runtime is React, react-dom, react-router-dom, clsx, tailwind-merge,
+   `@vercel/analytics` and `gsap`. Adding a library to this project is a positioning decision, not
+   just a technical one. `gsap` is the one exception: added on direct instruction to match
+   gsap.com's own homepage timeline demo closely for the service index's entrance (see
+   `ServiceTimeline.tsx` and "Homepage composition" below) — a positioning decision made explicitly
+   for one feature, not a general license to reach for animation libraries elsewhere. Every other
+   motion on the site is still CSS.
 2. **No asserted performance numbers.** The readout is the only performance figure on the site and
    it is measured, not claimed. A bytes-transferred reading was tried and deliberately dropped:
    Resource Timing reports zero bytes both for cross-origin responses without
@@ -92,7 +96,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 | # | Section | Shape |
 |---|---------|-------|
 | 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
-| 2 | What we make | An index at display scale — the titles *are* the composition |
+| 2 | What we make | GSAP-animated flat petrol cards, staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
 | 5 | Worth asking | No field — stays on paper. The list's own top rule carries the heading and the link; rows run full width |
@@ -109,6 +113,24 @@ together in the left six columns, and `PageSpecimen` — rendering its own `.spe
 takes the right five. It used to sit as a full-width strip along the hero's closing rule, read only
 once someone scrolled past the fold; putting the live reading beside the headline's own claim,
 visible without scrolling, is the point of the arrangement, not an incidental layout choice.
+
+Section 2's rows used to be a plain `.index-row` list — a bordered row whose rule drew from the
+left on hover, with a `.spotlight` pointer-tracked tint underneath the text (`trackSpotlight` in
+`utils/spotlight.ts`). Watching a clip of gsap.com's own homepage "GSAP Timeline" demo — pill
+labels sliding in staggered from the left, landing in a staircase, next to a vertical
+playhead/marker over a ticked ruler axis — prompted a direct, on-instruction reinterpretation of
+that demo for this section, close enough to override several of this file's own defaults on
+purpose: each row is now a full card (`.timeline-card`, filled with `.field-petrol` itself —
+reusing that field's already contrast-verified token remap rather than a one-off colour), animated
+in by GSAP's real Timeline + ScrollTrigger API (`ServiceTimeline.tsx`) rather than a CSS lookalike
+— the one motion mechanism on the site built with a JS library. A two-tone `linear-gradient`
+(petrol → oxide) was the first version of the fill, tried to match GSAP's own gradient pills
+closely; it was replaced with the flat `.field-petrol` fill on direct instruction after a design
+pass (frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, and impeccable were consulted)
+converged on flat colour plus a small, considered radius reading as more premium than a soft
+two-tone card — see "Nothing is a card" and the Motion section below for what this still overrides
+and why. `.index-row`/`.spotlight`/`utils/spotlight.ts` were deleted outright rather than kept
+alongside the new treatment, since nothing else on the site used them.
 
 Section 3's comparison used to be a real `<table>` with a bordered `.glance` strip repeating the
 same argument underneath it — two devices making one argument, density without hierarchy. It has
@@ -174,11 +196,12 @@ per-answer paragraph's measure widened from `max-w-[62ch]` to `max-w-[72ch]` to 
 Two inks and a paper, two accents with a hard semantic split, and four fields. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
-**Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients,
+**Nothing is a card, with two deliberate exceptions.** No bordered boxes, no shadows, no gradients,
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
-(2px — enough to read as touchable, not enough to read as a card) and `.badge` (999px — a tag-shaped
+(2px — enough to read as touchable, not enough to read as a card), `.badge` (999px — a tag-shaped
 pill, used only for the process steps' client-time commitment, so it reads as a label rather than a
-touchable control). Rhythm comes from three elevations
+touchable control), and `.timeline-card` (4px — the service index's four cards, see below). Rhythm
+comes from three elevations
 (`--color-canvas-raised`, `--color-canvas`, `--color-canvas-sunken`) expressed as ground tone alone —
 never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
 `.field-raised`) and the measure rule. An element may move at most one elevation step from its parent
@@ -191,6 +214,22 @@ second: nowhere else on the site should reach for a border on the strength of th
 homepage comparison table used to carry a second exception, `.glance` — a bordered ✕/✓ strip with a
 10px radius — but it was cut in favour of a two-column opposition where depth, not a border, carries
 the hierarchy; see "What you are choosing between" in Homepage composition above.)
+
+`.timeline-card` is the second exception — a 4px-radius card used only for the service index's four
+rows (title, summary and delivery figure all inside one card), added on direct instruction to match
+gsap.com's own homepage "GSAP Timeline" demo (see "Homepage composition" above and "The
+service-timeline entrance (GSAP)" under Motion below). It is filled with `.field-petrol` itself
+(the card carries that class in the markup) rather than a one-off colour — a two-tone
+`linear-gradient(petrol, oxide)` was the first version, matching GSAP's own gradient pills closely,
+and was replaced with the flat `.field-petrol` fill on direct instruction after a design pass
+(frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, impeccable) flagged a soft
+gradient-filled rounded card as the generic "SaaS-card" look those skills warn against, and
+converged on flat colour instead — so there is still no gradient anywhere in the system. Reusing
+`.field-petrol`'s token remap also means `.timeline-card`'s title/summary/hover states need no
+separate contrast math: `text-fg`/`text-fg-muted` and the `--color-canvas-raised` hover step all
+resolve correctly inside it, exactly as they do in the homepage's other petrol field (section 3).
+Like `.specimen-panel`, it does not license a third: nowhere else on the site should reach for a
+full-radius (or non-zero-radius) fill on the strength of this precedent.
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -379,9 +418,6 @@ action (a hover, a scroll, a route change) rather than "the page loaded", still 
 micro-interaction addendum" block at the bottom of index.css's `@layer components`.
 
 - **`.btn:hover` lifts one pixel** on top of the existing fill-wipe and arrow-slide.
-- **`.spotlight`** tracks the pointer within a row (the service index) and tints a small radius
-  under it via `--mx`/`--my`, written on `mousemove` by `trackSpotlight` in `utils/spotlight.ts`.
-  No blur filter — the softness is the gradient's own falloff.
 - **`PageSpecimen`'s readings count up** from zero the one time each first resolves from its
   placeholder (`useCountUp` in `PageSpecimen.tsx`) — the number itself is still exactly what
   `measure()` reported; this only spreads its reveal over ~700ms instead of snapping it in.
@@ -393,18 +429,18 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
   grid-rows disclosure transition (both the homepage and `/about` FAQ implementations).
 - **`.whatsapp-icon`** wiggles on hover, applied to every WhatsApp icon on the site via one shared
   class and rule (`a:hover .whatsapp-icon`) rather than a bespoke animation per call-to-action.
-- **Elevation transitions**, added with the stratigraphy field system: `.index-row` steps down to
-  `--color-canvas-sunken` on hover, `.faq-row[data-open="true"]` does the same on open (ground, not
-  colour, marks "active"), and `header[data-over]` cross-fades its background/border as the page
-  scrolls between grounds. All three transitions are merged into each selector's own existing rule
-  rather than appended later in the file — a duplicate selector further down would silently win and
-  make the cascade unreadable; see the top-of-file layering note above for why that matters here in
-  particular.
-- **`.index-row h3.widen` also settles heavier on hover/focus** — a font-weight step (550 → 600) on
-  the same trigger `.widen` uses for its font-stretch step, a second Archivo variable axis on the
-  same moment. Scoped to the service index rather than folded into `.widen` itself, since `.widen` is
-  shared with the FAQ questions and this extra weight is specific to the four service titles reading
-  as one flat, identical row.
+- **Elevation transitions**, added with the stratigraphy field system: `.faq-row[data-open="true"]`
+  steps down to `--color-canvas-sunken` on open (ground, not colour, marks "active"), and
+  `header[data-over]` cross-fades its background/border as the page scrolls between grounds. Both
+  transitions are merged into each selector's own existing rule rather than appended later in the
+  file — a duplicate selector further down would silently win and make the cascade unreadable; see
+  the top-of-file layering note above for why that matters here in particular. (`.index-row` carried
+  a third instance of this same device — a step to `--color-canvas-sunken` on hover, plus a
+  font-weight step on its `h3.widen` — until the GSAP timeline pass replaced the whole row with
+  `.timeline-card`; that specific hover treatment was not carried over, since `.timeline-card`
+  answers "hovered" with its own ground-shift-plus-lift instead (`.field-petrol`'s own
+  `--color-canvas-raised` step, the same idiom in miniature), see "The service-timeline entrance
+  (GSAP)" below.)
 - **`.chip:hover` lifts one pixel**, the same `translateY(-1px)` `.btn:hover` uses, so the project-type
   and budget chips in the enquiry form answer a hover with the same physical response as the button
   beside them.
@@ -418,9 +454,13 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
   --process-scroll` in index.css) with the existing `.process-rail` marker rather than each
   animating on its own independent scroll visibility — chosen specifically because it ties to a
   scroll mechanism the site already treats as legitimate, not because "the user scrolled" is
-  reason enough on its own. **Do not generalise this to the site's other static lists** (service
-  index rows, FAQ rows, checklists, comparison rows, contact channels) without raising that
-  trade-off again, explicitly, the way this one was.
+  reason enough on its own. **Do not generalise this to the site's other static lists** (FAQ rows,
+  checklists, comparison rows, contact channels) without raising that trade-off again, explicitly,
+  the way this one was. (The service index rows *do* now carry a stagger entrance — via a separate
+  mechanism, GSAP, not by extending `.process-step-N`'s CSS pattern; see "The service-timeline
+  entrance (GSAP)" below. That is the trade-off this note asks to be raised explicitly before
+  generalising — it was, on direct instruction, and it deliberately stayed a distinct
+  implementation rather than stretching this one to cover a fifth case.)
 
 **A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
 *fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,
@@ -435,6 +475,30 @@ on this site rather than an open question — it fails both of the site's own te
 considered design at a single static screenshot; motion must answer a user action, not "the page is
 being looked at") on every attempt, not just this one. Do not re-propose the idea without treating
 that as the thing to argue against, not rediscover.
+
+### The service-timeline entrance (GSAP)
+Added on direct instruction, after the trade-off against "one motion idea" and "nothing is a card"
+was raised explicitly and overridden on purpose — this is not drift, and it is a third layer on top
+of the original five mechanisms and the 2026.1 addendum, not a replacement for either. It is also
+the one motion mechanism on the site built with a JS library rather than CSS: GSAP's real Timeline
++ ScrollTrigger, not a lookalike. It still respects `prefers-reduced-motion` (via
+`gsap.matchMedia()`, landing every card/playhead element directly in its rest state with
+`gsap.set(..., { clearProps: 'all' })` when set) and still answers a real action — scrolling the
+section into view — exactly like `.reveal` and `.process-step-N`. `ServiceTimeline.tsx` owns the
+whole effect: a `gsap.context()` scopes every tween/ScrollTrigger it creates so a `useLayoutEffect`
+cleanup can `ctx.revert()` all of it in one call (safe under both React StrictMode's dev-only
+double-invoke and a real route unmount). The trigger is the component's own root element, and the
+timeline is **scrubbed** (`scrub: true`) across the section's transit through the viewport
+(`start: 'top 85%'`, `end: 'bottom 15%'`) rather than played once on entry — its progress is bound
+directly to scroll position, so scrolling forward advances it, scrolling back reverses it, and
+stopping mid-scroll pauses it exactly where it is, in real time, in both directions. This is a
+deliberate departure from the rest of the site's scroll motion (`.reveal`, `.process-step-N`, which
+play once and hold) — on direct instruction, and specific to this one GSAP-driven effect; it is not
+a precedent for scrubbing other sections. It does not free-run on an interval the way gsap.com's own
+demo auto-loops while stationary in view — there is no "stationary" state here, since it only moves
+while the scrollbar does. See
+`.timeline-card`/`.timeline-playhead`/`.timeline-playhead-line`/`.timeline-playhead-marker`/
+`.timeline-ruler` in index.css for the static shape these tweens animate.
 
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
@@ -609,14 +673,19 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
-  rather than inventing new ones. The 2026.1 addendum added `.badge`, `.spotlight`, `.process-rail`,
+  rather than inventing new ones. The 2026.1 addendum added `.badge`, `.process-rail`,
   `.reveal`, `.route-fade`, `.faq-row`, `.whatsapp-icon`, `.btn-content`, `.process-track` and
   `.process-step-N` to that set; the comparison rebuild added `.compare-row` /
-  `.compare-cell-template` / `.compare-cell-built`. Reuse those for anything in the same family (a
-  pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one.
-  Do not add a cursor-tracked tint back — see "A sitewide cursor-following tint" under Motion above,
-  and do not extend `.process-step-N`'s stagger to another list without raising that trade-off
-  explicitly — see the addendum bullet above.
+  `.compare-cell-template` / `.compare-cell-built`; the GSAP timeline pass added `.timeline-card`
+  (which carries `.field-petrol` directly rather than its own colour classes — reuse `text-fg`/
+  `text-fg-muted` inside it, not new custom properties), `.timeline-card-figure`,
+  `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
+  (`.index-row` and `.spotlight` were deleted, replaced outright). Reuse those for anything in the same family (a
+  pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
+  — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "two
+  deliberate exceptions" under "Nothing is a card" above. Do not add a cursor-tracked tint back —
+  see "A sitewide cursor-following tint" under Motion above, and do not extend `.process-step-N`'s
+  stagger to another list without raising that trade-off explicitly — see the addendum bullet above.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
   plain `.link`.

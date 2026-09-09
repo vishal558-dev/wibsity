@@ -8,13 +8,21 @@
    does), and four full-bleed fields (ink, petrol, sunken, raised).
 
    The organising rule: nothing is a card, except `.control` and `.chip` at a
-   2px radius. Section boundaries are marked by a `.measure` rule (a hairline
+   2px radius, `.badge` at 999px, and `.timeline-card` at 4px (the service
+   index's GSAP-animated cards, added on direct instruction to match
+   gsap.com's own homepage demo — see `Service-timeline entrance` below and
+   CLAUDE.md's Motion section). `.timeline-card` is filled with `.field-petrol`
+   itself, not a one-off colour — a gradient fill was tried first and removed
+   on direct instruction, so there is still no gradient anywhere in the
+   system. Section boundaries are marked by a `.measure` rule (a hairline
    with a short run of accent ticks at its left end, like the scale bar on a
    drawing) and rhythm comes from three elevations (raised/canvas/sunken,
-   expressed as ground tone alone) plus whole sections inverting to one of the
-   four fields — not from stacking bordered rectangles. Radius is 0 everywhere
-   else and there are no shadows, gradients, glows or blurs in the system. If
-   you find yourself reaching for one, the answer is a ground shift instead.
+   expressed as ground tone alone) plus whole sections inverting to one of
+   the four fields — not from stacking bordered rectangles. Radius is 0
+   everywhere else and there are no shadows, gradients, glows or blurs in
+   the system. If you find yourself reaching for one of these elsewhere, the
+   answer is a ground shift instead — see CLAUDE.md before adding a second
+   card exception.
 
    The motion system has exactly one idea: TYPE BEING SET. Letterforms carry
    the animation — width and weight axes on Archivo — rather than boxes sliding
@@ -1208,57 +1216,132 @@ header {
 }
 
 /* ---------------------------------------------------------------------------
-   The service index — the page's second typographic moment.
+   Service-timeline entrance (GSAP) — the service index re-cast as flat
+   petrol cards that slide in staggered, staircased, led by a playhead +
+   ruler. A direct, on-instruction reinterpretation of gsap.com's own
+   homepage timeline demo — see CLAUDE.md's Motion section. Built with
+   GSAP's real Timeline + ScrollTrigger (ServiceTimeline.tsx); everything
+   below is the card/playhead's static shape and rest-state layout only —
+   the motion itself lives in JS. This replaced the previous plain
+   `.index-row` + `.spotlight` list (a bordered row with a rule-draw hover
+   and a pointer-tracked tint) outright, not alongside it — see CLAUDE.md's
+   Homepage composition section for that history.
 
-   Rows of display-size titles rather than a list of small text. The row's rule
-   thickens and draws from the left, and the title widens. Everything the row
-   says stays visible at rest: hover adds emphasis, never information.
-   ------------------------------------------------------------------------ */
-.index-row {
-  position: relative;
+   Second deliberate exception to "nothing is a card" (see CLAUDE.md) —
+   greenlit for this one section on direct instruction. The fill is
+   `.field-petrol` itself (the card carries that class in the markup), not a
+   one-off colour: reusing the section's own already contrast-verified
+   token remap (`--color-fg`, `-fg-muted`, `-canvas-raised`, ...) means the
+   title/summary/hover states below need no separate contrast math, and the
+   card reads as the same brand surface as "What you are choosing between"
+   rather than a foreign SaaS-card gradient. A gradient fill was tried first
+   and removed on direct instruction — flat, deliberate colour plus a small
+   radius reads as more considered than a soft two-tone card. */
+.timeline-card {
   display: block;
-  border-top: 1px solid var(--color-rule);
-  transition: background-color 140ms ease;
+  padding: 1.5rem 1.75rem;
+  border-radius: 4px;
+  transition: transform 200ms cubic-bezier(0.16, 0.9, 0.24, 1),
+    background-color 200ms cubic-bezier(0.16, 0.9, 0.24, 1);
+  will-change: transform, opacity;
 }
 
-/* One elevation step down on hover — ground, not shadow, marking the row as
-   the thing under the pointer the same way .faq-row's open state marks the
-   thing that is active. */
-.index-row:hover {
-  background-color: var(--color-canvas-sunken);
+/* Ground shift, not a shadow — the same elevation idiom `.index-row` and
+   `.faq-row[data-open]` use elsewhere, here reaching for `.field-petrol`'s
+   own `--color-canvas-raised` step instead of inventing a hover tint. */
+.timeline-card:hover,
+.timeline-card:focus-visible {
+  background-color: var(--color-canvas-raised);
+  transform: translateY(-2px);
 }
 
-.index-row::after {
-  content: "";
+.timeline-card-figure {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  margin-top: 0.25rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-fg);
+  background: color-mix(in srgb, var(--color-fg) 18%, transparent);
+  border-radius: 999px;
+}
+
+@media (min-width: 64rem) {
+  /* The staircase: each card's rest position steps further right (and
+     narrower) than the last. This is plain CSS, not JS — GSAP only animates
+     the entrance motion on top of it, so there's nothing for JS and CSS to
+     fight over (see the --hero-set gotcha in Motion). */
+  .timeline-card {
+    margin-left: calc(var(--card-index, 0) * 1.75rem);
+    width: calc(100% - var(--card-index, 0) * 1.75rem);
+  }
+}
+
+/* The playhead: a vertical line topped with a teardrop marker, above a
+   ticked ruler axis — the literal "scrubber" motif from the GSAP reference.
+   Decorative only (aria-hidden in the markup); hidden below lg, where the
+   staircase itself doesn't exist. */
+.timeline-playhead {
   position: absolute;
-  top: -1px;
   left: 0;
-  height: 2px;
-  width: 100%;
-  background-color: var(--color-fg);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 520ms cubic-bezier(0.16, 0.9, 0.24, 1);
+  top: 0;
+  width: 2.5rem;
+  height: 100%;
+  pointer-events: none;
 }
 
-.index-row:hover::after,
-.index-row:focus-visible::after {
-  transform: scaleX(1);
+.timeline-playhead-line {
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background-color: var(--color-accent);
+  transform-origin: top;
+  transform: scaleY(0); /* GSAP animates this; reduced-motion clears it via clearProps */
 }
 
-/* The row's title also settles heavier as it widens — a second letterform
-   axis (Archivo's weight, not just its width) on the same hover moment,
-   scoped to the service index rather than folded into `.widen` itself, since
-   `.widen` is shared with the FAQ questions and this extra weight is specific
-   to the four titles here reading as one flat, identical row of links. */
-.index-row h3.widen {
-  transition: font-stretch 420ms cubic-bezier(0.16, 0.9, 0.24, 1),
-    font-weight 420ms cubic-bezier(0.16, 0.9, 0.24, 1);
+.timeline-playhead-marker-track {
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  width: 0;
+  height: 0;
 }
 
-.index-row:hover h3.widen,
-.index-row:focus-visible h3.widen {
-  font-weight: 600;
+/* The teardrop itself: a square with three rounded corners, rotated — the
+   standard CSS map-pin construction, no SVG needed. Static rotate/radius
+   live on this inner element, separate from the track GSAP moves, so GSAP's
+   own transform (translateY, via yPercent) never has to compose with this
+   element's rotate — the same "don't animate the same property from two
+   places" trap the hero-set effect already cost a build over (see Motion). */
+.timeline-playhead-marker {
+  position: absolute;
+  left: -7px;
+  top: -14px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-accent);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.timeline-ruler {
+  position: absolute;
+  left: 0;
+  bottom: -1.5rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6rem;
+  width: 8rem;
+  border-top: 1px solid var(--color-rule);
+}
+
+.timeline-ruler-tick {
+  width: 1px;
+  height: 6px;
+  background-color: var(--color-rule-strong);
 }
 
 /* Submit-in-progress indicator (icons.tsx, IconSpinner). */
@@ -1492,36 +1575,6 @@ header {
   to {
     left: 100%;
   }
-}
-
-/* --- Spotlight: rows that respond to the cursor ----------------------------
-   A soft radial tint that tracks the pointer within a row on hover — the
-   service index. `--mx`/`--my` are written on
-   `mousemove` (see `trackSpotlight` in utils/spotlight.ts) as percentages of
-   the row's own box, so the gradient recentres under the cursor rather than
-   sitting fixed. No blur filter: the softness comes from the gradient's own
-   falloff, which keeps this off the system's "no blur" list in spirit. */
-.spotlight {
-  position: relative;
-}
-
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(
-    240px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--color-accent) 12%, transparent),
-    transparent 70%
-  );
-  transition: opacity 200ms ease;
-  pointer-events: none;
-}
-
-.spotlight:hover::before,
-.spotlight:focus-within::before {
-  opacity: 1;
 }
 
 /* --- Button lift ------------------------------------------------------------
