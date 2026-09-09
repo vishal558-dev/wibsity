@@ -387,6 +387,14 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
   rather than appended later in the file — a duplicate selector further down would silently win and
   make the cascade unreadable; see the top-of-file layering note above for why that matters here in
   particular.
+- **`.index-row h3.widen` also settles heavier on hover/focus** — a font-weight step (550 → 600) on
+  the same trigger `.widen` uses for its font-stretch step, a second Archivo variable axis on the
+  same moment. Scoped to the service index rather than folded into `.widen` itself, since `.widen` is
+  shared with the FAQ questions and this extra weight is specific to the four service titles reading
+  as one flat, identical row.
+- **`.chip:hover` lifts one pixel**, the same `translateY(-1px)` `.btn:hover` uses, so the project-type
+  and budget chips in the enquiry form answer a hover with the same physical response as the button
+  beside them.
 
 **A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
 *fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,

@@ -616,12 +616,17 @@
   border: 1px solid var(--color-rule);
   border-radius: 2px;
   cursor: pointer;
-  transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+  transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease,
+    transform 140ms cubic-bezier(0.16, 0.9, 0.24, 1);
 }
 
+/* The same one-pixel lift `.btn:hover` uses, so every clickable control in
+   the enquiry form answers a hover with the same physical response instead
+   of the chips feeling flatter than the button beside them. */
 .chip:hover {
   border-color: var(--color-fg-subtle);
   color: var(--color-fg);
+  transform: translateY(-1px);
 }
 
 .chip[aria-pressed="true"],
@@ -1239,6 +1244,21 @@ header {
 .index-row:hover::after,
 .index-row:focus-visible::after {
   transform: scaleX(1);
+}
+
+/* The row's title also settles heavier as it widens — a second letterform
+   axis (Archivo's weight, not just its width) on the same hover moment,
+   scoped to the service index rather than folded into `.widen` itself, since
+   `.widen` is shared with the FAQ questions and this extra weight is specific
+   to the four titles here reading as one flat, identical row of links. */
+.index-row h3.widen {
+  transition: font-stretch 420ms cubic-bezier(0.16, 0.9, 0.24, 1),
+    font-weight 420ms cubic-bezier(0.16, 0.9, 0.24, 1);
+}
+
+.index-row:hover h3.widen,
+.index-row:focus-visible h3.widen {
+  font-weight: 600;
 }
 
 /* Submit-in-progress indicator (icons.tsx, IconSpinner). */

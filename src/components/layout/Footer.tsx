@@ -24,16 +24,16 @@ export const Footer: React.FC = () => {
       <div className="mx-auto w-full max-w-[78rem] px-gutter py-14 sm:py-16">
         <div className="grid gap-10 sm:gap-12 md:grid-cols-[1fr_auto] md:items-start">
           <div className="max-w-sm">
-            <Link to="/" className="inline-flex items-center gap-2.5 -my-2.5 py-2.5" aria-label="wibsity — home">
-              <LogoMark size={22} />
+            <Link to="/" className="inline-flex items-center gap-3 -my-2.5 py-2.5" aria-label="wibsity — home">
+              <LogoMark size={26} />
               <span
-                className="font-sans text-base font-semibold lowercase leading-none"
+                className="font-sans text-xl font-semibold lowercase leading-none"
                 style={{ letterSpacing: '-0.045em' }}
               >
                 wibsity
               </span>
             </Link>
-            <p className="mt-4 text-ui font-sans text-fg-muted leading-relaxed">
+            <p className="mt-4 text-lg font-sans text-fg leading-relaxed">
               A one-person web studio in India. Custom sites, built from an empty file,
               at a fixed price agreed before anything starts.
             </p>

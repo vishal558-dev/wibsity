@@ -169,7 +169,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
       </fieldset>
 
       {/* 2 — budget ------------------------------------------------------ */}
-      <fieldset className="border-0 p-0 m-0 mt-12">
+      <fieldset className="border-0 p-0 m-0 mt-14">
         <legend className="font-sans text-lg mb-1.5 p-0">Roughly what budget?</legend>
         <p className="text-ui font-sans text-fg-muted mb-4">
           A range is enough. It is what decides the scope, not the quality.
@@ -192,7 +192,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
       </fieldset>
 
       {/* 3 — who --------------------------------------------------------- */}
-      <div className="mt-12 grid gap-8 sm:grid-cols-2">
+      <div className="mt-14 grid gap-8 sm:grid-cols-2">
         <div>
           <label htmlFor={`${uid}-name`} className="block font-sans text-ui font-medium">
             Your name
