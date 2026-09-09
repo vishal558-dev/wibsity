@@ -3,14 +3,18 @@
 /* ============================================================================
    wibsity design system
    ----------------------------------------------------------------------------
-   Two inks and a paper, plus one hue used in five places on the whole site.
+   Two inks and a paper, two accents with a hard semantic split (petrol for
+   what the studio makes and measures, oxide for what the visitor gives or
+   does), and four full-bleed fields (ink, petrol, sunken, raised).
 
-   The organising rule: nothing is a card. Section boundaries are marked by a
-   `.measure` rule (a hairline with a short run of accent ticks at its left end,
-   like the scale bar on a drawing) and rhythm comes from whole sections
-   inverting to ink — not from stacking bordered rectangles. Radius is 0
-   everywhere and there are no shadows, gradients, glows or blurs in the system.
-   If you find yourself reaching for one, the answer is a ground shift instead.
+   The organising rule: nothing is a card, except `.control` and `.chip` at a
+   2px radius. Section boundaries are marked by a `.measure` rule (a hairline
+   with a short run of accent ticks at its left end, like the scale bar on a
+   drawing) and rhythm comes from three elevations (raised/canvas/sunken,
+   expressed as ground tone alone) plus whole sections inverting to one of the
+   four fields — not from stacking bordered rectangles. Radius is 0 everywhere
+   else and there are no shadows, gradients, glows or blurs in the system. If
+   you find yourself reaching for one, the answer is a ground shift instead.
 
    The motion system has exactly one idea: TYPE BEING SET. Letterforms carry
    the animation — width and weight axes on Archivo — rather than boxes sliding

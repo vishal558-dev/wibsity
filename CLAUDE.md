@@ -30,9 +30,11 @@ prior "commit and push it" as blanket permission for a later, different change i
 - `npm run build` — `tsc -b && vite build`
 - `npm run lint` — oxlint
 - `npm run preview` — preview production build
-- `npm run check:contrast` — `node scripts/check-contrast.mjs`; a self-contained WCAG contrast
-  checker (zero imports) that pins a floor for every foreground/background pair the design spec
-  cares about. Not part of `npm run build`; run it by hand after any token-colour change.
+- `npm run check:contrast` — `node scripts/check-contrast.mjs`; a WCAG contrast checker that parses
+  every `--color-*` token straight out of `src/index.css`'s `@theme` block rather than keeping a
+  hardcoded copy, so it verifies what actually ships rather than what the author intended, and pins a
+  floor for every real foreground/background pair the design spec cares about. Not part of
+  `npm run build`; run it by hand after any token-colour change.
 - `node scripts/generate-brand-assets.mjs` — regenerate favicons, apple-touch-icon and the social
   card. Not part of `npm run build`; run it by hand when the logo geometry, the hero headline or
   `og:description` changes.
@@ -76,9 +78,10 @@ of the patterns the redesign set out to remove. Each section composes its own he
 
 The one layout primitive is `components/layout/Section.tsx`. It owns exactly three things — the side
 gutter, the maximum measure (`78rem`), and the vertical rhythm — plus two options: `field`
-(`'ink' | 'petrol' | 'sunken' | 'raised'`, inverting the band to one of four grounds — only `ink` is
-styled today, `petrol`/`sunken`/`raised` are empty placeholders reserved for a later phase) and
-`rule` (draw the measure line at the top). Every rendered `<section>` also carries a `data-field`
+(`'ink' | 'petrol' | 'sunken' | 'raised'`, inverting the band to one of four grounds — all four are
+real: `.field-ink` and `.field-petrol` remap the whole token set to an inverted ground, `.field-sunken`
+and `.field-raised` are tonal steps on the same paper that deliberately leave foregrounds unremapped)
+and `rule` (draw the measure line at the top). Every rendered `<section>` also carries a `data-field`
 attribute mirroring the prop (`"paper"` when it is absent). Everything else about a section is
 composed freely inside it, deliberately, so the page does not turn into the same arrangement six
 times.
@@ -90,7 +93,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 |---|---------|-------|
 | 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
 | 2 | What we make | An index at display scale — the titles *are* the composition |
-| 3 | What you are choosing between | **Ink field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
+| 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
 | 5 | Worth asking | No field — stays on paper. The list's own top rule carries the heading and the link; rows run full width |
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
@@ -111,13 +114,14 @@ Section 3's comparison used to be a real `<table>` with a bordered `.glance` str
 same argument underneath it — two devices making one argument, density without hierarchy. It has
 been rebuilt as a genuine two-column opposition (`.compare-row`, `.compare-cell-template`,
 `.compare-cell-built` in index.css) where **depth carries the hierarchy** instead of a border: the
-template column is recessed, the built column is raised. This pass gives those classes structure
-only — `field="ink"` stays on the section and the columns render at a neutral tone until a later
-task hands them their elevation via `.field-petrol`. The opening block is inverted from the other
-heading-led sections: the lead sits top-right, the `<h2>` sits below-left. Dropping the `<table>`
-means each aspect is now an `<h3>`, associated with its two treatments by DOM order rather than
-`scope="row"`; below `md` the rows stack with the template treatment first and visually muted, same
-as the table's block-layout fallback did before it.
+template column is recessed (`--color-canvas-sunken`), the built column is raised
+(`--color-canvas-raised`). The section itself is `field="petrol"`, not `field="ink"` — the brand
+argument, on the brand colour — so both columns' elevation steps are computed against petrol's own
+remapped grounds, not paper's. The opening block is inverted from the other heading-led sections: the
+lead sits top-right, the `<h2>` sits below-left. Dropping the `<table>` means each aspect is now an
+`<h3>`, associated with its two treatments by DOM order rather than `scope="row"`; below `md` the rows
+stack with the template treatment first and visually muted, same as the table's block-layout fallback
+did before it.
 
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the
@@ -143,10 +147,10 @@ in time set larger than what we do — and it no longer exists in that form; the
 name now carry the section's visual weight instead. Below `lg`, where the steps stack in one column,
 a rotated arrow icon between steps carries the same flow idea in a shape that reads vertically.
 
-Section 4 also carries `field="sunken"` as of the grounds-table mapping — the first section on the
-page to use one of the three placeholder grounds for real. `.field-sunken` is still an empty rule in
-`src/index.css` (see above), so this is wiring ahead of Phase 2 rather than a visible colour change
-yet.
+Section 4 also carries `field="sunken"` as of the grounds-table mapping — a real, visible tonal step
+down from paper (`.field-sunken`'s `background-color` reads a `:root`-level `--canvas-sunken-ambient`
+alias rather than `--color-canvas-sunken` directly, since the latter would be self-referential inside
+a rule that also redefines it; see the field definition in `src/index.css`).
 
 Section 5's heading used to be a separate block above the disclosure list, sitting on
 `bg-canvas-sunken`. It has been rebuilt so there is no separate heading block and no field/tint at
@@ -156,12 +160,16 @@ opening rule, and the rows below it run full width (`max-w-[68ch]` on the list w
 per-answer paragraph's measure widened from `max-w-[62ch]` to `max-w-[72ch]` to use the extra width).
 
 ## The design system (`src/index.css`)
-Two inks and a paper, plus one hue used in five places on the whole site. Read the file — it is
+Two inks and a paper, two accents with a hard semantic split, and four fields. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
 **Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients,
-no glows, no blur, no texture overlays, `border-radius: 0` everywhere else. Rhythm comes from three
-grounds (`canvas`, `canvas-sunken`, and the inverted ink field) and from the measure rule.
+no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
+(2px — enough to read as touchable, not enough to read as a card). Rhythm comes from three elevations
+(`--color-canvas-raised`, `--color-canvas`, `--color-canvas-sunken`) expressed as ground tone alone —
+never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
+`.field-raised`) and the measure rule. An element may move at most one elevation step from its parent
+field, which is the rule that keeps the page from turning into stacked cards.
 `.specimen-panel` — the surround for the hero's `PageSpecimen` readout — gets a tonal step
 (`--color-canvas-raised`) and a hairline border but keeps `border-radius: 0`, because a live
 instrument reading is a different material from the page rather than a grouped strip of terms. It
@@ -176,20 +184,36 @@ of accent ticks hanging at its left end, like the scale bar on a drawing. It enc
 than decorating the section, so it only appears where a boundary actually is. It is the thing you'd
 recognise without the logo.
 
-**`.field-ink` remaps the whole semantic token set on itself**, not just two colours. `text-fg-muted`,
-`border-rule` and friends keep working inside it and land at the right contrast automatically. This
-matters more than it looks: the obvious way to dim text on an ink band is an opacity utility, but
-opacity composites against whatever is behind it, and this field is near-black in the light theme
-and paper in the dark one — a single `opacity-50` measures 4.6:1 in one theme and 3.15:1 in the
-other. **Do not use opacity utilities for text inside `.field-ink`.** Use the tokens.
+**`.field-ink` and `.field-petrol` each remap the whole semantic token set on themselves**, not just
+two colours. `text-fg-muted`, `border-rule` and friends keep working inside either and land at the
+right contrast automatically. This matters more than it looks: the obvious way to dim text on a dark
+band is an opacity utility, but opacity composites against whatever is behind it, and these fields are
+not always painted directly on the page's own canvas — a raised or sunken sub-elevation inside one is
+a different ground again. **Do not use opacity utilities for text inside `.field-ink` or
+`.field-petrol`.** Use the tokens — see `npm run check:contrast`'s per-field rows for the measured
+ratios, which are re-derived whenever `--color-ink` or the petrol ground moves rather than carried
+over. `.field-sunken` and `.field-raised`, by contrast, deliberately do *not* remap foregrounds — they
+are tonal steps on the same paper, not an inverted field someone should read as "dark".
 
-`.field-ink` also sets `--color-accent` to its own foreground, which makes *the hue only appears on
-paper* a property of the system rather than a rule anyone has to remember.
+`.field-ink` sets `--color-accent` to its own foreground and `.field-petrol` sets it to
+`--color-accent-on-dark` (petrol cannot be its own accent), which makes *petrol only appears on paper*
+a property of the system rather than a rule anyone has to remember. Both dark fields also remap
+`--color-accent-warm` to `--color-accent-warm-on-dark` for the same reason — oxide's paper-tuned value
+fails contrast on either dark ground.
 
 **The primary button is a field inversion**, never an accent fill — ink on paper in the light theme,
-paper on ink in the dark one, and it flips again inside `.field-ink`. This is why no CTA on the site
-glows or carries a gradient. The accent's five homes are: link underlines (`.link`), the focus ring,
-the specimen readout's figures, the availability dot, and the measure ticks.
+and it flips to paper on ink inside `.field-ink` or `.field-petrol` (the wipe becomes ink-on-paper
+inside either dark field, the same gesture inverted). This is why no CTA on the site glows or carries
+a gradient.
+
+**Two accents, with a semantic split that is what keeps the second one from becoming decoration:**
+petrol (`--color-accent`) marks what the studio makes and measures — link underlines (`.link`), the
+focus ring, the specimen readout's figures, the service index's delivery figures, the "built for you"
+side of the comparison, and the measure ticks. Oxide (`--color-accent-warm`) marks what the visitor
+gives or does, in exactly four placements: the process steps' client-time badges, the availability
+dot, and the "what happens next" numerals on both the homepage and `/contact`. Neither is ever a
+button fill; the primary action stays a field inversion. Grep `accent-warm` before adding a fifth
+placement — it is not meant to spread.
 
 **Component classes live in `@layer components`, and they have to.** Unlayered CSS outranks every
 layered rule, so while `.btn` sat outside a layer it silently beat the utilities applied alongside
@@ -205,13 +229,16 @@ foundation has to stand on its own, and so a colour direction can be layered ont
 deliberately rather than inherited from a second theme nobody was maintaining. If dark mode comes
 back it is a decision, not a restoration.
 
-Paper is `#edece6` (a cool limestone, deliberately not the warm cream that reads as a generic
-AI-design tell); ink is `#161a19`; the accent is petrol `#0e4b54`.
+Paper is `#efeae0` (warm bone, warmed from the redesign's original cool limestone `#edece6` while
+staying clear of the `#f4f1ea` cream that reads as a generic AI-design tell); ink is `#191917` (warm
+near-black, from the original cool `#161a19`); the two accents are petrol `#0e4b54` and oxide
+`#8f4420` — see "Two accents" above for the semantic split.
 
 Two tokens carry contrast maths in their comments and should not be nudged without redoing it:
-`--color-fg-subtle` (4.96:1 on canvas — an earlier `#6c7067` measured 4.09:1 and failed AA for the
-real text it carries) and `--color-rule-strong` (it draws input underlines and secondary-button
-borders, so it is a UI component boundary owing 3:1; the first value measured 2.07:1).
+`--color-fg-subtle` (5.62:1 on canvas, per `npm run check:contrast`) and `--color-rule-strong` (it
+draws input underlines and secondary-button borders, so it is a UI component boundary owing 3:1, not
+text's 4.5:1; 3.81:1 on canvas). Both figures move whenever paper or ink moves — re-run
+`npm run check:contrast` after any token-colour change rather than trusting the numbers written here.
 
 ### Typography
 Two families, from one host, in a deliberately inverted pairing: **Archivo** (grotesque) for
@@ -353,6 +380,13 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
   grid-rows disclosure transition (both the homepage and `/about` FAQ implementations).
 - **`.whatsapp-icon`** wiggles on hover, applied to every WhatsApp icon on the site via one shared
   class and rule (`a:hover .whatsapp-icon`) rather than a bespoke animation per call-to-action.
+- **Elevation transitions**, added with the stratigraphy field system: `.index-row` steps down to
+  `--color-canvas-sunken` on hover, `.faq-row[data-open="true"]` does the same on open (ground, not
+  colour, marks "active"), and `header[data-over]` cross-fades its background/border as the page
+  scrolls between grounds. All three transitions are merged into each selector's own existing rule
+  rather than appended later in the file — a duplicate selector further down would silently win and
+  make the cascade unreadable; see the top-of-file layering note above for why that matters here in
+  particular.
 
 **A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
 *fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,
