@@ -1419,37 +1419,69 @@ header {
       }
 
       /* Stagger — the site's one deliberate exception extending Fade+Lift
-         beyond `.reveal`'s single-heading rule (see CLAUDE.md). Reuses
-         `reveal-in` rather than a new keyframe. Ranges are staggered and
-         slightly overlapping across the rail's own `entry 10% cover 90%`
-         span, so each step lifts in roughly when the marker is passing it.
-         No base `opacity` is ever set outside this guard — unsupported
+         beyond `.reveal`'s single-heading rule (see CLAUDE.md). Own keyframe
+         (`process-step-in`, below) rather than reusing `.reveal`'s
+         `reveal-in` — this lift needed a bigger, more legible distance than
+         a single heading does, and sharing the keyframe would have coupled
+         the two.
+
+         Ranges are expressed in `cover` percentages, not `entry` — `cover`
+         runs 0% (first pixel of `.process-track` visible) to 100% (last
+         pixel gone), the whole on-screen lifetime, where an `entry X% entry
+         Y%` range only ever covers the sub-phase where the row is still
+         entering from below and is partly cropped by the viewport's own
+         bottom edge.
+
+         All four are also timed to finish before the rail marker
+         (`.process-rail::after`, `entry 10% cover 90%` above) reaches its
+         own halfway point: that range's midpoint falls around `cover 45%`
+         on this timeline (`entry 10%` sits only a few `cover` points after
+         `cover 0%`, since the entry sub-phase is short next to the row's
+         full contained-on-screen span), so step 3 finishes at `cover 42%`
+         with a small margin rather than cutting it exactly at the
+         calculated midpoint. Each window is a brisk 12% of the whole
+         on-screen lifetime — narrower than an earlier version — so the
+         cascade reads quickly rather than lagging behind the marker. No
+         base `opacity` is ever set outside this guard — unsupported
          browsers, reduced motion, and sub-lg viewports all render the steps
          at rest, exactly as before this was added. */
       .process-step-0 {
-        animation: reveal-in linear both;
+        animation: process-step-in linear both;
         animation-timeline: --process-scroll;
-        animation-range: entry 5% entry 25%;
+        animation-range: cover 6% cover 18%;
       }
 
       .process-step-1 {
-        animation: reveal-in linear both;
+        animation: process-step-in linear both;
         animation-timeline: --process-scroll;
-        animation-range: entry 20% entry 40%;
+        animation-range: cover 14% cover 26%;
       }
 
       .process-step-2 {
-        animation: reveal-in linear both;
+        animation: process-step-in linear both;
         animation-timeline: --process-scroll;
-        animation-range: entry 35% entry 55%;
+        animation-range: cover 22% cover 34%;
       }
 
       .process-step-3 {
-        animation: reveal-in linear both;
+        animation: process-step-in linear both;
         animation-timeline: --process-scroll;
-        animation-range: entry 50% entry 70%;
+        animation-range: cover 30% cover 42%;
       }
     }
+  }
+}
+
+/* A bigger, more legible lift than `.reveal`'s `reveal-in` — see the
+   stagger comment above for why this doesn't share that keyframe. */
+@keyframes process-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
