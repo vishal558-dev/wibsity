@@ -1,4 +1,4 @@
-import React, { useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { IconArrowRight, IconCheck, IconSpinner, IconWhatsApp } from './icons';
 import { CONTACT_INFO } from '../../data/contact';
 import { FORMSPREE_ENDPOINT, budgetOptions, projectTypeOptions } from '../../data/projectInquiry';
@@ -25,7 +25,7 @@ import { FORMSPREE_ENDPOINT, budgetOptions, projectTypeOptions } from '../../dat
  * through `aria-describedby`.
  */
 
-type Phase = 'editing' | 'submitting' | 'sent';
+type Phase = 'editing' | 'submitting' | 'confirming' | 'sent';
 
 interface FieldErrors {
   projectType?: string;
@@ -54,6 +54,15 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
   const projectGroupRef = useRef<HTMLFieldSetElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+
+  // The button holds on "Sent" for a beat before the confirmation panel
+  // replaces the form — otherwise Send → Sending would jump straight to a
+  // different view and the third state would never actually be seen.
+  useEffect(() => {
+    if (phase !== 'confirming') return;
+    const timer = setTimeout(() => setPhase('sent'), 600);
+    return () => clearTimeout(timer);
+  }, [phase]);
 
   const validate = (): FieldErrors => {
     const next: FieldErrors = {};
@@ -101,7 +110,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
-      setPhase('sent');
+      setPhase('confirming');
     } catch {
       setSubmitError(
         'That did not send. Try once more, or message on WhatsApp and it will reach the same place.'
@@ -290,10 +299,19 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
       )}
 
       <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-        <button type="submit" className="btn btn-primary" disabled={phase === 'submitting'}>
-          {phase === 'submitting' ? <IconSpinner size={17} /> : null}
-          <span>{phase === 'submitting' ? 'Sending' : 'Send enquiry'}</span>
-          {phase === 'submitting' ? null : <IconArrowRight size={17} />}
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={phase === 'submitting' || phase === 'confirming'}
+        >
+          <span key={phase} className="btn-content">
+            {phase === 'submitting' && <IconSpinner size={17} />}
+            {phase === 'confirming' && <IconCheck size={17} />}
+            <span>
+              {phase === 'submitting' ? 'Sending' : phase === 'confirming' ? 'Sent' : 'Send enquiry'}
+            </span>
+            {phase === 'editing' && <IconArrowRight size={17} />}
+          </span>
         </button>
         <a
           href={CONTACT_INFO.whatsappUrl}

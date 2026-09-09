@@ -1453,6 +1453,19 @@ header {
   transform: translateY(-1px);
 }
 
+/* --- Button state swap -------------------------------------------------------
+   The enquiry form's submit button steps through Send → Sending → Sent as its
+   own content, keyed by phase in InquiryForm.tsx so each change remounts this
+   wrapper. Reuses `route-fade-in` rather than a bespoke keyframe — the same
+   "content just changed" gesture the route transition already uses, just
+   faster, since a button label change is a smaller event than a page change. */
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  animation: route-fade-in 160ms ease both;
+}
+
 /* --- Route change fade -----------------------------------------------------
    A fast, deliberately small fade+rise on the page content when the route
    changes (see the keyed wrapper in App.tsx). Kept under 200ms so it reads as
