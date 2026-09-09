@@ -97,6 +97,7 @@ const canvasSunken = token('canvas-sunken');
 const ink = token('ink');
 const inkFg = token('ink-fg');
 const petrol = token('petrol-field');
+const yellow = token('yellow-field');
 const fg = token('fg');
 const fgMuted = token('fg-muted');
 const fgSubtle = token('fg-subtle');
@@ -117,6 +118,15 @@ const INK_RULE_STRONG_PCT = 45;
 const PETROL_FG_MUTED_PCT = 78;
 const PETROL_FG_SUBTLE_PCT = 64;
 const PETROL_RULE_STRONG_PCT = 45;
+
+// The .timeline-card--yellow color-mix percentages, mirrored from index.css.
+const YELLOW_FG_MUTED_PCT = 78;
+const YELLOW_FG_SUBTLE_PCT = 64;
+const YELLOW_RULE_STRONG_PCT = 55;
+
+// .timeline-card--white is a literal #fff, not a @theme token — it isn't
+// parsed by the loop above, so it's written directly here.
+const white = '#ffffff';
 
 // --- Checks, one row per real placement -------------------------------------
 // Every row names the rule(s) in index.css/the pages that actually produce
@@ -159,6 +169,19 @@ const checks = [
   ['petrol rule-strong on petrol', mix(inkFg, petrol, PETROL_RULE_STRONG_PCT), petrol, 3, '.field-petrol --color-rule-strong'],
   ['accent-on-dark on petrol', accentOnDark, petrol, 4.5, '.field-petrol --color-accent remap'],
   ['accent-warm-on-dark on petrol', accentWarmOnDark, petrol, 4.5, 'oxide inside a petrol field'],
+
+  // --- The .timeline-card--yellow field ---------------------------------
+  ['ink on yellow-field', ink, yellow, 4.5, '.timeline-card--yellow --color-fg (title, body text)'],
+  ['yellow fg-muted on yellow-field', mix(ink, yellow, YELLOW_FG_MUTED_PCT), yellow, 4.5, '.timeline-card--yellow --color-fg-muted (summary text)'],
+  ['yellow fg-subtle on yellow-field', mix(ink, yellow, YELLOW_FG_SUBTLE_PCT), yellow, 4.5, '.timeline-card--yellow --color-fg-subtle'],
+  ['yellow rule-strong on yellow-field', mix(ink, yellow, YELLOW_RULE_STRONG_PCT), yellow, 3, '.timeline-card--yellow --color-rule-strong (divider)'],
+  ['accent-warm on yellow-field', accentWarm, yellow, 4.5, 'timeline-card-number / timeline-card-dot on the yellow card'],
+
+  // --- The .timeline-card--white field ------------------------------------
+  ['fg on white', fg, white, 4.5, '.timeline-card--white title/body text (unmapped, reuses default fg)'],
+  ['fg-muted on white', fgMuted, white, 4.5, '.timeline-card--white summary text'],
+  ['fg-subtle on white', fgSubtle, white, 4.5, '.timeline-card--white subtle text'],
+  ['accent-warm on white', accentWarm, white, 4.5, 'timeline-card-number / timeline-card-dot on the white card'],
 ];
 
 let failed = 0;

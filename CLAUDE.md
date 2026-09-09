@@ -96,7 +96,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 | # | Section | Shape |
 |---|---------|-------|
 | 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
-| 2 | What we make | GSAP-animated flat petrol cards, staggered into a staircase, led by a playhead + ruler |
+| 2 | What we make | GSAP-animated cards (yellow / white / black / petrol cycle), staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
 | 5 | Worth asking | No field — stays on paper. The list's own top rule carries the heading and the link; rows run full width |
@@ -120,16 +120,17 @@ left on hover, with a `.spotlight` pointer-tracked tint underneath the text (`tr
 labels sliding in staggered from the left, landing in a staircase, next to a vertical
 playhead/marker over a ticked ruler axis — prompted a direct, on-instruction reinterpretation of
 that demo for this section, close enough to override several of this file's own defaults on
-purpose: each row is now a full card (`.timeline-card`, filled with `.field-petrol` itself —
-reusing that field's already contrast-verified token remap rather than a one-off colour), animated
-in by GSAP's real Timeline + ScrollTrigger API (`ServiceTimeline.tsx`) rather than a CSS lookalike
-— the one motion mechanism on the site built with a JS library. A two-tone `linear-gradient`
-(petrol → oxide) was the first version of the fill, tried to match GSAP's own gradient pills
-closely; it was replaced with the flat `.field-petrol` fill on direct instruction after a design
-pass (frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, and impeccable were consulted)
-converged on flat colour plus a small, considered radius reading as more premium than a soft
-two-tone card — see "Nothing is a card" and the Motion section below for what this still overrides
-and why. `.index-row`/`.spotlight`/`utils/spotlight.ts` were deleted outright rather than kept
+purpose: each row is now a full card (`.timeline-card`), animated in by GSAP's real Timeline +
+ScrollTrigger API (`ServiceTimeline.tsx`) rather than a CSS lookalike — the one motion mechanism on
+the site built with a JS library. The fill went through two direct-instruction rounds: first a
+single flat `.field-petrol` fill at a small 4px radius (a two-tone `linear-gradient(petrol, oxide)`
+was tried first and dropped after a design pass — frontend-design, ui-ux-pro-max, apple-design,
+emil-design-eng, impeccable — converged on flat colour plus a considered radius reading as more
+premium than a soft two-tone card); then, on a second direct instruction, a four-colour cycle
+(`.timeline-card--yellow` → `.timeline-card--white` → `.field-ink` → `.field-petrol`, one per card)
+at a larger 22px radius, with each card restructured into a numeral, a 3-item bullet list and a
+divider rather than the single paragraph the flat-petrol version showed. See "Nothing is a card" and
+the Motion section below for what this overrides and why. `.index-row`/`.spotlight`/`utils/spotlight.ts` were deleted outright rather than kept
 alongside the new treatment, since nothing else on the site used them.
 
 Section 3's comparison used to be a real `<table>` with a bordered `.glance` strip repeating the
@@ -200,7 +201,7 @@ commented at the level of *why*, not *what* — but the rules that matter most:
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
 (2px — enough to read as touchable, not enough to read as a card), `.badge` (999px — a tag-shaped
 pill, used only for the process steps' client-time commitment, so it reads as a label rather than a
-touchable control), and `.timeline-card` (4px — the service index's four cards, see below). Rhythm
+touchable control), and `.timeline-card` (22px — the service index's four cards, see below). Rhythm
 comes from three elevations
 (`--color-canvas-raised`, `--color-canvas`, `--color-canvas-sunken`) expressed as ground tone alone —
 never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
@@ -215,21 +216,25 @@ homepage comparison table used to carry a second exception, `.glance` — a bord
 10px radius — but it was cut in favour of a two-column opposition where depth, not a border, carries
 the hierarchy; see "What you are choosing between" in Homepage composition above.)
 
-`.timeline-card` is the second exception — a 4px-radius card used only for the service index's four
-rows (title, summary and delivery figure all inside one card), added on direct instruction to match
-gsap.com's own homepage "GSAP Timeline" demo (see "Homepage composition" above and "The
-service-timeline entrance (GSAP)" under Motion below). It is filled with `.field-petrol` itself
-(the card carries that class in the markup) rather than a one-off colour — a two-tone
-`linear-gradient(petrol, oxide)` was the first version, matching GSAP's own gradient pills closely,
-and was replaced with the flat `.field-petrol` fill on direct instruction after a design pass
-(frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, impeccable) flagged a soft
-gradient-filled rounded card as the generic "SaaS-card" look those skills warn against, and
-converged on flat colour instead — so there is still no gradient anywhere in the system. Reusing
-`.field-petrol`'s token remap also means `.timeline-card`'s title/summary/hover states need no
-separate contrast math: `text-fg`/`text-fg-muted` and the `--color-canvas-raised` hover step all
-resolve correctly inside it, exactly as they do in the homepage's other petrol field (section 3).
-Like `.specimen-panel`, it does not license a third: nowhere else on the site should reach for a
-full-radius (or non-zero-radius) fill on the strength of this precedent.
+`.timeline-card` is the second exception — a 22px-radius card used only for the service index's four
+rows (numeral, title, summary, a 3-item bullet list and the delivery figure all inside one card),
+added on direct instruction to match gsap.com's own homepage "GSAP Timeline" demo (see "Homepage
+composition" above and "The service-timeline entrance (GSAP)" under Motion below). It went through
+two direct-instruction rounds: first a single flat `.field-petrol` fill at 4px (a two-tone
+`linear-gradient(petrol, oxide)` was tried and replaced with that flat fill after a design pass —
+frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, impeccable — flagged the gradient as
+the generic "SaaS-card" look those skills warn against); then, on a second direct instruction, a
+four-colour cycle at the larger 22px radius — `.timeline-card--yellow`, `.timeline-card--white`,
+`.field-ink` and `.field-petrol`, one per card in that order — which is itself the "SaaS-card" look
+the first round moved away from, deliberately reintroduced here and nowhere else. `.timeline-card--yellow`
+and `.timeline-card--white` are new, one-off grounds scoped to exactly these two cards (see the color
+tokens note below); `.field-ink` and `.field-petrol` reuse the sitewide fields unchanged. Every card
+still gets its title/summary/list/hover contrast for free from whichever field it carries — no
+separate contrast math per card — and the oxide numeral/bullet-dot colour (`--color-accent-warm`)
+resolves to the correct on-light/on-dark value automatically on all four. There is still no gradient
+anywhere in the system. Like `.specimen-panel`, none of this licenses a third card treatment:
+nowhere else on the site should reach for a full-radius fill, a fifth ground colour, or this card's
+numeral/divider/bullet-list shape on the strength of this precedent.
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -285,6 +290,12 @@ Paper is `#efeae0` (warm bone, warmed from the redesign's original cool limeston
 staying clear of the `#f4f1ea` cream that reads as a generic AI-design tell); ink is `#191917` (warm
 near-black, from the original cool `#161a19`); the two accents are petrol `#0e4b54` and oxide
 `#8f4420` — see "Two accents" above for the semantic split.
+
+`--color-yellow-field` (`#fbdb85`, a pale warm gold) is a one-off exception to the two-accent-only
+rule, scoped to exactly `.timeline-card--yellow` — the first of the service index's four cards (see
+"Homepage composition" and "Nothing is a card" above). `.timeline-card--white`'s pure `#fff` fill is
+a literal value, not a token, since it needs no reuse elsewhere. Neither is licensed for use outside
+those two cards.
 
 Two tokens carry contrast maths in their comments and should not be nudged without redoing it:
 `--color-fg-subtle` (5.62:1 on canvas, per `npm run check:contrast`) and `--color-rule-strong` (it
@@ -676,9 +687,11 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   rather than inventing new ones. The 2026.1 addendum added `.badge`, `.process-rail`,
   `.reveal`, `.route-fade`, `.faq-row`, `.whatsapp-icon`, `.btn-content`, `.process-track` and
   `.process-step-N` to that set; the comparison rebuild added `.compare-row` /
-  `.compare-cell-template` / `.compare-cell-built`; the GSAP timeline pass added `.timeline-card`
-  (which carries `.field-petrol` directly rather than its own colour classes — reuse `text-fg`/
-  `text-fg-muted` inside it, not new custom properties), `.timeline-card-figure`,
+  `.compare-cell-template` / `.compare-cell-built`; the GSAP timeline pass added `.timeline-card`,
+  which each of the four cards pairs with one of `.timeline-card--yellow`, `.timeline-card--white`,
+  `.field-ink` or `.field-petrol` for its ground (reuse `text-fg`/`text-fg-muted`/`text-accent-warm`
+  inside it, not new custom properties — every field resolves them correctly already), plus
+  `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`, `.timeline-card-figure`,
   `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
   (`.index-row` and `.spotlight` were deleted, replaced outright). Reuse those for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one

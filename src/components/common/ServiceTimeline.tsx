@@ -11,13 +11,18 @@ interface ServiceTimelineProps {
 }
 
 /**
- * The service index's entrance: each row is a flat petrol card (reusing
- * `.field-petrol`'s already contrast-verified token remap, not a one-off
- * color) that slides in from off-screen left, staggered, landing in a
- * staircase — a direct, on-instruction reinterpretation of gsap.com's own
- * homepage "GSAP Timeline" demo, built with GSAP's real Timeline/ScrollTrigger
- * API rather than a CSS lookalike. See CLAUDE.md's Motion section for the
- * trade-off this overrides and why.
+ * The service index's entrance: each row is a card that slides in from
+ * off-screen left, staggered, landing in a staircase — a direct,
+ * on-instruction reinterpretation of gsap.com's own homepage "GSAP Timeline"
+ * demo, built with GSAP's real Timeline/ScrollTrigger API rather than a CSS
+ * lookalike. See CLAUDE.md's Motion section for the trade-off this overrides
+ * and why.
+ *
+ * Each card carries its own full field (see `CARD_FIELDS` below) rather than
+ * one shared colour — a second direct-instruction override, on top of the
+ * first, of the two-accent-only palette. Reusing each field's own token
+ * remap means the title/summary/list/hover states need no separate contrast
+ * math per card.
  *
  * Scrubbed (`scrub: true`), not played-once-on-enter: the timeline's
  * progress is bound directly to scroll position across the section's whole
@@ -25,6 +30,7 @@ interface ServiceTimelineProps {
  * back reverses it, and stopping mid-scroll pauses it exactly where it is —
  * real-time, in both directions, on direct instruction.
  */
+const CARD_FIELDS = ['timeline-card--yellow', 'timeline-card--white', 'field-ink', 'field-petrol'];
 export function ServiceTimeline({ services }: ServiceTimelineProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -102,20 +108,24 @@ export function ServiceTimeline({ services }: ServiceTimelineProps) {
                 cardRefs.current[i] = el;
               }}
               to="/services"
-              className="timeline-card field-petrol group"
+              className={`timeline-card ${CARD_FIELDS[i % CARD_FIELDS.length]} group`}
             >
-              <div className="flex items-start gap-6 sm:gap-10">
-                <span className="timeline-card-figure shrink-0">
-                  <span className="sr-only">Delivery: </span>
-                  {service.timelineShort}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="widen text-index text-fg">{service.title}</h3>
-                  <p className="mt-3 text-fg-muted leading-relaxed max-w-[52ch]">
-                    {service.summary}
-                  </p>
-                </div>
-              </div>
+              <span className="timeline-card-number">{String(i + 1).padStart(2, '0')}</span>
+              <h3 className="widen text-index text-fg mt-3">{service.title}</h3>
+              <p className="mt-2 text-fg-muted leading-relaxed max-w-[46ch]">{service.summary}</p>
+              <span aria-hidden="true" className="timeline-card-divider mt-5 mb-4" />
+              <ul className="flex flex-col gap-2">
+                {service.includes.slice(0, 3).map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-fg leading-snug">
+                    <span aria-hidden="true" className="timeline-card-dot" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <span className="timeline-card-figure mt-5">
+                <span className="sr-only">Delivery: </span>
+                {service.timelineShort}
+              </span>
             </Link>
           </li>
         ))}

@@ -8,13 +8,15 @@
    does), and four full-bleed fields (ink, petrol, sunken, raised).
 
    The organising rule: nothing is a card, except `.control` and `.chip` at a
-   2px radius, `.badge` at 999px, and `.timeline-card` at 4px (the service
+   2px radius, `.badge` at 999px, and `.timeline-card` at 22px (the service
    index's GSAP-animated cards, added on direct instruction to match
    gsap.com's own homepage demo — see `Service-timeline entrance` below and
-   CLAUDE.md's Motion section). `.timeline-card` is filled with `.field-petrol`
-   itself, not a one-off colour — a gradient fill was tried first and removed
-   on direct instruction, so there is still no gradient anywhere in the
-   system. Section boundaries are marked by a `.measure` rule (a hairline
+   CLAUDE.md's Motion section). Each of the four `.timeline-card`s carries its
+   own ground — `.timeline-card--yellow`, `.timeline-card--white`, `.field-ink`
+   and `.field-petrol` in that order — a second direct-instruction override of
+   the two-accent-only palette, scoped to exactly these four cards; nowhere
+   else on the site should reach for yellow or a plain-white card fill on the
+   strength of this precedent. Section boundaries are marked by a `.measure` rule (a hairline
    with a short run of accent ticks at its left end, like the scale bar on a
    drawing) and rhythm comes from three elevations (raised/canvas/sunken,
    expressed as ground tone alone) plus whole sections inverting to one of
@@ -57,6 +59,14 @@
   /* The one chromatic full-bleed ground, used by .field-petrol and nothing
      else — every other surface on the site is paper or ink. */
   --color-petrol-field: #0c3f49;
+
+  /* Scoped to `.timeline-card--yellow` alone — the service index's four
+     cards, on direct instruction, are the one place this hue exists. A pale
+     warm gold rather than a stock lemon yellow, so it still reads as part of
+     this palette rather than a foreign accent — also chosen light enough
+     that oxide (`--color-accent-warm`) still clears 4.5:1 on top of it,
+     which a more saturated amber could not (npm run check:contrast). */
+  --color-yellow-field: #fbdb85;
 
   --color-fg: #1a1815;
   --color-fg-muted: #54504a;
@@ -1228,31 +1238,64 @@ header {
    Homepage composition section for that history.
 
    Second deliberate exception to "nothing is a card" (see CLAUDE.md) —
-   greenlit for this one section on direct instruction. The fill is
-   `.field-petrol` itself (the card carries that class in the markup), not a
-   one-off colour: reusing the section's own already contrast-verified
-   token remap (`--color-fg`, `-fg-muted`, `-canvas-raised`, ...) means the
-   title/summary/hover states below need no separate contrast math, and the
-   card reads as the same brand surface as "What you are choosing between"
-   rather than a foreign SaaS-card gradient. A gradient fill was tried first
-   and removed on direct instruction — flat, deliberate colour plus a small
-   radius reads as more considered than a soft two-tone card. */
+   greenlit for this one section on direct instruction. Each card carries a
+   full field of its own (`.timeline-card--yellow`, `.timeline-card--white`,
+   `.field-ink`, `.field-petrol`) rather than a one-off colour: reusing each
+   field's own token remap (`--color-fg`, `-fg-muted`, `-canvas-raised`, ...)
+   means the title/summary/hover states below need no separate contrast math
+   per card. A gradient fill was tried first, for the original single-colour
+   version of this card, and removed on direct instruction — flat, deliberate
+   colour plus a considered radius reads as more considered than a soft
+   two-tone card; the four-colour cycle and the larger 22px radius are a
+   later, second round of the same direct-instruction override. */
 .timeline-card {
   display: block;
-  padding: 1.5rem 1.75rem;
-  border-radius: 4px;
+  padding: 1.75rem 1.75rem 1.5rem;
+  border-radius: 22px;
   transition: transform 200ms cubic-bezier(0.16, 0.9, 0.24, 1),
     background-color 200ms cubic-bezier(0.16, 0.9, 0.24, 1);
   will-change: transform, opacity;
 }
 
 /* Ground shift, not a shadow — the same elevation idiom `.index-row` and
-   `.faq-row[data-open]` use elsewhere, here reaching for `.field-petrol`'s
-   own `--color-canvas-raised` step instead of inventing a hover tint. */
+   `.faq-row[data-open]` use elsewhere, here reaching for each card's own
+   `--color-canvas-raised` step instead of inventing a hover tint. */
 .timeline-card:hover,
 .timeline-card:focus-visible {
   background-color: var(--color-canvas-raised);
   transform: translateY(-2px);
+}
+
+/* The amber card. Full token remap, mirrored from `.field-petrol`, so
+   descendants (`text-fg`, `text-fg-muted`, the divider's `border-rule-strong`)
+   resolve correctly without their own contrast math. Scoped to this one card
+   — see the top-of-file note; this is not a general `.field-yellow`. */
+.timeline-card--yellow {
+  background-color: var(--color-yellow-field);
+
+  --color-canvas: var(--color-yellow-field);
+  --color-canvas-raised: color-mix(in srgb, white 22%, var(--color-yellow-field));
+  --color-canvas-sunken: color-mix(in srgb, var(--color-ink) 10%, var(--color-yellow-field));
+
+  --color-fg: var(--color-ink);
+  --color-fg-muted: color-mix(in srgb, var(--color-ink) 78%, var(--color-yellow-field));
+  --color-fg-subtle: color-mix(in srgb, var(--color-ink) 64%, var(--color-yellow-field));
+
+  --color-rule: color-mix(in srgb, var(--color-ink) 22%, var(--color-yellow-field));
+  /* 55%, not the 45% .field-ink/.field-petrol use — a pale ground needs more
+     ink mixed in to clear the 3:1 UI-boundary floor (npm run check:contrast). */
+  --color-rule-strong: color-mix(in srgb, var(--color-ink) 55%, var(--color-yellow-field));
+}
+
+/* The white card. A plain tonal step lighter than paper, not a chromatic
+   field — the default ink-on-light tokens already clear contrast by a wider
+   margin on white than they do on paper, so nothing below `--color-canvas`
+   needs remapping (the same reasoning `.field-raised` uses). */
+.timeline-card--white {
+  background-color: #fff;
+  --color-canvas: #fff;
+  --color-canvas-raised: #fff;
+  --color-canvas-sunken: #f2f0eb;
 }
 
 .timeline-card-figure {
@@ -1265,6 +1308,37 @@ header {
   color: var(--color-fg);
   background: color-mix(in srgb, var(--color-fg) 18%, transparent);
   border-radius: 999px;
+}
+
+/* The "01"–"04" numeral. Oxide, not a card-specific colour: `--color-accent-warm`
+   already resolves to the correct on-light/on-dark value on every one of the
+   four fields above, so one class works unchanged across all four cards. */
+.timeline-card-number {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: 550;
+  line-height: 1;
+  color: var(--color-accent-warm);
+}
+
+.timeline-card-divider {
+  display: block;
+  height: 1px;
+  background-color: var(--color-rule-strong);
+}
+
+/* The bullet list's dot. A small filled circle is the one place this section
+   reaches for a full radius on something that isn't `.badge` — see the
+   top-of-file exception note. */
+.timeline-card-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.55em;
+  border-radius: 50%;
+  background-color: var(--color-accent-warm);
+  flex-shrink: 0;
 }
 
 @media (min-width: 64rem) {
