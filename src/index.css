@@ -1078,7 +1078,11 @@
 .hero-badge {
   position: absolute;
   right: 0;
-  bottom: -0.5rem;
+  /* Positive, not negative: `bottom` is measured from this positioned
+     ancestor's PADDING box, i.e. from the same edge the measure rule below
+     it starts at — a negative value pushed the badge past that edge and
+     into the rule's own line. This lifts it clear with real headroom. */
+  bottom: 1.5rem;
   width: 5rem;
   height: 5rem;
   transition: transform 140ms ease;
