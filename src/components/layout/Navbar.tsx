@@ -136,6 +136,13 @@ export const Navbar: React.FC = () => {
         <div className="flex h-16 items-center justify-between gap-6">
           <Link
             to="/"
+            onClick={() => {
+              // `ScrollToTop` only fires on a pathname change, so clicking the
+              // logo while already on "/" would otherwise do nothing —
+              // there's no route change for it to key off.
+              if (pathname === '/') window.scrollTo(0, 0);
+              setOpen(false);
+            }}
             className="group flex h-16 items-center gap-2.5 shrink-0"
             aria-label="wibsity — home"
           >
