@@ -133,8 +133,11 @@
   --text-index--letter-spacing: -0.035em;
 
   /* The specimen readings. Sits below --text-2xl at every viewport, so the
-     readout is prominent without competing with a section heading. */
-  --text-figure: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+     readout is prominent without competing with a section heading — and, as
+     of the hero critique pass, sized down further from an earlier
+     1.5rem-2.25rem range so it also stops outweighing the hero's own
+     primary CTA, which it sits directly beside. */
+  --text-figure: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
   --text-figure--line-height: 1;
   --text-figure--letter-spacing: -0.02em;
 
@@ -957,12 +960,20 @@
 
    Both keyframes share one timeline so they read as a single crossfade, not
    two independent animations that happen to overlap:
-     0–36%   primary shown (holds after its own entrance has finished)
-     36–44%  primary wipes out as alt wipes in (400ms, simultaneous)
-     44–76%  alt shown (holds)
-     76–84%  alt wipes out as primary wipes in (400ms, simultaneous)
-     84–100% primary shown, permanently — the animation ends here and, being
+     0–34%   primary shown (holds after its own entrance has finished)
+     34–46%  primary wipes out as alt wipes in (600ms, simultaneous)
+     46–74%  alt shown (holds)
+     74–86%  alt wipes out as primary wipes in (600ms, simultaneous)
+     86–100% primary shown, permanently — the animation ends here and, being
               neither infinite nor forwards-less, simply stays.
+
+   The crossfade window was widened from 400ms/0.15em to 600ms/0.3em on
+   direct instruction after a critique found the swap read as a possible
+   glitch rather than a deliberate moment: the wipe itself is the "why" this
+   is intentional, so it has to be slow and displaced enough to actually be
+   seen and tracked as a wipe, not just register as a flicker. The mechanic
+   (once-per-load, aria-hidden, same clip-path language as `.set-word`) is
+   unchanged — only how legible the transition itself is.
    ------------------------------------------------------------------------ */
 .hero-swap {
   position: relative;
@@ -974,17 +985,17 @@
 }
 
 @keyframes hero-swap-primary {
-  0%, 36% {
+  0%, 34% {
     clip-path: inset(0);
     opacity: 1;
     transform: translateY(0);
   }
-  44%, 76% {
+  46%, 74% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transform: translateY(0.15em);
+    transform: translateY(0.3em);
   }
-  84%, 100% {
+  86%, 100% {
     clip-path: inset(0);
     opacity: 1;
     transform: translateY(0);
@@ -992,20 +1003,20 @@
 }
 
 @keyframes hero-swap-alt {
-  0%, 36% {
+  0%, 34% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transform: translateY(0.15em);
+    transform: translateY(0.3em);
   }
-  44%, 76% {
+  46%, 74% {
     clip-path: inset(0);
     opacity: 1;
     transform: translateY(0);
   }
-  84%, 100% {
+  86%, 100% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transform: translateY(0.15em);
+    transform: translateY(0.3em);
   }
 }
 

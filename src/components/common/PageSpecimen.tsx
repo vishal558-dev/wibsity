@@ -12,14 +12,19 @@ import React, { useEffect, useRef, useState } from 'react';
  * connection, a moment ago.
  *
  * Up to three readings, chosen because the browser can state each one exactly
- * and none of them needs a footnote:
+ * and none of them needs a footnote. Labels are plain-language rather than
+ * the Web Performance API terms behind them — the audience is a small-business
+ * owner, not a developer — but each still names one honest, literal thing:
  *
- *  - First paint comes from the Paint Timing API, and is omitted entirely if
- *    the document was ever hidden before the reading was taken — a tab opened
- *    in the background defers its first paint until you switch to it, which
- *    would print a meaningless eight-second figure under a headline about
- *    building fast sites. Two honest readings beat three with an asterisk.
- *  - Files and elements are counted, not sampled.
+ *  - "Appeared in" is first paint, from the Paint Timing API, and falls back
+ *    to a plain "reload to see" instead of a real number if the document was
+ *    ever hidden before the reading was taken — a tab opened in the
+ *    background defers its first paint until you switch to it, which would
+ *    print a meaningless eight-second figure under a headline about building
+ *    fast sites. An honest fallback beats a flattered number.
+ *  - "Files it needed" and "Building blocks" (resource count and DOM element
+ *    count) are counted, not sampled. "Building blocks" doubles as a nod to
+ *    the site's own pitch — built from pieces, not assembled from a template.
  *
  * A transferred-bytes reading was tried and dropped. Resource Timing reports
  * zero bytes both for cross-origin responses without `Timing-Allow-Origin`
@@ -27,15 +32,13 @@ import React, { useEffect, useRef, useState } from 'react';
  * visit — and a flattering half-measurement is exactly what this component
  * exists to avoid. Do not add it back without solving that.
  *
- * The placeholder rows are derived from the same trust predicate `measure()`
- * uses (below), evaluated once at mount: if first paint is already known to
- * be untrustworthy — the document was not `visible` when this component
- * mounted — the plate starts with two placeholder rows instead of three, so
- * the initial and final row counts agree and the bordered panel never
- * resizes. One case still slips through by design: visible at mount, hidden
- * before the paint entry arrives. That narrow window is accepted — every fix
- * for it reintroduces the dead space this scheme exists to avoid. See
- * `initialReadings` below.
+ * The plate always shows three rows, so the placeholder and final row counts
+ * agree and the bordered panel never resizes. When first paint isn't
+ * trustworthy — the tab was ever hidden before the reading was taken —
+ * "Appeared in" prints a plain-language fallback instead of being dropped
+ * silently: a visitor who opened the link in a backgrounded in-app browser
+ * (a routine way real traffic arrives) should see that a reading exists and
+ * how to get it, not a panel that quietly shipped one fewer row than usual.
  */
 
 interface Reading {
@@ -43,22 +46,11 @@ interface Reading {
   value: string;
 }
 
-const PLACEHOLDER_WITH_PAINT: Reading[] = [
-  { label: 'First paint', value: '—' },
-  { label: 'Files loaded', value: '—' },
-  { label: 'Page elements', value: '—' },
+const PLACEHOLDERS: Reading[] = [
+  { label: 'Appeared in', value: '—' },
+  { label: 'Files it needed', value: '—' },
+  { label: 'Building blocks', value: '—' },
 ];
-
-const PLACEHOLDER_NO_PAINT: Reading[] = PLACEHOLDER_WITH_PAINT.slice(1);
-
-// Mirrors measure()'s own trust predicate so the placeholder row count
-// matches whatever measure() will ultimately render. Read once, synchronously,
-// at mount — see the class comment above for the one case this doesn't cover.
-function initialReadings(): Reading[] {
-  const paintIsHonest =
-    typeof document !== 'undefined' && document.visibilityState === 'visible';
-  return paintIsHonest ? PLACEHOLDER_WITH_PAINT : PLACEHOLDER_NO_PAINT;
-}
 
 function measure(trustPaint: boolean): Reading[] {
   const paint = performance
@@ -66,12 +58,12 @@ function measure(trustPaint: boolean): Reading[] {
     .find((entry) => entry.name === 'first-contentful-paint');
 
   return [
-    ...(trustPaint && paint
-      ? [{ label: 'First paint', value: `${(paint.startTime / 1000).toFixed(2)}s` }]
-      : []),
+    trustPaint && paint
+      ? { label: 'Appeared in', value: `${(paint.startTime / 1000).toFixed(2)}s` }
+      : { label: 'Appeared in', value: 'reload to see' },
     // The document itself is not a resource entry, so it is added back.
-    { label: 'Files loaded', value: String(performance.getEntriesByType('resource').length + 1) },
-    { label: 'Page elements', value: String(document.getElementsByTagName('*').length) },
+    { label: 'Files it needed', value: String(performance.getEntriesByType('resource').length + 1) },
+    { label: 'Building blocks', value: String(document.getElementsByTagName('*').length) },
   ];
 }
 
@@ -138,7 +130,7 @@ function Figure({ reading }: { reading: Reading }) {
 }
 
 export const PageSpecimen: React.FC = () => {
-  const [readings, setReadings] = useState<Reading[]>(initialReadings);
+  const [readings, setReadings] = useState<Reading[]>(PLACEHOLDERS);
 
   useEffect(() => {
     if (typeof performance === 'undefined' || !performance.getEntriesByType) return;
@@ -164,7 +156,8 @@ export const PageSpecimen: React.FC = () => {
       observer.observe({ type: 'paint', buffered: true });
     } catch {
       // Paint Timing unsupported (older Safari). The other two readings still
-      // work; the plate simply comes up with two rows instead of three.
+      // work; "Appeared in" falls back to the same "reload to see" copy the
+      // hidden-tab case uses, via `measure()`'s own missing-`paint` branch.
     }
 
     // Resources are still arriving during mount, so the file count is only

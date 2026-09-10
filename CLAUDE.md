@@ -61,6 +61,17 @@ Two consequences bind future work:
    `Timing-Allow-Origin` and for cache hits, so it would silently flatter a repeat visit. Don't add
    it back without solving that.
 
+   `PageSpecimen`'s row labels are plain-language ("Appeared in", "Files it needed", "Building
+   blocks") rather than the Web Performance API terms behind them ("first paint", "resources
+   loaded", DOM element count) — a hero critique found the original labels read as developer jargon
+   to PRODUCT.md's actual audience (small-business owners, not engineers). The underlying
+   measurements are unchanged; only the labels moved. The plate also always renders three rows now:
+   when first paint isn't trustworthy (the tab was ever hidden before the reading was taken, or
+   Paint Timing is unsupported), "Appeared in" shows a "reload to see" fallback instead of the row
+   being silently dropped — real traffic regularly opens links via backgrounded in-app browsers, and
+   a visitor in that state should see that a reading exists rather than a panel that quietly shipped
+   two rows instead of three.
+
 ## Architecture & routing
 `main.tsx` → `App.tsx` (`BrowserRouter`) → `pages/*.tsx`, one per route: `/`, `/services`, `/about`,
 `/contact`, and a `*` 404. `HomePage` is a static import; every other page is `React.lazy()`-loaded
@@ -326,7 +337,10 @@ laptop viewport, plus two display sizes used once each: `--text-hero` (the homep
 `--text-index` (the service list). Both carry their own leading and tracking, because the defaults
 are far too loose at those sizes. `--text-figure` sits one rung below `--text-2xl` for the hero
 specimen's readings — prominent without competing with a section heading, and used repeatedly (once
-per reading row) rather than once, which is what keeps it out of the "used once" pair above.
+per reading row) rather than once, which is what keeps it out of the "used once" pair above. Sized
+down again in the 2026 hero critique pass (clamp max 2.25rem → 1.75rem) after that critique found the
+figures' size and colour outweighing the hero's own primary CTA, which the specimen panel sits
+directly beside.
 
 **Archivo is requested with its WIDTH axis** — `Archivo:wdth,wght@62..125,400..600` in index.html.
 That is not cosmetic: three separate effects animate `font-stretch`, and dropping the axis from the
@@ -359,9 +373,13 @@ over it) in one box. Once the primary line has finished setting (~1.05s) and hel
 wipes away — the same clip-path language `.set-word` opens with, run in reverse — while the alt line
 wipes in beneath it; both hold; then it reverses, and the primary line rests there permanently. It never
 loops: this plays once per page load, which is what keeps it a considered moment rather than the
-rotating-hero-text tic of a template site. Both animations run off one shared percentage timeline (0–36%
-primary shown / 36–44% crossfade / 44–76% alt shown / 76–84% crossfade / 84–100% primary shown, staying
-there) so they read as a single swap rather than two animations that happen to overlap.
+rotating-hero-text tic of a template site. Both animations run off one shared percentage timeline (0–34%
+primary shown / 34–46% crossfade / 46–74% alt shown / 74–86% crossfade / 86–100% primary shown, staying
+there) so they read as a single swap rather than two animations that happen to overlap. The crossfade
+was widened from 400ms/0.15em to 600ms/0.3em on direct instruction after a hero critique found the swap
+read as a possible glitch rather than a deliberate moment — the wipe needed to be slow and displaced
+enough to actually be seen and tracked as a wipe. The mechanic itself (once-per-load, `aria-hidden`,
+`.set-word`'s clip-path language) is unchanged; only the transition's own legibility moved.
 
 **`RevealHeadline` is a genuinely different second message, not a re-styled echo of the primary
 headline.** The primary line reads "Every site starts as an empty file."; `RevealHeadline` reads "Most

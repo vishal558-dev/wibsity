@@ -179,7 +179,7 @@ export const HomePage: React.FC = () => {
 
             <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:gap-16">
               <div className="enter enter-1 lg:col-span-6">
-                <p className="text-2xl leading-[1.2] text-fg max-w-[26ch]">
+                <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
                   Hand-built websites for businesses that care how they look.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
