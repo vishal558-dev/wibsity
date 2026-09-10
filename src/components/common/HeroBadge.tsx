@@ -4,8 +4,19 @@ import { LogoMark } from './Logo';
 
 const RING_TEXT = 'HAND-BUILT SITES';
 
-// Circle geometry, in the SVG's own 0-200 user-unit space.
+// Circle geometry, in the SVG's own user-unit space.
 const R = 80;
+// Clearance between the circle and the viewBox edge. This has to be bigger
+// than the ring text's own ascent, not just "some" margin: at the top and
+// bottom of the ring, a glyph's "outward" direction (away from the circle's
+// center, which is how textPath orients upright text) points straight at
+// the viewBox boundary. A viewBox sized to the circle alone (margin = 20,
+// this component's first version) clipped every ascender that passed near
+// 12 o'clock, because font-size 34's real ascent (~0.8em ≈ 27 units)
+// exceeds that margin. 32 clears it with room to spare.
+const MARGIN = 32;
+const CENTER = R + MARGIN;
+const VIEWBOX_SIZE = CENTER * 2;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 // A small reserved gap at 12 o'clock for the tick mark — the text runs the
 // rest of the way around, exactly, via `textLength` below.
@@ -43,16 +54,19 @@ const START_OFFSET = `${((GAP / 2) / CIRCUMFERENCE) * 100}%`;
  */
 export const HeroBadge: React.FC = () => (
   <Link to="/contact" aria-label="Start a project" className="hero-badge hidden lg:block">
-    <svg className="hero-badge__ring" viewBox="0 0 200 200" aria-hidden="true">
+    <svg className="hero-badge__ring" viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} aria-hidden="true">
       <defs>
-        <path id="hero-badge-path" d={`M 100 ${100 - R} A ${R} ${R} 0 1 1 100 ${100 + R} A ${R} ${R} 0 1 1 100 ${100 - R + 0.01}`} />
+        <path
+          id="hero-badge-path"
+          d={`M ${CENTER} ${CENTER - R} A ${R} ${R} 0 1 1 ${CENTER} ${CENTER + R} A ${R} ${R} 0 1 1 ${CENTER} ${CENTER - R + 0.01}`}
+        />
       </defs>
-      <circle cx="100" cy="100" r={R} fill="none" stroke="var(--color-rule)" strokeWidth="1.5" />
+      <circle cx={CENTER} cy={CENTER} r={R} fill="none" stroke="var(--color-rule)" strokeWidth="1.5" />
       <line
-        x1="100"
-        y1={100 - R - 8}
-        x2="100"
-        y2={100 - R}
+        x1={CENTER}
+        y1={CENTER - R - 8}
+        x2={CENTER}
+        y2={CENTER - R}
         stroke="var(--color-accent)"
         strokeWidth="1.5"
         strokeLinecap="butt"

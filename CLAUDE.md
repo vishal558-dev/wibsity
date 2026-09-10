@@ -605,6 +605,14 @@ construction right if this component is ever touched again:**
 - At this larger, legible text size, the ring text fits as ONE loop, not two repeats — real words at a
   readable size and comfortable spacing don't leave room for a second copy at this radius. One loop is
   the correct choice at this size, not a fallback.
+- The `viewBox`'s margin around the circle has to clear the ring text's own ASCENT, not just leave
+  "some" space — text on a `textPath` orients upright with "outward" pointing directly away from the
+  circle's center, so right at 12 o'clock a glyph's ascender points straight at the viewBox's top edge.
+  A viewBox sized to the circle alone (radius 80 in a 0–200 box, 20 units of margin) clipped every
+  ascender that passed near the top, because `font-size: 34`'s real ascent (~0.8em ≈ 27 units) exceeds
+  that margin. `HeroBadge.tsx` now derives the viewBox from `R + MARGIN` (32, comfortably over 27)
+  rather than a bare guess — this is exactly what "text cut off at the top" was catching, and it will
+  recur if the ring's font-size ever grows without `MARGIN` growing to match.
 
 Anchored inside the hero section, `lg`+ only, and NOT `position: fixed` — it scrolls away with the
 page like everything else, specifically to avoid reading as a persistent floating element, which this
