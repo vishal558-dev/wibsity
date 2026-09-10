@@ -1242,7 +1242,7 @@ header {
    full field of its own (`.timeline-card--yellow`, `.timeline-card--white`,
    `.field-ink`, `.field-petrol`) rather than a one-off colour: reusing each
    field's own token remap (`--color-fg`, `-fg-muted`, `-canvas-raised`, ...)
-   means the title/summary/hover states below need no separate contrast math
+   means the title/list/hover states below need no separate contrast math
    per card. A gradient fill was tried first, for the original single-colour
    version of this card, and removed on direct instruction — flat, deliberate
    colour plus a considered radius reads as more considered than a soft
@@ -1298,18 +1298,6 @@ header {
   --color-canvas-sunken: #f2f0eb;
 }
 
-.timeline-card-figure {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.3rem 0.75rem;
-  margin-top: 0.25rem;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  color: var(--color-fg);
-  background: color-mix(in srgb, var(--color-fg) 18%, transparent);
-  border-radius: 999px;
-}
-
 /* The "01"–"04" numeral. Oxide, not a card-specific colour: `--color-accent-warm`
    already resolves to the correct on-light/on-dark value on every one of the
    four fields above, so one class works unchanged across all four cards. */
@@ -1342,13 +1330,17 @@ header {
 }
 
 @media (min-width: 64rem) {
-  /* The staircase: each card's rest position steps further right (and
-     narrower) than the last. This is plain CSS, not JS — GSAP only animates
-     the entrance motion on top of it, so there's nothing for JS and CSS to
-     fight over (see the --hero-set gotcha in Motion). */
+  /* The staircase: each card's rest position steps further right than the
+     last. This is plain CSS, not JS — GSAP only animates the entrance
+     motion on top of it, so there's nothing for JS and CSS to fight over
+     (see the --hero-set gotcha in Motion). Width is fixed at 100% minus the
+     *maximum* step (3 cards' worth, not each card's own index) so every
+     card is the same size regardless of its position in the stagger — an
+     earlier version subtracted each card's own offset from its own width,
+     which read as the cards progressively shrinking rather than stepping. */
   .timeline-card {
     margin-left: calc(var(--card-index, 0) * 1.75rem);
-    width: calc(100% - var(--card-index, 0) * 1.75rem);
+    width: calc(100% - 3 * 1.75rem);
   }
 }
 

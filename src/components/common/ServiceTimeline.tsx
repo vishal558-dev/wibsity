@@ -21,14 +21,17 @@ interface ServiceTimelineProps {
  * Each card carries its own full field (see `CARD_FIELDS` below) rather than
  * one shared colour — a second direct-instruction override, on top of the
  * first, of the two-accent-only palette. Reusing each field's own token
- * remap means the title/summary/list/hover states need no separate contrast
- * math per card.
+ * remap means the title/list/hover states need no separate contrast math
+ * per card. Each card shows only its numeral, title and a 3-item bullet
+ * list — no summary paragraph and no delivery-time figure, both cut on
+ * direct instruction so all four cards read as the same size rather than
+ * varying with copy length.
  *
- * Scrubbed (`scrub: true`), not played-once-on-enter: the timeline's
- * progress is bound directly to scroll position across the section's whole
- * transit through the viewport, so scrolling forward advances it, scrolling
- * back reverses it, and stopping mid-scroll pauses it exactly where it is —
- * real-time, in both directions, on direct instruction.
+ * Scrubbed (`scrub: 0.5`), not played-once-on-enter: the timeline's
+ * progress tracks scroll position directly across the section's whole
+ * transit through the viewport — scrolling forward advances it, scrolling
+ * back reverses it — with a small smoothing lag rather than a rigid 1:1
+ * snap, which is what reads as fluid instead of mechanical.
  */
 const CARD_FIELDS = ['timeline-card--yellow', 'timeline-card--white', 'field-ink', 'field-petrol'];
 export function ServiceTimeline({ services }: ServiceTimelineProps) {
@@ -54,10 +57,13 @@ export function ServiceTimeline({ services }: ServiceTimelineProps) {
             trigger: root,
             start: 'top 85%',
             end: 'bottom 15%',
-            // 1:1 with scroll, no smoothing lag — scrolling stops, the
-            // timeline stops. This is what makes it pausable/reversible in
-            // real time rather than a triggered one-shot.
-            scrub: true,
+            // A small smoothing lag (seconds to catch up to the scroll
+            // position) rather than a rigid 1:1 scrub — the timeline still
+            // tracks scroll directly and stays pausable/reversible in both
+            // directions, it just eases toward the target instead of
+            // snapping frame-for-frame, which is what reads as fluid rather
+            // than mechanical.
+            scrub: 0.5,
           },
           defaults: { ease: 'power3.out' },
         });
@@ -112,7 +118,6 @@ export function ServiceTimeline({ services }: ServiceTimelineProps) {
             >
               <span className="timeline-card-number">{String(i + 1).padStart(2, '0')}</span>
               <h3 className="widen text-index text-fg mt-3">{service.title}</h3>
-              <p className="mt-2 text-fg-muted leading-relaxed max-w-[46ch]">{service.summary}</p>
               <span aria-hidden="true" className="timeline-card-divider mt-5 mb-4" />
               <ul className="flex flex-col gap-2">
                 {service.includes.slice(0, 3).map((item) => (
@@ -122,10 +127,6 @@ export function ServiceTimeline({ services }: ServiceTimelineProps) {
                   </li>
                 ))}
               </ul>
-              <span className="timeline-card-figure mt-5">
-                <span className="sr-only">Delivery: </span>
-                {service.timelineShort}
-              </span>
             </Link>
           </li>
         ))}

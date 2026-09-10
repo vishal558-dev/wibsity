@@ -12,9 +12,6 @@ export interface Service {
   includes: string[];
   /** Real delivery window, matching what faqs.ts tells people. */
   timeline: string;
-  /** Compact delivery figure for the homepage index — "3–5 days". The long
-   *  form stays in `timeline` for /services. */
-  timelineShort: string;
 }
 
 export interface ProcessStep {

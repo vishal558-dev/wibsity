@@ -16,9 +16,7 @@ import type { Service } from '../types';
  * the five lines a buyer actually reads.
  *
  * Entries no longer carry `index`: the four services are a menu, not a
- * sequence, and numbering a non-sequence encodes nothing. `timelineShort`
- * (a compact delivery figure) replaced it on the homepage index instead —
- * the one number in this data that is actually useful to read at a glance.
+ * sequence, and numbering a non-sequence encodes nothing.
  */
 export const servicesData: Service[] = [
   {
@@ -37,7 +35,6 @@ export const servicesData: Service[] = [
       'An editable setup if you want to change your own copy later',
     ],
     timeline: '3–5 working days',
-    timelineShort: '3–5 days',
   },
   {
     id: 'landing-page',
@@ -55,7 +52,6 @@ export const servicesData: Service[] = [
       'Ready to point a campaign at on day one',
     ],
     timeline: '2–4 working days',
-    timelineShort: '2–4 days',
   },
   {
     id: 'redesign',
@@ -73,7 +69,6 @@ export const servicesData: Service[] = [
       'A clean handover of the new site and the domain',
     ],
     timeline: '4–7 working days',
-    timelineShort: '4–7 days',
   },
   {
     id: 'online-store',
@@ -91,7 +86,6 @@ export const servicesData: Service[] = [
       'Checkout tested on the phones your customers use',
     ],
     timeline: '5–10 working days',
-    timelineShort: '5–10 days',
   },
 ];
 

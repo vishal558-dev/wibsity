@@ -128,9 +128,17 @@ was tried first and dropped after a design pass — frontend-design, ui-ux-pro-m
 emil-design-eng, impeccable — converged on flat colour plus a considered radius reading as more
 premium than a soft two-tone card); then, on a second direct instruction, a four-colour cycle
 (`.timeline-card--yellow` → `.timeline-card--white` → `.field-ink` → `.field-petrol`, one per card)
-at a larger 22px radius, with each card restructured into a numeral, a 3-item bullet list and a
-divider rather than the single paragraph the flat-petrol version showed. See "Nothing is a card" and
-the Motion section below for what this overrides and why. `.index-row`/`.spotlight`/`utils/spotlight.ts` were deleted outright rather than kept
+at a larger 22px radius, with each card restructured into a numeral, a title, a divider and a 3-item
+bullet list rather than the single paragraph the flat-petrol version showed. The card briefly also
+carried a summary paragraph and a delivery-time figure ("3–5 days") below the bullets; both were cut
+on direct instruction, since together with the staircase's per-card width shrink (see below) they
+made the row of four read as progressively getting smaller rather than deliberately stepping —
+`timelineShort` was removed from `Service`/`data/services.ts` entirely once nothing rendered it.
+The staircase itself — `margin-left`/`width` in `index.css`'s `@media (min-width: 64rem)` block —
+still steps each card right of the last, but width is now fixed at 100% minus the *maximum* step
+(three cards' worth) rather than each card's own index, so all four are the same size regardless of
+position. See "Nothing is a card" and the Motion section below for what this overrides and why.
+`.index-row`/`.spotlight`/`utils/spotlight.ts` were deleted outright rather than kept
 alongside the new treatment, since nothing else on the site used them.
 
 Section 3's comparison used to be a real `<table>` with a bordered `.glance` strip repeating the
@@ -217,7 +225,10 @@ homepage comparison table used to carry a second exception, `.glance` — a bord
 the hierarchy; see "What you are choosing between" in Homepage composition above.)
 
 `.timeline-card` is the second exception — a 22px-radius card used only for the service index's four
-rows (numeral, title, summary, a 3-item bullet list and the delivery figure all inside one card),
+rows (numeral, title, a divider and a 3-item bullet list — the summary paragraph and the delivery-time
+figure that used to sit under the bullets were both cut on direct instruction, since a card's height
+was tracking copy length and, combined with the staircase's per-card width shrink below, made the row
+read as the cards progressively getting smaller rather than deliberately stepping),
 added on direct instruction to match gsap.com's own homepage "GSAP Timeline" demo (see "Homepage
 composition" above and "The service-timeline entrance (GSAP)" under Motion below). It went through
 two direct-instruction rounds: first a single flat `.field-petrol` fill at 4px (a two-tone
@@ -229,7 +240,7 @@ four-colour cycle at the larger 22px radius — `.timeline-card--yellow`, `.time
 the first round moved away from, deliberately reintroduced here and nowhere else. `.timeline-card--yellow`
 and `.timeline-card--white` are new, one-off grounds scoped to exactly these two cards (see the color
 tokens note below); `.field-ink` and `.field-petrol` reuse the sitewide fields unchanged. Every card
-still gets its title/summary/list/hover contrast for free from whichever field it carries — no
+still gets its title/list/hover contrast for free from whichever field it carries — no
 separate contrast math per card — and the oxide numeral/bullet-dot colour (`--color-accent-warm`)
 resolves to the correct on-light/on-dark value automatically on all four. There is still no gradient
 anywhere in the system. Like `.specimen-panel`, none of this licenses a third card treatment:
@@ -499,10 +510,14 @@ section into view — exactly like `.reveal` and `.process-step-N`. `ServiceTime
 whole effect: a `gsap.context()` scopes every tween/ScrollTrigger it creates so a `useLayoutEffect`
 cleanup can `ctx.revert()` all of it in one call (safe under both React StrictMode's dev-only
 double-invoke and a real route unmount). The trigger is the component's own root element, and the
-timeline is **scrubbed** (`scrub: true`) across the section's transit through the viewport
-(`start: 'top 85%'`, `end: 'bottom 15%'`) rather than played once on entry — its progress is bound
-directly to scroll position, so scrolling forward advances it, scrolling back reverses it, and
-stopping mid-scroll pauses it exactly where it is, in real time, in both directions. This is a
+timeline is **scrubbed** (`scrub: 0.5`) across the section's transit through the viewport
+(`start: 'top 85%'`, `end: 'bottom 15%'`) rather than played once on entry — its progress tracks
+scroll position directly, so scrolling forward advances it, scrolling back reverses it, and stopping
+mid-scroll settles it to where it is. The `0.5` is a small smoothing lag (GSAP eases the timeline's
+playhead toward the scroll-derived position over that many seconds) rather than a rigid `scrub: true`
+1:1 snap — changed on direct instruction because the un-smoothed version read as mechanical rather
+than fluid; it still stays scroll-linked and fully reversible in both directions, it just no longer
+jumps frame-for-frame with the scrollbar. This is a
 deliberate departure from the rest of the site's scroll motion (`.reveal`, `.process-step-N`, which
 play once and hold) — on direct instruction, and specific to this one GSAP-driven effect; it is not
 a precedent for scrubbing other sections. It does not free-run on an interval the way gsap.com's own
@@ -727,7 +742,7 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   which each of the four cards pairs with one of `.timeline-card--yellow`, `.timeline-card--white`,
   `.field-ink` or `.field-petrol` for its ground (reuse `text-fg`/`text-fg-muted`/`text-accent-warm`
   inside it, not new custom properties — every field resolves them correctly already), plus
-  `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`, `.timeline-card-figure`,
+  `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`,
   `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
   (`.index-row` and `.spotlight` were deleted, replaced outright). Reuse those for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
