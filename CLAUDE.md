@@ -537,13 +537,32 @@ not drift. Both replace the hero's earlier once-per-load `.hero-swap`/`RevealHea
 (see the hero headline's mechanism history above), which itself never looped.
 
 **The headline's second line (`.rotate-word`, `RotatingWord` in HomePage.tsx) cycles forever**
-through what the studio builds — "We build websites. / automations. / digital experiences. / — and
-more." — instead of settling once. It directly overrides the line this file used to state without
-exception: a forever-rotating hero was previously named as "the rotating-hero-text tic of a template
-site." Reuses `.set-word`'s own clip-path wipe language rather than a generic crossfade, so the loop
-still reads as the same "type being set" idea, not a bolted-on effect. All four candidate strings are
-stacked in one CSS grid cell (`grid-area: 1 / 1`) so the box always reserves the widest/tallest one's
-size — the rotation never reflows the CTA row beneath it as word length changes.
+through three of the four things the studio builds — "We build websites / automations / digital
+experiences" — instead of settling once. It directly overrides the line this file used to state
+without exception: a forever-rotating hero was previously named as "the rotating-hero-text tic of a
+template site." Reuses `.set-word`'s own clip-path wipe language rather than a generic crossfade, so
+the loop still reads as the same "type being set" idea, not a bolted-on effect. All three candidate
+words are stacked in one CSS grid cell (`grid-area: 1 / 1`, `justify-items: end`) so the box always
+reserves the widest candidate's ("digital experiences") size, right-aligned within it — the rotation
+never reflows the CTA row beneath it as word length changes, and every word ends at the same fixed
+point regardless of its own length.
+
+**"and more." is deliberately the fourth thing, held OUT of the cycle** — it's a fixed, un-animated
+`<span className="hero-and-more">`, smaller than the rotating word (`--text-lg`, not `--text-hero`),
+sitting inline right after it on the same line (`.hero-rotate-row`, `display: inline-flex;
+align-items: baseline`) rather than wiping in and out with the other three. No em dash anywhere in
+this headline — an earlier draft of this feature used one ("— and more.") inside the cycle itself and
+was corrected on direct instruction along with the "and more."/animation/gap issues below. Two things
+about its placement are load-bearing, not decorative:
+- It sits on the SAME line as the rotating word, not a line of its own. A dedicated third line was
+  tried twice — once at `--text-hero` scale, once even at `--text-lg` scale on its own line — and
+  both pushed the hero past its 780px fold budget (checked directly: the badge and part of the CTA
+  row went below the fold at a realistic 1440×900 laptop viewport). Putting it inline costs zero
+  extra height, only width, which `.hero-rotate-row`'s `flex-wrap: wrap` absorbs at narrow measures.
+- The rotating word is right-aligned (`justify-items: end`) specifically so "and more." sits at a
+  small, constant gap after it on every rotation. Left-aligned (the initial version) put "and more."
+  flush against the box's fixed right edge while a short word like "websites" sat flush against the
+  box's LEFT edge — a large, dead-looking gap between them that reads as broken, not intentional.
 
 Reduced motion needed its own explicit rule here, not the sitewide reset: the global
 `prefers-reduced-motion` reset elsewhere in index.css forces every `infinite` animation to stop after
@@ -552,23 +571,43 @@ word's HIDDEN state, so without a dedicated override, reduced-motion visitors wo
 word at all. `.rotate-word__item` carries its own `@media (prefers-reduced-motion: reduce)` block
 forcing the first word visible and the rest `display: none`, rather than trusting the global reset to
 land somewhere legible. The old `.hero-swap` never hit this, because its resting state was the fully
-visible primary line.
+visible primary line. "and more." needs no such override — it's real, static content, never `aria-hidden`,
+never animated, so reduced motion changes nothing about it.
 
 **A circular text ring around the hero's logo mark (`HeroBadge.tsx`) spins continuously**, wrapped in
 a link to `/contact` so it reads as a secondary call to action rather than pure decoration, even
 though the spin itself runs regardless of hover (hover/focus only adds `.btn:hover`'s existing
 1px-lift idiom). Only the ring spins — `LogoMark` sits in its own non-rotating, absolutely-centered
 layer on top of it, since the mark is a raster PNG with no vector source to redraw into the ring's own
-geometry (see "Icons and the logo" below). Ring text reads "HAND-BUILT SITES", repeated twice, with
-two accent-coloured tick marks at the seams — reusing `.measure`'s own tick device as the
-repeat/separator, deliberately instead of a middle-dot (`A · B · C`), which is one of the most common
-AI-generated-design tells. Anchored inside the hero section, `lg`+ only, and NOT `position: fixed` —
-it scrolls away with the page like everything else, specifically to avoid reading as a persistent
-floating element, which this file already documents as rejected once for the WhatsApp FAB ("A FAB
-overpowers the primary journey", under Conversion). No explicit reduced-motion override is needed
-here, unlike the
-word-rotator: the ring's un-animated rest state is already the complete, legible badge, so simply
-never applying the spin achieves "reduced" on its own.
+geometry (see "Icons and the logo" below). Ring text reads "HAND-BUILT SITES" in a single loop (not
+repeated) at `font-size: 34px` — roughly 3x an initial too-small first pass, per direct feedback — with
+one accent-coloured tick mark at the seam, reusing `.measure`'s own tick device as the loop's
+start/end marker, deliberately instead of a middle-dot (`A · B · C`), which is one of the most common
+AI-generated-design tells.
+
+**The ring's path and text-fitting were both wrong in the first pass, not just small — get this exact
+construction right if this component is ever touched again:**
+- The circular `<path>` for `<textPath>` must be built from TWO HALF-CIRCLE arcs (top-to-bottom,
+  bottom-to-top-minus-epsilon), not one `A r r 0 1 1 …` arc run twice back to a near-identical point.
+  A single such arc already traces nearly a full 360° on its own (the "large-arc" side of a
+  same-start/end-point arc) — writing that twice roughly DOUBLES the path's total length, silently
+  breaking every `startOffset` percentage (computed assuming one circumference, not two) and bunching
+  text into one arc instead of spacing it around the whole circle. This is exactly what "why is the
+  text not fully circular" was catching.
+- Text length is controlled by `textLength` + `lengthAdjust="spacing"` on `<textPath>` — computed from
+  the real circumference (`2 * Math.PI * R`) minus a small reserved gap for the tick mark — rather than
+  guessing letter-spacing/repeat-count by eye. This is what makes the wrap precise and exact regardless
+  of the browser's actual glyph metrics, which are not something to hand-calculate reliably.
+- At this larger, legible text size, the ring text fits as ONE loop, not two repeats — real words at a
+  readable size and comfortable spacing don't leave room for a second copy at this radius. One loop is
+  the correct choice at this size, not a fallback.
+
+Anchored inside the hero section, `lg`+ only, and NOT `position: fixed` — it scrolls away with the
+page like everything else, specifically to avoid reading as a persistent floating element, which this
+file already documents as rejected once for the WhatsApp FAB ("A FAB overpowers the primary journey",
+under Conversion). No explicit reduced-motion override is needed here, unlike the word-rotator: the
+ring's un-animated rest state is already the complete, legible badge, so simply never applying the
+spin achieves "reduced" on its own.
 
 Neither override is a precedent for a third loop elsewhere on the site — raise the trade-off
 explicitly again, the way both of these were, before adding one.
@@ -809,8 +848,10 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`,
   `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
   (`.index-row` and `.spotlight` were deleted, replaced outright); the hero loop overrides added
-  `.rotate-word`/`.rotate-word__item` (the rotating headline word) and `.hero-badge`/
-  `.hero-badge__mark`/`.hero-badge__ring`/`.hero-badge__text` (the spinning ring badge). Reuse those
+  `.rotate-word`/`.rotate-word__item` (the rotating headline word), `.hero-rotate-row`/
+  `.hero-and-more` (the fixed, un-animated "and more." sitting beside it, deliberately out of the
+  cycle), and `.hero-badge`/`.hero-badge__mark`/`.hero-badge__ring`/`.hero-badge__text` (the spinning
+  ring badge). Reuse those
   for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
   — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "one

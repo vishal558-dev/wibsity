@@ -12,7 +12,7 @@ import { comparisonRows } from '../data/studio';
 import { whatHappensNext, CONTACT_INFO } from '../data/contact';
 
 const HERO_PREFIX = 'We build';
-const HERO_ROTATE_WORDS = ['websites.', 'automations.', 'digital experiences.', '— and more.'];
+const HERO_ROTATE_WORDS = ['websites', 'automations', 'digital experiences'];
 
 /**
  * Splits the headline into word spans so each one can set itself on its own
@@ -37,20 +37,23 @@ function SetHeadline({ text }: { text: string }) {
 }
 
 /**
- * The hero's rotating second line (see `.rotate-word` in index.css): a
- * continuous, infinite loop through what the studio builds. This is a
- * deliberate override of this file's own "nothing loops" motion doctrine —
- * see "The hero loop overrides" in CLAUDE.md's Motion section for why.
+ * The hero's rotating second-line word (see `.rotate-word` in index.css): a
+ * continuous, infinite loop through the three things the studio builds —
+ * "and more." is deliberately NOT one of the cycling candidates; it's a
+ * fixed, un-animated suffix rendered after this component in the hero JSX,
+ * so it always reads and never wipes in or out. This is a deliberate
+ * override of this file's own "nothing loops" motion doctrine — see "The
+ * hero loop overrides" in CLAUDE.md's Motion section for why.
  *
- * All four candidates render at once, stacked in the same CSS grid cell
- * (`grid-area: 1 / 1`), so the box always reserves the width/height of the
- * widest/tallest one — the rotation never reflows the CTA row beneath it as
- * word length changes between "websites." and "digital experiences.".
+ * All three candidates render at once, stacked in the same CSS grid cell
+ * (`grid-area: 1 / 1`), so the box always reserves the width of the widest
+ * one ("digital experiences") — the rotation never reflows the fixed "and
+ * more." suffix or the CTA row beneath it as word length changes.
  *
- * `aria-hidden`, with a `sr-only` line alongside it carrying the real
- * accessible name — same pattern the old cursor/swap treatments used here,
- * since the rotation is a visual moment layered on top of the content, not a
- * second piece of content in its own right.
+ * `aria-hidden`, with a `sr-only` span alongside it (in the hero JSX)
+ * carrying the real accessible name — same pattern the old cursor/swap
+ * treatments used here, since the rotation is a visual moment layered on top
+ * of the content, not a second piece of content in its own right.
  */
 function RotatingWord({ words }: { words: string[] }) {
   return (
@@ -165,11 +168,14 @@ export const HomePage: React.FC = () => {
       <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
           <div className="relative pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
-            <h1 className="hero-type text-hero max-w-[20ch] text-fg">
+            <h1 className="hero-type text-hero max-w-[26ch] text-fg">
               <SetHeadline text={HERO_PREFIX} />
               <br />
-              <RotatingWord words={HERO_ROTATE_WORDS} />
-              <span className="sr-only">websites, automations, digital experiences, and more.</span>
+              <span className="hero-rotate-row">
+                <RotatingWord words={HERO_ROTATE_WORDS} />
+                <span className="sr-only">websites, automations, digital experiences</span>
+                <span className="hero-and-more">and more.</span>
+              </span>
             </h1>
 
             <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">

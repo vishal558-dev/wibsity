@@ -942,8 +942,11 @@
    down this file — named, justified, and not a license to add a third loop
    elsewhere without raising that trade-off explicitly again.
 
-   1. `.rotate-word` — the headline's second line cycles forever through what
-      the studio builds, instead of settling once. Reuses `.set-word`'s own
+   1. `.rotate-word` — the headline's second line cycles forever through the
+      three things the studio builds, instead of settling once. "and more."
+      is deliberately NOT one of the cycling candidates — it's a fixed,
+      un-animated suffix in the h1 (HomePage.tsx), always reading, never
+      wiped in or out; only the noun rotates. Reuses `.set-word`'s own
       clip-path wipe language (an inset that clips the bottom away, plus a
       small downward rest-offset) rather than a generic crossfade, so the
       loop still reads as the same "type being set" idea, not a different
@@ -954,25 +957,33 @@
    Both respect `prefers-reduced-motion`, but not identically: the ring's
    un-animated rest state is already the complete, legible badge, so simply
    never applying its spin is enough. The word-rotator's rest state is NOT
-   complete on its own — with four stacked candidates and no single "primary"
-   line, the sitewide reduced-motion reset further down this file (which
-   forces every `infinite` animation to stop after one iteration) would land
-   on the rotator's own `100%` keyframe, which is every word's HIDDEN state.
-   Skipped, that leaves reduced-motion visitors with no rotating word at all —
-   so `.rotate-word__item` carries its own explicit reduced-motion override
-   below, forcing the first word visible and the rest removed from display,
-   rather than trusting the global reset to land somewhere legible. */
+   complete on its own — with three stacked candidates and no single
+   "primary" line, the sitewide reduced-motion reset further down this file
+   (which forces every `infinite` animation to stop after one iteration)
+   would land on the rotator's own `100%` keyframe, which is every word's
+   HIDDEN state. Skipped, that leaves reduced-motion visitors with no
+   rotating word at all — so `.rotate-word__item` carries its own explicit
+   reduced-motion override below, forcing the first word visible and the
+   rest removed from display, rather than trusting the global reset to land
+   somewhere legible. */
 
 /* --- 1. The rotating headline word --------------------------------------
-   All four candidates render at once, stacked in the same CSS grid cell
+   All three candidates render at once, stacked in the same CSS grid cell
    (`grid-area: 1 / 1`) — clip-path doesn't affect layout, only paint, so the
-   grid track's intrinsic size is set by the widest/tallest candidate
-   regardless of which one is currently visible. This is what replaces
-   `.hero-swap__alt`'s old `position: absolute; inset: 0` (which relied on one
-   "primary" flow item to set the box size): with four equal rotating members
-   there's no primary, so grid sizes the box instead of a guessed `ch` value. */
+   grid track's intrinsic size is set by the widest candidate ("digital
+   experiences") regardless of which one is currently visible. This is what
+   replaces `.hero-swap__alt`'s old `position: absolute; inset: 0` (which
+   relied on one "primary" flow item to set the box size): with three equal
+   rotating members, there's no primary, so grid sizes the box instead of a
+   guessed `ch` value. */
 .rotate-word {
   display: inline-grid;
+  /* Right-aligned within the shared grid cell (itself sized to the widest
+     candidate, "digital experiences") rather than left-aligned: this is
+     what keeps ".hero-and-more" sitting right after the word at a small,
+     constant gap on every rotation, instead of a large dead gap trailing a
+     short word like "websites" inside a box reserved for the longest one. */
+  justify-items: end;
   vertical-align: top;
 }
 
@@ -991,27 +1002,28 @@
      iteration; with `infinite`, subsequent loops run back to back, so each
      item lands in its own slot every 10s, forever, in source order. */
   .rotate-word__item {
-    animation: rotate-word 10000ms cubic-bezier(0.16, 0.9, 0.24, 1) infinite both;
+    /* 3 items * 2500ms/slot = 7500ms total loop. */
+    animation: rotate-word 7500ms cubic-bezier(0.16, 0.9, 0.24, 1) infinite both;
     animation-delay: calc(var(--n, 0) * 2500ms);
   }
 }
 
 @keyframes rotate-word {
-  /*  0%–6%   wipe in (600ms)   — same clip-path language .set-word opens with
-      6%–19%  hold  (1300ms)
-     19%–25%  wipe out (600ms)
-     25%–100% hidden (7500ms)  — the other three items' turns */
+  /*  0%–8%     wipe in (600ms)   — same clip-path language .set-word opens with
+      8%–25.3%  hold  (1300ms)
+     25.3%–33.3% wipe out (600ms)
+     33.3%–100% hidden (5000ms)  — the other two items' turns */
   0% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
     transform: translateY(0.3em);
   }
-  6%, 19% {
+  8%, 25.3% {
     clip-path: inset(0);
     opacity: 1;
     transform: translateY(0);
   }
-  25%, 100% {
+  33.3%, 100% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
     transform: translateY(0.3em);
@@ -1030,9 +1042,35 @@
   }
 }
 
+/* "and more." — fixed, un-animated, deliberately smaller than the rotating
+   word it follows rather than competing for the same hero-scale line width.
+   It sits on the SAME line as the rotating word (`.hero-rotate-row`,
+   baseline-aligned), not a line of its own: a whole extra hero-scale line
+   was tried first and rejected — "digital experiences and more." does not
+   fit on one line at hero scale inside the content column at any realistic
+   desktop width, and even a much SHORTER standalone "and more." line still
+   added enough height to push the hero past its 780px fold budget (it
+   pushed the CTA row and the badge below the fold both times this was
+   tried at any height sharing the h1's own line box). Putting it inline,
+   after the rotating word, on the same line, costs zero extra height —
+   only width, which `.hero-rotate-row`'s `flex-wrap: wrap` absorbs at
+   narrow measures instead of ever growing the h1's line count. */
+.hero-rotate-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.4em;
+}
+
+.hero-and-more {
+  font-size: var(--text-lg);
+  font-weight: 550;
+  letter-spacing: normal;
+}
+
 /* --- 2. The spinning ring badge ------------------------------------------
-   Only the ring — the hairline circle, the two tick marks, the circular text
-   — spins; `LogoMark` sits in its own non-rotating layer on top (see
+   Only the ring — the hairline circle, the tick mark, the circular text —
+   spins; `LogoMark` sits in its own non-rotating layer on top (see
    HeroBadge.tsx). Reuses the sitewide `spin` keyframe (defined further down,
    for the form's loading spinner) rather than a near-duplicate — same
    `rotate(360deg)`, just a much slower duration for an ambient badge instead
@@ -1041,8 +1079,8 @@
   position: absolute;
   right: 0;
   bottom: -0.5rem;
-  width: 7rem;
-  height: 7rem;
+  width: 10rem;
+  height: 10rem;
   transition: transform 140ms ease;
 }
 
@@ -1063,11 +1101,15 @@
   height: 100%;
 }
 
+/* Font-size only — no CSS `letter-spacing`. The ring text's spacing is
+   controlled entirely by `textLength`/`lengthAdjust="spacing"` on the
+   `<textPath>` (HeroBadge.tsx), which stretches inter-glyph spacing to fill
+   an exact arc length; a CSS letter-spacing on top of that would compound
+   unpredictably with the browser's own spacing adjustment. */
 .hero-badge__text {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 34px;
   font-weight: 500;
-  letter-spacing: 0.14em;
   fill: var(--color-accent);
 }
 
