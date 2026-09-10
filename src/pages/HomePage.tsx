@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
 import { InquiryForm } from '../components/common/InquiryForm';
 import { ServiceTimeline } from '../components/common/ServiceTimeline';
+import { HeroBadge } from '../components/common/HeroBadge';
 import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
@@ -10,7 +11,8 @@ import { faqsData } from '../data/faqs';
 import { comparisonRows } from '../data/studio';
 import { whatHappensNext, CONTACT_INFO } from '../data/contact';
 
-const HEADLINE = 'Every site starts as an empty file.';
+const HERO_PREFIX = 'We build';
+const HERO_ROTATE_WORDS = ['websites.', 'automations.', 'digital experiences.', '— and more.'];
 
 /**
  * Splits the headline into word spans so each one can set itself on its own
@@ -35,36 +37,30 @@ function SetHeadline({ text }: { text: string }) {
 }
 
 /**
- * The hero's second statement (see `.hero-swap` in index.css): a genuinely
- * different message, not a re-styled echo of the primary headline. "Every
- * site starts as an empty file." is the promise; this is the part most
- * studios don't say out loud — the honest half of the same thought.
+ * The hero's rotating second line (see `.rotate-word` in index.css): a
+ * continuous, infinite loop through what the studio builds. This is a
+ * deliberate override of this file's own "nothing loops" motion doctrine —
+ * see "The hero loop overrides" in CLAUDE.md's Motion section for why.
  *
- * This used to be revealed by moving the cursor over the headline. It is now
- * shown automatically, once, to every visitor: `.hero-swap` sets it in after
- * a held beat on the primary line, holds it in turn, then swaps back and
- * rests on the primary line permanently. Automatic means every visitor sees
- * it rather than only the ones who happened to hover, which is also why this
- * stays `aria-hidden` and the primary headline stays the one real, permanent
- * `<h1>` — the swap is a visual moment layered on top of the actual content,
- * not a second piece of content in its own right.
+ * All four candidates render at once, stacked in the same CSS grid cell
+ * (`grid-area: 1 / 1`), so the box always reserves the width/height of the
+ * widest/tallest one — the rotation never reflows the CTA row beneath it as
+ * word length changes between "websites." and "digital experiences.".
  *
- * Set at `.reveal-type`, which matches `.hero-type`'s resting weight, stretch
- * and colour exactly — full strength, not a fainter "draft" treatment — so it
- * lands as an equally real statement. The surprise lives entirely in the
- * words.
- *
- * The line break is hardcoded, the same reasoning `SetHeadline` uses for the
- * primary line: a headline-scale statement gets an art-directed break, not
- * whatever the viewport happens to produce.
+ * `aria-hidden`, with a `sr-only` line alongside it carrying the real
+ * accessible name — same pattern the old cursor/swap treatments used here,
+ * since the rotation is a visual moment layered on top of the content, not a
+ * second piece of content in its own right.
  */
-function RevealHeadline() {
+function RotatingWord({ words }: { words: string[] }) {
   return (
-    <p className="reveal-type hero-swap__alt text-hero max-w-[13ch]" aria-hidden="true">
-      Most fill it
-      <br />
-      with a template.
-    </p>
+    <span className="rotate-word" aria-hidden="true">
+      {words.map((word, i) => (
+        <span key={word} className="rotate-word__item" style={{ '--n': i } as React.CSSProperties}>
+          {word}
+        </span>
+      ))}
+    </span>
   );
 }
 
@@ -143,9 +139,11 @@ function useHeroSetProgress() {
  *
  * The motion is one idea used four times (see the MOTION block in index.css):
  * type sets itself on load, widens under the pointer, shrinks and lifts away
- * as the hero leaves, and section rules draw when they arrive. The hero
- * headline also, once, resets into a second statement and back — the same
- * "type being set" wipe, just run twice more. Nothing fades up on scroll —
+ * as the hero leaves, and section rules draw when they arrive. The hero's
+ * second line also loops continuously through what the studio builds — a
+ * deliberate, explicit override of that "nothing loops" rule, reusing the
+ * same "type being set" wipe rather than inventing a new visual grammar (see
+ * "The hero loop overrides" in CLAUDE.md). Nothing else fades up on scroll —
  * that pattern is why the previous pass read as documentation with good
  * typography rather than as something made on purpose.
  */
@@ -157,22 +155,22 @@ export const HomePage: React.FC = () => {
   return (
     <>
       {/* ------------------------------------------------------------------
-          Hero. One statement at display scale, one line of positioning, one
-          action — and, once settled, a brief automatic swap onto a second,
-          different statement and back (see .hero-swap / RevealHeadline). A
-          closing measure rule marks the real boundary into the next section.
+          Hero. A fixed opening line, a continuously rotating second line
+          naming what the studio builds, one line of positioning, one action,
+          and a spinning ring badge anchored bottom-right at lg+ (see
+          RotatingWord / HeroBadge, and "The hero loop overrides" in
+          CLAUDE.md's Motion section). A closing measure rule marks the real
+          boundary into the next section.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
-          <div className="pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
-            <div className="hero-swap">
-              <div className="hero-swap__primary">
-                <h1 className="hero-type text-hero max-w-[13ch] text-fg">
-                  <SetHeadline text={HEADLINE} />
-                </h1>
-              </div>
-              <RevealHeadline />
-            </div>
+          <div className="relative pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
+            <h1 className="hero-type text-hero max-w-[20ch] text-fg">
+              <SetHeadline text={HERO_PREFIX} />
+              <br />
+              <RotatingWord words={HERO_ROTATE_WORDS} />
+              <span className="sr-only">websites, automations, digital experiences, and more.</span>
+            </h1>
 
             <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">
               <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
@@ -193,6 +191,8 @@ export const HomePage: React.FC = () => {
                 </a>
               </div>
             </div>
+
+            <HeroBadge />
           </div>
 
           <div className="measure pb-4" />

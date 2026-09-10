@@ -708,10 +708,14 @@
    2. `.widen`     — a title expands under the cursor or keyboard focus.
    3. `--hero-set` — the hero shrinks and lifts away as it scrolls past.
    4. `.measure[data-draw]` — a section rule draws when its section arrives.
-   5. `.hero-swap` — the headline resets into a second statement, once, and back.
 
-   Nothing else on the page animates on entry or on scroll. If a sixth thing
-   starts moving, it is probably decoration.
+   Nothing else on the page animates on entry or on scroll except two explicit,
+   named exceptions: the GSAP service-timeline entrance further down this file,
+   and "The hero loop overrides" below section 4 — a continuously rotating
+   headline word and a continuously spinning ring badge, both deliberate
+   overrides of the "nothing loops" rule this comment used to state without
+   exception. If a further, undocumented thing starts moving, it is probably
+   decoration.
    ------------------------------------------------------------------------ */
 
 /* --- 1. The headline sets itself -----------------------------------------
@@ -762,17 +766,23 @@
 
 /* The resting `to` state used to leave a small negative inset
    (`inset(-0.4em -0.2em -0.3em -0.08em)`) permanently applied, on the
-   reasoning that a zero inset might clip a tall ascender or a descender (the
-   headline's "empty" has one, on the y) right at the box edge. In this
-   rendering context that produced a worse defect than the one it guarded
-   against: a `will-change: clip-path` layer holding a permanent negative inset
-   renders a faint stray seam at the clip boundary — visible as a short mark
-   sitting just above the first line, at rest, on every load. Checked directly
-   against this exact headline (all seven words, including "empty"'s
-   descender) with a flat `inset(0)`: nothing clips, and the seam is gone. If
-   `SetHeadline` is ever reused with different text, recheck this the same
-   way rather than assuming the margin is unnecessary in general — it was a
-   reasonable precaution, just the wrong one for this specific case. */
+   reasoning that a zero inset might clip a tall ascender or a descender
+   (the original headline's "empty" had one, on the y) right at the box edge.
+   In this rendering context that produced a worse defect than the one it
+   guarded against: a `will-change: clip-path` layer holding a permanent
+   negative inset renders a faint stray seam at the clip boundary — visible
+   as a short mark sitting just above the first line, at rest, on every load.
+   Checked directly against that original headline (all seven words,
+   including "empty"'s descender) with a flat `inset(0)`: nothing clips, and
+   the seam is gone.
+
+   `SetHeadline` now wraps only the hero's fixed prefix, "We build" — two
+   words, neither with a descender, so this exact regression case doesn't
+   currently apply, but the flat `inset(0)` fix is general, not tied to those
+   specific glyphs. If `SetHeadline` is ever reused on text with a descender,
+   recheck the same way rather than assuming the margin is unnecessary in
+   general — it was a reasonable precaution, just the wrong one for the text
+   it was first written against. */
 .set-word {
   display: inline-block;
   animation: set-word 700ms cubic-bezier(0.16, 0.9, 0.24, 1) both;
@@ -924,106 +934,149 @@
 }
 
 /* ---------------------------------------------------------------------------
-   The hero's second statement — a brief, automatic swap onto a different
-   message and back, rather than a cursor-driven reveal (what this spot held
-   before). `.hero-swap` stacks the primary headline and `RevealHeadline`
-   (HomePage.tsx) in the same box; once the primary line has finished setting,
-   it holds, wipes away to the second line, holds again, then wipes back and
-   rests on the primary line permanently. It never loops — this plays once per
-   page load, which is what keeps it a considered moment rather than the
-   rotating-hero-text tic of a template site.
+   The hero loop overrides — added on direct instruction, two deliberate,
+   explicit exceptions to this file's own "nothing loops" rule above (the
+   rule this spot used to enforce with a once-per-load swap: see git history
+   for `.hero-swap`/`RevealHeadline` if that mechanic is ever wanted back).
+   Same category of exception as the GSAP service-timeline entrance further
+   down this file — named, justified, and not a license to add a third loop
+   elsewhere without raising that trade-off explicitly again.
 
-   The wipe reuses the exact clip-path language `.set-word` opens with (an
-   inset that clips the bottom away, plus a small downward rest-offset lifting
-   into place) rather than a generic fade or slide, so the swap reads as the
-   same "type being set" idea running twice more, not a different effect
-   bolted on beside it.
+   1. `.rotate-word` — the headline's second line cycles forever through what
+      the studio builds, instead of settling once. Reuses `.set-word`'s own
+      clip-path wipe language (an inset that clips the bottom away, plus a
+      small downward rest-offset) rather than a generic crossfade, so the
+      loop still reads as the same "type being set" idea, not a different
+      effect bolted on beside it.
+   2. `.hero-badge__ring` — a circular text ring around the hero's logo mark
+      spins continuously. See HeroBadge.tsx.
 
-   Both keyframes share one timeline so they read as a single crossfade, not
-   two independent animations that happen to overlap:
-     0–34%   primary shown (holds after its own entrance has finished)
-     34–46%  primary wipes out as alt wipes in (600ms, simultaneous)
-     46–74%  alt shown (holds)
-     74–86%  alt wipes out as primary wipes in (600ms, simultaneous)
-     86–100% primary shown, permanently — the animation ends here and, being
-              neither infinite nor forwards-less, simply stays.
+   Both respect `prefers-reduced-motion`, but not identically: the ring's
+   un-animated rest state is already the complete, legible badge, so simply
+   never applying its spin is enough. The word-rotator's rest state is NOT
+   complete on its own — with four stacked candidates and no single "primary"
+   line, the sitewide reduced-motion reset further down this file (which
+   forces every `infinite` animation to stop after one iteration) would land
+   on the rotator's own `100%` keyframe, which is every word's HIDDEN state.
+   Skipped, that leaves reduced-motion visitors with no rotating word at all —
+   so `.rotate-word__item` carries its own explicit reduced-motion override
+   below, forcing the first word visible and the rest removed from display,
+   rather than trusting the global reset to land somewhere legible. */
 
-   The crossfade window was widened from 400ms/0.15em to 600ms/0.3em on
-   direct instruction after a critique found the swap read as a possible
-   glitch rather than a deliberate moment: the wipe itself is the "why" this
-   is intentional, so it has to be slow and displaced enough to actually be
-   seen and tracked as a wipe, not just register as a flicker. The mechanic
-   (once-per-load, aria-hidden, same clip-path language as `.set-word`) is
-   unchanged — only how legible the transition itself is.
-   ------------------------------------------------------------------------ */
-.hero-swap {
-  position: relative;
+/* --- 1. The rotating headline word --------------------------------------
+   All four candidates render at once, stacked in the same CSS grid cell
+   (`grid-area: 1 / 1`) — clip-path doesn't affect layout, only paint, so the
+   grid track's intrinsic size is set by the widest/tallest candidate
+   regardless of which one is currently visible. This is what replaces
+   `.hero-swap__alt`'s old `position: absolute; inset: 0` (which relied on one
+   "primary" flow item to set the box size): with four equal rotating members
+   there's no primary, so grid sizes the box instead of a guessed `ch` value. */
+.rotate-word {
+  display: inline-grid;
+  vertical-align: top;
 }
 
-.hero-swap__alt {
+.rotate-word__item {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+  transform: translateY(0.3em);
+  will-change: clip-path, transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One shared keyframe, phase-shifted per item by a quarter of the total
+     loop (`--n * 2500ms`). `animation-delay` only defers the FIRST
+     iteration; with `infinite`, subsequent loops run back to back, so each
+     item lands in its own slot every 10s, forever, in source order. */
+  .rotate-word__item {
+    animation: rotate-word 10000ms cubic-bezier(0.16, 0.9, 0.24, 1) infinite both;
+    animation-delay: calc(var(--n, 0) * 2500ms);
+  }
+}
+
+@keyframes rotate-word {
+  /*  0%–6%   wipe in (600ms)   — same clip-path language .set-word opens with
+      6%–19%  hold  (1300ms)
+     19%–25%  wipe out (600ms)
+     25%–100% hidden (7500ms)  — the other three items' turns */
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  6%, 19% {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  25%, 100% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotate-word__item {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: none;
+  }
+
+  .rotate-word__item:not(:first-child) {
+    display: none;
+  }
+}
+
+/* --- 2. The spinning ring badge ------------------------------------------
+   Only the ring — the hairline circle, the two tick marks, the circular text
+   — spins; `LogoMark` sits in its own non-rotating layer on top (see
+   HeroBadge.tsx). Reuses the sitewide `spin` keyframe (defined further down,
+   for the form's loading spinner) rather than a near-duplicate — same
+   `rotate(360deg)`, just a much slower duration for an ambient badge instead
+   of a loading indicator. */
+.hero-badge {
+  position: absolute;
+  right: 0;
+  bottom: -0.5rem;
+  width: 7rem;
+  height: 7rem;
+  transition: transform 140ms ease;
+}
+
+.hero-badge:hover,
+.hero-badge:focus-visible {
+  transform: translateY(-1px);
+}
+
+.hero-badge__mark {
   position: absolute;
   inset: 0;
+  display: grid;
+  place-items: center;
 }
 
-@keyframes hero-swap-primary {
-  0%, 34% {
-    clip-path: inset(0);
-    opacity: 1;
-    transform: translateY(0);
-  }
-  46%, 74% {
-    clip-path: inset(0 0 100% 0);
-    opacity: 0;
-    transform: translateY(0.3em);
-  }
-  86%, 100% {
-    clip-path: inset(0);
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero-badge__ring {
+  width: 100%;
+  height: 100%;
 }
 
-@keyframes hero-swap-alt {
-  0%, 34% {
-    clip-path: inset(0 0 100% 0);
-    opacity: 0;
-    transform: translateY(0.3em);
-  }
-  46%, 74% {
-    clip-path: inset(0);
-    opacity: 1;
-    transform: translateY(0);
-  }
-  86%, 100% {
-    clip-path: inset(0 0 100% 0);
-    opacity: 0;
-    transform: translateY(0.3em);
-  }
+.hero-badge__text {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  fill: var(--color-accent);
 }
 
-.hero-swap__primary {
-  /* Delay roughly matches when the primary headline's own per-word entrance
-     has finished setting (~1.05s, see .set-word above) plus a short buffer —
-     the swap should not compete with the entrance, it should follow it. */
-  animation: hero-swap-primary 5000ms cubic-bezier(0.16, 0.9, 0.24, 1) 1200ms both;
-}
-
-.hero-swap__alt {
-  animation: hero-swap-alt 5000ms cubic-bezier(0.16, 0.9, 0.24, 1) 1200ms both;
-}
-
-/* `.hero-swap__alt`'s content: a genuinely different second message, not a
-   re-styled echo of the first. Matches `.hero-type`'s resting weight, stretch
-   and colour exactly — full strength, the same as the primary headline — so
-   what changes during the swap is only the words, which is the entire point
-   of the moment. (A softer, lighter treatment was tried first, for the
-   cursor-driven version of this, and rejected: it read as a fainter, lesser
-   version of the headline rather than an equally real second statement,
-   which undercut the surprise.) */
-.reveal-type {
-  font-weight: 550;
-  font-stretch: 100%;
-  color: var(--color-fg);
+@media (prefers-reduced-motion: no-preference) {
+  .hero-badge__ring {
+    animation: spin 36s linear infinite;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
 }
 
 /* --- Header ground states ---------------------------------------------------

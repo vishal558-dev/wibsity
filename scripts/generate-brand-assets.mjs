@@ -219,7 +219,7 @@ console.log('og-image.png');
     <span>wibsity</span>
   </div>
   <div>
-    <h1>Every site starts as an empty file.</h1>
+    <h1>Websites, automations, digital experiences — built by hand.</h1>
     <p>A web studio in India. Fixed price agreed before anything starts, live in about a week.</p>
   </div>
   <div class="rule"><span>wibsity.in</span><span>Custom websites, built from scratch</span></div>

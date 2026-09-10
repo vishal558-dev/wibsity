@@ -40,10 +40,12 @@ prior "commit and push it" as blanket permission for a later, different change i
   `og:description` changes.
 
 ## The idea the site is built on
-wibsity's differentiator is that a site is *built* rather than *assembled*. The homepage now carries
-that argument through copy and structure alone: the headline's claim ("Every site starts as an empty
-file."), its automatic swap to the honest second half ("Most fill it with a template.", see Motion
-below), and the structural template-versus-built comparison in section 3 (see "Homepage composition").
+wibsity's differentiator is that a site is *built* rather than *assembled*. That argument no longer
+lives in the hero headline — the hero now names what the studio builds (see "The hero loop overrides"
+under Motion below) rather than making the template-versus-built case itself. The argument is carried
+entirely by the structural template-versus-built comparison in section 3 (see "Homepage composition"),
+plus `data/studio.ts`'s "Built, not assembled" standard and the Footer's own restatement of it —
+neither of which quotes the hero headline verbatim, so neither went stale when the headline changed.
 
 **A live specimen readout used to sit in the hero as the mechanical proof of that argument** — a
 component (`components/common/PageSpecimen.tsx`) that measured its own first paint, file count and
@@ -106,7 +108,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 | # | Section | Shape |
 |---|---------|-------|
-| 1 | Hero | Display headline, then a full-width lead+CTA block, closing on a measure rule |
+| 1 | Hero | Fixed-prefix + continuously-rotating-word display headline, a full-width lead+CTA block, and a spinning ring badge anchored bottom-right at `lg`+, closing on a measure rule |
 | 2 | What we make | GSAP-animated cards (yellow / white / black / petrol cycle), staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
@@ -123,6 +125,13 @@ together) rather than a grid split — it used to share this row with a live spe
 right-hand column, removed outright on direct instruction (see "The idea the site is built on"
 above). Don't reintroduce a 12-column split here without something real to put in the second column;
 an empty or decorative one would just be recreating the gap the removal was meant to close.
+
+The spinning ring badge (`HeroBadge.tsx`) sits absolutely positioned in the hero's bottom-right
+corner, `lg`+ only. Because it is `position: absolute`, it costs zero height against the hero's
+780px fold budget, but it was checked against the CTA row and the WhatsApp link at 1440px regardless
+— nudge its `bottom`/`right` values in the browser if either the CTA row's height or the badge's own
+size ever changes. See "The hero loop overrides" under Motion for the badge and the rotating headline
+word both.
 
 Section 2's rows used to be a plain `.index-row` list — a bordered row whose rule drew from the
 left on hover, with a `.spotlight` pointer-tracked tint underneath the text (`trackSpotlight` in
@@ -356,7 +365,10 @@ animation — Archivo's width and weight axes — rather than boxes sliding arou
 nowhere else, with no fade-up-on-scroll entrance reveals — that pattern is why the first pass read as
 documentation with good typography. A 2026.1 pass added a second, explicitly approved layer of
 sitewide micro-interaction on top of that (see "The 2026.1 micro-interaction addendum" below); the
-five mechanisms below are the original set and are still the ones "type being set" describes.
+four mechanisms below are the original set and are still the ones "type being set" describes. A third
+layer — "The hero loop overrides", below — later added two deliberate, continuously-looping
+exceptions to this section's own "nothing loops" framing; it's kept as a separate subsection rather
+than folded into this list, the same way the GSAP service-timeline entrance is.
 
 1. **The headline sets itself on load.** Words wipe up from their own baselines, staggered 48ms,
    while the line widens from 74% to 100%. Last word lands at ~1.05s.
@@ -365,40 +377,15 @@ five mechanisms below are the original set and are still the ones "type being se
 3. **The hero shrinks and lifts away as it scrolls past** (`--hero-set`, 100% → 66% width, scale
    1 → 0.86, lifting 3rem) — resolved by about half the hero's own height, not the full height.
 4. **Measure rules draw themselves** as their section arrives.
-5. **The headline resets into a second statement, once, and back** (`.hero-swap`) — see below.
 
-**The hero headline briefly swaps to a second statement and back, once, automatically.**
-`.hero-swap` (index.css) stacks the primary `<h1>` (`.hero-swap__primary`, normal flow, sizes the box)
-and a second paragraph (`.hero-swap__alt`, `RevealHeadline` in HomePage.tsx, `position: absolute; inset: 0`
-over it) in one box. Once the primary line has finished setting (~1.05s) and held for a further beat, it
-wipes away — the same clip-path language `.set-word` opens with, run in reverse — while the alt line
-wipes in beneath it; both hold; then it reverses, and the primary line rests there permanently. It never
-loops: this plays once per page load, which is what keeps it a considered moment rather than the
-rotating-hero-text tic of a template site. Both animations run off one shared percentage timeline (0–34%
-primary shown / 34–46% crossfade / 46–74% alt shown / 74–86% crossfade / 86–100% primary shown, staying
-there) so they read as a single swap rather than two animations that happen to overlap. The crossfade
-was widened from 400ms/0.15em to 600ms/0.3em on direct instruction after a hero critique found the swap
-read as a possible glitch rather than a deliberate moment — the wipe needed to be slow and displaced
-enough to actually be seen and tracked as a wipe. The mechanic itself (once-per-load, `aria-hidden`,
-`.set-word`'s clip-path language) is unchanged; only the transition's own legibility moved.
-
-**`RevealHeadline` is a genuinely different second message, not a re-styled echo of the primary
-headline.** The primary line reads "Every site starts as an empty file."; `RevealHeadline` reads "Most
-fill it with a template." — same size and weight as the primary headline (`.reveal-type` matches
-`.hero-type`'s resting values exactly), because a fainter "draft" treatment undercuts the surprise. It
-stays `aria-hidden` and the primary line stays the one real, permanent `<h1>` — the swap is a visual
-moment layered on top of the actual content, not a second piece of content in its own right, which
-matters more now that it plays automatically for every visitor rather than only the ones who happened to
-hover.
-
-This is the third mechanism this spot has held, and the second time a cursor-driven version was replaced
-with something else entirely rather than tuned. It went: a pointer-revealed construction-grid overlay
-(`ConstructionGrid.tsx`) → a pointer-revealed window onto the same headline in a softer typographic state
-→ a pointer-revealed window onto a genuinely different message (`CursorWindow`, `CursorMarks`,
-`useCursorField.ts` — all since deleted, not disabled) → the current automatic swap, once direct
-feedback asked for it to run without a cursor. If a further redesign is ever wanted here, treat it as a
-real design decision again, not a line edit — this spot has never survived unchanged past a single round
-of feedback yet.
+**This spot has held three mechanisms so far, and the hero's second line has never survived a single
+round of feedback unchanged.** It went: a pointer-revealed construction-grid overlay
+(`ConstructionGrid.tsx`) → a pointer-revealed window onto the same headline in a softer typographic
+state → a pointer-revealed window onto a genuinely different message (`CursorWindow`, `CursorMarks`,
+`useCursorField.ts`) → an automatic, once-per-load swap onto a second statement and back (`.hero-swap`,
+`RevealHeadline`) → the current continuous word-rotator (`.rotate-word`, see "The hero loop overrides"
+below). Every earlier mechanism is deleted outright from the codebase, not hidden or disabled. If a
+further redesign is ever wanted here, treat it as a real design decision again, not a line edit.
 
 Everything else is motion answering a user action: the disclosure, the form, the menu sheet, button
 and link hovers.
@@ -502,7 +489,8 @@ micro-interaction addendum" block at the bottom of index.css's `@layer component
 
 **A sitewide cursor-following tint (`.cursor-glow`) was tried here and removed.** It was the
 *fourth* attempt at a cursor-following element on this site — after `ConstructionGrid`,
-`CursorWindow`/`CursorMarks`, and `useCursorField` (see the hero-swap history further up) — and,
+`CursorWindow`/`CursorMarks`, and `useCursorField` (see the hero headline's mechanism history further
+up, under Motion) — and,
 like the three before it, it was removed rather than tuned. All four shared the same failure mode:
 a pointer-tracked effect only exists while someone is moving the mouse over it, so the page's own
 screenshot — the state a visitor lands on, shares, or is judged by first — never shows the thing
@@ -517,7 +505,7 @@ that as the thing to argue against, not rediscover.
 ### The service-timeline entrance (GSAP)
 Added on direct instruction, after the trade-off against "one motion idea" and "nothing is a card"
 was raised explicitly and overridden on purpose — this is not drift, and it is a third layer on top
-of the original five mechanisms and the 2026.1 addendum, not a replacement for either. It is also
+of the original four mechanisms and the 2026.1 addendum, not a replacement for either. It is also
 the one motion mechanism on the site built with a JS library rather than CSS: GSAP's real Timeline
 + ScrollTrigger, not a lookalike. It still respects `prefers-reduced-motion` (via
 `gsap.matchMedia()`, landing every card/playhead element directly in its rest state with
@@ -541,6 +529,49 @@ demo auto-loops while stationary in view — there is no "stationary" state here
 while the scrollbar does. See
 `.timeline-card`/`.timeline-playhead`/`.timeline-playhead-line`/`.timeline-playhead-marker`/
 `.timeline-ruler` in index.css for the static shape these tweens animate.
+
+### The hero loop overrides
+Added on direct instruction: two deliberate, explicit, continuously-looping exceptions to this
+section's own "nothing loops" framing — the same category of override as the GSAP entrance above,
+not drift. Both replace the hero's earlier once-per-load `.hero-swap`/`RevealHeadline` mechanism
+(see the hero headline's mechanism history above), which itself never looped.
+
+**The headline's second line (`.rotate-word`, `RotatingWord` in HomePage.tsx) cycles forever**
+through what the studio builds — "We build websites. / automations. / digital experiences. / — and
+more." — instead of settling once. It directly overrides the line this file used to state without
+exception: a forever-rotating hero was previously named as "the rotating-hero-text tic of a template
+site." Reuses `.set-word`'s own clip-path wipe language rather than a generic crossfade, so the loop
+still reads as the same "type being set" idea, not a bolted-on effect. All four candidate strings are
+stacked in one CSS grid cell (`grid-area: 1 / 1`) so the box always reserves the widest/tallest one's
+size — the rotation never reflows the CTA row beneath it as word length changes.
+
+Reduced motion needed its own explicit rule here, not the sitewide reset: the global
+`prefers-reduced-motion` reset elsewhere in index.css forces every `infinite` animation to stop after
+one iteration, landing on its own `100%` keyframe — for `.rotate-word__item` that keyframe is every
+word's HIDDEN state, so without a dedicated override, reduced-motion visitors would see no rotating
+word at all. `.rotate-word__item` carries its own `@media (prefers-reduced-motion: reduce)` block
+forcing the first word visible and the rest `display: none`, rather than trusting the global reset to
+land somewhere legible. The old `.hero-swap` never hit this, because its resting state was the fully
+visible primary line.
+
+**A circular text ring around the hero's logo mark (`HeroBadge.tsx`) spins continuously**, wrapped in
+a link to `/contact` so it reads as a secondary call to action rather than pure decoration, even
+though the spin itself runs regardless of hover (hover/focus only adds `.btn:hover`'s existing
+1px-lift idiom). Only the ring spins — `LogoMark` sits in its own non-rotating, absolutely-centered
+layer on top of it, since the mark is a raster PNG with no vector source to redraw into the ring's own
+geometry (see "Icons and the logo" below). Ring text reads "HAND-BUILT SITES", repeated twice, with
+two accent-coloured tick marks at the seams — reusing `.measure`'s own tick device as the
+repeat/separator, deliberately instead of a middle-dot (`A · B · C`), which is one of the most common
+AI-generated-design tells. Anchored inside the hero section, `lg`+ only, and NOT `position: fixed` —
+it scrolls away with the page like everything else, specifically to avoid reading as a persistent
+floating element, which this file already documents as rejected once for the WhatsApp FAB ("A FAB
+overpowers the primary journey", under Conversion). No explicit reduced-motion override is needed
+here, unlike the
+word-rotator: the ring's un-animated rest state is already the complete, legible badge, so simply
+never applying the spin achieves "reduced" on its own.
+
+Neither override is a precedent for a third loop elsewhere on the site — raise the trade-off
+explicitly again, the way both of these were, before adding one.
 
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
@@ -587,6 +618,13 @@ If the mark is ever redrawn or a new board is supplied, re-crop all of the above
 still drives headless Chrome to rasterise a hardcoded SVG copy of the old geometric "w", which
 nothing on the site references any more. Its `og-image.png` step (below) is unaffected and still
 valid.
+
+**`HeroBadge.tsx` wraps a spinning circular-text SVG ring around `LogoMark`, not into it.** It's a
+separate `<svg>` layered behind/around the raster `<img>` — the only way to add a ring, since the
+mark itself has no vector source to draw one into. Reuses `LogoMark` completely unchanged, passing
+`tone="paper"` because the hero sits on plain paper (see the `tone` explanation above). This is the
+first circular or rotating SVG text on the site — see "The hero loop overrides" under Motion — and
+is not a precedent for decorating the logo further elsewhere; it is scoped to this one hero placement.
 
 ### The asset generator
 `scripts/generate-brand-assets.mjs` drives the locally installed Chrome, so there is no image
@@ -750,7 +788,14 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
 - The old "Fast Loading" owner override in the hero value grid is moot: the value grid, the
   marquees that repeated it, and the whole `valuePoints` array are gone. The hero made a measured
   claim instead of a qualitative one for a while (the specimen readout); it now makes neither — the
-  argument is carried by copy and structure alone, see "The idea the site is built on" above.
+  built-versus-assembled argument moved entirely to section 3 (see "The idea the site is built on"
+  above), and the hero itself now just names what the studio builds.
+- **The hero's rotating headline claims "automations" and "digital experiences" as things the studio
+  builds; `data/services.ts`'s four listed services (Business website / Landing page / Redesign /
+  Online store) don't currently name either one.** The closest existing hook is `customWork`'s add-on
+  copy. This is a known, accepted gap from when the headline copy was chosen, not something to
+  silently paper over — if the services catalogue is ever revised, check it against the hero's own
+  claim, and vice versa.
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
@@ -763,12 +808,17 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   inside it, not new custom properties — every field resolves them correctly already), plus
   `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`,
   `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
-  (`.index-row` and `.spotlight` were deleted, replaced outright). Reuse those for anything in the same family (a
+  (`.index-row` and `.spotlight` were deleted, replaced outright); the hero loop overrides added
+  `.rotate-word`/`.rotate-word__item` (the rotating headline word) and `.hero-badge`/
+  `.hero-badge__mark`/`.hero-badge__ring`/`.hero-badge__text` (the spinning ring badge). Reuse those
+  for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
   — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "one
   deliberate exception" under "Nothing is a card" above. Do not add a cursor-tracked tint back —
   see "A sitewide cursor-following tint" under Motion above, and do not extend `.process-step-N`'s
   stagger to another list without raising that trade-off explicitly — see the addendum bullet above.
+  `.rotate-word`/`.hero-badge` are likewise not a general license to add more infinite loops
+  elsewhere — see "The hero loop overrides" under Motion.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.
 - **One filled `primary` button per CTA cluster.** Everything else in the group is `secondary` or a
   plain `.link`.
