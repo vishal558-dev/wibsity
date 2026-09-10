@@ -69,7 +69,7 @@ export const HeroBadge: React.FC = () => (
       </text>
     </svg>
     <span className="hero-badge__mark">
-      <LogoMark size={60} tone="paper" />
+      <LogoMark size={30} tone="paper" />
     </span>
   </Link>
 );

@@ -1079,8 +1079,8 @@
   position: absolute;
   right: 0;
   bottom: -0.5rem;
-  width: 10rem;
-  height: 10rem;
+  width: 5rem;
+  height: 5rem;
   transition: transform 140ms ease;
 }
 

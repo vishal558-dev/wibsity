@@ -583,7 +583,11 @@ geometry (see "Icons and the logo" below). Ring text reads "HAND-BUILT SITES" in
 repeated) at `font-size: 34px` — roughly 3x an initial too-small first pass, per direct feedback — with
 one accent-coloured tick mark at the seam, reusing `.measure`'s own tick device as the loop's
 start/end marker, deliberately instead of a middle-dot (`A · B · C`), which is one of the most common
-AI-generated-design tells.
+AI-generated-design tells. `.hero-badge`'s own rendered box (`5rem`, half of an earlier `10rem` pass,
+again per direct feedback) is the ONLY size that has moved since — the SVG's internal geometry (`R`,
+`GAP`, the 34px font-size, all in HeroBadge.tsx) is untouched, because everything inside a `viewBox`
+scales together automatically as the box itself resizes; only `LogoMark`'s `size` prop, which is real
+px and lives outside the SVG's coordinate space, has to be updated by hand to match (currently `30`).
 
 **The ring's path and text-fitting were both wrong in the first pass, not just small — get this exact
 construction right if this component is ever touched again:**
