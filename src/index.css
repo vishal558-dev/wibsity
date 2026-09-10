@@ -946,11 +946,22 @@
       three things the studio builds, instead of settling once. "and more."
       is deliberately NOT one of the cycling candidates — it's a fixed,
       un-animated suffix in the h1 (HomePage.tsx), always reading, never
-      wiped in or out; only the noun rotates. Reuses `.set-word`'s own
-      clip-path wipe language (an inset that clips the bottom away, plus a
-      small downward rest-offset) rather than a generic crossfade, so the
-      loop still reads as the same "type being set" idea, not a different
-      effect bolted on beside it.
+      wiped in or out; only the noun rotates. The wipe is horizontal
+      (`clip-path: inset(0 100% 0 0)` → `inset(0)`, left-to-right), NOT
+      `.set-word`'s vertical bottom-anchored inset, despite reusing that same
+      general "clip-path wipe" idea — a vertical wipe passes through every
+      glyph's full height as it plays, and for a word with a descender
+      ("digital"'s "g"), there is a real, visible stretch of that motion
+      where the descender is still clipped while the rest of the letter has
+      already revealed, reading as a broken/cut-off glyph rather than a
+      wipe. `.set-word`'s own vertical wipe has the identical defect, but it
+      only ever plays once, briefly, on page load, where it was never
+      flagged; run forever in a loop, the same defect became visible on
+      every single rotation and was reported directly. The horizontal
+      version reveals whole glyphs left-to-right instead of partial-height
+      slices, so no letter is ever caught half-clipped — and it borrows
+      `.measure`'s own left-to-right draw direction as its precedent instead
+      of `.set-word`'s vertical one.
    2. `.hero-badge__ring` — a circular text ring around the hero's logo mark
       spins continuously. See HeroBadge.tsx.
 
@@ -990,10 +1001,9 @@
 .rotate-word__item {
   grid-area: 1 / 1;
   white-space: nowrap;
-  clip-path: inset(0 0 100% 0);
+  clip-path: inset(0 100% 0 0);
   opacity: 0;
-  transform: translateY(0.3em);
-  will-change: clip-path, transform;
+  will-change: clip-path, opacity;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1009,24 +1019,21 @@
 }
 
 @keyframes rotate-word {
-  /*  0%–8%     wipe in (600ms)   — same clip-path language .set-word opens with
+  /*  0%–8%     wipe in (600ms)   — left-to-right, see the comment above .rotate-word__item
       8%–25.3%  hold  (1300ms)
      25.3%–33.3% wipe out (600ms)
      33.3%–100% hidden (5000ms)  — the other two items' turns */
   0% {
-    clip-path: inset(0 0 100% 0);
+    clip-path: inset(0 100% 0 0);
     opacity: 0;
-    transform: translateY(0.3em);
   }
   8%, 25.3% {
     clip-path: inset(0);
     opacity: 1;
-    transform: translateY(0);
   }
   33.3%, 100% {
-    clip-path: inset(0 0 100% 0);
+    clip-path: inset(0 100% 0 0);
     opacity: 0;
-    transform: translateY(0.3em);
   }
 }
 
@@ -1034,7 +1041,6 @@
   .rotate-word__item {
     clip-path: inset(0);
     opacity: 1;
-    transform: none;
   }
 
   .rotate-word__item:not(:first-child) {

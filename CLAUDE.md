@@ -540,12 +540,23 @@ not drift. Both replace the hero's earlier once-per-load `.hero-swap`/`RevealHea
 through three of the four things the studio builds — "We build websites / automations / digital
 experiences" — instead of settling once. It directly overrides the line this file used to state
 without exception: a forever-rotating hero was previously named as "the rotating-hero-text tic of a
-template site." Reuses `.set-word`'s own clip-path wipe language rather than a generic crossfade, so
-the loop still reads as the same "type being set" idea, not a bolted-on effect. All three candidate
+template site." All three candidate
 words are stacked in one CSS grid cell (`grid-area: 1 / 1`, `justify-items: end`) so the box always
 reserves the widest candidate's ("digital experiences") size, right-aligned within it — the rotation
 never reflows the CTA row beneath it as word length changes, and every word ends at the same fixed
 point regardless of its own length.
+
+**The wipe is horizontal, not `.set-word`'s vertical one — this was a real, reported defect, not a
+style preference.** The first version reused `.set-word`'s bottom-anchored `clip-path: inset(0 0 100%
+0)` wipe directly. A vertical wipe passes through a glyph's full height as it plays, and for any word
+with a descender ("digital"'s "g"), there's a genuine stretch of that motion where the descender is
+still clipped while the rest of the letter has already revealed — it reads as a cut-off, broken glyph,
+not a clean wipe. `.set-word` has the identical defect, but it only ever plays once, briefly, at page
+load, where nobody flagged it; looped forever, the same defect repeats on every rotation and was
+reported directly ("the g gets cut off at the bottom"). `.rotate-word__item` now wipes left-to-right
+(`clip-path: inset(0 100% 0 0)` → `inset(0)`) instead, revealing whole glyphs rather than partial-
+height slices, so no letter is ever caught half-clipped — borrowing `.measure`'s own left-to-right
+draw direction as its precedent instead of `.set-word`'s vertical one.
 
 **"and more." is deliberately the fourth thing, held OUT of the cycle** — it's a fixed, un-animated
 `<span className="hero-and-more">`, smaller than the rotating word (`--text-lg`, not `--text-hero`),
