@@ -40,12 +40,21 @@ prior "commit and push it" as blanket permission for a later, different change i
   `og:description` changes.
 
 ## The idea the site is built on
-wibsity's differentiator is that a site is *built* rather than *assembled*. That is unprovable in
-prose and completely provable in the artifact, so the homepage's one bold moment is a **live
-specimen readout** (`components/common/PageSpecimen.tsx`): the page measures its own first paint,
-file count and element count in the visitor's browser and prints the result under the headline.
+wibsity's differentiator is that a site is *built* rather than *assembled*. The homepage now carries
+that argument through copy and structure alone: the headline's claim ("Every site starts as an empty
+file."), its automatic swap to the honest second half ("Most fill it with a template.", see Motion
+below), and the structural template-versus-built comparison in section 3 (see "Homepage composition").
 
-Two consequences bind future work:
+**A live specimen readout used to sit in the hero as the mechanical proof of that argument** — a
+component (`components/common/PageSpecimen.tsx`) that measured its own first paint, file count and
+element count in the visitor's browser and printed the result beside the headline. It was removed
+outright on direct instruction: the component, its `.specimen-panel` styling, the `--text-figure`
+type token, and every other reference to it are gone from the codebase, not hidden or disabled. The
+hero's second row lost the 12-column split this created — the lead paragraph and CTA cluster are now
+a single full-width block (see "Homepage composition" below). If a live-measurement device is ever
+wanted back, treat it as a fresh design decision with its own layout, not a restoration of this one.
+
+Two consequences still bind future work:
 
 1. **The site cannot carry a dependency it does not need.** `motion`, `lenis` and `lucide-react`
    were all removed. The runtime is React, react-dom, react-router-dom, clsx, tailwind-merge,
@@ -55,22 +64,13 @@ Two consequences bind future work:
    `ServiceTimeline.tsx` and "Homepage composition" below) — a positioning decision made explicitly
    for one feature, not a general license to reach for animation libraries elsewhere. Every other
    motion on the site is still CSS.
-2. **No asserted performance numbers.** The readout is the only performance figure on the site and
-   it is measured, not claimed. A bytes-transferred reading was tried and deliberately dropped:
-   Resource Timing reports zero bytes both for cross-origin responses without
-   `Timing-Allow-Origin` and for cache hits, so it would silently flatter a repeat visit. Don't add
-   it back without solving that.
-
-   `PageSpecimen`'s row labels are plain-language ("Appeared in", "Files it needed", "Building
-   blocks") rather than the Web Performance API terms behind them ("first paint", "resources
-   loaded", DOM element count) — a hero critique found the original labels read as developer jargon
-   to PRODUCT.md's actual audience (small-business owners, not engineers). The underlying
-   measurements are unchanged; only the labels moved. The plate also always renders three rows now:
-   when first paint isn't trustworthy (the tab was ever hidden before the reading was taken, or
-   Paint Timing is unsupported), "Appeared in" shows a "reload to see" fallback instead of the row
-   being silently dropped — real traffic regularly opens links via backgrounded in-app browsers, and
-   a visitor in that state should see that a reading exists rather than a panel that quietly shipped
-   two rows instead of three.
+2. **No asserted performance numbers.** There is currently no performance figure anywhere on the
+   site — don't add a load-time claim, a Lighthouse score, or similar without a real measurement
+   behind it, taken live in the visitor's own browser the way the specimen readout was, never a
+   hardcoded number. A bytes-transferred reading was tried for that readout and deliberately
+   dropped before it was removed entirely: Resource Timing reports zero bytes both for cross-origin
+   responses without `Timing-Allow-Origin` and for cache hits, so it would silently flatter a repeat
+   visit. Don't reintroduce that specific measurement without solving that problem first.
 
 ## Architecture & routing
 `main.tsx` → `App.tsx` (`BrowserRouter`) → `pages/*.tsx`, one per route: `/`, `/services`, `/about`,
@@ -106,7 +106,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 | # | Section | Shape |
 |---|---------|-------|
-| 1 | Hero | Display headline, then lead+CTA left / specimen panel right, closing on a measure rule |
+| 1 | Hero | Display headline, then a full-width lead+CTA block, closing on a measure rule |
 | 2 | What we make | GSAP-animated cards (yellow / white / black / petrol cycle), staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
@@ -115,15 +115,14 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 The hero is the only place the type is allowed to be the whole composition
 (`--text-hero`, ~121px at 1440). It is deliberately **two lines, not three**: a third line pushes
-the specimen panel below the fold on a 14–15" laptop, and the panel is the payoff for the headline.
-The whole hero — headline, lead, CTA and panel — fits inside 780px of viewport height; check that
-again if any of its type or padding changes.
+the CTA cluster below the fold on a 14–15" laptop. The whole hero — headline, lead and CTA — fits
+inside 780px of viewport height; check that again if any of its type or padding changes.
 
-The hero's second row is a 12-column split: the lead paragraph and the CTA cluster now stack
-together in the left six columns, and `PageSpecimen` — rendering its own `.specimen-panel` chrome —
-takes the right five. It used to sit as a full-width strip along the hero's closing rule, read only
-once someone scrolled past the fold; putting the live reading beside the headline's own claim,
-visible without scrolling, is the point of the arrangement, not an incidental layout choice.
+The hero's second row is a single full-width block (the lead paragraph and the CTA cluster stacked
+together) rather than a grid split — it used to share this row with a live specimen readout in a
+right-hand column, removed outright on direct instruction (see "The idea the site is built on"
+above). Don't reintroduce a 12-column split here without something real to put in the second column;
+an empty or decorative one would just be recreating the gap the removal was meant to close.
 
 Section 2's rows used to be a plain `.index-row` list — a bordered row whose rule drew from the
 left on hover, with a `.spotlight` pointer-tracked tint underneath the text (`trackSpotlight` in
@@ -216,7 +215,7 @@ per-answer paragraph's measure widened from `max-w-[62ch]` to `max-w-[72ch]` to 
 Two inks and a paper, two accents with a hard semantic split, and four fields. Read the file — it is
 commented at the level of *why*, not *what* — but the rules that matter most:
 
-**Nothing is a card, with two deliberate exceptions.** No bordered boxes, no shadows, no gradients,
+**Nothing is a card, with one deliberate exception.** No bordered boxes, no shadows, no gradients,
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
 (2px — enough to read as touchable, not enough to read as a card), `.badge` (999px — a tag-shaped
 pill, used only for the process steps' client-time commitment, so it reads as a label rather than a
@@ -226,16 +225,15 @@ comes from three elevations
 never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
 `.field-raised`) and the measure rule. An element may move at most one elevation step from its parent
 field, which is the rule that keeps the page from turning into stacked cards.
-`.specimen-panel` — the surround for the hero's `PageSpecimen` readout — gets a tonal step
-(`--color-canvas-raised`) and a hairline border but keeps `border-radius: 0`, because a live
-instrument reading is a different material from the page rather than a grouped strip of terms. It
-was added on direct instruction after this rule was raised explicitly, and does not license a
-second: nowhere else on the site should reach for a border on the strength of this precedent. (The
-homepage comparison table used to carry a second exception, `.glance` — a bordered ✕/✓ strip with a
-10px radius — but it was cut in favour of a two-column opposition where depth, not a border, carries
-the hierarchy; see "What you are choosing between" in Homepage composition above.)
 
-`.timeline-card` is the second exception — a 22px-radius card used only for the service index's four
+Two other border exceptions were tried and cut, not kept as precedent: `.specimen-panel` (a tonal
+step plus a hairline border around the hero's live specimen readout) was removed along with the
+whole readout it surrounded (see "The idea the site is built on" above), and `.glance` (a bordered
+✕/✓ strip in the homepage comparison table, 10px radius) was cut in favour of a two-column
+opposition where depth, not a border, carries the hierarchy (see "What you are choosing between" in
+Homepage composition above). Neither licenses reaching for a border elsewhere.
+
+`.timeline-card` is the one exception — a 22px-radius card used only for the service index's four
 rows (numeral, title, a divider and a 3-item bullet list — the summary paragraph and the delivery-time
 figure that used to sit under the bullets were both cut on direct instruction, since a card's height
 was tracking copy length and, combined with the staircase's per-card width shrink below, made the row
@@ -254,9 +252,9 @@ tokens note below); `.field-ink` and `.field-petrol` reuse the sitewide fields u
 still gets its title/list/hover contrast for free from whichever field it carries — no
 separate contrast math per card — and the oxide numeral/bullet-dot colour (`--color-accent-warm`)
 resolves to the correct on-light/on-dark value automatically on all four. There is still no gradient
-anywhere in the system. Like `.specimen-panel`, none of this licenses a third card treatment:
-nowhere else on the site should reach for a full-radius fill, a fifth ground colour, or this card's
-numeral/divider/bullet-list shape on the strength of this precedent.
+anywhere in the system. None of this licenses a second card treatment: nowhere else on the site
+should reach for a full-radius fill, a fifth ground colour, or this card's numeral/divider/bullet-list
+shape on the strength of this precedent.
 
 **`.measure` is the signature device** — a hairline marking a real section boundary with a short run
 of accent ticks hanging at its left end, like the scale bar on a drawing. It encodes the grid rather
@@ -287,8 +285,12 @@ a gradient.
 
 **Two accents, with a semantic split that is what keeps the second one from becoming decoration:**
 petrol (`--color-accent`) marks what the studio makes and measures — link underlines (`.link`), the
-focus ring, the specimen readout's figures, the service index's delivery figures, the "built for you"
-side of the comparison, the measure ticks, and the process section's step numerals. Oxide
+focus ring, the "built for you" side of the comparison, the measure ticks, and the process section's
+step numerals. (The specimen readout's figures and the service index's delivery figures were two
+other petrol placements; both are gone along with the elements that carried them — the specimen
+readout was removed outright, see "The idea the site is built on" above, and the service index's
+per-card delivery figure was cut earlier, see `.timeline-card` under "Nothing is a card" above.)
+Oxide
 (`--color-accent-warm`) marks what the visitor gives or does, in exactly three placements: the
 process steps' client-time badges, and the "what happens next" numerals on both the homepage and
 `/contact`. Neither is ever a button fill; the primary action stays a field inversion. Grep
@@ -335,12 +337,11 @@ Headlines sit at **weight 550**, not 800/900. Large type is fine; shouted type i
 a perfect fourth over a 17px serif body, flattened at the top so display sizes stay usable on a
 laptop viewport, plus two display sizes used once each: `--text-hero` (the homepage headline) and
 `--text-index` (the service list). Both carry their own leading and tracking, because the defaults
-are far too loose at those sizes. `--text-figure` sits one rung below `--text-2xl` for the hero
-specimen's readings — prominent without competing with a section heading, and used repeatedly (once
-per reading row) rather than once, which is what keeps it out of the "used once" pair above. Sized
-down again in the 2026 hero critique pass (clamp max 2.25rem → 1.75rem) after that critique found the
-figures' size and colour outweighing the hero's own primary CTA, which the specimen panel sits
-directly beside.
+are far too loose at those sizes.
+
+`--text-figure` no longer exists: it sized the hero specimen readout's readings, and was deleted
+along with the readout itself (see "The idea the site is built on" above) rather than left as an
+orphaned token.
 
 **Archivo is requested with its WIDTH axis** — `Archivo:wdth,wght@62..125,400..600` in index.html.
 That is not cosmetic: three separate effects animate `font-stretch`, and dropping the axis from the
@@ -458,9 +459,6 @@ action (a hover, a scroll, a route change) rather than "the page loaded", still 
 micro-interaction addendum" block at the bottom of index.css's `@layer components`.
 
 - **`.btn:hover` lifts one pixel** on top of the existing fill-wipe and arrow-slide.
-- **`PageSpecimen`'s readings count up** from zero the one time each first resolves from its
-  placeholder (`useCountUp` in `PageSpecimen.tsx`) — the number itself is still exactly what
-  `measure()` reported; this only spreads its reveal over ~700ms instead of snapping it in.
 - **Route changes fade** via `.route-fade` — see Architecture & routing above.
 - **`.reveal`** fades and lifts a section heading in as it enters view, on the same scroll-driven-
   animation primitive as the measure rule (`animation-timeline: view()`, no IntersectionObserver).
@@ -743,13 +741,16 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   same underlying claims — direct access, no account manager, still there later — stated without a
   number attached. Don't reintroduce a headcount figure (a specific number, "solo", "one-person",
   etc.) into hero, footer, `/about`, or any meta/SEO/JSON-LD string without asking first.
-- **No unverified performance numbers.** The specimen readout is measured; everything else is
-  structural. `data/studio.ts`'s `comparisonRows` (the homepage comparison) is the easiest place on
-  the site to accidentally write a claim that cannot be backed up — every entry is a fact about how
-  the two things are made, and it must stay that way.
+- **No unverified performance numbers.** There is currently no performance figure anywhere on the
+  site — the homepage's live specimen readout, which used to be the one measured figure, was removed
+  outright (see "The idea the site is built on" above); don't add a load-time, ranking, or similar
+  numeric claim back without a real measurement behind it. `data/studio.ts`'s `comparisonRows` (the
+  homepage comparison) is the easiest place on the site to accidentally write a claim that cannot be
+  backed up — every entry is a fact about how the two things are made, and it must stay that way.
 - The old "Fast Loading" owner override in the hero value grid is moot: the value grid, the
-  marquees that repeated it, and the whole `valuePoints` array are gone. The hero now makes a
-  measured claim instead of a qualitative one.
+  marquees that repeated it, and the whole `valuePoints` array are gone. The hero made a measured
+  claim instead of a qualitative one for a while (the specimen readout); it now makes neither — the
+  argument is carried by copy and structure alone, see "The idea the site is built on" above.
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
@@ -764,8 +765,8 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   `.timeline-playhead`, `.timeline-playhead-line`, `.timeline-playhead-marker` and `.timeline-ruler`
   (`.index-row` and `.spotlight` were deleted, replaced outright). Reuse those for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
-  — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "two
-  deliberate exceptions" under "Nothing is a card" above. Do not add a cursor-tracked tint back —
+  — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "one
+  deliberate exception" under "Nothing is a card" above. Do not add a cursor-tracked tint back —
   see "A sitewide cursor-following tint" under Motion above, and do not extend `.process-step-N`'s
   stagger to another list without raising that trade-off explicitly — see the addendum bullet above.
 - Add design tokens to `src/index.css`'s `@theme`. There is no `tailwind.config.js`.

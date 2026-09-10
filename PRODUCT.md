@@ -18,7 +18,7 @@ Wibsity is a web design/dev studio that builds fixed-scope websites for these cl
 
 Every site is hand-coded with real React/TypeScript rather than assembled on template page-builders (Wix, Squarespace, WordPress themes). This is the mechanism behind the studio's concrete claims — a codebase that stays maintainable as the client's needs grow, and no proprietary-platform lock-in — neither of which a template-based competitor can truthfully claim.
 
-The 2026 redesign made this the whole spine of the site. The homepage headline is "Every site starts as an empty file", the argument is carried by a structural template-versus-built comparison rather than a manifesto, and the proof is a live specimen readout: the page measures its own first paint, file count and element count in the visitor's browser and prints the result. Performance is demonstrated, never asserted.
+The 2026 redesign made this the whole spine of the site. The homepage headline is "Every site starts as an empty file", and the argument is carried by that headline (with its automatic swap to a second, honest statement) and a structural template-versus-built comparison rather than a manifesto. A live specimen readout that measured the page's own first paint, file count and element count in the visitor's browser used to sit in the hero as mechanical proof of the argument; it was removed outright (component, styling, and every reference) on direct instruction, and the hero now carries the argument through copy and structure alone. No performance number is asserted anywhere on the site as a result — if a measured figure is ever reintroduced, it must be read live in the visitor's own browser the way the specimen readout was, never a hardcoded claim.
 
 ## Operating Context
 
@@ -32,7 +32,7 @@ The primary conversion is the project enquiry form, which is now a single screen
 - Fixed-scope pricing is a hard commitment — no hidden fees, scope agreed before start.
 - Domain is always registered in the client's name and is theirs to keep/transfer (a real, positive ownership claim the site makes).
 - The studio does **not** transfer code/IP ownership of its own reusable components/tooling to clients — this is a deliberate, existing content guardrail (see CLAUDE.md) and must not be contradicted by future copy.
-- No numeric/unverified performance claims (e.g. "<500ms load") may be made without a real measurement behind them. The only performance figures on the site are the homepage's specimen readout, which the visitor's own browser produces live; a bytes-transferred reading was deliberately dropped from it because Resource Timing reports zero for cache hits and would have flattered a repeat visit.
+- No numeric/unverified performance claims (e.g. "<500ms load") may be made without a real measurement behind them. There are currently no performance figures anywhere on the site — the homepage's live specimen readout, which used to produce the one measured figure directly in the visitor's own browser, was removed outright. (A bytes-transferred reading was tried for that readout and deliberately dropped before its removal, because Resource Timing reports zero for cache hits and would have flattered a repeat visit — relevant again only if a measured figure is ever reintroduced.)
 
 ## Brand Commitments
 

@@ -3,8 +3,9 @@
 > Custom websites, built from scratch. This repository is the studio's own site.
 
 Built with **React 19**, **Vite**, **TypeScript** and **Tailwind CSS v4**. The site's pitch is that a
-hand-built site beats an assembled one, so it has to pass its own argument: the homepage measures
-itself in the visitor's browser and prints the reading.
+hand-built site beats an assembled one, carried on the homepage by a headline, an automatic swap to
+a second honest statement, and a structural template-versus-built comparison — no performance number
+is asserted anywhere on the site.
 
 ---
 
@@ -91,7 +92,6 @@ wibsity/
     │   │   ├── icons.tsx            # The complete icon set
     │   │   ├── Button.tsx
     │   │   ├── InquiryForm.tsx      # The primary conversion surface
-    │   │   ├── PageSpecimen.tsx     # The page measuring itself
     │   │   └── ScrollToTop.tsx
     │   └── layout/
     │       ├── Section.tsx          # Gutter, measure, rhythm, the inverted field
@@ -108,8 +108,9 @@ wibsity/
   explicit ownership claim it makes.
 - No fabricated clients, testimonials, awards, metrics or case studies. There are none to report,
   and the design is built to earn trust without them.
-- **No unverified performance numbers.** The homepage's specimen readout is the only performance
-  figure on the site, and it is measured live in the visitor's own browser rather than asserted.
+- **No unverified performance numbers.** There are no performance figures anywhere on the site — a
+  homepage specimen readout used to measure and print one live in the visitor's own browser, but it
+  was removed outright. If one is ever added back, it must be measured the same way, not asserted.
 
 ---
 

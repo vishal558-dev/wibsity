@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Section } from '../components/layout/Section';
-import { PageSpecimen } from '../components/common/PageSpecimen';
 import { InquiryForm } from '../components/common/InquiryForm';
 import { ServiceTimeline } from '../components/common/ServiceTimeline';
 import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
@@ -160,10 +159,8 @@ export const HomePage: React.FC = () => {
       {/* ------------------------------------------------------------------
           Hero. One statement at display scale, one line of positioning, one
           action — and, once settled, a brief automatic swap onto a second,
-          different statement and back (see .hero-swap / RevealHeadline). The
-          specimen panel sits beside the lead and CTA rather than below them,
-          so the live reading is visible without scrolling; a closing measure
-          rule marks the real boundary into the next section.
+          different statement and back (see .hero-swap / RevealHeadline). A
+          closing measure rule marks the real boundary into the next section.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
         <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
@@ -177,29 +174,23 @@ export const HomePage: React.FC = () => {
               <RevealHeadline />
             </div>
 
-            <div className="mt-[clamp(2.5rem,7vh,4.5rem)] grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="enter enter-1 lg:col-span-6">
-                <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
-                  Hand-built websites for businesses that care how they look.
-                </p>
-                <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-                  <Link to="/contact" className="btn btn-primary">
-                    <span>Start a project</span>
-                  </Link>
-                  <a
-                    href={CONTACT_INFO.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
-                  >
-                    <IconWhatsApp size={15} className="whatsapp-icon" />
-                    <span>or WhatsApp</span>
-                  </a>
-                </div>
-              </div>
-
-              <div className="enter enter-2 lg:col-span-5 lg:col-start-8">
-                <PageSpecimen />
+            <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">
+              <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
+                Hand-built websites for businesses that care how they look.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <Link to="/contact" className="btn btn-primary">
+                  <span>Start a project</span>
+                </Link>
+                <a
+                  href={CONTACT_INFO.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
+                >
+                  <IconWhatsApp size={15} className="whatsapp-icon" />
+                  <span>or WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
