@@ -247,7 +247,7 @@ export const HomePage: React.FC = () => {
           rather than a banner; the heading stays at text-3xl and never rises
           toward hero scale.
           ------------------------------------------------------------------ */}
-      <Section field="petrol" className="py-2" aria-labelledby="choice-heading">
+      <Section field="petrol" aria-labelledby="choice-heading">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
           <p className="lg:col-span-4 lg:col-start-9 lg:row-start-1 text-lg leading-relaxed text-fg-muted">
             Not design taste. The difference is structural, and you feel it a year later
@@ -261,14 +261,17 @@ export const HomePage: React.FC = () => {
         {/* This drops <table> semantics: the content is a comparison rather
             than data anyone reads across axes, and the heading-per-aspect
             structure below keeps it navigable. Each cell carries its own
-            sr-only "As a template: " / "Built for you: " label, so the
-            template/built distinction is announced on every row rather than
-            relying on visual column position. The header row below is purely
-            decorative and stays aria-hidden — since every cell now labels
-            itself, the header would only duplicate what a screen reader
-            already hears. It is also hidden entirely below md: stacked, it
-            sat directly above the first row's own aspect label, making the
-            same template/built distinction twice before any real content
+            "A template" / "Built for you" label — real, visible text below
+            md, where the two treatments stack and a tonal background
+            difference alone does not read as clearly as it does side by
+            side. At md+ the label becomes `sr-only` rather than
+            disappearing: the header row below carries the same two labels
+            visually once at that width (and stays aria-hidden so it is not
+            announced twice), but a screen reader still needs the
+            distinction on every row, so the accessible text moves rather
+            than vanishes. It is hidden entirely below md: stacked, it sat
+            directly above the first row's own aspect label, making the same
+            template/built distinction twice before any real content
             appeared. It only earns its place once the columns are wide
             enough to read as a caption over them. Below md each aspect
             stacks with the template treatment first and visually muted. */}
@@ -289,16 +292,16 @@ export const HomePage: React.FC = () => {
                 {row.aspect}
               </h3>
               <div className="compare-cell-template">
-                <p className="text-sm text-fg-muted leading-relaxed">
-                  <span className="sr-only">As a template: </span>
-                  {row.template}
-                </p>
+                <span className="md:sr-only block font-sans text-sm text-fg-subtle mb-1.5">
+                  A template
+                </span>
+                <p className="text-sm text-fg-muted leading-relaxed">{row.template}</p>
               </div>
               <div className="compare-cell-built">
-                <p className="text-lg text-fg leading-relaxed">
-                  <span className="sr-only">Built for you: </span>
-                  {row.built}
-                </p>
+                <span className="md:sr-only block font-sans text-lg font-medium text-fg mb-1.5">
+                  Built for you
+                </span>
+                <p className="text-lg text-fg leading-relaxed">{row.built}</p>
               </div>
             </div>
           ))}

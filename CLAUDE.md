@@ -173,6 +173,26 @@ lead sits top-right, the `<h2>` sits below-left. Dropping the `<table>` means ea
 stack with the template treatment first and visually muted, same as the table's block-layout fallback
 did before it.
 
+**As of the 2026.4 pass, each stacked row below `md` carries its own real "A template" / "Built for
+you" label**, not just the tonal background difference — reported directly as unclear on a phone,
+since a sunken-vs-raised petrol step reads far less distinctly stacked full-width than it does side
+by side. Each cell now opens with a `<span className="md:sr-only …">` carrying that exact string,
+reusing the two labels the `md`+ header row (`aria-hidden`, decorative) already shows — visible text
+below `md`, `sr-only` (not `hidden`) at `md`+, so it stays in the accessibility tree and a screen
+reader still hears the distinction on every row at every width, but sighted desktop visitors are not
+shown the label twice. The stacked-row padding was also tightened below `md`
+(`.compare-cell-template`/`.compare-cell-built` at `0.875rem 1.5rem`, up to the original `1.125rem
+1.5rem` only at `md`+) — three padded blocks (aspect, template, built) now stack per row instead of
+sharing one row's height across three side-by-side columns, so the fuller desktop padding read as
+loose once repeated three times over. `.compare-row` also gained a `gap: 1px` below `md` (`0` at
+`md`+, where the columns sit flush), which lets the section's own petrol ground show through as a
+hairline between the template and built cells in a stacked row — depth, not a border, same idiom the
+side-by-side columns already use at their own boundary. The stray `className="py-2"` on this
+section's own `<Section>` call was also removed: it duplicated `Section`'s own `py-section` vertical
+rhythm (already applied to the inner content div) by adding a second, smaller padding to the outer
+`<section>` element instead of replacing anything — dead weight, and not a pattern used anywhere else
+`Section` is called.
+
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the
 process heading is set large because "an hour of your time" is the strongest claim after the hero.

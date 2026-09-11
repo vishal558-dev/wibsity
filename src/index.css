@@ -1570,22 +1570,41 @@ header {
 /* The comparison's two-column opposition. Depth carries the hierarchy: the
    option you are not choosing is recessed, the one you are is raised — each
    exactly one elevation step from the section's own .field-petrol ground, so
-   the tones are derived from the field rather than hardcoded. */
+   the tones are derived from the field rather than hardcoded.
+
+   Below md the row's three children (the aspect heading, then the template
+   cell, then the built cell) stack into one column, and a 1px gap is
+   introduced between all three so the section's own petrol ground shows
+   through as a hairline at each boundary — the same depth-only idiom the
+   columns use at their own boundary, not a border, so a stacked row still
+   reads as three distinct pieces rather than one continuous block of text. */
 .compare-row {
   display: grid;
   grid-template-columns: 1fr;
+  gap: 1px;
   border-top: 1px solid var(--color-rule);
 }
 
 @media (min-width: 48rem) {
   .compare-row {
     grid-template-columns: 2fr 5fr 5fr;
+    gap: 0;
   }
 }
 
+/* Tighter below md, where every row now stacks three padded blocks (aspect,
+   template, built) instead of sharing one row's height across three columns
+   — the fuller desktop padding stacked three times over read as loose. */
 .compare-cell-template,
 .compare-cell-built {
-  padding: 1.125rem 1.5rem;
+  padding: 0.875rem 1.5rem;
+}
+
+@media (min-width: 48rem) {
+  .compare-cell-template,
+  .compare-cell-built {
+    padding: 1.125rem 1.5rem;
+  }
 }
 
 .compare-cell-template {
