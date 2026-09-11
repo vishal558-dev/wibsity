@@ -5,10 +5,11 @@ import type { ComparisonRow } from '../types';
  *
  * Every row is a structural fact about how the two things are made. None of
  * it asserts a speed, a ranking or a conversion figure, because none of that
- * has been measured across client work — the one number the site does show is
- * the hero readout, which the visitor's own browser produces in front of them.
- * Keep it that way: this table is the easiest place on the site to accidentally
- * write a claim that cannot be backed up.
+ * has been measured across client work. No performance number is asserted
+ * anywhere on the site (the hero used to carry one, read live in the
+ * visitor's own browser — it was removed outright, see CLAUDE.md's "The idea
+ * the site is built on"). Keep it that way: this table is the easiest place
+ * on the site to accidentally write a claim that cannot be backed up.
  */
 export const comparisonRows: ComparisonRow[] = [
   {
@@ -55,7 +56,7 @@ export const standardsData = [
     id: 'weight',
     title: 'Weight is a design decision',
     body:
-      'Every library added to a page is paid for by the person opening it on a phone, on mobile data, somewhere with two bars. The readout at the top of this page is what that discipline produces, measured live rather than claimed.',
+      'Every library added to a page is paid for by the person opening it on a phone, on mobile data, somewhere with two bars. This site carries no dependency it does not need — the same discipline every project gets.',
   },
   {
     id: 'access',

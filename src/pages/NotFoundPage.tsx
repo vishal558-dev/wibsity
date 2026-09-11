@@ -19,8 +19,8 @@ export const NotFoundPage: React.FC = () => (
 
     <nav aria-label="Site sections" className="mt-14 max-w-xl">
       {[
-        { to: '/', label: 'Home', desc: 'What the studio does, and the sample.' },
-        { to: '/services', label: 'Services', desc: 'The four kinds of project, in full.' },
+        { to: '/', label: 'Home', desc: 'What the studio does, and how it works.' },
+        { to: '/services', label: 'Services', desc: 'The three kinds of project, in full.' },
         { to: '/contact', label: 'Contact', desc: 'Start a project, or just ask.' },
       ].map((item) => (
         <Link

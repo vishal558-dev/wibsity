@@ -104,7 +104,11 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           budget: budget || 'Not stated',
           name,
           phone,
-          email: email || 'Not given',
+          // Formspree validates any field literally named "email" as an email
+          // address and rejects the whole submission with a 422 if it isn't
+          // one — so the field has to be left out entirely when the visitor
+          // skips it, rather than sent as a placeholder string like "Not given".
+          ...(email ? { email } : {}),
           details: details || 'None',
           _subject: `Project enquiry — ${name}`,
         }),
