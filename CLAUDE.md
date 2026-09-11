@@ -173,25 +173,29 @@ lead sits top-right, the `<h2>` sits below-left. Dropping the `<table>` means ea
 stack with the template treatment first and visually muted, same as the table's block-layout fallback
 did before it.
 
-**As of the 2026.4 pass, each stacked row below `md` carries its own real "A template" / "Built for
-you" label**, not just the tonal background difference — reported directly as unclear on a phone,
-since a sunken-vs-raised petrol step reads far less distinctly stacked full-width than it does side
-by side. Each cell now opens with a `<span className="md:sr-only …">` carrying that exact string,
-reusing the two labels the `md`+ header row (`aria-hidden`, decorative) already shows — visible text
-below `md`, `sr-only` (not `hidden`) at `md`+, so it stays in the accessibility tree and a screen
-reader still hears the distinction on every row at every width, but sighted desktop visitors are not
-shown the label twice. The stacked-row padding was also tightened below `md`
-(`.compare-cell-template`/`.compare-cell-built` at `0.875rem 1.5rem`, up to the original `1.125rem
-1.5rem` only at `md`+) — three padded blocks (aspect, template, built) now stack per row instead of
-sharing one row's height across three side-by-side columns, so the fuller desktop padding read as
-loose once repeated three times over. `.compare-row` also gained a `gap: 1px` below `md` (`0` at
-`md`+, where the columns sit flush), which lets the section's own petrol ground show through as a
-hairline between the template and built cells in a stacked row — depth, not a border, same idiom the
-side-by-side columns already use at their own boundary. The stray `className="py-2"` on this
-section's own `<Section>` call was also removed: it duplicated `Section`'s own `py-section` vertical
-rhythm (already applied to the inner content div) by adding a second, smaller padding to the outer
-`<section>` element instead of replacing anything — dead weight, and not a pattern used anywhere else
-`Section` is called.
+**As of the 2026.4 pass, template and built stay side by side at every width, including below `md`,**
+rather than the two columns collapsing into a full-width stack there. A full-stack version was tried
+first — the aspect name, then the template cell, then the built cell, each full width — with a real
+"A template"/"Built for you" label opening every cell (`sr-only` at `md`+, where the header row
+already shows it once) to fix the two treatments being unclear as a tonal step apart stacked
+full-width. That fix made the distinction readable but not compact: reported back as still not clear
+enough at a glance, and taller than it needed to be. `.compare-row` now uses `grid-template-areas`
+instead of relying on child order: `'aspect aspect' 'template built'` below `md` puts the aspect name
+on its own full-width row above a two-column comparison, collapsing to one row, `'aspect template
+built'`, at `md`+. `.compare-aspect-slot` (shared by the data rows' `<h3>` and the header row's empty
+spacer) and `.compare-cell-template`/`.compare-cell-built` map to those three named areas, so the same
+markup needs no per-breakpoint duplication. The header row (`aria-hidden`, decorative) is no longer
+`md`+-only — it now sits once above the whole list at every width, which is what let the per-row
+visible label go back to `sr-only` at every width rather than only at `md`+: a screen reader still
+gets "As a template: "/"Built for you: " on every row, but sighted visitors read the caption once
+instead of five times. Cell padding below `md` also dropped from `0.875rem 1.5rem` to `0.75rem 1rem`
+— a row is two ~half-width columns now rather than one full-width block, so the same lateral padding
+would eat a much larger share of the available width. `.compare-row`'s `gap: 1px` (`0` at `md`+, where
+the columns sit flush) still lets the section's own petrol ground show through as a hairline at each
+area boundary — depth, not a border. The stray `className="py-2"` on this section's own `<Section>`
+call was also removed: it duplicated `Section`'s own `py-section` vertical rhythm (already applied to
+the inner content div) by adding a second, smaller padding to the outer `<section>` element instead of
+replacing anything — dead weight, and not a pattern used anywhere else `Section` is called.
 
 Sections 2 and 4 both carry display-scale type, for different reasons. The service index is set
 large because a list of four small links was the most documentation-like block on the page; the

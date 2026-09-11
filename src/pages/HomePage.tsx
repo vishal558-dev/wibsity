@@ -260,48 +260,45 @@ export const HomePage: React.FC = () => {
 
         {/* This drops <table> semantics: the content is a comparison rather
             than data anyone reads across axes, and the heading-per-aspect
-            structure below keeps it navigable. Each cell carries its own
-            "A template" / "Built for you" label — real, visible text below
-            md, where the two treatments stack and a tonal background
-            difference alone does not read as clearly as it does side by
-            side. At md+ the label becomes `sr-only` rather than
-            disappearing: the header row below carries the same two labels
-            visually once at that width (and stays aria-hidden so it is not
-            announced twice), but a screen reader still needs the
-            distinction on every row, so the accessible text moves rather
-            than vanishes. It is hidden entirely below md: stacked, it sat
-            directly above the first row's own aspect label, making the same
-            template/built distinction twice before any real content
-            appeared. It only earns its place once the columns are wide
-            enough to read as a caption over them. Below md each aspect
-            stacks with the template treatment first and visually muted. */}
+            structure below keeps it navigable. The header row is purely
+            decorative and stays aria-hidden, but it is no longer md+-only:
+            it now sits once above the whole list at every width, and each
+            row's aspect name spans full width above its own template/built
+            pair — a two-column comparison at every size rather than a full
+            stack below md, which is both more compact (three padded blocks
+            per row collapsed to two, side by side) and clearer, since
+            template and built sit directly next to each other rather than
+            one after the other with a repeated label. Each cell still
+            carries its own sr-only "As a template: " / "Built for you: "
+            label, so a screen reader gets the distinction on every row
+            without ever hearing the decorative header. */}
         <div className="mt-10">
-          <div className="hidden md:grid compare-row" aria-hidden="true">
-            <div className="hidden md:block px-6 py-2" />
+          <div className="compare-row" aria-hidden="true">
+            <div className="hidden md:block compare-aspect-slot px-6 py-2" />
             <div className="compare-cell-template py-2">
               <span className="font-sans text-sm text-fg-subtle">A template</span>
             </div>
             <div className="compare-cell-built py-2">
-              <span className="font-sans text-lg font-medium text-fg">Built for you</span>
+              <span className="font-sans text-sm md:text-lg font-medium text-fg">Built for you</span>
             </div>
           </div>
 
           {comparisonRows.map((row) => (
             <div key={row.aspect} className="compare-row">
-              <h3 className="px-6 pt-4 pb-2 md:py-4 font-sans text-sm font-normal text-fg-subtle">
+              <h3 className="compare-aspect-slot px-6 pt-4 pb-2 md:py-4 font-sans text-sm font-normal text-fg-subtle">
                 {row.aspect}
               </h3>
               <div className="compare-cell-template">
-                <span className="md:sr-only block font-sans text-sm text-fg-subtle mb-1.5">
-                  A template
-                </span>
-                <p className="text-sm text-fg-muted leading-relaxed">{row.template}</p>
+                <p className="text-sm text-fg-muted leading-relaxed">
+                  <span className="sr-only">As a template: </span>
+                  {row.template}
+                </p>
               </div>
               <div className="compare-cell-built">
-                <span className="md:sr-only block font-sans text-lg font-medium text-fg mb-1.5">
-                  Built for you
-                </span>
-                <p className="text-lg text-fg leading-relaxed">{row.built}</p>
+                <p className="text-sm md:text-lg font-medium md:font-normal text-fg leading-relaxed">
+                  <span className="sr-only">Built for you: </span>
+                  {row.built}
+                </p>
               </div>
             </div>
           ))}

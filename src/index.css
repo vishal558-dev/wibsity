@@ -1572,15 +1572,24 @@ header {
    exactly one elevation step from the section's own .field-petrol ground, so
    the tones are derived from the field rather than hardcoded.
 
-   Below md the row's three children (the aspect heading, then the template
-   cell, then the built cell) stack into one column, and a 1px gap is
-   introduced between all three so the section's own petrol ground shows
-   through as a hairline at each boundary — the same depth-only idiom the
-   columns use at their own boundary, not a border, so a stacked row still
-   reads as three distinct pieces rather than one continuous block of text. */
+   Template and built stay side by side at every width, including below md —
+   an earlier version stacked all three children (aspect, template, built)
+   full width there, which was both taller than it needed to be and less
+   clear: the two treatments read far less distinctly as a tonal step apart
+   stacked full-width than they do side by side, where the eye can compare
+   them directly. `grid-template-areas` puts the aspect name on its own full-
+   width row above a two-column `template`/`built` row below md, then
+   collapses to one three-column row at md+, matching `.compare-aspect-slot`
+   (the aspect `<h3>` on data rows, the empty spacer on the header row) to
+   `.compare-cell-template`/`.compare-cell-built` without needing separate
+   markup per breakpoint. The 1px gap (0 at md+, where the columns sit flush)
+   lets the section's own petrol ground show through as a hairline between
+   the areas — the same depth-only idiom the columns use at their own
+   boundary, not a border. */
 .compare-row {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: 'aspect aspect' 'template built';
   gap: 1px;
   border-top: 1px solid var(--color-rule);
 }
@@ -1588,16 +1597,21 @@ header {
 @media (min-width: 48rem) {
   .compare-row {
     grid-template-columns: 2fr 5fr 5fr;
+    grid-template-areas: 'aspect template built';
     gap: 0;
   }
 }
 
-/* Tighter below md, where every row now stacks three padded blocks (aspect,
-   template, built) instead of sharing one row's height across three columns
-   — the fuller desktop padding stacked three times over read as loose. */
+.compare-aspect-slot {
+  grid-area: aspect;
+}
+
+/* Tighter below md, and less lateral padding than the md+ figure: a row is
+   now two ~half-width columns rather than one full-width block, so the same
+   1.5rem side padding would eat a much larger share of the available width. */
 .compare-cell-template,
 .compare-cell-built {
-  padding: 0.875rem 1.5rem;
+  padding: 0.75rem 1rem;
 }
 
 @media (min-width: 48rem) {
@@ -1608,11 +1622,13 @@ header {
 }
 
 .compare-cell-template {
+  grid-area: template;
   background-color: var(--color-canvas-sunken);
   color: var(--color-fg-muted);
 }
 
 .compare-cell-built {
+  grid-area: built;
   background-color: var(--color-canvas-raised);
 }
 
