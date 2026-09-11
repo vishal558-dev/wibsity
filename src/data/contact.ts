@@ -18,12 +18,12 @@ export const whatHappensNext = [
   {
     step: '01',
     title: 'A reply, usually the same day',
-    body: 'From the person who would build the site, not an intake form or a sales rep.',
+    body: 'From the person who would build it, not an intake form or a sales rep.',
   },
   {
     step: '02',
     title: 'One conversation',
-    body: 'Half an hour on a call or WhatsApp about the business and what the site has to do.',
+    body: 'Half an hour on a call or WhatsApp about the business and what it needs to do.',
   },
   {
     step: '03',

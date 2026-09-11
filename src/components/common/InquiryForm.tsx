@@ -283,7 +283,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
             rows={3}
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            placeholder="A link to your current site, a deadline, a rough idea — whatever is useful."
+            placeholder="A link to your current site, a workflow to automate, a deadline — whatever is useful."
             className="control mt-1 resize-y"
           />
         </div>
