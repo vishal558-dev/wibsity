@@ -1441,13 +1441,15 @@ header {
      last. This is plain CSS, not JS — GSAP only animates the entrance
      motion on top of it, so there's nothing for JS and CSS to fight over
      (see the --hero-set gotcha in Motion). Width is fixed at 100% minus the
-     *maximum* step (3 cards' worth, not each card's own index) so every
-     card is the same size regardless of its position in the stagger — an
-     earlier version subtracted each card's own offset from its own width,
-     which read as the cards progressively shrinking rather than stepping. */
+     *maximum* step (the last card's own index, not each card's own) so
+     every card is the same size regardless of its position in the stagger —
+     an earlier version subtracted each card's own offset from its own
+     width, which read as the cards progressively shrinking rather than
+     stepping. Currently 2 (three services, indices 0-2); update this
+     alongside `servicesData` if the count of services ever changes. */
   .timeline-card {
     margin-left: calc(var(--card-index, 0) * 1.75rem);
-    width: calc(100% - 3 * 1.75rem);
+    width: calc(100% - 2 * 1.75rem);
   }
 }
 

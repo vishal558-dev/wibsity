@@ -213,7 +213,7 @@ export const HomePage: React.FC = () => {
           playhead + ruler — a direct, on-instruction reinterpretation of
           gsap.com's own homepage "GSAP Timeline" demo. See CLAUDE.md's
           Motion section for the trade-off this overrides and why. No
-          numbering: four services are a menu, not a sequence, so the one
+          numbering: three services are a menu, not a sequence, so the one
           figure worth showing per card is delivery time, not position in a
           list.
           ------------------------------------------------------------------ */}
@@ -222,7 +222,7 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-3">
             <div className="lg:sticky lg:top-28">
               <h2 id="build-heading" className="reveal text-2xl">
-                Four things you can hire us for.
+                Three things you can hire us for.
               </h2>
               <Link to="/services" className="btn btn-secondary btn-sm mt-7">
                 <span>See what each includes</span>

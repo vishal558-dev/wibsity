@@ -29,9 +29,9 @@ export const routeSEO: Record<string, RouteSEO> = {
   },
   '/services': {
     path: '/services',
-    title: 'Services — business websites, landing pages, redesigns, stores | wibsity',
+    title: 'Services — websites, online stores, automation | wibsity',
     description:
-      'Four kinds of project, described in full: business websites, landing pages, redesigns and online stores. Fixed-scope web design and development from an India-based studio.',
+      'Three kinds of project, described in full: websites (including landing pages and redesigns), online stores, and business automation. Fixed-scope web design and development from an India-based studio.',
   },
   '/about': {
     path: '/about',

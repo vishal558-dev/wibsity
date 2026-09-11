@@ -228,7 +228,8 @@ commented at the level of *why*, not *what* — but the rules that matter most:
 no glows, no blur, no texture overlays, `border-radius: 0` everywhere except `.control` and `.chip`
 (2px — enough to read as touchable, not enough to read as a card), `.badge` (999px — a tag-shaped
 pill, used only for the process steps' client-time commitment, so it reads as a label rather than a
-touchable control), and `.timeline-card` (22px — the service index's four cards, see below). Rhythm
+touchable control), and `.timeline-card` (22px — the service index's cards, currently three, see
+below). Rhythm
 comes from three elevations
 (`--color-canvas-raised`, `--color-canvas`, `--color-canvas-sunken`) expressed as ground tone alone —
 never a shadow — plus the four full-bleed fields (`.field-ink`, `.field-petrol`, `.field-sunken`,
@@ -242,8 +243,8 @@ whole readout it surrounded (see "The idea the site is built on" above), and `.g
 opposition where depth, not a border, carries the hierarchy (see "What you are choosing between" in
 Homepage composition above). Neither licenses reaching for a border elsewhere.
 
-`.timeline-card` is the one exception — a 22px-radius card used only for the service index's four
-rows (numeral, title, a divider and a 3-item bullet list — the summary paragraph and the delivery-time
+`.timeline-card` is the one exception — a 22px-radius card used only for the service index's rows
+(currently three; numeral, title, a divider and a 3-item bullet list — the summary paragraph and the delivery-time
 figure that used to sit under the bullets were both cut on direct instruction, since a card's height
 was tracking copy length and, combined with the staircase's per-card width shrink below, made the row
 read as the cards progressively getting smaller rather than deliberately stepping),
@@ -254,7 +255,9 @@ two direct-instruction rounds: first a single flat `.field-petrol` fill at 4px (
 frontend-design, ui-ux-pro-max, apple-design, emil-design-eng, impeccable — flagged the gradient as
 the generic "SaaS-card" look those skills warn against); then, on a second direct instruction, a
 four-colour cycle at the larger 22px radius — `.timeline-card--yellow`, `.timeline-card--white`,
-`.field-ink` and `.field-petrol`, one per card in that order — which is itself the "SaaS-card" look
+`.field-ink` and `.field-petrol`, one per card in that order (with the service catalogue now at three
+services, only the first three of the four currently render; `field-petrol` stays defined, ready for
+a fourth card without any CSS change, see `ServiceTimeline.tsx`) — which is itself the "SaaS-card" look
 the first round moved away from, deliberately reintroduced here and nowhere else. `.timeline-card--yellow`
 and `.timeline-card--white` are new, one-off grounds scoped to exactly these two cards (see the color
 tokens note below); `.field-ink` and `.field-petrol` reuse the sitewide fields unchanged. Every card
@@ -331,7 +334,7 @@ near-black, from the original cool `#161a19`); the two accents are petrol `#0e4b
 `#8f4420` — see "Two accents" above for the semantic split.
 
 `--color-yellow-field` (`#fbdb85`, a pale warm gold) is a one-off exception to the two-accent-only
-rule, scoped to exactly `.timeline-card--yellow` — the first of the service index's four cards (see
+rule, scoped to exactly `.timeline-card--yellow` — the first of the service index's cards (see
 "Homepage composition" and "Nothing is a card" above). `.timeline-card--white`'s pure `#fff` fill is
 a literal value, not a token, since it needs no reuse elsewhere. Neither is licensed for use outside
 those two cards.
@@ -859,11 +862,25 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   built-versus-assembled argument moved entirely to section 3 (see "The idea the site is built on"
   above), and the hero itself now just names what the studio builds.
 - **The hero's rotating headline claims "automations" and "digital experiences" as things the studio
-  builds; `data/services.ts`'s four listed services (Business website / Landing page / Redesign /
-  Online store) don't currently name either one.** The closest existing hook is `customWork`'s add-on
-  copy. This is a known, accepted gap from when the headline copy was chosen, not something to
-  silently paper over — if the services catalogue is ever revised, check it against the hero's own
-  claim, and vice versa.
+  builds.** As of the service-catalogue restructure (see "Content guardrails" service-count note
+  below), "automations" now names a real listed service — `data/services.ts`'s `automation` entry.
+  "digital experiences" still doesn't map to a named service; the closest existing hook remains
+  `customWork`'s add-on copy. Check the hero's claim against the catalogue again if either is
+  revised.
+- **The service catalogue is three services, not four.** "Landing page" and "Redesign" were folded
+  into "Websites" as capabilities (`websites.includes` in `data/services.ts`) rather than kept as
+  standalone entries — both are types of website work, not separate things a client chooses between
+  at the top level. "Automation" (lead capture, notifications, appointment workflows, form-to-
+  spreadsheet, email automation, general workflow automation — stated as business outcomes, never as
+  "webhooks" or "API integrations") was added as a third first-class service alongside Websites and
+  Online store. This touched `data/projectInquiry.ts`'s `projectTypeOptions` (ids now mirror the new
+  service ids: `websites`, `online-store`, `automation`, plus the `something-else` escape hatch),
+  `data/seo.ts`'s `/services` title/description, and the homepage/`/services` copy that stated the
+  count in words ("Three things you can hire us for.", "Three kinds of project..."). It also moved
+  `ServiceTimeline`'s CSS staircase constant in index.css from 3 to 2 (see the comment on
+  `.timeline-card`'s `@media (min-width: 64rem)` block) — that constant is the *last* card's index,
+  not the count, so it has to be updated by hand alongside `servicesData` any time a service is added
+  or removed, or the homepage's service cards will leave a gap on the right at `lg`+.
 
 ## Conventions for editing
 - Reuse `Section`, `Button`, `cn()`, and the `.btn` / `.chip` / `.control` / `.measure` classes
@@ -871,7 +888,7 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   `.reveal`, `.route-fade`, `.faq-row`, `.whatsapp-icon`, `.btn-content`, `.process-track` and
   `.process-step-N` to that set; the comparison rebuild added `.compare-row` /
   `.compare-cell-template` / `.compare-cell-built`; the GSAP timeline pass added `.timeline-card`,
-  which each of the four cards pairs with one of `.timeline-card--yellow`, `.timeline-card--white`,
+  which each card pairs with one of `.timeline-card--yellow`, `.timeline-card--white`,
   `.field-ink` or `.field-petrol` for its ground (reuse `text-fg`/`text-fg-muted`/`text-accent-warm`
   inside it, not new custom properties — every field resolves them correctly already), plus
   `.timeline-card-number`, `.timeline-card-divider`, `.timeline-card-dot`,

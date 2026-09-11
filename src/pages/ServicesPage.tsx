@@ -22,7 +22,7 @@ export const ServicesPage: React.FC = () => (
     <Section className="pt-6" tight>
       <h1 className="text-3xl max-w-[18ch]">What you can hire us for.</h1>
       <p className="mt-8 text-lg leading-[1.55] max-w-[58ch] text-fg">
-        Four kinds of project, described in full rather than summarised into a card.
+        Three kinds of project, described in full rather than summarised into a card.
         Each one is quoted at a fixed price against a written scope, so what you read
         here is what arrives.
       </p>

@@ -16,10 +16,9 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/myeyjlye';
  * be read against the service it came from.
  */
 export const projectTypeOptions = [
-  { id: 'business-website', label: 'Business website' },
-  { id: 'landing-page', label: 'Landing page' },
-  { id: 'redesign', label: 'Redesign' },
+  { id: 'websites', label: 'Website' },
   { id: 'online-store', label: 'Online store' },
+  { id: 'automation', label: 'Automation' },
   { id: 'something-else', label: 'Something else' },
 ] as const;
 

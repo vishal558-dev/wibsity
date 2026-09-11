@@ -24,8 +24,14 @@ interface ServiceTimelineProps {
  * remap means the title/list/hover states need no separate contrast math
  * per card. Each card shows only its numeral, title and a 3-item bullet
  * list — no summary paragraph and no delivery-time figure, both cut on
- * direct instruction so all four cards read as the same size rather than
+ * direct instruction so all cards read as the same size rather than
  * varying with copy length.
+ *
+ * `CARD_FIELDS` cycles by index modulo its own length, so it isn't tied to
+ * a fixed card count: with the current three services (see
+ * `data/services.ts`) only the first three fields — yellow, white, ink —
+ * are ever assigned; `field-petrol` stays defined and ready for a fourth
+ * service without any change here.
  *
  * Scrubbed (`scrub: 0.5`), not played-once-on-enter: the timeline's
  * progress tracks scroll position directly across the section's whole
