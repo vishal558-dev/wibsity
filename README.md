@@ -3,8 +3,8 @@
 > Custom websites, built from scratch. This repository is the studio's own site.
 
 Built with **React 19**, **Vite**, **TypeScript** and **Tailwind CSS v4**. The site's pitch is that a
-hand-built site beats an assembled one, carried on the homepage by a headline, an automatic swap to
-a second honest statement, and a structural template-versus-built comparison — no performance number
+hand-built site beats an assembled one, carried structurally by the homepage's template-versus-built
+comparison section and by `data/studio.ts`'s "Built, not assembled" standard — no performance number
 is asserted anywhere on the site.
 
 ---
@@ -16,12 +16,16 @@ is asserted anywhere on the site.
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) — tokens live in `src/index.css`'s
   `@theme` block; there is no `tailwind.config.js`
 - **Routing**: [React Router v7](https://reactrouter.com/)
-- **Animation**: none. Every transition on the site is CSS
-- **Icons**: none. Ten hand-drawn inline SVGs in `src/components/common/icons.tsx`
+- **Animation**: CSS for almost everything on the site, plus one deliberate exception —
+  [GSAP](https://gsap.com/) drives the service-index cards' scroll-scrubbed entrance
+  (`ServiceTimeline.tsx`), added on purpose to match a specific reference demo. Nothing else on the
+  site uses a JS animation library.
+- **Icons**: ten hand-drawn inline SVGs in `src/components/common/icons.tsx`, one 1.5px stroke
+  matched to the headline typeface. WhatsApp is a filled brand glyph, not hand-drawn.
 
 `motion`, `lenis` and `lucide-react` were all removed in the 2026 redesign — see
-[docs/DESIGN-DIRECTION.md](docs/DESIGN-DIRECTION.md) for why, and `src/App.tsx` for the
-short version. The runtime is React and the router.
+[docs/DESIGN-DIRECTION.md](docs/DESIGN-DIRECTION.md) for why, and `CLAUDE.md` for the current state
+of every design decision this file used to explain inline.
 
 ---
 
@@ -37,9 +41,10 @@ npm run dev
 ### Other scripts
 
 ```bash
-npm run build    # tsc -b && vite build
-npm run lint     # oxlint
-npm run preview  # preview the production build locally
+npm run build          # tsc -b && vite build
+npm run lint            # oxlint
+npm run preview         # preview the production build locally
+npm run check:contrast  # WCAG contrast check against src/index.css's tokens
 ```
 
 Brand raster assets (favicons, the social card) are generated, not hand-edited:
@@ -48,8 +53,10 @@ Brand raster assets (favicons, the social card) are generated, not hand-edited:
 node scripts/generate-brand-assets.mjs
 ```
 
-It drives the locally installed Chrome, so there is no image dependency in `package.json`.
-Run it after changing the logo geometry, the hero headline, or `og:description`.
+It drives the locally installed Chrome, so there is no image dependency in `package.json`. Its
+favicon/logo-rasterization step is now partial — the logo mark itself is a supplied raster image with
+no vector source (see below) — but the `og-image.png` step is unaffected. Run it after changing the
+hero headline or `og:description`.
 
 ---
 
@@ -63,38 +70,40 @@ wibsity/
 ├── index.html                       # Homepage <head> — the one route the build does not regenerate
 ├── vite.config.ts                   # Static per-route HTML + a build-time FAQ/JSON-LD sync check
 ├── scripts/
-│   └── generate-brand-assets.mjs    # Favicons, apple-touch-icon, og-image, from one SVG
+│   ├── generate-brand-assets.mjs    # og-image + (partially stale) favicon rasterization
+│   └── check-contrast.mjs           # WCAG contrast checker, parsed from src/index.css's tokens
 └── src/
     ├── main.tsx
     ├── App.tsx                      # Router root, route splitting, per-route SEO
-    ├── index.css                    # Design system: tokens, the measure rule, the ink field
+    ├── index.css                    # Design system: tokens, the measure rule, the four fields
     ├── pages/
     │   ├── HomePage.tsx             # Six sections, each a different composition
-    │   ├── ServicesPage.tsx         # The four services, in full
+    │   ├── ServicesPage.tsx         # The three services, in full
     │   ├── AboutPage.tsx            # The studio, its standards, the full FAQ
     │   ├── ContactPage.tsx          # The enquiry form and the direct channels
     │   └── NotFoundPage.tsx
     ├── types/index.ts               # Service, ProcessStep, FAQItem, ComparisonRow
     ├── data/
-    │   ├── services.ts              # Four services + the custom-work note
+    │   ├── services.ts              # Three services: websites, online store, automation
     │   ├── process.ts               # Four steps, each naming the client's own part
     │   ├── faqs.ts                  # Nine questions; the first three are on the homepage
     │   ├── studio.ts                # Comparison rows, standards, studio facts
-    │   ├── contact.ts               # Channels + what happens after the form
+    │   ├── contact.ts                # Channels + what happens after the form
     │   ├── projectInquiry.ts        # Form options and the Formspree endpoint
     │   └── seo.ts                   # Per-route title/description
     ├── hooks/
-    │   ├── useReducedMotion.ts
     │   └── useSEO.ts
     ├── components/
     │   ├── common/
-    │   │   ├── Logo.tsx             # Wordmark and mark, drawn in code
+    │   │   ├── Logo.tsx             # LogoMark renders a supplied raster mark; no vector source
+    │   │   ├── HeroBadge.tsx        # Spinning circular-text ring wrapped around the logo mark
     │   │   ├── icons.tsx            # The complete icon set
     │   │   ├── Button.tsx
     │   │   ├── InquiryForm.tsx      # The primary conversion surface
+    │   │   ├── ServiceTimeline.tsx  # GSAP Timeline + ScrollTrigger entrance for section 2
     │   │   └── ScrollToTop.tsx
     │   └── layout/
-    │       ├── Section.tsx          # Gutter, measure, rhythm, the inverted field
+    │       ├── Section.tsx          # Gutter, measure, rhythm, the four fields
     │       ├── Navbar.tsx           # Ink masthead + full-height mobile sheet
     │       └── Footer.tsx
     └── utils/cn.ts
@@ -108,9 +117,14 @@ wibsity/
   explicit ownership claim it makes.
 - No fabricated clients, testimonials, awards, metrics or case studies. There are none to report,
   and the design is built to earn trust without them.
-- **No unverified performance numbers.** There are no performance figures anywhere on the site — a
+- Team size is not stated anywhere on the site — no headcount figure in hero, footer, `/about`, or
+  any meta/SEO/JSON-LD string.
+- **No unverified performance numbers.** There is no performance figure anywhere on the site. A
   homepage specimen readout used to measure and print one live in the visitor's own browser, but it
   was removed outright. If one is ever added back, it must be measured the same way, not asserted.
+
+See `CLAUDE.md` for the full, continuously-updated record of every design and motion decision on
+this site — this file stays a short orientation, not a duplicate of it.
 
 ---
 
