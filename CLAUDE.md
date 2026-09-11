@@ -294,11 +294,17 @@ a gradient.
 
 **Two accents, with a semantic split that is what keeps the second one from becoming decoration:**
 petrol (`--color-accent`) marks what the studio makes and measures — link underlines (`.link`), the
-focus ring, the "built for you" side of the comparison, the measure ticks, and the process section's
-step numerals. (The specimen readout's figures and the service index's delivery figures were two
-other petrol placements; both are gone along with the elements that carried them — the specimen
-readout was removed outright, see "The idea the site is built on" above, and the service index's
-per-card delivery figure was cut earlier, see `.timeline-card` under "Nothing is a card" above.)
+focus ring, the "built for you" side of the comparison, the measure ticks, the process section's
+step numerals, and, as of the 2026.3 colorize pass, the hero's rotating headline word (`.rotate-word`
+in index.css) — the one place in the hero that names what the studio builds, which is exactly this
+token's existing role. It reuses the ServicesPage timeline's own accent-on-canvas pairing (8.13:1,
+already measured and passing) rather than introducing a new one; `.hero-and-more`, the fixed "and
+more." suffix that is deliberately NOT one of the cycling words (see "The hero loop overrides"
+above), stays ink so the colour boundary reinforces that distinction. (The specimen readout's
+figures and the service index's delivery figures were two other petrol placements; both are gone
+along with the elements that carried them — the specimen readout was removed outright, see "The idea
+the site is built on" above, and the service index's per-card delivery figure was cut earlier, see
+`.timeline-card` under "Nothing is a card" above.)
 Oxide
 (`--color-accent-warm`) marks what the visitor gives or does, in exactly three placements: the
 process steps' client-time badges, and the "what happens next" numerals on both the homepage and

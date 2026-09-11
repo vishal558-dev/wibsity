@@ -996,6 +996,16 @@
      short word like "websites" inside a box reserved for the longest one. */
   justify-items: end;
   vertical-align: top;
+  /* Petrol, not ink: this is the one place in the hero that names what the
+     studio makes, which is exactly the role `--color-accent` already owns
+     sitewide (see "Two accents" in CLAUDE.md's design-system section — the
+     ServicesPage timeline text is the same accent-on-canvas pairing, at
+     8.13:1, so this reuses a pairing already measured and passing rather
+     than introducing a new one). "and more." stays ink, deliberately: it is
+     the one word in this line that is NOT one of the cycling candidates
+     (see the comment above `.hero-and-more`), so leaving it uncoloured
+     reinforces that distinction instead of blurring it. */
+  color: var(--color-accent);
 }
 
 .rotate-word__item {
