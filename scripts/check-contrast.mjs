@@ -115,13 +115,13 @@ const INK_FG_MUTED_PCT = 78;
 const INK_FG_SUBTLE_PCT = 64;
 const INK_RULE_STRONG_PCT = 45;
 
-const PETROL_FG_MUTED_PCT = 78;
-const PETROL_FG_SUBTLE_PCT = 64;
-const PETROL_RULE_STRONG_PCT = 45;
+const PETROL_FG_MUTED_PCT = 82;
+const PETROL_FG_SUBTLE_PCT = 76;
+const PETROL_RULE_STRONG_PCT = 60;
 
 // The .timeline-card--yellow color-mix percentages, mirrored from index.css.
 const YELLOW_FG_MUTED_PCT = 78;
-const YELLOW_FG_SUBTLE_PCT = 64;
+const YELLOW_FG_SUBTLE_PCT = 72;
 const YELLOW_RULE_STRONG_PCT = 55;
 
 // .timeline-card--white is a literal #fff, not a @theme token — it isn't

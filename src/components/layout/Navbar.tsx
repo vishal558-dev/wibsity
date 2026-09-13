@@ -8,9 +8,9 @@ import { cn } from '../../utils/cn';
 const MENU_ID = 'site-menu';
 
 const navLinks = [
-  { label: 'Services', to: '/services' },
-  { label: 'Studio', to: '/about' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'services', to: '/services' },
+  { label: 'studio', to: '/about' },
+  { label: 'contact', to: '/contact' },
 ];
 
 /**
@@ -131,7 +131,7 @@ export const Navbar: React.FC = () => {
   }, [open]);
 
   return (
-    <header className="field-ink sticky top-0 z-40" data-over={ground}>
+    <header className="site-header sticky top-0 z-40" data-over={ground}>
       <div className="mx-auto w-full max-w-[78rem] px-gutter">
         <div className="flex h-16 items-center justify-between gap-6">
           <Link
@@ -146,7 +146,7 @@ export const Navbar: React.FC = () => {
             className="group flex h-16 items-center gap-2.5 shrink-0"
             aria-label="wibsity — home"
           >
-            <LogoMark size={24} />
+            <LogoMark size={24} tone="paper" />
             <span
               className="widen font-sans text-lg font-semibold lowercase leading-none"
               style={{ letterSpacing: '-0.045em' }}
@@ -200,7 +200,7 @@ export const Navbar: React.FC = () => {
       {open && (
         <div
           id={MENU_ID}
-          className="field-ink md:hidden fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto"
+          className="site-menu md:hidden fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto"
         >
           <div className="mx-auto w-full max-w-[78rem] px-gutter py-10 flex flex-col h-full">
             <nav className="flex flex-col" aria-label="Main">

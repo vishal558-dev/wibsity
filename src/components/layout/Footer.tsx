@@ -42,13 +42,13 @@ export const Footer: React.FC = () => {
           <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:gap-x-20">
             <nav aria-label="Footer" className="flex flex-col gap-3.5">
               <Link to="/services" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
-                Services
+                services
               </Link>
               <Link to="/about" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
-                Studio
+                studio
               </Link>
               <Link to="/contact" className="font-sans text-ui text-fg-muted hover:text-fg transition-colors w-fit -my-2.5 py-2.5">
-                Contact
+                contact
               </Link>
             </nav>
 
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
                 className="font-sans text-ui text-fg-muted hover:text-fg transition-colors inline-flex items-center gap-2 w-fit -my-2.5 py-2.5"
               >
                 <IconWhatsApp size={15} className="whatsapp-icon" />
-                <span>WhatsApp</span>
+                <span>whatsapp</span>
                 <IconArrowUpRight size={13} className="text-fg-subtle" />
               </a>
               <a
