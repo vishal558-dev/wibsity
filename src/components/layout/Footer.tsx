@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="mt-4 text-lg font-sans text-fg leading-relaxed">
-              A web studio in India. Custom sites, built from an empty file,
+              a web studio in india. custom sites, built from an empty file,
               at a fixed price agreed before anything starts.
             </p>
           </div>
@@ -82,7 +82,7 @@ export const Footer: React.FC = () => {
         <div className="measure mt-14 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="font-sans text-xs text-fg-subtle tnum">© {year} wibsity</p>
           <p className="font-sans text-xs text-fg-subtle">
-            Designed and built in-house, which is rather the point.
+            designed and built in-house, which is rather the point.
           </p>
         </div>
       </div>

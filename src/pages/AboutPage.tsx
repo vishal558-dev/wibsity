@@ -27,16 +27,16 @@ export const AboutPage: React.FC = () => {
   return (
     <>
       <Section className="pt-6" tight>
-        <h1 className="text-3xl max-w-[16ch]">Hand-built, not handed off.</h1>
+        <h1 className="text-3xl max-w-[16ch]">hand-built, not handed off.</h1>
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-16">
           <p className="lg:col-span-6 text-lg leading-[1.55] text-fg">
             wibsity designs and builds the site, answers the phone, and is still there six
-            months later when you want something changed. There is no account manager
+            months later when you want something changed. there is no account manager
             between you and the work.
           </p>
           <p className="lg:col-span-5 lg:col-start-8 text-fg-muted leading-relaxed">
-            That is a genuine trade. You get the person doing the work, undivided, at a
-            price a studio with a floor of staff could not quote. What you do not get is a
+            that is a genuine trade. you get the person doing the work, undivided, at a
+            price a studio with a floor of staff could not quote. what you do not get is a
             team to absorb a bad week — so the calendar is kept short on purpose, and a
             date that cannot be met is refused rather than quietly moved.
           </p>
@@ -54,7 +54,7 @@ export const AboutPage: React.FC = () => {
 
       <Section field="ink" aria-labelledby="standards-heading">
         <h2 id="standards-heading" className="reveal text-2xl max-w-[20ch]">
-          Three things every site gets, whatever it costs.
+          three things every site gets, whatever it costs.
         </h2>
 
         <div className="mt-14">
@@ -76,10 +76,10 @@ export const AboutPage: React.FC = () => {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
             <h2 id="faq-heading" className="reveal text-2xl max-w-[16ch]">
-              Questions worth asking before you hire anyone.
+              questions worth asking before you hire anyone.
             </h2>
             <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
-              Not just us. These are the ones that decide whether a website project goes
+              not just us. these are the ones that decide whether a website project goes
               well, and the answers below are ours.
             </p>
           </div>
@@ -124,16 +124,16 @@ export const AboutPage: React.FC = () => {
       <Section rule aria-labelledby="about-cta">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
           <h2 id="about-cta" className="reveal lg:col-span-6 text-2xl max-w-[20ch]">
-            Still have a question that is not here?
+            still have a question that is not here?
           </h2>
           <div className="lg:col-span-5 lg:col-start-8">
             <p className="text-fg-muted leading-relaxed max-w-[42ch]">
-              Ask it directly. You will get a straight answer, including when the answer
+              ask it directly. you will get a straight answer, including when the answer
               is that we are not the right fit.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <Link to="/contact" className="btn btn-primary">
-                <span>Get in touch</span>
+                <span>get in touch</span>
                 <IconArrowRight size={17} />
               </Link>
               <a
@@ -143,7 +143,7 @@ export const AboutPage: React.FC = () => {
                 className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
               >
                 <IconWhatsApp size={15} className="whatsapp-icon" />
-                <span>or message on WhatsApp</span>
+                <span>or message on whatsapp</span>
               </a>
             </div>
           </div>

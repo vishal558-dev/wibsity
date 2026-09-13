@@ -20,10 +20,10 @@ import { CONTACT_INFO } from '../data/contact';
 export const ServicesPage: React.FC = () => (
   <>
     <Section className="pt-6" tight>
-      <h1 className="text-3xl max-w-[18ch]">What you can hire us for.</h1>
+      <h1 className="text-3xl max-w-[18ch]">what you can hire us for.</h1>
       <p className="mt-8 text-lg leading-[1.55] max-w-[58ch] text-fg">
-        Three kinds of project, described in full rather than summarised into a card.
-        Each one is quoted at a fixed price against a written scope, so what you read
+        three kinds of project, described in full rather than summarised into a card.
+        each one is quoted at a fixed price against a written scope, so what you read
         here is what arrives.
       </p>
     </Section>
@@ -42,16 +42,16 @@ export const ServicesPage: React.FC = () => (
           <div className="lg:col-span-7 lg:col-start-6">
             <dl className="grid gap-8 sm:grid-cols-2">
               <div>
-                <dt className="font-sans text-sm text-fg-subtle">Who it is for</dt>
+                <dt className="font-sans text-sm text-fg-subtle">who it is for</dt>
                 <dd className="mt-2 leading-relaxed">{service.forWhom}</dd>
               </div>
               <div>
-                <dt className="font-sans text-sm text-fg-subtle">The problem it solves</dt>
+                <dt className="font-sans text-sm text-fg-subtle">the problem it solves</dt>
                 <dd className="mt-2 leading-relaxed">{service.problem}</dd>
               </div>
             </dl>
 
-            <h3 className="measure mt-12 pt-7 font-sans text-ui font-medium">What is included</h3>
+            <h3 className="measure mt-12 pt-7 font-sans text-ui font-medium">what is included</h3>
             <ul className="mt-5 grid gap-3.5">
               {service.includes.map((item) => (
                 <li key={item} className="flex gap-3.5 leading-relaxed">
@@ -73,8 +73,8 @@ export const ServicesPage: React.FC = () => (
         <div className="lg:col-span-6 lg:col-start-7">
           <p className="text-lg leading-relaxed text-fg-muted max-w-[54ch]">{customWork.body}</p>
           <p className="mt-6 leading-relaxed text-fg-subtle max-w-[54ch]">
-            Anything outside the agreed scope is quoted as its own small job rather than
-            appearing on a bill at the end. That is the entire policy.
+            anything outside the agreed scope is quoted as its own small job rather than
+            appearing on a bill at the end. that is the entire policy.
           </p>
         </div>
       </div>
@@ -83,16 +83,16 @@ export const ServicesPage: React.FC = () => (
     <Section rule aria-labelledby="services-cta">
       <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
         <h2 id="services-cta" className="reveal lg:col-span-6 text-2xl max-w-[20ch]">
-          Not sure which of these you need?
+          not sure which of these you need?
         </h2>
         <div className="lg:col-span-5 lg:col-start-8">
           <p className="text-fg-muted leading-relaxed max-w-[42ch]">
-            Describe the business and what you want it to do. Working out the right scope
+            describe the business and what you want it to do. working out the right scope
             is our job, not yours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link to="/contact" className="btn btn-primary">
-              <span>Start a project</span>
+              <span>start a project</span>
               <IconArrowRight size={17} />
             </Link>
             <a
@@ -102,7 +102,7 @@ export const ServicesPage: React.FC = () => (
               className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
             >
               <IconWhatsApp size={15} className="whatsapp-icon" />
-              <span>or message on WhatsApp</span>
+              <span>or message on whatsapp</span>
             </a>
           </div>
         </div>

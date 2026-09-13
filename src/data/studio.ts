@@ -13,29 +13,29 @@ import type { ComparisonRow } from '../types';
  */
 export const comparisonRows: ComparisonRow[] = [
   {
-    aspect: 'What gets delivered',
-    template: 'A theme somebody else designed, with your logo and colours applied.',
-    built: 'Pages drawn for your business, from a blank file.',
+    aspect: 'what gets delivered',
+    template: 'a theme somebody else designed, with your logo and colours applied.',
+    built: 'pages drawn for your business, from a blank file.',
   },
   {
-    aspect: 'What ships with it',
-    template: 'Code for every feature the theme author imagined, whether you use it or not.',
-    built: 'Only the code the site needs to do what it does.',
+    aspect: 'what ships with it',
+    template: 'code for every feature the theme author imagined, whether you use it or not.',
+    built: 'only the code the site needs to do what it does.',
   },
   {
-    aspect: 'Making a change',
-    template: 'Work around the builder’s rules, or add a plugin and hope.',
-    built: 'Edit the file. The whole thing is readable.',
+    aspect: 'making a change',
+    template: 'work around the builder’s rules, or add a plugin and hope.',
+    built: 'edit the file. the whole thing is readable.',
   },
   {
-    aspect: 'Where it lives',
-    template: 'Inside a platform, on that platform’s terms and pricing.',
-    built: 'On hosting you control, as files you hold.',
+    aspect: 'where it lives',
+    template: 'inside a platform, on that platform’s terms and pricing.',
+    built: 'on hosting you control, as files you hold.',
   },
   {
-    aspect: 'Who you talk to',
-    template: 'Support tickets, or whoever configured it for you.',
-    built: 'The person who wrote it.',
+    aspect: 'who you talk to',
+    template: 'support tickets, or whoever configured it for you.',
+    built: 'the person who wrote it.',
   },
 ];
 
@@ -48,21 +48,21 @@ export const comparisonRows: ComparisonRow[] = [
 export const standardsData = [
   {
     id: 'built',
-    title: 'Built, not assembled',
+    title: 'built, not assembled',
     body:
-      'No page builder, no purchased theme, no stack of plugins holding the layout together. Every site is written from an empty file, which is the only reason any of the rest of this is possible.',
+      'no page builder, no purchased theme, no stack of plugins holding the layout together. every site is written from an empty file, which is the only reason any of the rest of this is possible.',
   },
   {
     id: 'weight',
-    title: 'Weight is a design decision',
+    title: 'weight is a design decision',
     body:
-      'Every library added to a page is paid for by the person opening it on a phone, on mobile data, somewhere with two bars. This site carries no dependency it does not need — the same discipline every project gets.',
+      'every library added to a page is paid for by the person opening it on a phone, on mobile data, somewhere with two bars. this site carries no dependency it does not need — the same discipline every project gets.',
   },
   {
     id: 'access',
-    title: 'Usable before it is decorated',
+    title: 'usable before it is decorated',
     body:
-      'Real contrast, keyboard navigation that works, tap targets you can hit, and motion that respects the setting when someone has asked their device to reduce it. Checked during the build, not retrofitted after a complaint.',
+      'real contrast, keyboard navigation that works, tap targets you can hit, and motion that respects the setting when someone has asked their device to reduce it. checked during the build, not retrofitted after a complaint.',
   },
 ];
 
@@ -70,8 +70,8 @@ export const standardsData = [
  *  operates — there are no client counts, years, awards or testimonials,
  *  because there are none to report. */
 export const studioFacts = [
-  { label: 'Based in', value: 'India, working remotely' },
-  { label: 'Who you talk to', value: 'The person who builds it' },
-  { label: 'Typical delivery', value: '3–5 working days' },
-  { label: 'Pricing', value: 'Fixed, agreed before we start' },
+  { label: 'based in', value: 'india, working remotely' },
+  { label: 'who you talk to', value: 'the person who builds it' },
+  { label: 'typical delivery', value: '3–5 working days' },
+  { label: 'pricing', value: 'fixed, agreed before we start' },
 ];

@@ -16,15 +16,15 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/myeyjlye';
  * be read against the service it came from.
  */
 export const projectTypeOptions = [
-  { id: 'websites', label: 'Website' },
-  { id: 'online-store', label: 'Online store' },
-  { id: 'automation', label: 'Automation' },
-  { id: 'something-else', label: 'Something else' },
+  { id: 'websites', label: 'website' },
+  { id: 'online-store', label: 'online store' },
+  { id: 'automation', label: 'automation' },
+  { id: 'something-else', label: 'something else' },
 ] as const;
 
 export const budgetOptions = [
-  'Under ₹20,000',
+  'under ₹20,000',
   '₹20,000 – ₹50,000',
   '₹50,000+',
-  'Not sure yet',
+  'not sure yet',
 ] as const;

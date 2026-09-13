@@ -25,56 +25,56 @@ import type { Service } from '../types';
 export const servicesData: Service[] = [
   {
     id: 'websites',
-    title: 'Websites',
+    title: 'websites',
     summary:
-      'The site your business runs on — built new, replaced when it has aged badly, or narrowed to one page for a single campaign.',
+      'the site your business runs on — built new, replaced when it has aged badly, or narrowed to one page for a single campaign.',
     forWhom:
-      'Established businesses, clinics, firms and consultancies, and anyone launching a focused offer or replacing a site that is holding them back.',
+      'established businesses, clinics, firms and consultancies, and anyone launching a focused offer or replacing a site that is holding them back.',
     problem:
-      'People look you up before they call you. If what they find is thin, dated, slow, or awkward on a phone, you lose the enquiry before you knew it existed.',
+      'people look you up before they call you. if what they find is thin, dated, slow, or awkward on a phone, you lose the enquiry before you knew it existed.',
     includes: [
-      'Business websites — home, services, about and contact pages, structured around what you want people to do',
-      'Landing pages built around one offer and one action, for launches and paid traffic',
-      'Redesigns that rebuild a slow or dated site from scratch, keeping your search rankings intact',
-      'Basic SEO — titles, descriptions, sitemap and structured data on every page',
-      'Local SEO, so nearby customers searching for what you do find you first',
-      'Performance optimization, so pages load fast on the phones your visitors actually use',
+      'business websites — home, services, about and contact pages, structured around what you want people to do',
+      'landing pages built around one offer and one action, for launches and paid traffic',
+      'redesigns that rebuild a slow or dated site from scratch, keeping your search rankings intact',
+      'basic seo — titles, descriptions, sitemap and structured data on every page',
+      'local seo, so nearby customers searching for what you do find you first',
+      'performance optimization, so pages load fast on the phones your visitors actually use',
     ],
     timeline: '2–7 working days, depending on scope',
   },
   {
     id: 'online-store',
-    title: 'Online store',
+    title: 'online store',
     summary:
-      'A storefront that takes orders and payments, sized to the catalogue you actually have.',
-    forWhom: 'Businesses selling products directly rather than through a marketplace.',
+      'a storefront that takes orders and payments, sized to the catalogue you actually have.',
+    forWhom: 'businesses selling products directly rather than through a marketplace.',
     problem:
-      'Marketplaces take a cut and own the customer. Selling from your own site means the relationship, the margin and the data stay with you.',
+      'marketplaces take a cut and own the customer. selling from your own site means the relationship, the margin and the data stay with you.',
     includes: [
-      'Product listings and categories set up around how you sell',
-      'Cart, checkout and a payment gateway wired end to end',
-      'Order notifications that reach you where you actually work',
-      'A product structure you can add to without a developer',
-      'Checkout tested on the phones your customers use',
+      'product listings and categories set up around how you sell',
+      'cart, checkout and a payment gateway wired end to end',
+      'order notifications that reach you where you actually work',
+      'a product structure you can add to without a developer',
+      'checkout tested on the phones your customers use',
     ],
     timeline: '5–10 working days',
   },
   {
     id: 'automation',
-    title: 'Automation',
+    title: 'automation',
     summary:
-      'Software that takes over the repetitive parts of running a business — catching leads, sending notifications, and moving information where it needs to go — instead of a person doing it by hand.',
+      'software that takes over the repetitive parts of running a business — catching leads, sending notifications, and moving information where it needs to go — instead of a person doing it by hand.',
     forWhom:
-      'Businesses losing real time to manual follow-ups, data entry, or enquiries that fall through the cracks.',
+      'businesses losing real time to manual follow-ups, data entry, or enquiries that fall through the cracks.',
     problem:
-      'A lead who does not hear back within minutes goes to whoever answers first. Most of that delay is not a sales problem — it is nobody having built the plumbing that catches the enquiry, tells the right person, and logs it anywhere.',
+      'a lead who does not hear back within minutes goes to whoever answers first. most of that delay is not a sales problem — it is nobody having built the plumbing that catches the enquiry, tells the right person, and logs it anywhere.',
     includes: [
-      'Lead capture and management, so no enquiry sits unread in an inbox',
-      'Automated notifications the moment something needs your attention',
-      'Appointment workflows — bookings, reminders and follow-ups without manual chasing',
-      'Forms that write straight into a spreadsheet, no retyping',
-      'Email automation for replies, confirmations and follow-ups',
-      'Everyday business workflow automation, built around how you already work',
+      'lead capture and management, so no enquiry sits unread in an inbox',
+      'automated notifications the moment something needs your attention',
+      'appointment workflows — bookings, reminders and follow-ups without manual chasing',
+      'forms that write straight into a spreadsheet, no retyping',
+      'email automation for replies, confirmations and follow-ups',
+      'everyday business workflow automation, built around how you already work',
     ],
     timeline: '2–5 working days, depending on scope',
   },
@@ -85,7 +85,7 @@ export const servicesData: Service[] = [
  * inline copy so /services and the homepage stay in step.
  */
 export const customWork = {
-  title: 'Something that is not on this list',
+  title: 'something that is not on this list',
   body:
-    'Calculators, client portals, multi-step configurators, a dashboard behind a login. These get built onto whichever of the three above is the right base, rather than sold as a separate product. If you can describe what should happen, it can usually be built.',
+    'calculators, client portals, multi-step configurators, a dashboard behind a login. these get built onto whichever of the three above is the right base, rather than sold as a separate product. if you can describe what should happen, it can usually be built.',
 };

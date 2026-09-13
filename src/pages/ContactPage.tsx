@@ -19,10 +19,10 @@ export const ContactPage: React.FC = () => (
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <h1 id="contact-heading" className="text-3xl max-w-[14ch]">
-            Tell us what you need.
+            tell us what you need.
           </h1>
           <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[38ch]">
-            Four questions and two fields. No obligation at the end of it, and no sequence
+            four questions and two fields. no obligation at the end of it, and no sequence
             of follow-up emails.
           </p>
 
@@ -49,10 +49,10 @@ export const ContactPage: React.FC = () => (
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
           <h2 id="direct-heading" className="reveal text-2xl max-w-[16ch]">
-            Or skip the form entirely.
+            or skip the form entirely.
           </h2>
           <p className="mt-5 text-fg-muted leading-relaxed max-w-[40ch]">
-            All three reach the same person. WhatsApp is usually fastest.
+            all three reach the same person. whatsapp is usually fastest.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export const ContactPage: React.FC = () => (
               <span className="flex items-center gap-4">
                 <IconWhatsApp size={19} className="whatsapp-icon text-fg-subtle shrink-0" />
                 <span>
-                  <span className="block font-sans text-lg text-fg">WhatsApp</span>
+                  <span className="block font-sans text-lg text-fg">whatsapp</span>
                   <span className="block mt-0.5 font-sans text-sm text-fg-muted tnum">
                     {CONTACT_INFO.phoneDisplay}
                   </span>
@@ -87,7 +87,7 @@ export const ContactPage: React.FC = () => (
               <span className="flex items-center gap-4">
                 <IconPhone size={19} className="text-fg-subtle shrink-0" />
                 <span>
-                  <span className="block font-sans text-lg text-fg">Call</span>
+                  <span className="block font-sans text-lg text-fg">call</span>
                   <span className="block mt-0.5 font-sans text-sm text-fg-muted tnum">
                     {CONTACT_INFO.phoneDisplay}
                   </span>
@@ -107,7 +107,7 @@ export const ContactPage: React.FC = () => (
               <span className="flex items-center gap-4">
                 <IconMail size={19} className="text-fg-subtle shrink-0" />
                 <span className="min-w-0">
-                  <span className="block font-sans text-lg text-fg">Email</span>
+                  <span className="block font-sans text-lg text-fg">email</span>
                   <span className="block mt-0.5 font-sans text-sm text-fg-muted break-all">
                     {CONTACT_INFO.email}
                   </span>

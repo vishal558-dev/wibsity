@@ -111,7 +111,7 @@ export function App() {
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 btn btn-primary btn-sm"
         >
-          Skip to content
+          skip to content
         </a>
         <Navbar />
         <main id="main" className="flex-1">

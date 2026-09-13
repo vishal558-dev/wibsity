@@ -11,7 +11,7 @@ import { faqsData } from '../data/faqs';
 import { comparisonRows } from '../data/studio';
 import { whatHappensNext, CONTACT_INFO } from '../data/contact';
 
-const HERO_PREFIX = 'We build';
+const HERO_PREFIX = 'we build';
 const HERO_ROTATE_WORDS = ['websites', 'automations', 'digital experiences'];
 
 /**
@@ -180,11 +180,11 @@ export const HomePage: React.FC = () => {
 
             <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">
               <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
-                Hand-built websites for businesses that care how they look.
+                hand-built websites for businesses that care how they look.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
                 <Link to="/contact" className="btn btn-primary">
-                  <span>Start a project</span>
+                  <span>start a project</span>
                 </Link>
                 <a
                   href={CONTACT_INFO.whatsappUrl}
@@ -193,7 +193,7 @@ export const HomePage: React.FC = () => {
                   className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
                 >
                   <IconWhatsApp size={15} className="whatsapp-icon" />
-                  <span>or WhatsApp</span>
+                  <span>or whatsapp</span>
                 </a>
               </div>
             </div>
@@ -222,10 +222,10 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-3">
             <div className="lg:sticky lg:top-28">
               <h2 id="build-heading" className="reveal text-2xl">
-                Three things you can hire us for.
+                three things you can hire us for.
               </h2>
               <Link to="/services" className="btn btn-secondary btn-sm mt-7">
-                <span>See what each includes</span>
+                <span>see what each includes</span>
               </Link>
             </div>
           </div>
@@ -250,11 +250,11 @@ export const HomePage: React.FC = () => {
       <Section field="petrol" aria-labelledby="choice-heading">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
           <p className="lg:col-span-4 lg:col-start-9 lg:row-start-1 text-lg leading-relaxed text-fg-muted">
-            Not design taste. The difference is structural, and you feel it a year later
+            not design taste. the difference is structural, and you feel it a year later
             rather than on launch day.
           </p>
           <h2 id="choice-heading" className="reveal text-3xl max-w-[20ch] lg:col-span-6 lg:row-start-2">
-            What you are actually choosing between.
+            what you are actually choosing between.
           </h2>
         </div>
 
@@ -276,10 +276,10 @@ export const HomePage: React.FC = () => {
           <div className="compare-row" aria-hidden="true">
             <div className="hidden md:block compare-aspect-slot px-6 py-2" />
             <div className="compare-cell-template py-2">
-              <span className="font-sans text-sm text-fg-subtle">A template</span>
+              <span className="font-sans text-sm text-fg-subtle">a template</span>
             </div>
             <div className="compare-cell-built py-2">
-              <span className="font-sans text-sm md:text-lg font-medium text-fg">Built for you</span>
+              <span className="font-sans text-sm md:text-lg font-medium text-fg">built for you</span>
             </div>
           </div>
 
@@ -321,14 +321,14 @@ export const HomePage: React.FC = () => {
             "What we make" or "What you are choosing between". */}
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16 lg:items-start">
           <p className="lg:col-span-4 text-fg-muted leading-relaxed max-w-[38ch]">
-            The parts that need you are short and specific. The rest happens without you
+            the parts that need you are short and specific. the rest happens without you
             having to chase it.
           </p>
           <h2
             id="process-heading"
             className="reveal text-3xl lg:col-span-7 lg:col-start-6 lg:text-right"
           >
-            About a week. And about an hour of your time.
+            about a week. and about an hour of your time.
           </h2>
         </div>
 
@@ -390,14 +390,14 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col gap-4 border-b border-rule-strong pb-6 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
           <div>
             <h2 id="questions-heading" className="reveal text-2xl">
-              Worth asking whoever you hire.
+              worth asking whoever you hire.
             </h2>
             <p className="mt-3 text-fg-muted leading-relaxed max-w-[46ch]">
-              Including us. Here are the three that matter most, answered plainly.
+              including us. here are the three that matter most, answered plainly.
             </p>
           </div>
           <Link to="/about" className="btn btn-secondary btn-sm shrink-0">
-            <span>All nine questions</span>
+            <span>all nine questions</span>
             <IconArrowRight size={15} />
           </Link>
         </div>
@@ -444,10 +444,10 @@ export const HomePage: React.FC = () => {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <h2 id="start-heading" className="reveal text-3xl max-w-[12ch]">
-              Tell us what you need.
+              tell us what you need.
             </h2>
             <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[34ch]">
-              Four questions and two fields. No obligation at the end of it, and no
+              four questions and two fields. no obligation at the end of it, and no
               sequence of follow-up emails.
             </p>
 

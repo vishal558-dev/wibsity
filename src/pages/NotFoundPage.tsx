@@ -11,17 +11,17 @@ import { IconArrowRight } from '../components/common/icons';
 export const NotFoundPage: React.FC = () => (
   <Section className="pt-6">
     <p className="font-sans text-sm text-fg-subtle tnum">404</p>
-    <h1 className="mt-4 text-3xl max-w-[16ch]">This page is not here.</h1>
+    <h1 className="mt-4 text-3xl max-w-[16ch]">this page is not here.</h1>
     <p className="mt-7 text-lg leading-relaxed text-fg-muted max-w-[46ch]">
-      Either the address is wrong or the page has moved. Everything on the site is one of
+      either the address is wrong or the page has moved. everything on the site is one of
       these three.
     </p>
 
     <nav aria-label="Site sections" className="mt-14 max-w-xl">
       {[
-        { to: '/', label: 'Home', desc: 'What the studio does, and how it works.' },
-        { to: '/services', label: 'Services', desc: 'The three kinds of project, in full.' },
-        { to: '/contact', label: 'Contact', desc: 'Start a project, or just ask.' },
+        { to: '/', label: 'home', desc: 'what the studio does, and how it works.' },
+        { to: '/services', label: 'services', desc: 'the three kinds of project, in full.' },
+        { to: '/contact', label: 'contact', desc: 'start a project, or just ask.' },
       ].map((item) => (
         <Link
           key={item.to}

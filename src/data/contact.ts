@@ -17,17 +17,17 @@ export const CONTACT_INFO = {
 export const whatHappensNext = [
   {
     step: '01',
-    title: 'A reply, usually the same day',
-    body: 'From the person who would build it, not an intake form or a sales rep.',
+    title: 'a reply, usually the same day',
+    body: 'from the person who would build it, not an intake form or a sales rep.',
   },
   {
     step: '02',
-    title: 'One conversation',
-    body: 'Half an hour on a call or WhatsApp about the business and what it needs to do.',
+    title: 'one conversation',
+    body: 'half an hour on a call or whatsapp about the business and what it needs to do.',
   },
   {
     step: '03',
-    title: 'A written scope and a fixed price',
-    body: 'What is included, what it costs and the date it goes live. No obligation to accept it.',
+    title: 'a written scope and a fixed price',
+    body: 'what is included, what it costs and the date it goes live. no obligation to accept it.',
   },
 ];

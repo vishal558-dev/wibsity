@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogoMark } from './Logo';
 
-const RING_TEXT = 'HAND-BUILT SITES';
+const RING_TEXT = 'hand-built sites';
 
 // Circle geometry, in the SVG's own user-unit space.
 const R = 80;

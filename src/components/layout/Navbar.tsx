@@ -131,7 +131,7 @@ export const Navbar: React.FC = () => {
   }, [open]);
 
   return (
-    <header className="site-header sticky top-0 z-40" data-over={ground}>
+    <header className="field-ink sticky top-0 z-40" data-over={ground}>
       <div className="mx-auto w-full max-w-[78rem] px-gutter">
         <div className="flex h-16 items-center justify-between gap-6">
           <Link
@@ -146,7 +146,7 @@ export const Navbar: React.FC = () => {
             className="group flex h-16 items-center gap-2.5 shrink-0"
             aria-label="wibsity — home"
           >
-            <LogoMark size={24} tone="paper" />
+            <LogoMark size={24} />
             <span
               className="widen font-sans text-lg font-semibold lowercase leading-none"
               style={{ letterSpacing: '-0.045em' }}
@@ -177,7 +177,7 @@ export const Navbar: React.FC = () => {
                 hover fill and paints over bare text nodes, which is exactly how
                 this button spent one build rendering as an empty white box. */}
             <Link to="/contact" className="btn btn-primary btn-sm">
-              <span>Start a project</span>
+              <span>start a project</span>
             </Link>
 
             <button
@@ -200,7 +200,7 @@ export const Navbar: React.FC = () => {
       {open && (
         <div
           id={MENU_ID}
-          className="site-menu md:hidden fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto"
+          className="field-ink md:hidden fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto"
         >
           <div className="mx-auto w-full max-w-[78rem] px-gutter py-10 flex flex-col h-full">
             <nav className="flex flex-col" aria-label="Main">
@@ -229,7 +229,7 @@ export const Navbar: React.FC = () => {
                 className="btn btn-secondary w-full"
               >
                 <IconWhatsApp size={17} className="whatsapp-icon" />
-                <span>Message on WhatsApp</span>
+                <span>message on whatsapp</span>
               </a>
             </div>
           </div>

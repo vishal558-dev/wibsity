@@ -66,11 +66,11 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
 
   const validate = (): FieldErrors => {
     const next: FieldErrors = {};
-    if (!projectType) next.projectType = 'Pick the closest option — it does not lock you in.';
-    if (!name.trim()) next.name = 'Tell us what to call you.';
+    if (!projectType) next.projectType = 'pick the closest option — it does not lock you in.';
+    if (!name.trim()) next.name = 'tell us what to call you.';
     // Deliberately loose: a length floor catches an empty or mistyped field
     // without rejecting the many legitimate ways a person writes a number.
-    if (phone.replace(/\D/g, '').length < 7) next.phone = 'A number we can actually reach you on.';
+    if (phone.replace(/\D/g, '').length < 7) next.phone = 'a number we can actually reach you on.';
     return next;
   };
 
@@ -117,7 +117,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
       setPhase('confirming');
     } catch {
       setSubmitError(
-        'That did not send. Try once more, or message on WhatsApp and it will reach the same place.'
+        'that did not send. try once more, or message on whatsapp and it will reach the same place.'
       );
       setPhase('editing');
     }
@@ -130,12 +130,12 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           <IconCheck size={20} />
         </span>
         <h3 id={headingId} className="mt-6 text-2xl">
-          That is with us.
+          that is with us.
         </h3>
         <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-          You will hear back from the person who would build the site — usually the same
-          day, and from a real reply rather than an autoresponder. If you would rather not
-          wait, the WhatsApp thread reaches the same place.
+          you will hear back from the person who would build the site — usually the same
+          day, and from a real reply rather than an autoresponder. if you would rather not
+          wait, the whatsapp thread reaches the same place.
         </p>
         <a
           href={CONTACT_INFO.whatsappUrl}
@@ -144,7 +144,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           className="btn btn-secondary mt-8"
         >
           <IconWhatsApp size={17} className="whatsapp-icon" />
-          <span>Continue on WhatsApp</span>
+          <span>continue on whatsapp</span>
         </a>
       </div>
     );
@@ -154,7 +154,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
     <form onSubmit={handleSubmit} noValidate className="max-w-2xl">
       {/* 1 — what -------------------------------------------------------- */}
       <fieldset ref={projectGroupRef} className="border-0 p-0 m-0">
-        <legend className="font-sans text-lg mb-4 p-0">What do you need building?</legend>
+        <legend className="font-sans text-lg mb-4 p-0">what do you need building?</legend>
         <div className="flex flex-wrap gap-2.5">
           {projectTypeOptions.map((opt) => (
             <label key={opt.id} className="chip">
@@ -183,9 +183,9 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
 
       {/* 2 — budget ------------------------------------------------------ */}
       <fieldset className="border-0 p-0 m-0 mt-14">
-        <legend className="font-sans text-lg mb-1.5 p-0">Roughly what budget?</legend>
+        <legend className="font-sans text-lg mb-1.5 p-0">roughly what budget?</legend>
         <p className="text-ui font-sans text-fg-muted mb-4">
-          A range is enough. It is what decides the scope, not the quality.
+          a range is enough. it is what decides the scope, not the quality.
         </p>
         <div className="flex flex-wrap gap-2.5">
           {budgetOptions.map((opt) => (
@@ -208,7 +208,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
       <div className="mt-14 grid gap-8 sm:grid-cols-2">
         <div>
           <label htmlFor={`${uid}-name`} className="block font-sans text-ui font-medium">
-            Your name
+            your name
           </label>
           <input
             ref={nameRef}
@@ -234,7 +234,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
 
         <div>
           <label htmlFor={`${uid}-phone`} className="block font-sans text-ui font-medium">
-            Phone
+            phone
           </label>
           <input
             ref={phoneRef}
@@ -253,7 +253,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
             className="control mt-1"
           />
           <p id={`${uid}-phone-hint`} className="mt-2 font-sans text-sm text-fg-muted">
-            So the reply can come to you on WhatsApp.
+            so the reply can come to you on whatsapp.
           </p>
           {errors.phone && (
             <p id={`${uid}-phone-error`} className="mt-1 font-sans text-sm text-negative">
@@ -264,7 +264,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
 
         <div className="sm:col-span-2">
           <label htmlFor={`${uid}-email`} className="block font-sans text-ui font-medium">
-            Email <span className="text-fg-subtle font-normal">— optional</span>
+            email <span className="text-fg-subtle font-normal">— optional</span>
           </label>
           <input
             id={`${uid}-email`}
@@ -279,7 +279,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
 
         <div className="sm:col-span-2">
           <label htmlFor={`${uid}-details`} className="block font-sans text-ui font-medium">
-            Anything you want to add <span className="text-fg-subtle font-normal">— optional</span>
+            anything you want to add <span className="text-fg-subtle font-normal">— optional</span>
           </label>
           <textarea
             id={`${uid}-details`}
@@ -287,7 +287,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
             rows={3}
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            placeholder="A link to your current site, a workflow to automate, a deadline — whatever is useful."
+            placeholder="a link to your current site, a workflow to automate, a deadline — whatever is useful."
             className="control mt-1 resize-y"
           />
         </div>
@@ -312,7 +312,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
             {phase === 'submitting' && <IconSpinner size={17} />}
             {phase === 'confirming' && <IconCheck size={17} />}
             <span>
-              {phase === 'submitting' ? 'Sending' : phase === 'confirming' ? 'Sent' : 'Send enquiry'}
+              {phase === 'submitting' ? 'sending' : phase === 'confirming' ? 'sent' : 'send enquiry'}
             </span>
             {phase === 'editing' && <IconArrowRight size={17} />}
           </span>
@@ -324,7 +324,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ headingId }) => {
           className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
         >
           <IconWhatsApp size={15} className="whatsapp-icon" />
-          <span>or message on WhatsApp</span>
+          <span>or message on whatsapp</span>
         </a>
       </div>
     </form>

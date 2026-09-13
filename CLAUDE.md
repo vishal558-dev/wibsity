@@ -862,6 +862,28 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
 `boot.js`; the ID lives in both and must change together. Vercel Web Analytics renders once in `App.tsx`.
 
 ## Content guardrails
+- **As of the 2026.5 lowercase pass, every visible string on the site is written in lowercase in the
+  source** — headings, buttons, nav labels, chips, badges, form labels/hints/placeholders/errors, FAQ
+  questions and answers, comparison-table cells, the footer, the 404 page, and the hero badge's ring
+  text — including proper nouns in body copy (`india`, not `India`) and `WhatsApp` (written as
+  `whatsapp` everywhere it appears as link/button text). This is done as literal lowercase copy in
+  `src/data/*.ts` and the page/component JSX, not a CSS `text-transform`: a blanket
+  `text-transform: lowercase` on selected tags was tried first, shipped as the "lowercase aesthetic"
+  commit, and was reverted — it only covered `h1–h4`/`.btn`/`.nav-link`/`.chip`/`.badge`/`legend`/
+  `label`, so FAQ questions, the comparison table's row labels and plain body paragraphs stayed
+  Title Case, and the site read as inconsistently cased rather than deliberately styled. Casing is
+  now a content decision made once per string, so anything new must be authored lowercase directly
+  rather than relying on a stylesheet rule to lower it.
+  **Left untouched, deliberately:** `<title>` tags, meta descriptions, Open Graph/Twitter tags, the
+  WebSite/ProfessionalService JSON-LD, and everything in `src/data/seo.ts` — none of that is rendered
+  on the page, so it stays normal sentence/title case per SEO convention. `aria-label` and `alt`
+  attributes also stay as authored (not visually rendered), except the "skip to content" link in
+  `App.tsx`, which is lowercase because it becomes visible on keyboard focus. The one exception inside
+  visible copy: `src/data/faqs.ts`'s hosting FAQ answer says `cdn`/`ssl` in lowercase for the same
+  full-commitment reason `services.ts` says `seo` rather than `SEO`. The home-FAQ JSON-LD block in
+  `index.html` (`id="home-faq-jsonld"`) is kept byte-for-byte in sync with `faqsData`'s first three
+  questions/answers for this reason too — `vite.config.ts`'s `assertHomeFaqJsonLdMatches` fails the
+  build otherwise, so a future edit to either has to update both in the same change.
 - **Never claim code/IP ownership transfer to the client.** Domain ownership is the one ownership
   claim the site makes, and it is stated positively.
 - **Never fabricate clients, testimonials, awards, metrics, years, or project counts.** There are

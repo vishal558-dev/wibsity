@@ -44,21 +44,21 @@
      clear of the #f4f1ea cream that reads as a generic AI-design tell.
      Relative luminance 0.812 against the old 0.820 — close enough that every
      pair is re-measured rather than assumed (npm run check:contrast). */
-  --color-canvas: #f3eff1;
+  --color-canvas: #efeae0;
   /* Raised = lighter than canvas (paper lifted toward white): inputs, the one
      panel that needs to separate from its band. Sunken = a slightly deeper
      paper for alternating bands. */
-  --color-canvas-raised: #fcf9fa;
-  --color-canvas-sunken: #e7e0e3;
+  --color-canvas-raised: #f8f4ed;
+  --color-canvas-sunken: #e4ddd0;
   /* Warm near-black, replacing the cool #161a19, so ink sits with warm paper.
      The inverted field: whole sections flip to this, and it is also the
      primary button's fill in light mode. */
-  --color-ink: #282329;
-  --color-ink-fg: #f9f3f5;
+  --color-ink: #191917;
+  --color-ink-fg: #efeae0;
 
   /* The one chromatic full-bleed ground, used by .field-petrol and nothing
      else — every other surface on the site is paper or ink. */
-  --color-petrol-field: #554f78;
+  --color-petrol-field: #0c3f49;
 
   /* Scoped to `.timeline-card--yellow` alone — the service index's four
      cards, on direct instruction, are the one place this hue exists. A pale
@@ -66,19 +66,19 @@
      this palette rather than a foreign accent — also chosen light enough
      that oxide (`--color-accent-warm`) still clears 4.5:1 on top of it,
      which a more saturated amber could not (npm run check:contrast). */
-  --color-yellow-field: #eee6cf;
+  --color-yellow-field: #fbdb85;
 
-  --color-fg: #2c272c;
-  --color-fg-muted: #625b62;
+  --color-fg: #1a1815;
+  --color-fg-muted: #54504a;
   /* Measured ratio lives in npm run check:contrast, not in this comment — a
      number written here goes stale the next time the paper moves. */
-  --color-fg-subtle: #615961;
+  --color-fg-subtle: #605b52;
 
-  --color-rule: #d7cdd2;
+  --color-rule: #d2cbbd;
   /* rule-strong draws input underlines and secondary-button borders, so it
      is a UI component boundary and owes 3:1, not the decorative hairline's
      nothing. See npm run check:contrast for the measured ratio. */
-  --color-rule-strong: #8b7d85;
+  --color-rule-strong: #7c7568;
 
   /* Two accents, with a semantic split that is what keeps the second one from
      becoming decoration:
@@ -90,10 +90,10 @@
      contrast. Used for: link underlines, the focus ring, the measured
      values in the hero readout, the availability dot, the measure-rule
      ticks, and (oxide) the enquiry form's numerals and the process badges. */
-  --color-accent: #8a5f78;
-  --color-accent-warm: #8d513b;
-  --color-accent-on-dark: #faeaf1;
-  --color-accent-warm-on-dark: #ffd1bf;
+  --color-accent: #0e4b54;
+  --color-accent-warm: #8f4420;
+  --color-accent-on-dark: #7fb7be;
+  --color-accent-warm-on-dark: #e09a6b;
 
   --color-negative: #97281f;
 
@@ -102,8 +102,8 @@
      serif-display/sans-body arrangement — a precise grotesque headline over
      warm serif paragraphs reads as "technical" and "considered" at the same
      time, which is exactly the two things this studio sells. */
-  --font-sans: Manrope, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: Archivo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: Newsreader, Georgia, "Times New Roman", serif;
 
   /* Type scale — a perfect fourth (1.333) above a 17px serif body, flattened
      at the top so display sizes stay usable on a laptop viewport rather than
@@ -353,13 +353,13 @@
 
   --color-fg: var(--color-ink-fg);
   /* 6.48:1 (npm run check:contrast, "petrol fg-muted on petrol"). */
-  --color-fg-muted: color-mix(in srgb, var(--color-ink-fg) 82%, var(--color-petrol-field));
+  --color-fg-muted: color-mix(in srgb, var(--color-ink-fg) 78%, var(--color-petrol-field));
   /* 4.89:1 (npm run check:contrast, "petrol fg-subtle on petrol"). */
-  --color-fg-subtle: color-mix(in srgb, var(--color-ink-fg) 76%, var(--color-petrol-field));
+  --color-fg-subtle: color-mix(in srgb, var(--color-ink-fg) 64%, var(--color-petrol-field));
 
   --color-rule: color-mix(in srgb, var(--color-ink-fg) 22%, var(--color-petrol-field));
   /* 3.21:1 — owes 3:1, not 4.5:1 (a UI boundary, not text). */
-  --color-rule-strong: color-mix(in srgb, var(--color-ink-fg) 60%, var(--color-petrol-field));
+  --color-rule-strong: color-mix(in srgb, var(--color-ink-fg) 45%, var(--color-petrol-field));
 
   /* Petrol cannot be its own accent. 5.17:1 (npm run check:contrast,
      "accent-on-dark on petrol"). */
@@ -1386,7 +1386,7 @@ header {
 
   --color-fg: var(--color-ink);
   --color-fg-muted: color-mix(in srgb, var(--color-ink) 78%, var(--color-yellow-field));
-  --color-fg-subtle: color-mix(in srgb, var(--color-ink) 72%, var(--color-yellow-field));
+  --color-fg-subtle: color-mix(in srgb, var(--color-ink) 64%, var(--color-yellow-field));
 
   --color-rule: color-mix(in srgb, var(--color-ink) 22%, var(--color-yellow-field));
   /* 55%, not the 45% .field-ink/.field-petrol use — a pale ground needs more
@@ -1952,206 +1952,4 @@ button:hover .whatsapp-icon {
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-rule-strong);
-}
-
-/* ---------------------------------------------------------------------------
-   lowercase edition
-   ---------------------------------------------------------------------------
-   The studio name has always been lowercase. This pass lets the rest of the
-   interface follow its lead: friendlier casing, a softened plum paper system,
-   and fewer visual tricks competing with the work. These overrides are kept
-   together so the existing semantic tokens and responsive layout stay intact.
-   ------------------------------------------------------------------------ */
-
-h1, h2, h3, h4,
-.btn,
-.nav-link,
-.chip,
-.badge,
-legend,
-label {
-  text-transform: lowercase;
-}
-
-h1, h2, h3, h4 {
-  font-weight: 600;
-  letter-spacing: -0.035em;
-}
-
-body {
-  letter-spacing: -0.01em;
-}
-
-.site-header {
-  background: color-mix(in srgb, var(--color-canvas) 92%, white);
-  color: var(--color-fg);
-  border-bottom: 1px solid var(--color-rule);
-  transition: background-color 180ms ease, border-color 180ms ease;
-}
-
-.site-header[data-over='ink'],
-.site-header[data-over='petrol'] {
-  background: color-mix(in srgb, var(--color-canvas) 92%, white);
-  border-bottom-color: var(--color-rule);
-}
-
-.site-menu {
-  background: var(--color-canvas);
-  color: var(--color-fg);
-  border-top: 1px solid var(--color-rule);
-}
-
-.nav-link::after {
-  height: 1px;
-  bottom: 0.72rem;
-  background-color: var(--color-accent);
-}
-
-.btn {
-  min-height: 2.9rem;
-  padding: 0.72rem 1.25rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease,
-    border-color 180ms ease;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.field-ink .btn-primary:hover,
-.field-petrol .btn-primary:hover {
-  background-color: var(--color-ink-fg);
-  border-color: var(--color-ink-fg);
-  color: var(--color-ink);
-}
-
-.control {
-  border: 1px solid var(--color-rule);
-  border-radius: 0.75rem;
-  padding: 0.8rem 0.9rem;
-}
-
-.control:focus {
-  border-color: var(--color-accent);
-  border-width: 1px;
-  padding-bottom: 0.8rem;
-}
-
-.chip {
-  border-radius: 999px;
-  padding-inline: 1.05rem;
-}
-
-.measure::before,
-.timeline-playhead,
-.hero-badge {
-  display: none;
-}
-
-.hero-type,
-.set-word,
-.enter {
-  animation: none;
-  transform: none;
-  transition: none;
-  will-change: auto;
-}
-
-.hero-type {
-  font-stretch: normal;
-  letter-spacing: -0.055em;
-  max-width: 18ch;
-}
-
-.rotate-word__item {
-  animation: none !important;
-}
-
-.rotate-word__item:first-child {
-  clip-path: inset(0);
-  opacity: 1;
-}
-
-.rotate-word__item:not(:first-child) {
-  display: none;
-}
-
-.hero-and-more {
-  font-size: 0.38em;
-  font-weight: 600;
-  color: var(--color-fg-subtle);
-}
-
-.field-sunken {
-  background-color: #e9e3e5;
-}
-
-.timeline-card {
-  padding: 1.65rem;
-  border: 1px solid var(--color-rule);
-  border-radius: 1rem;
-  background: var(--color-canvas-raised);
-  box-shadow: 0 14px 34px rgba(54, 40, 48, 0.06);
-}
-
-.timeline-card--yellow {
-  background: #f3ece0;
-}
-
-.timeline-card--white {
-  background: #fbf7f8;
-}
-
-.field-ink.timeline-card {
-  background: #3b333c;
-}
-
-.field-petrol.timeline-card {
-  background: #6a658f;
-}
-
-.timeline-card:hover,
-.timeline-card:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(54, 40, 48, 0.1);
-}
-
-.timeline-card-number {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-@media (min-width: 64rem) {
-  .timeline-card {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-.faq-row {
-  padding-left: 0;
-  margin-left: 0;
-}
-
-.faq-row::before {
-  display: none;
-}
-
-.faq-row[data-open='true'] {
-  background: transparent;
-}
-
-.cross {
-  color: var(--color-accent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .route-fade {
-    animation: route-fade-in 160ms ease both;
-  }
 }
