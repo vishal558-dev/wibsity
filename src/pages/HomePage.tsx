@@ -16,21 +16,6 @@ const HERO_PREFIX = 'we build';
 const HERO_ROTATE_WORDS = ['websites', 'automations', 'digital experiences'];
 
 /**
- * A compact three-column capability strip between the hero and the detailed
- * GSAP service breakdown below it — added on direct instruction, from the
- * mockup this refresh was based on. Deliberately generic (design/development/
- * support) rather than the three named services in `servicesData`: it answers
- * "what does working with us cover" at a glance, not "what can I hire you
- * for" — the question the detailed section below it already answers. See
- * CLAUDE.md's Homepage composition section.
- */
-const WHAT_WE_DO = [
-  { title: 'web design', body: 'clean layouts built around your brand, not a template.' },
-  { title: 'development', body: 'built to launch fast, with no unnecessary bloat.' },
-  { title: 'care & support', body: 'updates and fixes, always answered quickly.' },
-];
-
-/**
  * Splits the headline into word spans so each one can set itself on its own
  * delay (see `.set-word` in index.css).
  *
@@ -223,30 +208,6 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ------------------------------------------------------------------
-          What working with us covers. A compact, three-column capability
-          strip — deliberately plain (hairline dividers, no card, no field),
-          the second deliberate exception to "nothing is a card" style
-          borders on this page (the first being .timeline-card below). No
-          visible heading: the hero's own closing measure line is this
-          section's top boundary, so a repeated rule immediately under it
-          would double the line rather than mark a second one. See
-          CLAUDE.md's Homepage composition section.
-          ------------------------------------------------------------------ */}
-      <Section tight aria-labelledby="what-heading">
-        <h2 id="what-heading" className="sr-only">
-          what working with us covers
-        </h2>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x divide-rule">
-          {WHAT_WE_DO.map((item) => (
-            <div key={item.title} className="sm:px-8 sm:first:pl-0 sm:last:pr-0">
-              <h3 className="font-sans text-lg font-medium text-fg">{item.title}</h3>
-              <p className="mt-2 text-fg-muted leading-relaxed">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ------------------------------------------------------------------
           What we make. The heading holds as a sticky margin rail while the
           list scrolls past beside it, set at display size — the titles are
           the composition. Each row is now a GSAP-animated gradient card
@@ -256,11 +217,9 @@ export const HomePage: React.FC = () => {
           Motion section for the trade-off this overrides and why. No
           numbering: three services are a menu, not a sequence, so the one
           figure worth showing per card is delivery time, not position in a
-          list. Now carries its own top rule (it didn't before), since the
-          capability strip above it — not the hero — is its immediate
-          neighbour.
+          list.
           ------------------------------------------------------------------ */}
-      <Section rule aria-labelledby="build-heading">
+      <Section aria-labelledby="build-heading">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-3">
             <div className="lg:sticky lg:top-28">
