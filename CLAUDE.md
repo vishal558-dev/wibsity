@@ -108,7 +108,7 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 
 | # | Section | Shape |
 |---|---------|-------|
-| 1 | Hero | Fixed-prefix + continuously-rotating-word display headline, a full-width lead+CTA block, and a spinning ring badge anchored bottom-right at `lg`+, closing on a measure rule |
+| 1 | Hero | Fixed-prefix + continuously-rotating-word display headline, a full-width lead+CTA block, a spinning ring badge anchored bottom-right at `lg`+, and a Canvas 2D background motion graphic behind the whole section, closing on a measure rule |
 | 2 | What we make | GSAP-animated cards (yellow / white / black / petrol cycle), staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
@@ -401,7 +401,9 @@ sitewide micro-interaction on top of that (see "The 2026.1 micro-interaction add
 four mechanisms below are the original set and are still the ones "type being set" describes. A third
 layer — "The hero loop overrides", below — later added two deliberate, continuously-looping
 exceptions to this section's own "nothing loops" framing; it's kept as a separate subsection rather
-than folded into this list, the same way the GSAP service-timeline entrance is.
+than folded into this list, the same way the GSAP service-timeline entrance is. A fourth layer —
+"The hero background motion graphic", further below — added a third such exception on top of those
+two, again explicitly argued rather than assumed.
 
 1. **The headline sets itself on load.** Words wipe up from their own baselines, staggered 48ms,
    while the line widens from 74% to 100%. Last word lands at ~1.05s.
@@ -665,8 +667,46 @@ under Conversion). No explicit reduced-motion override is needed here, unlike th
 ring's un-animated rest state is already the complete, legible badge, so simply never applying the
 spin achieves "reduced" on its own.
 
-Neither override is a precedent for a third loop elsewhere on the site — raise the trade-off
-explicitly again, the way both of these were, before adding one.
+Neither override is a precedent for a further loop elsewhere on the site — raise the trade-off
+explicitly again, the way each of these was, before adding one. (A third loop was in fact added on
+top of these two, but scoped to the hero and argued on its own terms — see "The hero background
+motion graphic" immediately below, not this pair, before citing it as precedent for anything else.)
+
+### The hero background motion graphic
+Added on direct instruction, as a third deliberate exception to "nothing loops" layered on top of
+the two above — not a replacement for either, and not itself license for a fourth. It answers a
+different brief than the rotating word or the ring badge: rather than motion tied to a specific
+piece of content, it's a continuously-animated Canvas 2D layer (`components/common/HeroCanvas.tsx`)
+sitting behind the entire hero section, rendering a few hand-authored "cut paper" polygon fragments
+plus registration-mark ticks/crosshairs that assemble, hold, and drift apart on a 26-second cycle —
+built to read as reinforcing "built, not assembled" and the site's own `.measure` tick-mark language
+rather than as a generic animated-background template. It was commissioned explicitly as a full
+creative override of "nothing is a card"/"motion answers an action" (the alternative — a restrained
+background built only from the site's existing `.measure` vocabulary, tied to scroll like the rest
+of the site's motion — was offered and turned down in favour of this one), so don't treat its
+existence as loosening either rule anywhere else.
+
+Four things keep it from working against the rest of the system despite being a full override:
+- **Colors are read from `--color-ink`/`--color-accent` via `getComputedStyle` at mount**, not
+  hardcoded hex, so the graphic tracks the design system's real tokens if the palette ever moves —
+  the same discipline the rest of the site already applies, even inside a deliberately-decorative
+  exception.
+- **A `clearFactor` function keeps the visible pieces away from the headline/paragraph/CTA column**
+  (weighted toward the hero's right side, where `.hero-and-more` and `HeroBadge` already live) so it
+  never fights the actual content for attention or contrast.
+- **It respects `prefers-reduced-motion` (holds one static frame) and `pointer: coarse` (drops the
+  mouse-parallax offset)**, the same two guards `ServiceTimeline`'s GSAP entrance uses, and pauses
+  its `requestAnimationFrame` loop while the tab is hidden.
+- **It thins itself on narrower viewports** — one piece and no registration marks below 620px, two
+  pieces and no marks below 980px, the full composition only at desktop widths — rather than
+  cramming the full effect into a phone-sized hero.
+
+The canvas is `position: absolute inset-0` with `pointer-events: none`, rendered as the hero
+section's first child ahead of the `relative z-[1]` content wrapper, so — like `HeroBadge` — it costs
+zero height against the hero's 780px fold budget. It is plain Canvas 2D drawing plus one
+`requestAnimationFrame` loop, not GSAP and not a new dependency: gsap animates DOM/CSS properties,
+which doesn't apply to hand-authored per-frame canvas painting, so reaching for it here would have
+been a library used for the wrong job rather than genuine reuse.
 
 ## Icons and the logo
 `components/common/icons.tsx` is the complete icon set — ten inline SVGs sharing a 1.5px stroke
@@ -943,7 +983,9 @@ Google Analytics (`G-2TCETV3EDR`) is wired via the async gtag.js tag in `index.h
   `.rotate-word`/`.rotate-word__item` (the rotating headline word), `.hero-rotate-row`/
   `.hero-and-more` (the fixed, un-animated "and more." sitting beside it, deliberately out of the
   cycle), and `.hero-badge`/`.hero-badge__mark`/`.hero-badge__ring`/`.hero-badge__text` (the spinning
-  ring badge). Reuse those
+  ring badge); the hero background motion graphic pass added `HeroCanvas.tsx`, a Canvas 2D component
+  rather than a CSS class — see "The hero background motion graphic" under Motion above before
+  reusing its drawing approach elsewhere. Reuse those
   for anything in the same family (a
   pill, a scroll-driven reveal, a two-column opposition) rather than writing a sixth variant of one
   — the `.timeline-card` set specifically is not a general-purpose card/pill system, see "one

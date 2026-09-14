@@ -4,6 +4,7 @@ import { Section } from '../components/layout/Section';
 import { InquiryForm } from '../components/common/InquiryForm';
 import { ServiceTimeline } from '../components/common/ServiceTimeline';
 import { HeroBadge } from '../components/common/HeroBadge';
+import { HeroCanvas } from '../components/common/HeroCanvas';
 import { IconArrowRight, IconWhatsApp } from '../components/common/icons';
 import { servicesData } from '../data/services';
 import { processData } from '../data/process';
@@ -166,7 +167,8 @@ export const HomePage: React.FC = () => {
           boundary into the next section.
           ------------------------------------------------------------------ */}
       <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
-        <div className="relative mx-auto w-full max-w-[78rem] px-gutter">
+        <HeroCanvas />
+        <div className="relative z-[1] mx-auto w-full max-w-[78rem] px-gutter">
           <div className="relative pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
             <h1 className="hero-type text-hero max-w-[26ch] text-fg">
               <SetHeadline text={HERO_PREFIX} />
