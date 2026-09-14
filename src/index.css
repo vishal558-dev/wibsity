@@ -40,21 +40,26 @@
    ========================================================================== */
 
 @theme {
-  /* Warm bone. Warmed from the previous cool limestone #edece6, while staying
-     clear of the #f4f1ea cream that reads as a generic AI-design tell.
-     Relative luminance 0.812 against the old 0.820 — close enough that every
-     pair is re-measured rather than assumed (npm run check:contrast). */
-  --color-canvas: #efeae0;
+  /* Cooler paper-white, moved from the previous warm bone #efeae0 as of the
+     2026.6 mockup-driven refresh — a direct-instruction reversal of that
+     token's own earlier reasoning (#efeae0 had itself been chosen specifically
+     to stay clear of this exact value, #f4f1ea, calling it a "generic
+     AI-design tell"). Re-measure every pair after touching this again rather
+     than trusting either comment (npm run check:contrast). */
+  --color-canvas: #f4f1ea;
   /* Raised = lighter than canvas (paper lifted toward white): inputs, the one
      panel that needs to separate from its band. Sunken = a slightly deeper
      paper for alternating bands. */
-  --color-canvas-raised: #f8f4ed;
-  --color-canvas-sunken: #e4ddd0;
+  --color-canvas-raised: #fbf9f4;
+  --color-canvas-sunken: #e9e4d8;
   /* Warm near-black, replacing the cool #161a19, so ink sits with warm paper.
      The inverted field: whole sections flip to this, and it is also the
      primary button's fill in light mode. */
   --color-ink: #191917;
-  --color-ink-fg: #efeae0;
+  /* Kept equal to --color-canvas on purpose (see that token's own comment) —
+     text/logo on a dark field should read as the same paper tone as the page
+     itself, not a different white. */
+  --color-ink-fg: #f4f1ea;
 
   /* The one chromatic full-bleed ground, used by .field-petrol and nothing
      else — every other surface on the site is paper or ink. */
@@ -97,13 +102,16 @@
 
   --color-negative: #97281f;
 
-  /* Archivo carries headlines and every piece of UI text; Newsreader carries
-     body copy. The pairing is deliberately inverted from the usual
-     serif-display/sans-body arrangement — a precise grotesque headline over
-     warm serif paragraphs reads as "technical" and "considered" at the same
-     time, which is exactly the two things this studio sells. */
+  /* Archivo carries headlines and every piece of UI text; Lora carries body
+     copy (moved from Newsreader as of the 2026.6 mockup-driven refresh — a
+     content swap only, Archivo is unchanged, so none of the width-axis
+     motion the sans face drives is affected). The pairing is deliberately
+     inverted from the usual serif-display/sans-body arrangement — a precise
+     grotesque headline over warm serif paragraphs reads as "technical" and
+     "considered" at the same time, which is exactly the two things this
+     studio sells. */
   --font-sans: Archivo, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-serif: Newsreader, Georgia, "Times New Roman", serif;
+  --font-serif: Lora, Georgia, "Times New Roman", serif;
 
   /* Type scale — a perfect fourth (1.333) above a 17px serif body, flattened
      at the top so display sizes stay usable on a laptop viewport rather than

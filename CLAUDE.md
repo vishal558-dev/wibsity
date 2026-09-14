@@ -324,7 +324,7 @@ petrol (`--color-accent`) marks what the studio makes and measures — link unde
 focus ring, the "built for you" side of the comparison, the measure ticks, the process section's
 step numerals, and, as of the 2026.3 colorize pass, the hero's rotating headline word (`.rotate-word`
 in index.css) — the one place in the hero that names what the studio builds, which is exactly this
-token's existing role. It reuses the ServicesPage timeline's own accent-on-canvas pairing (8.13:1,
+token's existing role. It reuses the ServicesPage timeline's own accent-on-canvas pairing (8.65:1,
 already measured and passing) rather than introducing a new one; `.hero-and-more`, the fixed "and
 more." suffix that is deliberately NOT one of the cycling words (see "The hero loop overrides"
 above), stays ink so the colour boundary reinforces that distinction. (The specimen readout's
@@ -352,9 +352,12 @@ foundation has to stand on its own, and so a colour direction can be layered ont
 deliberately rather than inherited from a second theme nobody was maintaining. If dark mode comes
 back it is a decision, not a restoration.
 
-Paper is `#efeae0` (warm bone, warmed from the redesign's original cool limestone `#edece6` while
-staying clear of the `#f4f1ea` cream that reads as a generic AI-design tell); ink is `#191917` (warm
-near-black, from the original cool `#161a19`); the two accents are petrol `#0e4b54` and oxide
+Paper is `#f4f1ea` (cooler paper-white), moved as of the 2026.6 mockup-driven refresh from the
+2026 redesign's original warm bone `#efeae0` — itself chosen specifically to stay clear of this
+exact value, on the reasoning that it read as a generic AI-design tell. That reasoning is reversed
+here on direct instruction, not forgotten: the mockups this pass was built from used `#f4f1ea`
+directly, and it was kept after review rather than nudged back toward warm bone. Ink is `#191917`
+(warm near-black, from the original cool `#161a19`); the two accents are petrol `#0e4b54` and oxide
 `#8f4420` — see "Two accents" above for the semantic split.
 
 `--color-yellow-field` (`#fbdb85`, a pale warm gold) is a one-off exception to the two-accent-only
@@ -364,16 +367,19 @@ a literal value, not a token, since it needs no reuse elsewhere. Neither is lice
 those two cards.
 
 Two tokens carry contrast maths in their comments and should not be nudged without redoing it:
-`--color-fg-subtle` (5.62:1 on canvas, per `npm run check:contrast`) and `--color-rule-strong` (it
+`--color-fg-subtle` (5.98:1 on canvas, per `npm run check:contrast`) and `--color-rule-strong` (it
 draws input underlines and secondary-button borders, so it is a UI component boundary owing 3:1, not
-text's 4.5:1; 3.81:1 on canvas). Both figures move whenever paper or ink moves — re-run
+text's 4.5:1; 4.05:1 on canvas). Both figures move whenever paper or ink moves — re-run
 `npm run check:contrast` after any token-colour change rather than trusting the numbers written here.
 
 ### Typography
 Two families, from one host, in a deliberately inverted pairing: **Archivo** (grotesque) for
-headlines and all UI, **Newsreader** (serif) for body copy. A precise grotesque headline over warm
-serif paragraphs reads as *technical* and *considered* at once, which is the two things this studio
-sells, and it escapes the "big bold sans + small grey paragraph" default in one move.
+headlines and all UI, **Lora** (serif) for body copy — moved from Newsreader as of the 2026.6
+mockup-driven refresh, a content-only swap: Lora has no optical-size or width axis, but nothing
+above ever read `--font-serif` for motion, so none of the site's font-stretch-driven effects are
+affected. A precise grotesque headline over warm serif paragraphs reads as *technical* and
+*considered* at once, which is the two things this studio sells, and it escapes the "big bold sans +
+small grey paragraph" default in one move.
 
 Headlines sit at **weight 550**, not 800/900. Large type is fine; shouted type is not. The scale is
 a perfect fourth over a 17px serif body, flattened at the top so display sizes stay usable on a

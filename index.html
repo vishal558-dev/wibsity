@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- The site is light only — there is no theme toggle and no dark
          override — so this is a constant. -->
-    <meta name="theme-color" content="#efeae0" />
+    <meta name="theme-color" content="#f4f1ea" />
     <!-- One first-party file doing the three things that must happen in the
          head: resolve the theme before first paint (so there is no flash of
          the wrong one), initialise Google Analytics, and promote the
@@ -71,10 +71,13 @@
          (wdth 62..125) as well as weight, because the site animates letterform
          width — the headline sets itself on load, section titles widen on
          hover, and the hero compresses as it scrolls away. Dropping the axis
-         silently kills all three. Archivo carries headlines and UI, Newsreader
-         carries body copy; the site's third face (JetBrains Mono) went with
-         the decorative code panel it existed for, and Fontshare went with
-         General Sans and Satoshi — one fewer origin to connect to.
+         silently kills all three. Archivo carries headlines and UI, Lora
+         carries body copy (moved from Newsreader as of the 2026.6
+         mockup-driven refresh — a content swap, not a motion one: Lora has no
+         width axis, but nothing above reads --font-serif for its stretch, so
+         nothing breaks); the site's third face (JetBrains Mono) went with the
+         decorative code panel it existed for, and Fontshare went with General
+         Sans and Satoshi — one fewer origin to connect to.
 
          Loaded with the preload+swap pattern so it does not block first paint
          on a slow connection; boot.js promotes it once it arrives, and the
@@ -84,12 +87,12 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Lora:ital,wght@0,400..600;1,400..600&display=swap"
       data-font-preload
     />
     <noscript>
       <link
-        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..600&family=Lora:ital,wght@0,400..600;1,400..600&display=swap"
         rel="stylesheet"
       />
     </noscript>
@@ -180,7 +183,7 @@
           "name": "why not just use a template or a website builder?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "for some businesses that is genuinely the right answer, and we will say so on the call rather than sell you something larger. what you give up is control. a template arrives carrying code for every feature its author imagined, most of which your site will never use, and every change afterwards happens inside somebody else’s rules. a built site contains what your site needs and nothing else, and it can be changed by editing it."
+            "text": "for some businesses that is genuinely the right answer, and we will say so rather than sell you something larger. what you give up is control: a template carries code for every feature its author imagined, most of which you will never use, and every change happens inside somebody else’s rules. a built site contains only what it needs, and it can be changed by editing it."
           }
         },
         {
@@ -188,7 +191,7 @@
           "name": "how does pricing work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "fixed price, agreed in writing before anything starts. after one conversation you get a written scope, a number and a date. if you later want something outside that scope, it is quoted separately rather than absorbed into a bill you see at the end. there are no retainers and no hourly billing."
+            "text": "fixed price, agreed in writing before anything starts. one conversation gets you a written scope, a number and a date. anything outside that scope is quoted separately, not absorbed into a bill at the end. no retainers, no hourly billing."
           }
         },
         {
@@ -196,7 +199,7 @@
           "name": "how long does it take?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "three to five working days for a standard business site, longer for stores and anything with custom functionality. the dates are confirmed in writing before the project starts. what usually slows a project down is waiting on content, so we tell you exactly what we need from you at the start."
+            "text": "three to five working days for a standard business site, longer for stores and custom functionality. dates are confirmed in writing before the project starts. what usually slows things down is waiting on content, so we tell you exactly what we need up front."
           }
         }
       ]

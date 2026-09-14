@@ -194,7 +194,7 @@ console.log('og-image.png');
   // the site's own type and colours. If either of those changes in index.html,
   // re-run this so the card does not drift away from the page it links to.
   const og = `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Lora:wght@400..500&display=swap">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:1200px;height:630px;overflow:hidden}
@@ -204,7 +204,7 @@ console.log('og-image.png');
   .mark svg{width:44px;height:44px}
   .mark span{font-size:34px;font-weight:600;letter-spacing:-0.045em}
   h1{font-size:82px;font-weight:550;letter-spacing:-0.03em;line-height:1.02;max-width:17ch}
-  p{font-family:Newsreader,Georgia,serif;font-size:27px;line-height:1.5;color:${PAPER};opacity:.72;max-width:48ch;margin-top:26px}
+  p{font-family:Lora,Georgia,serif;font-size:27px;line-height:1.5;color:${PAPER};opacity:.72;max-width:48ch;margin-top:26px}
   .rule{position:relative;border-top:1px solid rgba(237,236,230,.24);padding-top:22px;
         display:flex;justify-content:space-between;align-items:baseline;font-size:20px;color:rgba(237,236,230,.66)}
   .rule::before{content:"";position:absolute;top:0;left:0;width:120px;height:9px;

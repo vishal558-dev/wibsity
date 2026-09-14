@@ -14,27 +14,27 @@ import type { ComparisonRow } from '../types';
 export const comparisonRows: ComparisonRow[] = [
   {
     aspect: 'what gets delivered',
-    template: 'a theme somebody else designed, with your logo and colours applied.',
+    template: 'a theme someone else designed, with your logo applied.',
     built: 'pages drawn for your business, from a blank file.',
   },
   {
     aspect: 'what ships with it',
-    template: 'code for every feature the theme author imagined, whether you use it or not.',
-    built: 'only the code the site needs to do what it does.',
+    template: 'code for every feature the theme author imagined, used or not.',
+    built: 'only the code the site needs.',
   },
   {
     aspect: 'making a change',
-    template: 'work around the builder’s rules, or add a plugin and hope.',
-    built: 'edit the file. the whole thing is readable.',
+    template: 'work around the builder’s rules, or add a plugin.',
+    built: 'edit the file.',
   },
   {
     aspect: 'where it lives',
-    template: 'inside a platform, on that platform’s terms and pricing.',
-    built: 'on hosting you control, as files you hold.',
+    template: 'inside a platform, on its terms and pricing.',
+    built: 'on hosting you control.',
   },
   {
     aspect: 'who you talk to',
-    template: 'support tickets, or whoever configured it for you.',
+    template: 'support tickets, or whoever configured it.',
     built: 'the person who wrote it.',
   },
 ];
