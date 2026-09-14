@@ -104,16 +104,25 @@ composed freely inside it, deliberately, so the page does not turn into the same
 times.
 
 ### Homepage composition
-Six sections, and **no two are built the same way** — that variety is load-bearing, not incidental:
+Seven sections as of the 2026.6 mockup-driven refresh (six through the redesign proper, plus the
+compact capability strip added below), and among the six numbered ones **no two are built the same
+way** — that variety is load-bearing, not incidental:
 
 | # | Section | Shape |
 |---|---------|-------|
 | 1 | Hero | Fixed-prefix + continuously-rotating-word display headline, a full-width lead+CTA block, a spinning ring badge anchored bottom-right at `lg`+, and a Canvas 2D background motion graphic behind the whole section, closing on a measure rule |
+| — | What working with us covers | Added on direct instruction from the mockup this refresh was based on — a compact, `tight`, three-column capability strip (web design / development / care & support) between the hero and section 2. Deliberately unnumbered here (see below) and deliberately generic: it answers "what does working with us cover" at a glance, distinct from section 2's "what can I hire you for". No visible heading (`sr-only` only) and no `rule` — the hero's own closing measure line is its top boundary. Plain hairline dividers between columns (Tailwind `divide-x`/`divide-rule`), the third deliberate exception to "nothing is a card" alongside `.timeline-card` and the comparison table's elevation-as-border device; see "Nothing is a card" below. Section 2 gained its own top `rule` in consequence, since this strip — not the hero — is now its immediate neighbour. |
 | 2 | What we make | GSAP-animated cards (yellow / white / black / petrol cycle), staggered into a staircase, led by a playhead + ruler |
 | 3 | What you are choosing between | **Petrol field.** Inverted opening (lead top-right, heading below-left), then a two-column comparison |
 | 4 | How it works | **`field="sunken"`.** Inverted opening (small paragraph left, display heading right-aligned), then a connected rail of four steps |
 | 5 | Worth asking | No field — stays on paper. The list's own top rule carries the heading and the link; rows run full width |
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
+
+The new strip is deliberately left out of the 1–6 numbering rather than renumbered in as a new "2"
+with everything after it shifted — this file references sections 2 through 6 by number in dozens of
+places (Motion, the design-system notes, the conventions list), and renumbering all of them for one
+small addition was judged not worth the risk of leaving one stale. If more unnumbered blocks are ever
+inserted this way, reconsider a real renumbering pass instead of stacking dashes.
 
 The hero is the only place the type is allowed to be the whole composition
 (`--text-hero`, ~121px at 1440). It is deliberately **two lines, not three**: a third line pushes
@@ -266,6 +275,12 @@ whole readout it surrounded (see "The idea the site is built on" above), and `.g
 ✕/✓ strip in the homepage comparison table, 10px radius) was cut in favour of a two-column
 opposition where depth, not a border, carries the hierarchy (see "What you are choosing between" in
 Homepage composition above). Neither licenses reaching for a border elsewhere.
+
+One plain border exception did survive, distinct from the radius-based card exceptions above: the
+homepage's "what working with us covers" strip (see Homepage composition) uses Tailwind's
+`divide-x`/`divide-rule` to draw a hairline between its three columns — no fill, no radius, not a
+card, just a divider. Added on direct instruction, from the mockup this refresh was based on. Not a
+precedent for borders elsewhere any more than `.timeline-card` is a precedent for a second card.
 
 `.timeline-card` is the one exception — a 22px-radius card used only for the service index's rows
 (currently three; numeral, title, a divider and a 3-item bullet list — the summary paragraph and the delivery-time
