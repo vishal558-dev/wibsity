@@ -116,9 +116,24 @@ Six sections, and **no two are built the same way** — that variety is load-bea
 | 6 | Tell us what you need | **Ink field.** "What happens next" left, the enquiry form right |
 
 The hero is the only place the type is allowed to be the whole composition
-(`--text-hero`, ~121px at 1440). It is deliberately **two lines, not three**: a third line pushes
-the CTA cluster below the fold on a 14–15" laptop. The whole hero — headline, lead and CTA — fits
-inside 780px of viewport height; check that again if any of its type or padding changes.
+(`--text-hero`, ~135px at 1440 as of a 2026.6 size bump — `clamp(2.75rem, 0.9rem + 8.4vw, 8.75rem)`,
+up from `clamp(2.5rem, 0.9rem + 7.4vw, 7.75rem)`, on direct instruction). It is deliberately **two
+lines, not three**: a third line pushes the CTA cluster below the fold on a 14–15" laptop. The whole
+hero — headline, lead and CTA — fits inside 780px of viewport height (re-checked directly at 1440×780
+after the size bump: badge bottom ~676px, CTA bottom ~645px, both clear); check that again if any of
+its type or padding changes.
+
+**The size bump broke the rotating word on phone-width viewports, and the fix is narrower than it
+looks.** `.rotate-word`'s grid track is sized to its widest candidate, "digital experiences", at
+whatever font-size the h1 inherits (see "The hero loop overrides" under Motion) — at the bumped
+`--text-hero`, that nowrap track outgrew the h1's own `max-w-[26ch]` box below roughly 480px wide,
+overflowing past the gutter rather than wrapping. `.rotate-word` now carries its own
+`@media (max-width: 480px)` font-size override (`clamp(2.2rem, 0.85rem + 6.6vw, 2.75rem)`),
+independent of `--text-hero` — the "we build" prefix keeps the full bumped size at every width, only
+the rotator itself is capped, and only below 480px. Re-verify this specific override (not just the
+780px laptop check above) if `--text-hero` or the candidate words change again — check the actual
+rendered width of "digital experiences" against the h1's box at a phone viewport, not just that it
+looks fine at whatever word happens to be showing.
 
 The hero's second row is a single full-width block (the lead paragraph and the CTA cluster stacked
 together) rather than a grid split — it used to share this row with a live specimen readout in a
@@ -849,6 +864,16 @@ would leave mobile visitors with no visible way to start until they had scrolled
 
 **Check above-the-fold work against a realistic laptop viewport (~800–950px tall), not just a large
 external display.** This has bitten the hero before.
+
+**As of the 2026.6 pass, the homepage hero fills at least the full viewport height on mobile**
+(`min-h-dvh md:min-h-0` on the hero `<section>` in `HomePage.tsx`, plus `flex flex-col justify-center`
+so the content group is centred in whatever extra space that leaves rather than pinned to the top with
+dead space below it) — on direct instruction, so nothing from the next section is visible at first
+glance on a phone. `md:min-h-0` reverts to the hero's natural content height at `md`+, where the
+780px-laptop-fold check above already governs; `justify-center` is a no-op there too, since content
+height already meets or exceeds the viewport at those widths. `dvh`, not `vh`: mobile browser chrome
+(the address bar collapsing on scroll) makes `100vh` measure taller than the visible area on load on
+some mobile browsers, which would undershoot this section's own goal.
 
 ## Accessibility conventions
 Audited at 390px and 1280px, in both themes, with every disclosure open: **zero contrast failures,

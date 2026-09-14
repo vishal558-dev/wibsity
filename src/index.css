@@ -132,7 +132,7 @@
      service list, set at display scale so the titles read as an index rather
      than a list of links. Both carry their own leading and tracking: at these
      sizes the defaults are far too loose. */
-  --text-hero: clamp(2.5rem, 0.9rem + 7.4vw, 7.75rem);
+  --text-hero: clamp(2.75rem, 0.9rem + 8.4vw, 8.75rem);
   --text-hero--line-height: 0.94;
   --text-hero--letter-spacing: -0.045em;
 
@@ -1008,7 +1008,7 @@
      studio makes, which is exactly the role `--color-accent` already owns
      sitewide (see "Two accents" in CLAUDE.md's design-system section — the
      ServicesPage timeline text is the same accent-on-canvas pairing, at
-     8.13:1, so this reuses a pairing already measured and passing rather
+     8.65:1, so this reuses a pairing already measured and passing rather
      than introducing a new one). "and more." stays ink, deliberately: it is
      the one word in this line that is NOT one of the cycling candidates
      (see the comment above `.hero-and-more`), so leaving it uncoloured
@@ -1022,6 +1022,21 @@
   clip-path: inset(0 100% 0 0);
   opacity: 0;
   will-change: clip-path, opacity;
+}
+
+/* The grid track is sized to the widest candidate ("digital experiences") at
+   whatever font-size the h1 inherits — see the comment above `.rotate-word`.
+   At `--text-hero`'s current (2026.6-bumped) scale, that nowrap track outgrows
+   the h1's own `max-w-[26ch]` box on phone-width viewports, overflowing past
+   the gutter rather than wrapping (nowrap can't wrap, and a grid track
+   doesn't shrink below its content's own width by default). Capping the
+   rotator's font-size below `max-width: 480px` — independent of `--text-hero`,
+   which the "we build" prefix keeps at full size — is the fix; a bare
+   `max-width` on the element would just clip the text instead of resizing it. */
+@media (max-width: 480px) {
+  .rotate-word {
+    font-size: clamp(2.2rem, 0.85rem + 6.6vw, 2.75rem);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

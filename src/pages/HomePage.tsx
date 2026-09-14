@@ -166,7 +166,11 @@ export const HomePage: React.FC = () => {
           CLAUDE.md's Motion section). A closing measure rule marks the real
           boundary into the next section.
           ------------------------------------------------------------------ */}
-      <section ref={heroRef} className="relative overflow-hidden" data-field="paper">
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden min-h-dvh md:min-h-0 flex flex-col justify-center"
+        data-field="paper"
+      >
         <HeroCanvas />
         <div className="relative z-[1] mx-auto w-full max-w-[78rem] px-gutter">
           <div className="relative pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
