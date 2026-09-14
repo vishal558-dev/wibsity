@@ -193,24 +193,6 @@ export function HeroCanvas() {
       const mx = mouseCurrent.x;
       const my = mouseCurrent.y;
 
-      // Faint drifting guide lines — present everywhere at very low intensity.
-      if (tier !== 'mobile') {
-        ctx.strokeStyle = hexAlpha(inkHex, 0.045);
-        ctx.lineWidth = 1;
-        [0.62, 0.84].forEach((fx, i) => {
-          const x = fx * w + Math.sin(time * 0.05 + i * 2) * 6 + mx * 4;
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, h);
-          ctx.stroke();
-        });
-        const gy = 0.15 * h + Math.cos(time * 0.04) * 5;
-        ctx.beginPath();
-        ctx.moveTo(0, gy);
-        ctx.lineTo(w, gy);
-        ctx.stroke();
-      }
-
       const cycleIndex = Math.floor(time / CYCLE);
       const localT = time - cycleIndex * CYCLE;
       const origin = ORIGINS[cycleIndex % ORIGINS.length];
