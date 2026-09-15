@@ -141,7 +141,6 @@ function bandPath(pts: Pt[], hw: number[], i0: number, i1: number): Path2D {
    rides along each strip so it passes over one neighbour and under the next
    — the weave. Colors are resolved against live tokens in `Tokens`. */
 const AX = [-340, 300, 960, 1620, 2260];
-const N = 168;
 
 type Orb = [number, number, number, number, number, number];
 
@@ -152,7 +151,6 @@ interface Strip {
   orb: [Orb, Orb, Orb, Orb, Orb];
   tw: [number, number];
   depth: number;
-  blur: boolean;
   over: number;
 }
 
@@ -170,7 +168,12 @@ const STRIPS: Strip[] = [
     ],
     tw: [0.113, 0.6],
     depth: 0.25,
-    blur: true,
+    // Was live-blurred (ctx.filter) for a "distance" cue; dropped for
+    // performance — a per-frame Gaussian blur over this shape was the
+    // single most expensive draw call, and it barely read at this strip's
+    // 5.5%/9.5% alpha anyway. ponytail: crisp edges instead of blurred,
+    // revisit with a pre-rendered/cached blur if this strip ever needs to
+    // read as genuinely out-of-focus.
     over: 0,
   },
   {
@@ -186,7 +189,6 @@ const STRIPS: Strip[] = [
     ],
     tw: [0.089, 2.4],
     depth: 0.45,
-    blur: false,
     over: 0.071,
   },
   {
@@ -202,7 +204,6 @@ const STRIPS: Strip[] = [
     ],
     tw: [0.101, 4.1],
     depth: 0.75,
-    blur: false,
     over: 0.053,
   },
   {
@@ -218,7 +219,6 @@ const STRIPS: Strip[] = [
     ],
     tw: [0.079, 1.3],
     depth: 0.6,
-    blur: false,
     over: 0.061,
   },
   {
@@ -234,7 +234,6 @@ const STRIPS: Strip[] = [
     ],
     tw: [0.127, 5.2],
     depth: 1.15,
-    blur: false,
     over: 0.083,
   },
 ];
@@ -244,6 +243,11 @@ const STRIP_TIERS: Record<Tier, Strip['id'][]> = {
   tablet: ['paper', 'emerald', 'ink', 'oxide'],
   desktop: ['far', 'paper', 'emerald', 'ink', 'oxide'],
 };
+
+// Path resolution (segments per strip) per tier — fewer points means less
+// crEval/widthsOf/bandPath work every frame, which matters most on the
+// weaker CPUs that also happen to hit the 'mobile'/'tablet' tiers.
+const TIER_N: Record<Tier, number> = { mobile: 72, tablet: 112, desktop: 168 };
 
 function anchorsOf(r: Strip, T: number): Pt[] {
   const out: Pt[] = [];
@@ -255,13 +259,17 @@ function anchorsOf(r: Strip, T: number): Pt[] {
 }
 
 // Half-width along the strip: pointed ends, an asymmetric swell, and the
-// travelling pinch that reads as a twist.
-function widthsOf(r: Strip, T: number, scale: number, twist: number) {
+// travelling pinch that reads as a twist. `n` is the tier's path resolution
+// (TIER_N) — fewer segments on mobile/tablet, where the CPU doing this math
+// every frame is weaker.
+function widthsOf(r: Strip, T: number, scale: number, twist: number, n: number) {
   const c = 0.5 + 0.28 * Math.sin(T * r.tw[0] + r.tw[1]);
   const hw: number[] = [];
-  for (let i = 0; i <= N; i++) {
-    const s = i / N;
-    let taper = Math.pow(Math.sin(Math.PI * s), 0.5);
+  for (let i = 0; i <= n; i++) {
+    const s = i / n;
+    // Math.sin(PI*s) is non-negative over [0,1], so sqrt (cheaper than a
+    // fractional Math.pow) is exact here, not an approximation.
+    let taper = Math.sqrt(Math.sin(Math.PI * s));
     taper *= 0.76 + 0.36 * Math.sin(Math.PI * s + r.tw[1] * 0.5);
     // right-biased swell: the strips are thin where they cross the copy
     // column and carry their real weight out in the open frame
@@ -270,7 +278,7 @@ function widthsOf(r: Strip, T: number, scale: number, twist: number) {
     const pinch = 1 - 0.94 * twist * Math.exp(-q * q);
     hw.push(r.w * 0.5 * scale * taper * pinch);
   }
-  return { hw, k: Math.round(c * N) };
+  return { hw, k: Math.round(c * n) };
 }
 
 interface Tokens {
@@ -331,32 +339,33 @@ interface Built {
   face: CanvasGradient | string;
   back: string;
   stroke: string | null;
+  // Built once per frame and reused for both the base draw and the
+  // "weave" overlay redraw — a strip with `over` set gets drawn twice a
+  // frame, and rebuilding these from bandPath() a second time (a ~170-point
+  // loop) was pure waste, since the points and widths never change between
+  // the two draws.
+  facePath: Path2D;
+  backPath: Path2D;
 }
 
-function drawStripBody(
-  ctx: CanvasRenderingContext2D,
-  b: Built,
-  twist: number,
-  ink: string,
-) {
-  const facePath = bandPath(b.pts, b.g.hw, 0, b.g.k);
-  const backPath = bandPath(b.pts, b.g.hw, b.g.k, N);
+function drawStripBody(ctx: CanvasRenderingContext2D, b: Built, twist: number, ink: string) {
   ctx.fillStyle = b.face;
-  ctx.fill(facePath);
+  ctx.fill(b.facePath);
   ctx.fillStyle = b.back;
-  ctx.fill(backPath);
+  ctx.fill(b.backPath);
   if (b.stroke) {
     ctx.strokeStyle = b.stroke;
     ctx.lineWidth = 1;
-    ctx.stroke(facePath);
-    ctx.stroke(backPath);
+    ctx.stroke(b.facePath);
+    ctx.stroke(b.backPath);
   }
   // the fold: a fine crease line right at the pinch, so the turn reads as a
   // paper fold rather than a soft width dip. Fades in with the twist.
   if (twist > 0.03) {
     const k = b.g.k;
+    const n = b.pts.length - 1;
     const a2 = b.pts[Math.max(k - 1, 0)];
-    const b2 = b.pts[Math.min(k + 1, N)];
+    const b2 = b.pts[Math.min(k + 1, n)];
     const dx = b2[0] - a2[0];
     const dy = b2[1] - a2[1];
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -384,6 +393,7 @@ function drawRibbons(
   tk: Tokens,
   active: Strip['id'][],
   frame: number,
+  n: number,
 ) {
   if (pres <= 0.002) return;
   const strips = STRIPS.filter((r) => active.includes(r.id));
@@ -406,9 +416,9 @@ function drawRibbons(
     const grow = enter((pres - idx * 0.055) / 0.7);
     if (grow <= 0.004) return;
     const pts: Pt[] = [];
-    for (let i = 0; i <= N; i++) pts.push(crEval(o.anchors, i / N));
+    for (let i = 0; i <= n; i++) pts.push(crEval(o.anchors, i / n));
     const scale = grow * (1 - lift * 0.18) * (r.id === 'oxide' ? 1 + merge * 1.9 : 1);
-    const g = widthsOf(r, T, scale, twist);
+    const g = widthsOf(r, T, scale, twist, n);
     const tx = px * 28 * r.depth;
     const ty = py * 16 * r.depth - lift * 42 * r.depth;
     const a = Math.min(1, pres * 1.9) * Math.min(1, grow * 1.4) * frame;
@@ -422,13 +432,14 @@ function drawRibbons(
       face: faceStyle(ctx, r.id, pts, tk),
       back: backStyle(r.id, tk),
       stroke: strokeStyle(r.id, tk),
+      facePath: bandPath(pts, g.hw, 0, g.k),
+      backPath: bandPath(pts, g.hw, g.k, n),
     });
   });
 
   built.forEach((b) => {
     ctx.save();
     ctx.globalAlpha = b.a;
-    if (b.r.blur) ctx.filter = 'blur(11px)';
     ctx.translate(b.tx, b.ty);
     drawStripBody(ctx, b, twist, tk.ink);
     ctx.restore();
@@ -440,9 +451,9 @@ function drawRibbons(
   built.forEach((b) => {
     if (!b.r.over) return;
     const os = 0.5 + 0.34 * Math.sin(T * b.r.over * 4.6 + b.r.tw[1] + 1.7);
-    const oi = clamp(os * N, 0, N);
+    const oi = clamp(os * n, 0, n);
     const oi0 = Math.floor(oi);
-    const oi1 = Math.min(oi0 + 1, N);
+    const oi1 = Math.min(oi0 + 1, n);
     const ofrac = oi - oi0;
     const cx = mix(b.pts[oi0][0], b.pts[oi1][0], ofrac) + b.tx;
     const cy = mix(b.pts[oi0][1], b.pts[oi1][1], ofrac) + b.ty;
@@ -451,7 +462,6 @@ function drawRibbons(
     ctx.arc(cx, cy, 230, 0, Math.PI * 2);
     ctx.clip();
     ctx.globalAlpha = b.a;
-    if (b.r.blur) ctx.filter = 'blur(11px)';
     ctx.translate(b.tx, b.ty);
     drawStripBody(ctx, b, twist, tk.ink);
     ctx.restore();
@@ -591,21 +601,29 @@ interface Rect {
    well clear of it, and a single alpha for the whole shape either exposes
    it over the text or crushes it everywhere else. Punching the hole in
    screen space after drawing dims exactly the pixels that are actually
-   behind the text, regardless of which strip put them there. */
-function clearCopyColumn(ctx: CanvasRenderingContext2D, rect: Rect) {
+   behind the text, regardless of which strip put them there.
+
+   The blur itself only runs into `maskCtx` when `copyRect` changes (resize),
+   not every animation frame — a `ctx.filter` Gaussian blur is one of the
+   more expensive things Canvas 2D can do, and this rectangle is static
+   between resizes, so paying for it 60 times a second bought nothing. Each
+   frame just composites the already-blurred bitmap in with `drawImage`. */
+function paintMask(maskCtx: CanvasRenderingContext2D, w: number, h: number, rect: Rect) {
+  const maskCanvas = maskCtx.canvas;
+  maskCanvas.width = Math.max(1, Math.round(w));
+  maskCanvas.height = Math.max(1, Math.round(h));
   if (rect.right <= rect.left || rect.bottom <= rect.top) return;
   const pad = 48;
-  ctx.save();
-  ctx.globalCompositeOperation = 'destination-out';
-  ctx.filter = 'blur(72px)';
-  ctx.fillStyle = 'rgba(0,0,0,0.92)';
-  ctx.fillRect(
+  maskCtx.save();
+  maskCtx.filter = 'blur(72px)';
+  maskCtx.fillStyle = 'rgba(0,0,0,0.92)';
+  maskCtx.fillRect(
     rect.left - pad,
     rect.top - pad,
     rect.right - rect.left + pad * 2,
     rect.bottom - rect.top + pad * 2,
   );
-  ctx.restore();
+  maskCtx.restore();
 }
 
 type Tier = 'mobile' | 'tablet' | 'desktop';
@@ -641,6 +659,8 @@ export function HeroCanvas() {
     let raf = 0;
     const STATIC_T = 6; // an "interesting" frame to hold on before animation starts, or forever under reduced motion
 
+    const maskCtx = document.createElement('canvas').getContext('2d');
+
     const drawFrame = (time: number) => {
       const { w, h } = size;
       ctx.save();
@@ -670,11 +690,17 @@ export function HeroCanvas() {
       ctx.scale(scale, scale);
 
       drawForms(ctx, T, pres, px, py, scroll, tk, FORM_TIERS[tier], frame);
-      drawRibbons(ctx, T, pres, twist, merge, px, py, scroll, tk, STRIP_TIERS[tier], frame);
+      drawRibbons(ctx, T, pres, twist, merge, px, py, scroll, tk, STRIP_TIERS[tier], frame, TIER_N[tier]);
       ctx.restore();
 
-      // back in plain dpr-scaled CSS-px space here, matching copyRect
-      clearCopyColumn(ctx, copyRect);
+      // back in plain dpr-scaled CSS-px space here, matching copyRect and
+      // the pre-blurred maskCtx bitmap
+      if (maskCtx) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.drawImage(maskCtx.canvas, 0, 0);
+        ctx.restore();
+      }
 
       ctx.restore();
     };
@@ -698,12 +724,26 @@ export function HeroCanvas() {
           bottom: r.bottom - containerRect.top,
         };
       }
+      if (maskCtx) paintMask(maskCtx, w, h, copyRect);
       if (reduced || !raf) drawFrame(STATIC_T);
     };
     resize();
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
     if (copyEl) resizeObserver.observe(copyEl);
+
+    // Ambient background motion nobody can see is wasted battery — pause the
+    // draw loop entirely once the hero has scrolled out of view, the same
+    // idea `useHeroSetProgress`'s own IntersectionObserver gate already uses
+    // for the hero's scroll listener.
+    let heroVisible = true;
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        heroVisible = entries[entries.length - 1]?.isIntersecting ?? true;
+      },
+      { threshold: 0 },
+    );
+    visibilityObserver.observe(container);
 
     let onPointerMove: ((e: PointerEvent) => void) | undefined;
     if (!coarse && !reduced) {
@@ -717,14 +757,25 @@ export function HeroCanvas() {
 
     if (reduced) {
       drawFrame(STATIC_T);
-      return () => resizeObserver.disconnect();
+      return () => {
+        resizeObserver.disconnect();
+        visibilityObserver.disconnect();
+      };
     }
 
+    // This is a slow, ambient 26s loop — nothing about it needs to match a
+    // 60/120/144Hz display's own refresh rate. Capping the actual redraws to
+    // ~30fps (while still advancing `t` and the pointer-lean smoothing every
+    // real tick, so motion speed and responsiveness stay correct) roughly
+    // halves the fill/stroke work on a high-refresh-rate screen for no
+    // visible difference in a composition this gentle.
+    const FRAME_INTERVAL_MS = 1000 / 30;
+    let lastDrawMs = 0;
     let last = performance.now();
     let t = 0;
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
-      if (document.hidden) {
+      if (document.hidden || !heroVisible) {
         last = now;
         return;
       }
@@ -733,6 +784,8 @@ export function HeroCanvas() {
       t += dt;
       mouseCurrent.x += (mouseTarget.x - mouseCurrent.x) * 0.05;
       mouseCurrent.y += (mouseTarget.y - mouseCurrent.y) * 0.05;
+      if (now - lastDrawMs < FRAME_INTERVAL_MS) return;
+      lastDrawMs = now;
       drawFrame(t);
     };
     raf = requestAnimationFrame(tick);
@@ -740,6 +793,7 @@ export function HeroCanvas() {
     return () => {
       if (raf) cancelAnimationFrame(raf);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       if (onPointerMove) window.removeEventListener('pointermove', onPointerMove);
     };
   }, []);

@@ -739,17 +739,38 @@ Five things keep it from working against the rest of the system despite being a 
   guessed per-piece opacity. The ribbons are long enough to run from deep inside that column to well
   clear of it, so a single opacity per shape either exposes it over the text or crushes it
   everywhere else; punching the hole in screen space dims exactly the pixels actually behind the
-  text, whichever strip put them there — the same idea as a blurred SVG mask rect, applied once.
+  text, whichever strip put them there — the same idea as a blurred SVG mask rect, applied once. The
+  blur itself is only rendered into an offscreen `maskCtx` canvas when `[data-hero-copy]`'s rect
+  changes (on resize), not on every animation frame — each frame just `drawImage`s that already-blurred
+  bitmap in, since a live `ctx.filter` blur is one of the more expensive things Canvas 2D can do and
+  this rectangle doesn't move between resizes.
 - **It respects `prefers-reduced-motion` (holds one static frame) and `pointer: coarse` (drops the
-  pointer-lean offset)**, the same two guards `ServiceTimeline`'s GSAP entrance uses, and pauses its
-  `requestAnimationFrame` loop while the tab is hidden.
+  pointer-lean offset)**, the same two guards `ServiceTimeline`'s GSAP entrance uses, pauses its
+  `requestAnimationFrame` loop while the tab is hidden, and — as of the 2026.7 pass — also pauses it
+  once the hero has scrolled out of view (an `IntersectionObserver` on the hero section, same idea as
+  `useHeroSetProgress`'s own gate for the scroll listener in `HomePage.tsx`), so nothing keeps
+  redrawing off-screen. Redraws are also capped to ~30fps regardless of the display's own refresh
+  rate (`t` still advances and the pointer-lean still smooths every real tick, only the actual canvas
+  repaint is throttled) — this is a slow, 26-second ambient loop, so nothing about it needs a
+  120/144Hz display's own cadence.
 - **It thins itself on narrower viewports** — two ribbons and one form below 620px, four ribbons and
   two forms below 980px, all five ribbons and three forms only at desktop widths — rather than
-  cramming the full composition into a phone-sized hero.
+  cramming the full composition into a phone-sized hero. As of the 2026.7 pass this also thins each
+  ribbon's own path resolution per tier (`TIER_N`: 72/112/168 points), not just which ribbons render,
+  since the Catmull-Rom/width-curve math scales with point count and runs every frame on every active
+  strip.
 - **The lean toward the pointer uses the real, live cursor** (smoothed, the same pattern the first
   version used), not the supplied asset's own scripted autonomous cursor path with its own drawn
   marker rings — simpler, and it means "leans toward the pointer" is an actual interaction rather
   than a choreographed beat, keeping `pointer: coarse` a meaningful guard.
+
+**Two more 2026.7 performance changes, both pure internal refactors with no visible effect:** a
+strip with `over` set (the weave) used to have its face/back `Path2D`s rebuilt from scratch for the
+second, clipped "overlay" draw — same points, same widths, wasted work — now built once per strip per
+frame and reused for both draws. And the 'far' strip's live `ctx.filter` blur (a genuine hot spot,
+Gaussian blur being one of the costlier things Canvas 2D does) was dropped outright rather than
+cached, since at that strip's 5.5%/9.5% fill alpha the blur barely read anyway — see the `ponytail:`
+comment on that strip in `HeroCanvas.tsx` for the upgrade path if it's ever wanted back.
 
 The canvas is `position: absolute inset-0` with `pointer-events: none`, rendered as the hero
 section's first child ahead of the `relative z-[1]` content wrapper, so — like `HeroBadge` — it costs
