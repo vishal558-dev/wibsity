@@ -348,10 +348,15 @@ along with the elements that carried them — the specimen readout was removed o
 the site is built on" above, and the service index's per-card delivery figure was cut earlier, see
 `.timeline-card` under "Nothing is a card" above.)
 Oxide
-(`--color-accent-warm`) marks what the visitor gives or does, in exactly three placements: the
-process steps' client-time badges, and the "what happens next" numerals on both the homepage and
-`/contact`. Neither is ever a button fill; the primary action stays a field inversion. Grep
-`accent-warm` before adding a fourth placement — it is not meant to spread.
+(`--color-accent-warm`) marks what the visitor gives or does, in three placements: the process
+steps' client-time badges, and the "what happens next" numerals on both the homepage and `/contact`.
+Neither is ever a button fill; the primary action stays a field inversion. **A fourth placement was
+added on direct instruction as of the 2026.7 hero background replacement**: one of the five ribbons
+in `HeroCanvas.tsx` keeps its natural `--color-accent-warm` value rather than being recoloured away
+like the ribbon that would otherwise be petrol (see "The hero background motion graphic" above) —
+oxide as pure background decoration, not marking a visitor action, a real departure from the
+semantic rule above. Grep `accent-warm` before adding a fifth placement — it still isn't meant to
+spread past this.
 
 **Component classes live in `@layer components`, and they have to.** Unlayered CSS outranks every
 layered rule, so while `.btn` sat outside a layer it silently beat the utilities applied alongside
@@ -380,6 +385,12 @@ rule, scoped to exactly `.timeline-card--yellow` — the first of the service in
 "Homepage composition" and "Nothing is a card" above). `.timeline-card--white`'s pure `#fff` fill is
 a literal value, not a token, since it needs no reuse elsewhere. Neither is licensed for use outside
 those two cards.
+
+`HeroCanvas.tsx` carries the same kind of one-off: `EMERALD`/`EMERALD_FIELD` (`#064E3B`/`#043826`),
+literal constants rather than `@theme` tokens since Canvas 2D reads them straight out of the module,
+not off the DOM. Scoped to exactly one ribbon in the hero background graphic (see "The hero
+background motion graphic" under Motion below) — not licensed for reuse elsewhere any more than the
+yellow/white pair above is.
 
 Two tokens carry contrast maths in their comments and should not be nudged without redoing it:
 `--color-fg-subtle` (5.98:1 on canvas, per `npm run check:contrast`) and `--color-rule-strong` (it
@@ -698,29 +709,47 @@ Added on direct instruction, as a third deliberate exception to "nothing loops" 
 the two above — not a replacement for either, and not itself license for a fourth. It answers a
 different brief than the rotating word or the ring badge: rather than motion tied to a specific
 piece of content, it's a continuously-animated Canvas 2D layer (`components/common/HeroCanvas.tsx`)
-sitting behind the entire hero section, rendering a few hand-authored "cut paper" polygon fragments
-plus registration-mark ticks/crosshairs that assemble, hold, and drift apart on a 26-second cycle —
-built to read as reinforcing "built, not assembled" and the site's own `.measure` tick-mark language
-rather than as a generic animated-background template. It was commissioned explicitly as a full
-creative override of "nothing is a card"/"motion answers an action" (the alternative — a restrained
-background built only from the site's existing `.measure` vocabulary, tied to scroll like the rest
-of the site's motion — was offered and turned down in favour of this one), so don't treat its
-existence as loosening either rule anywhere else.
+sitting behind the entire hero section. It was commissioned explicitly as a full creative override
+of "nothing is a card"/"motion answers an action", so don't treat its existence as loosening either
+rule anywhere else.
 
-Four things keep it from working against the rest of the system despite being a full override:
-- **Colors are read from `--color-ink`/`--color-accent` via `getComputedStyle` at mount**, not
-  hardcoded hex, so the graphic tracks the design system's real tokens if the palette ever moves —
-  the same discipline the rest of the site already applies, even inside a deliberately-decorative
-  exception.
-- **A `clearFactor` function keeps the visible pieces away from the headline/paragraph/CTA column**
-  (weighted toward the hero's right side, where `.hero-and-more` and `HeroBadge` already live) so it
-  never fights the actual content for attention or contrast.
+**As of the 2026.7 pass, this is a replacement composition, not the original one.** The first
+version (a handful of drifting cut-paper polygon fragments plus registration-mark ticks/crosshairs)
+was replaced outright by a richer one supplied as a finished asset: five cut-paper "ribbons" that
+weave over and under each other (each strip redrawn on top inside a moving circular clip so who's
+"over" keeps changing), carry a travelling pinch that reads as a fold turning the strip to its back
+face, briefly merge two strips into one form and release them, lean gently toward the real pointer,
+and taper away — all on the same 26-second loop, plus three large, colourless cut-paper forms
+drifting slowly underneath for depth. Every shape is hand-authored geometry (Catmull-Rom curves
+through five drifting anchors per strip, no primitives, no procedural noise) rendered via `Path2D` +
+`ctx.fill`/`ctx.stroke` — still plain Canvas 2D, still no WebGL.
+
+Five things keep it from working against the rest of the system despite being a full override:
+- **Neutral colors (ink, the two canvas elevations, rule) are read from their tokens via
+  `getComputedStyle` at mount**, not hardcoded hex, the same discipline the rest of the site already
+  applies. Two exceptions, both one-off literals scoped to this file only — the same precedent as
+  `.timeline-card--yellow`'s `--color-yellow-field` (see "Colour tokens" above): the ribbon that
+  would otherwise be petrol is recoloured to a new emerald, `#064E3B`/`#043826`, on direct
+  instruction to keep petrol out of this graphic specifically (the hero's rotating word keeps using
+  petrol elsewhere); the oxide ribbon keeps its natural `--color-accent-warm` token value, which is
+  a fourth, documented oxide placement — see "Two accents" below.
+- **A destination-out compositing pass punches a soft hole over the real, measured
+  `[data-hero-copy]` DOM rect** (the headline/lede/CTA block in `HomePage.tsx`, deliberately
+  excluding `HeroBadge`) after the whole composition is drawn, rather than dimming each shape by a
+  guessed per-piece opacity. The ribbons are long enough to run from deep inside that column to well
+  clear of it, so a single opacity per shape either exposes it over the text or crushes it
+  everywhere else; punching the hole in screen space dims exactly the pixels actually behind the
+  text, whichever strip put them there — the same idea as a blurred SVG mask rect, applied once.
 - **It respects `prefers-reduced-motion` (holds one static frame) and `pointer: coarse` (drops the
-  mouse-parallax offset)**, the same two guards `ServiceTimeline`'s GSAP entrance uses, and pauses
-  its `requestAnimationFrame` loop while the tab is hidden.
-- **It thins itself on narrower viewports** — one piece and no registration marks below 620px, two
-  pieces and no marks below 980px, the full composition only at desktop widths — rather than
-  cramming the full effect into a phone-sized hero.
+  pointer-lean offset)**, the same two guards `ServiceTimeline`'s GSAP entrance uses, and pauses its
+  `requestAnimationFrame` loop while the tab is hidden.
+- **It thins itself on narrower viewports** — two ribbons and one form below 620px, four ribbons and
+  two forms below 980px, all five ribbons and three forms only at desktop widths — rather than
+  cramming the full composition into a phone-sized hero.
+- **The lean toward the pointer uses the real, live cursor** (smoothed, the same pattern the first
+  version used), not the supplied asset's own scripted autonomous cursor path with its own drawn
+  marker rings — simpler, and it means "leans toward the pointer" is an actual interaction rather
+  than a choreographed beat, keeping `pointer: coarse` a meaningful guard.
 
 The canvas is `position: absolute inset-0` with `pointer-events: none`, rendered as the hero
 section's first child ahead of the `relative z-[1]` content wrapper, so — like `HeroBadge` — it costs

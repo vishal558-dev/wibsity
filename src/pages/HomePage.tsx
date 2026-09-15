@@ -174,33 +174,39 @@ export const HomePage: React.FC = () => {
         <HeroCanvas />
         <div className="relative z-[1] mx-auto w-full max-w-[78rem] px-gutter">
           <div className="relative pt-[clamp(2.25rem,9vh,7.5rem)] pb-[clamp(2.5rem,8vh,5.5rem)]">
-            <h1 className="hero-type text-hero max-w-[26ch] text-fg">
-              <SetHeadline text={HERO_PREFIX} />
-              <br />
-              <span className="hero-rotate-row">
-                <RotatingWord words={HERO_ROTATE_WORDS} />
-                <span className="sr-only">websites, automations, digital experiences</span>
-                <span className="hero-and-more">and more.</span>
-              </span>
-            </h1>
+            {/* data-hero-copy: HeroCanvas measures this block's real
+                on-screen bounds so it can keep its ribbons legible-safe
+                behind it. Deliberately excludes HeroBadge below, which is
+                its own decorative mark, not text that needs protecting. */}
+            <div data-hero-copy>
+              <h1 className="hero-type text-hero max-w-[26ch] text-fg">
+                <SetHeadline text={HERO_PREFIX} />
+                <br />
+                <span className="hero-rotate-row">
+                  <RotatingWord words={HERO_ROTATE_WORDS} />
+                  <span className="sr-only">websites, automations, digital experiences</span>
+                  <span className="hero-and-more">and more.</span>
+                </span>
+              </h1>
 
-            <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">
-              <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
-                hand-built websites for businesses that care how they look.
-              </p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-                <Link to="/contact" className="btn btn-primary">
-                  <span>start a project</span>
-                </Link>
-                <a
-                  href={CONTACT_INFO.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
-                >
-                  <IconWhatsApp size={15} className="whatsapp-icon" />
-                  <span>or whatsapp</span>
-                </a>
+              <div className="enter enter-1 mt-[clamp(2.5rem,7vh,4.5rem)]">
+                <p className="text-2xl leading-[1.35] text-fg max-w-[26ch]">
+                  hand-built websites for businesses that care how they look.
+                </p>
+                <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+                  <Link to="/contact" className="btn btn-primary">
+                    <span>start a project</span>
+                  </Link>
+                  <a
+                    href={CONTACT_INFO.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-sans text-ui link inline-flex items-center gap-2 -my-2.5 py-2.5"
+                  >
+                    <IconWhatsApp size={15} className="whatsapp-icon" />
+                    <span>or whatsapp</span>
+                  </a>
+                </div>
               </div>
             </div>
 
