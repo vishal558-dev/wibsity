@@ -36,7 +36,7 @@ The primary conversion is the project enquiry form, which is now a single screen
 
 ## Brand Commitments
 
-- Name: wibsity, always lowercase. The 2026 redesign replaced the identity outright: the palette is limestone paper, ink, and a single petrol accent (`#0e4b54`, `#7cc3cb` in dark mode) used in five places on the whole site and never as a button fill; the logo is drawn in code rather than shipped as raster art; the type pairing is Archivo for headlines and UI over Newsreader for body copy. See CLAUDE.md's Styling section for the token set and docs/DESIGN-DIRECTION.md for the reasoning.
+- Name: wibsity, always lowercase. The 2026 redesign replaced the identity outright: the site is **light only** (no dark mode, no theme toggle); the palette is paper (`#f4f1ea`) and ink (`#191917`) with two accents on a hard semantic split — petrol (`#0e4b54`, what the studio makes) and oxide (`#8f4420`, what the visitor gives) — neither ever a button fill; the logo is a supplied photoreal raster mark (not drawn in code); the type pairing is Archivo for headlines and UI over Lora for body copy. See CLAUDE.md's design-system section for the current token set and docs/DESIGN-DIRECTION.md for the reasoning.
 - Voice is plain, declarative and specific, sized honestly to a one-person studio. The redesign removed the enterprise-agency register ("authoritative digital flagships", "The 3 Non-Negotiable Pillars") because inflated language on a small offer reads as cover rather than confidence. /about now opens by stating the size of the operation in its first sentence and treats it as the argument.
 
 ## Evidence on Hand
